@@ -1,0 +1,109 @@
+SWI_PROLOG
+
+notes on the basics of simple prolog programming
+    some examples from "try logic programming by bernardo pires"
+-----------------------------------
+
+prolog file extensions: ".pl", ".pro", ".P"
+    may have conflict if use ".pl" because also is perl file extension
+    
+use "%" as comment sign. same as "//" in c++, "#" perl/python/ruby
+
+prolog programs consist of facts, rules, and variables
+
+statements end with periods.
+
+facts:
+
+    % facts state relationships explicitly
+    % always start with a lowercase letter and end with a period.
+    % Facts can also have arguments in the form relation(argument1, argument2, ... argumentN).
+
+    example(x).
+    % this means that x has the property of being an example
+    
+    % here the property of being a man or a woman is expressed below
+    man(adam).
+    man(peter).
+    man(paul).
+     
+    woman(marry).
+    woman(eve).
+    
+    % Then, we can add relation "parent" which associates parent and child.
+    % free to pick the interpretation of relationships, as long as it is consistent.
+    
+    parent(adam,peter). % means adam is parent of peter
+    parent(eve,peter).
+    parent(adam,paul).
+    parent(marry,paul).
+    
+    likes(alice,bob). % means alice likes bob
+    likes(bob,carol).
+    likes(james,mary).
+    likes(mary,james).
+    
+rules:
+
+    % Each rule has its head - name of the defined relation, and its body - a real definition of the relation
+    % Rules are a key concept in Prolog and allow us to make conclusions about the world
+    % takes the form of: " conclusion(arg1, arg2, ... argN) :- relation1, relation2, ... relationN. "
+    % " Head :- Body. "
+    % read as " Head is true if Body is true "
+     
+    compatible(X, Y) :- likes(X, Y), likes(Y, X).
+    % example building on relation likes(A,B) established above
+    % can be read as: "X and Y are compatible if X likes Y and Y likes X." 
+    
+    
+variables:
+
+    % Useful for making queries
+    % Variables in Prolog start with an uppercase letter
+    % logic programming allows passing uninstantiated arguments and the interpreter will try to instantiate the variables with the facts previously defined
+    % This process of matching variables with items is known as unification
+    % can send queries about properties with a variable and it will be bound to an answer if it exists.
+    
+    % example #1
+    ?- likes(alice,Who). 
+    Who = bob. 
+    
+    % example #2
+    ?- compatible(james,Who).
+    Who = mary. 
+    
+    % In the example above the X argument of compatible is james, but it is important to note that you don’t have to instantiate all arguments.  
+    % In fact, you don’t have to instantiate any parameters.Variables can be passed to all arguments and Prolog will solve for them.
+    % if all arguments are variables it will find all matches that exist
+    % typing semicolon causes Prolog to find the next match 
+        
+    % example #3
+    ?- compatible(X,Y).
+    X = james,
+    Y = mary ; 
+    X = mary,
+    Y = james.
+    
+
+    
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+USING PROLOG
+
+launch prolog from bash using either
+$ prolog
+OR
+$ swipl
+
+1.) Queries from the shell
+
+after the prolog shell is booted in the terminal run the command 
+
+?- consult('file.pl'). 
+OR
+?- ['file.pl'].
+
+this compiles the program into the prolog shell && lets you form and make queries which return yes/no answers
+
+if the query contains multiple answers, entering ";" after result will display next match
+
