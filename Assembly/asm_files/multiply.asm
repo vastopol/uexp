@@ -6,23 +6,14 @@
 
 ;INSTRUCTIONS
 ;--------------------
-  LEA R0, wrd_1
-  PUTS			; TRAP x22; output to screen
-
-  ;TRAP x20		; R0 <-- user input character 
-  ;TRAP x21		; echo char in R0
-
   LD R1, num_1
   LD R2, num_2
-  ADD R4, R2, #0	; index
+  ADD R4, R2, #0	  ; index, copy b to use as decrement index with a "loop"
 
   LOOP_START
     ADD R3, R3, R1
-    ADD R4, R4, #-1
-  BRp LOOP_START
-  
-  LEA R0, wrd_2
-  PUTS
+    ADD R4, R4, #-1 ; index-- 
+  BRp LOOP_START    ; conditional branch to LOOP_START label if R4 contains a positive value
 
   HALT
 
@@ -30,8 +21,5 @@
 ;--------------------
   num_1 .FILL #4		; a
   num_2 .FILL #5		; b
-
-  wrd_1 .STRINGZ "START\n"
-  wrd_2 .STRINGZ "END\n" 
 
 .END
