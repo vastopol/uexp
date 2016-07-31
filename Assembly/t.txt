@@ -1,12 +1,20 @@
 Assembly Code for LC-3
------------------------
 
 BEST ASSEMBLER : simpl
+======================
 
-
-this Assembler version:
+This Assembler version:
 
 Version 12 of the Unix LC-3 simulator available
 from McGraw Hill Introduction to Computing Systems, 2/e
 
 "lc3tools_v12.zip"
+
+to us: unzip folder, run "configure", and then run "make install"
+
+Executables
+------------------
+*lc3as
+*lc3convert
+*lc3sim
+*lc3sim-tk
