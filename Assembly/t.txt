@@ -10,7 +10,7 @@ from McGraw Hill Introduction to Computing Systems, 2/e
 
 "lc3tools_v12.zip"
 
-to us: unzip folder, run "configure", and then run "make install"
+to use: unzip folder, run "configure", and then run "make install"
 
 Executables
 ------------------
