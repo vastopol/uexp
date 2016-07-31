@@ -1,9 +1,12 @@
 Assembly Code for LC-3
 -----------------------
 
-Assembler version:
+BEST ASSEMBLER : simpl
+
+
+this Assembler version:
 
 Version 12 of the Unix LC-3 simulator available
 from McGraw Hill Introduction to Computing Systems, 2/e
 
-lc3tools_v12 (1).zip
+"lc3tools_v12.zip"
