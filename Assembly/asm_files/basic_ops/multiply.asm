@@ -19,7 +19,7 @@ HALT
 
 ;DATA
 ;--------------------
-num_1 .FILL #4		; a
-num_2 .FILL #5		; b
+num_1 .FILL #4    ; a
+num_2 .FILL #5    ; b
 
 .END
