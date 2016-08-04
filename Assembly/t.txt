@@ -14,7 +14,7 @@ to use: unzip folder, run "configure", and then run "make install"
 
 Executables
 ------------------
-*lc3as
-*lc3convert
-*lc3sim
-*lc3sim-tk
+*lc3as      : LC3 assembler, input <-- file.asm, output --> file.obj AND file.sym
+*lc3convert :
+*lc3sim     : LC3 simulator, loads only .obj AND .sym files
+*lc3sim-tk  :
