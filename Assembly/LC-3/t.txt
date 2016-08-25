@@ -1,7 +1,9 @@
 Assembly Code for LC-3
 
 BEST ASSEMBLER : simpl
-======================
+
+all these programs assemble correctly for the simpl assembler on Centos OS
+===========================================================================
 
 This Assembler version:
 
