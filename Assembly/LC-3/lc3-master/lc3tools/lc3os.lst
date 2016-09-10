@@ -1,0 +1,1266 @@
+ Addr: OPCODE   LineNo: Source
+x0000: x0495        39:                  .FILL  BAD_TRAP	; x00
+x0001: x0495        40:                  .FILL  BAD_TRAP	; x01
+x0002: x0495        41:                  .FILL  BAD_TRAP	; x02
+x0003: x0495        42:                  .FILL  BAD_TRAP	; x03
+x0004: x0495        43:                  .FILL  BAD_TRAP	; x04
+x0005: x0495        44:                  .FILL  BAD_TRAP	; x05
+x0006: x0495        45:                  .FILL  BAD_TRAP	; x06
+x0007: x0495        46:                  .FILL  BAD_TRAP	; x07
+x0008: x0495        47:                  .FILL  BAD_TRAP	; x08
+x0009: x0495        48:                  .FILL  BAD_TRAP	; x09
+x000a: x0495        49:                  .FILL  BAD_TRAP	; x0A
+x000b: x0495        50:                  .FILL  BAD_TRAP	; x0B
+x000c: x0495        51:                  .FILL  BAD_TRAP	; x0C
+x000d: x0495        52:                  .FILL  BAD_TRAP	; x0D
+x000e: x0495        53:                  .FILL  BAD_TRAP	; x0E
+x000f: x0495        54:                  .FILL  BAD_TRAP	; x0F
+x0010: x0495        55:                  .FILL  BAD_TRAP	; x10
+x0011: x0495        56:                  .FILL  BAD_TRAP	; x11
+x0012: x0495        57:                  .FILL  BAD_TRAP	; x12
+x0013: x0495        58:                  .FILL  BAD_TRAP	; x13
+x0014: x0495        59:                  .FILL  BAD_TRAP	; x14
+x0015: x0495        60:                  .FILL  BAD_TRAP	; x15
+x0016: x0495        61:                  .FILL  BAD_TRAP	; x16
+x0017: x0495        62:                  .FILL  BAD_TRAP	; x17
+x0018: x0495        63:                  .FILL  BAD_TRAP	; x18
+x0019: x0495        64:                  .FILL  BAD_TRAP	; x19
+x001a: x0495        65:                  .FILL  BAD_TRAP	; x1A
+x001b: x0495        66:                  .FILL  BAD_TRAP	; x1B
+x001c: x0495        67:                  .FILL  BAD_TRAP	; x1C
+x001d: x0495        68:                  .FILL  BAD_TRAP	; x1D
+x001e: x0495        69:                  .FILL  BAD_TRAP	; x1E
+x001f: x0495        70:                  .FILL  BAD_TRAP	; x1F
+x0020: x044c        71:                  .FILL  TRAP_GETC	; x20
+x0021: x0450        72:                  .FILL  TRAP_OUT	; x21
+x0022: x0456        73:                  .FILL  TRAP_PUTS	; x22
+x0023: x0463        74:                  .FILL  TRAP_IN	; x23
+x0024: x046f        75:                  .FILL  TRAP_PUTSP ; x24
+x0025: x048e        76:                  .FILL  TRAP_HALT	; x25
+x0026: x0495        77:                  .FILL  BAD_TRAP	; x26
+x0027: x0495        78:                  .FILL  BAD_TRAP	; x27
+x0028: x0495        79:                  .FILL  BAD_TRAP	; x28
+x0029: x0495        80:                  .FILL  BAD_TRAP	; x29
+x002a: x0495        81:                  .FILL  BAD_TRAP	; x2A
+x002b: x0495        82:                  .FILL  BAD_TRAP	; x2B
+x002c: x0495        83:                  .FILL  BAD_TRAP	; x2C
+x002d: x0495        84:                  .FILL  BAD_TRAP	; x2D
+x002e: x0495        85:                  .FILL  BAD_TRAP	; x2E
+x002f: x0495        86:                  .FILL  BAD_TRAP	; x2F
+x0030: x0495        87:                  .FILL  BAD_TRAP	; x30
+x0031: x0495        88:                  .FILL  BAD_TRAP	; x31
+x0032: x0495        89:                  .FILL  BAD_TRAP	; x32
+x0033: x0495        90:                  .FILL  BAD_TRAP	; x33
+x0034: x0495        91:                  .FILL  BAD_TRAP	; x34
+x0035: x0495        92:                  .FILL  BAD_TRAP	; x35
+x0036: x0495        93:                  .FILL  BAD_TRAP	; x36
+x0037: x0495        94:                  .FILL  BAD_TRAP	; x37
+x0038: x0495        95:                  .FILL  BAD_TRAP	; x38
+x0039: x0495        96:                  .FILL  BAD_TRAP	; x39
+x003a: x0495        97:                  .FILL  BAD_TRAP	; x3A
+x003b: x0495        98:                  .FILL  BAD_TRAP	; x3B
+x003c: x0495        99:                  .FILL  BAD_TRAP	; x3C
+x003d: x0495       100:                  .FILL  BAD_TRAP	; x3D
+x003e: x0495       101:                  .FILL  BAD_TRAP	; x3E
+x003f: x0495       102:                  .FILL  BAD_TRAP	; x3F
+x0040: x0495       103:                  .FILL  BAD_TRAP	; x40
+x0041: x0495       104:                  .FILL  BAD_TRAP	; x41
+x0042: x0495       105:                  .FILL  BAD_TRAP	; x42
+x0043: x0495       106:                  .FILL  BAD_TRAP	; x43
+x0044: x0495       107:                  .FILL  BAD_TRAP	; x44
+x0045: x0495       108:                  .FILL  BAD_TRAP	; x45
+x0046: x0495       109:                  .FILL  BAD_TRAP	; x46
+x0047: x0495       110:                  .FILL  BAD_TRAP	; x47
+x0048: x0495       111:                  .FILL  BAD_TRAP	; x48
+x0049: x0495       112:                  .FILL  BAD_TRAP	; x49
+x004a: x0495       113:                  .FILL  BAD_TRAP	; x4A
+x004b: x0495       114:                  .FILL  BAD_TRAP	; x4B
+x004c: x0495       115:                  .FILL  BAD_TRAP	; x4C
+x004d: x0495       116:                  .FILL  BAD_TRAP	; x4D
+x004e: x0495       117:                  .FILL  BAD_TRAP	; x4E
+x004f: x0495       118:                  .FILL  BAD_TRAP	; x4F
+x0050: x0495       119:                  .FILL  BAD_TRAP	; x50
+x0051: x0495       120:                  .FILL  BAD_TRAP	; x51
+x0052: x0495       121:                  .FILL  BAD_TRAP	; x52
+x0053: x0495       122:                  .FILL  BAD_TRAP	; x53
+x0054: x0495       123:                  .FILL  BAD_TRAP	; x54
+x0055: x0495       124:                  .FILL  BAD_TRAP	; x55
+x0056: x0495       125:                  .FILL  BAD_TRAP	; x56
+x0057: x0495       126:                  .FILL  BAD_TRAP	; x57
+x0058: x0495       127:                  .FILL  BAD_TRAP	; x58
+x0059: x0495       128:                  .FILL  BAD_TRAP	; x59
+x005a: x0495       129:                  .FILL  BAD_TRAP	; x5A
+x005b: x0495       130:                  .FILL  BAD_TRAP	; x5B
+x005c: x0495       131:                  .FILL  BAD_TRAP	; x5C
+x005d: x0495       132:                  .FILL  BAD_TRAP	; x5D
+x005e: x0495       133:                  .FILL  BAD_TRAP	; x5E
+x005f: x0495       134:                  .FILL  BAD_TRAP	; x5F
+x0060: x0495       135:                  .FILL  BAD_TRAP	; x60
+x0061: x0495       136:                  .FILL  BAD_TRAP	; x61
+x0062: x0495       137:                  .FILL  BAD_TRAP	; x62
+x0063: x0495       138:                  .FILL  BAD_TRAP	; x63
+x0064: x0495       139:                  .FILL  BAD_TRAP	; x64
+x0065: x0495       140:                  .FILL  BAD_TRAP	; x65
+x0066: x0495       141:                  .FILL  BAD_TRAP	; x66
+x0067: x0495       142:                  .FILL  BAD_TRAP	; x67
+x0068: x0495       143:                  .FILL  BAD_TRAP	; x68
+x0069: x0495       144:                  .FILL  BAD_TRAP	; x69
+x006a: x0495       145:                  .FILL  BAD_TRAP	; x6A
+x006b: x0495       146:                  .FILL  BAD_TRAP	; x6B
+x006c: x0495       147:                  .FILL  BAD_TRAP	; x6C
+x006d: x0495       148:                  .FILL  BAD_TRAP	; x6D
+x006e: x0495       149:                  .FILL  BAD_TRAP	; x6E
+x006f: x0495       150:                  .FILL  BAD_TRAP	; x6F
+x0070: x0495       151:                  .FILL  BAD_TRAP	; x70
+x0071: x0495       152:                  .FILL  BAD_TRAP	; x71
+x0072: x0495       153:                  .FILL  BAD_TRAP	; x72
+x0073: x0495       154:                  .FILL  BAD_TRAP	; x73
+x0074: x0495       155:                  .FILL  BAD_TRAP	; x74
+x0075: x0495       156:                  .FILL  BAD_TRAP	; x75
+x0076: x0495       157:                  .FILL  BAD_TRAP	; x76
+x0077: x0495       158:                  .FILL  BAD_TRAP	; x77
+x0078: x0495       159:                  .FILL  BAD_TRAP	; x78
+x0079: x0495       160:                  .FILL  BAD_TRAP	; x79
+x007a: x0495       161:                  .FILL  BAD_TRAP	; x7A
+x007b: x0495       162:                  .FILL  BAD_TRAP	; x7B
+x007c: x0495       163:                  .FILL  BAD_TRAP	; x7C
+x007d: x0495       164:                  .FILL  BAD_TRAP	; x7D
+x007e: x0495       165:                  .FILL  BAD_TRAP	; x7E
+x007f: x0495       166:                  .FILL  BAD_TRAP	; x7F
+x0080: x0495       167:                  .FILL  BAD_TRAP	; x80
+x0081: x0495       168:                  .FILL  BAD_TRAP	; x81
+x0082: x0495       169:                  .FILL  BAD_TRAP	; x82
+x0083: x0495       170:                  .FILL  BAD_TRAP	; x83
+x0084: x0495       171:                  .FILL  BAD_TRAP	; x84
+x0085: x0495       172:                  .FILL  BAD_TRAP	; x85
+x0086: x0495       173:                  .FILL  BAD_TRAP	; x86
+x0087: x0495       174:                  .FILL  BAD_TRAP	; x87
+x0088: x0495       175:                  .FILL  BAD_TRAP	; x88
+x0089: x0495       176:                  .FILL  BAD_TRAP	; x89
+x008a: x0495       177:                  .FILL  BAD_TRAP	; x8A
+x008b: x0495       178:                  .FILL  BAD_TRAP	; x8B
+x008c: x0495       179:                  .FILL  BAD_TRAP	; x8C
+x008d: x0495       180:                  .FILL  BAD_TRAP	; x8D
+x008e: x0495       181:                  .FILL  BAD_TRAP	; x8E
+x008f: x0495       182:                  .FILL  BAD_TRAP	; x8F
+x0090: x0495       183:                  .FILL  BAD_TRAP	; x90
+x0091: x0495       184:                  .FILL  BAD_TRAP	; x91
+x0092: x0495       185:                  .FILL  BAD_TRAP	; x92
+x0093: x0495       186:                  .FILL  BAD_TRAP	; x93
+x0094: x0495       187:                  .FILL  BAD_TRAP	; x94
+x0095: x0495       188:                  .FILL  BAD_TRAP	; x95
+x0096: x0495       189:                  .FILL  BAD_TRAP	; x96
+x0097: x0495       190:                  .FILL  BAD_TRAP	; x97
+x0098: x0495       191:                  .FILL  BAD_TRAP	; x98
+x0099: x0495       192:                  .FILL  BAD_TRAP	; x99
+x009a: x0495       193:                  .FILL  BAD_TRAP	; x9A
+x009b: x0495       194:                  .FILL  BAD_TRAP	; x9B
+x009c: x0495       195:                  .FILL  BAD_TRAP	; x9C
+x009d: x0495       196:                  .FILL  BAD_TRAP	; x9D
+x009e: x0495       197:                  .FILL  BAD_TRAP	; x9E
+x009f: x0495       198:                  .FILL  BAD_TRAP	; x9F
+x00a0: x0495       199:                  .FILL  BAD_TRAP	; xA0
+x00a1: x0495       200:                  .FILL  BAD_TRAP	; xA1
+x00a2: x0495       201:                  .FILL  BAD_TRAP	; xA2
+x00a3: x0495       202:                  .FILL  BAD_TRAP	; xA3
+x00a4: x0495       203:                  .FILL  BAD_TRAP	; xA4
+x00a5: x0495       204:                  .FILL  BAD_TRAP	; xA5
+x00a6: x0495       205:                  .FILL  BAD_TRAP	; xA6
+x00a7: x0495       206:                  .FILL  BAD_TRAP	; xA7
+x00a8: x0495       207:                  .FILL  BAD_TRAP	; xA8
+x00a9: x0495       208:                  .FILL  BAD_TRAP	; xA9
+x00aa: x0495       209:                  .FILL  BAD_TRAP	; xAA
+x00ab: x0495       210:                  .FILL  BAD_TRAP	; xAB
+x00ac: x0495       211:                  .FILL  BAD_TRAP	; xAC
+x00ad: x0495       212:                  .FILL  BAD_TRAP	; xAD
+x00ae: x0495       213:                  .FILL  BAD_TRAP	; xAE
+x00af: x0495       214:                  .FILL  BAD_TRAP	; xAF
+x00b0: x0495       215:                  .FILL  BAD_TRAP	; xB0
+x00b1: x0495       216:                  .FILL  BAD_TRAP	; xB1
+x00b2: x0495       217:                  .FILL  BAD_TRAP	; xB2
+x00b3: x0495       218:                  .FILL  BAD_TRAP	; xB3
+x00b4: x0495       219:                  .FILL  BAD_TRAP	; xB4
+x00b5: x0495       220:                  .FILL  BAD_TRAP	; xB5
+x00b6: x0495       221:                  .FILL  BAD_TRAP	; xB6
+x00b7: x0495       222:                  .FILL  BAD_TRAP	; xB7
+x00b8: x0495       223:                  .FILL  BAD_TRAP	; xB8
+x00b9: x0495       224:                  .FILL  BAD_TRAP	; xB9
+x00ba: x0495       225:                  .FILL  BAD_TRAP	; xBA
+x00bb: x0495       226:                  .FILL  BAD_TRAP	; xBB
+x00bc: x0495       227:                  .FILL  BAD_TRAP	; xBC
+x00bd: x0495       228:                  .FILL  BAD_TRAP	; xBD
+x00be: x0495       229:                  .FILL  BAD_TRAP	; xBE
+x00bf: x0495       230:                  .FILL  BAD_TRAP	; xBF
+x00c0: x0495       231:                  .FILL  BAD_TRAP	; xC0
+x00c1: x0495       232:                  .FILL  BAD_TRAP	; xC1
+x00c2: x0495       233:                  .FILL  BAD_TRAP	; xC2
+x00c3: x0495       234:                  .FILL  BAD_TRAP	; xC3
+x00c4: x0495       235:                  .FILL  BAD_TRAP	; xC4
+x00c5: x0495       236:                  .FILL  BAD_TRAP	; xC5
+x00c6: x0495       237:                  .FILL  BAD_TRAP	; xC6
+x00c7: x0495       238:                  .FILL  BAD_TRAP	; xC7
+x00c8: x0495       239:                  .FILL  BAD_TRAP	; xC8
+x00c9: x0495       240:                  .FILL  BAD_TRAP	; xC9
+x00ca: x0495       241:                  .FILL  BAD_TRAP	; xCA
+x00cb: x0495       242:                  .FILL  BAD_TRAP	; xCB
+x00cc: x0495       243:                  .FILL  BAD_TRAP	; xCC
+x00cd: x0495       244:                  .FILL  BAD_TRAP	; xCD
+x00ce: x0495       245:                  .FILL  BAD_TRAP	; xCE
+x00cf: x0495       246:                  .FILL  BAD_TRAP	; xCF
+x00d0: x0495       247:                  .FILL  BAD_TRAP	; xD0
+x00d1: x0495       248:                  .FILL  BAD_TRAP	; xD1
+x00d2: x0495       249:                  .FILL  BAD_TRAP	; xD2
+x00d3: x0495       250:                  .FILL  BAD_TRAP	; xD3
+x00d4: x0495       251:                  .FILL  BAD_TRAP	; xD4
+x00d5: x0495       252:                  .FILL  BAD_TRAP	; xD5
+x00d6: x0495       253:                  .FILL  BAD_TRAP	; xD6
+x00d7: x0495       254:                  .FILL  BAD_TRAP	; xD7
+x00d8: x0495       255:                  .FILL  BAD_TRAP	; xD8
+x00d9: x0495       256:                  .FILL  BAD_TRAP	; xD9
+x00da: x0495       257:                  .FILL  BAD_TRAP	; xDA
+x00db: x0495       258:                  .FILL  BAD_TRAP	; xDB
+x00dc: x0495       259:                  .FILL  BAD_TRAP	; xDC
+x00dd: x0495       260:                  .FILL  BAD_TRAP	; xDD
+x00de: x0495       261:                  .FILL  BAD_TRAP	; xDE
+x00df: x0495       262:                  .FILL  BAD_TRAP	; xDF
+x00e0: x0495       263:                  .FILL  BAD_TRAP	; xE0
+x00e1: x0495       264:                  .FILL  BAD_TRAP	; xE1
+x00e2: x0495       265:                  .FILL  BAD_TRAP	; xE2
+x00e3: x0495       266:                  .FILL  BAD_TRAP	; xE3
+x00e4: x0495       267:                  .FILL  BAD_TRAP	; xE4
+x00e5: x0495       268:                  .FILL  BAD_TRAP	; xE5
+x00e6: x0495       269:                  .FILL  BAD_TRAP	; xE6
+x00e7: x0495       270:                  .FILL  BAD_TRAP	; xE7
+x00e8: x0495       271:                  .FILL  BAD_TRAP	; xE8
+x00e9: x0495       272:                  .FILL  BAD_TRAP	; xE9
+x00ea: x0495       273:                  .FILL  BAD_TRAP	; xEA
+x00eb: x0495       274:                  .FILL  BAD_TRAP	; xEB
+x00ec: x0495       275:                  .FILL  BAD_TRAP	; xEC
+x00ed: x0495       276:                  .FILL  BAD_TRAP	; xED
+x00ee: x0495       277:                  .FILL  BAD_TRAP	; xEE
+x00ef: x0495       278:                  .FILL  BAD_TRAP	; xEF
+x00f0: x0495       279:                  .FILL  BAD_TRAP	; xF0
+x00f1: x0495       280:                  .FILL  BAD_TRAP	; xF1
+x00f2: x0495       281:                  .FILL  BAD_TRAP	; xF2
+x00f3: x0495       282:                  .FILL  BAD_TRAP	; xF3
+x00f4: x0495       283:                  .FILL  BAD_TRAP	; xF4
+x00f5: x0495       284:                  .FILL  BAD_TRAP	; xF5
+x00f6: x0495       285:                  .FILL  BAD_TRAP	; xF6
+x00f7: x0495       286:                  .FILL  BAD_TRAP	; xF7
+x00f8: x0495       287:                  .FILL  BAD_TRAP	; xF8
+x00f9: x0495       288:                  .FILL  BAD_TRAP	; xF9
+x00fa: x0495       289:                  .FILL  BAD_TRAP	; xFA
+x00fb: x0495       290:                  .FILL  BAD_TRAP	; xFB
+x00fc: x0495       291:                  .FILL  BAD_TRAP	; xFC
+x00fd: x0495       292:                  .FILL  BAD_TRAP	; xFD
+x00fe: x0495       293:                  .FILL  BAD_TRAP	; xFE
+x00ff: x0495       294:                  .FILL  BAD_TRAP	; xFF
+x0100: x0498       297:                  .FILL  INT_PRIV	; x00
+x0101: x0499       298:                  .FILL  INT_ILL	; x01
+x0102: x049a       299:                  .FILL  BAD_INT	; x02
+x0103: x049a       300:                  .FILL  BAD_INT	; x03
+x0104: x049a       301:                  .FILL  BAD_INT	; x04
+x0105: x049a       302:                  .FILL  BAD_INT	; x05
+x0106: x049a       303:                  .FILL  BAD_INT	; x06
+x0107: x049a       304:                  .FILL  BAD_INT	; x07
+x0108: x049a       305:                  .FILL  BAD_INT	; x08
+x0109: x049a       306:                  .FILL  BAD_INT	; x09
+x010a: x049a       307:                  .FILL  BAD_INT	; x0A
+x010b: x049a       308:                  .FILL  BAD_INT	; x0B
+x010c: x049a       309:                  .FILL  BAD_INT	; x0C
+x010d: x049a       310:                  .FILL  BAD_INT	; x0D
+x010e: x049a       311:                  .FILL  BAD_INT	; x0E
+x010f: x049a       312:                  .FILL  BAD_INT	; x0F
+x0110: x049a       313:                  .FILL  BAD_INT	; x10
+x0111: x049a       314:                  .FILL  BAD_INT	; x11
+x0112: x049a       315:                  .FILL  BAD_INT	; x12
+x0113: x049a       316:                  .FILL  BAD_INT	; x13
+x0114: x049a       317:                  .FILL  BAD_INT	; x14
+x0115: x049a       318:                  .FILL  BAD_INT	; x15
+x0116: x049a       319:                  .FILL  BAD_INT	; x16
+x0117: x049a       320:                  .FILL  BAD_INT	; x17
+x0118: x049a       321:                  .FILL  BAD_INT	; x18
+x0119: x049a       322:                  .FILL  BAD_INT	; x19
+x011a: x049a       323:                  .FILL  BAD_INT	; x1A
+x011b: x049a       324:                  .FILL  BAD_INT	; x1B
+x011c: x049a       325:                  .FILL  BAD_INT	; x1C
+x011d: x049a       326:                  .FILL  BAD_INT	; x1D
+x011e: x049a       327:                  .FILL  BAD_INT	; x1E
+x011f: x049a       328:                  .FILL  BAD_INT	; x1F
+x0120: x049a       329:                  .FILL  BAD_INT	; x20
+x0121: x049a       330:                  .FILL  BAD_INT	; x21
+x0122: x049a       331:                  .FILL  BAD_INT	; x22
+x0123: x049a       332:                  .FILL  BAD_INT	; x23
+x0124: x049a       333:                  .FILL  BAD_INT   ; x24
+x0125: x049a       334:                  .FILL  BAD_INT	; x25
+x0126: x049a       335:                  .FILL  BAD_INT	; x26
+x0127: x049a       336:                  .FILL  BAD_INT	; x27
+x0128: x049a       337:                  .FILL  BAD_INT	; x28
+x0129: x049a       338:                  .FILL  BAD_INT	; x29
+x012a: x049a       339:                  .FILL  BAD_INT	; x2A
+x012b: x049a       340:                  .FILL  BAD_INT	; x2B
+x012c: x049a       341:                  .FILL  BAD_INT	; x2C
+x012d: x049a       342:                  .FILL  BAD_INT	; x2D
+x012e: x049a       343:                  .FILL  BAD_INT	; x2E
+x012f: x049a       344:                  .FILL  BAD_INT	; x2F
+x0130: x049a       345:                  .FILL  BAD_INT	; x30
+x0131: x049a       346:                  .FILL  BAD_INT	; x31
+x0132: x049a       347:                  .FILL  BAD_INT	; x32
+x0133: x049a       348:                  .FILL  BAD_INT	; x33
+x0134: x049a       349:                  .FILL  BAD_INT	; x34
+x0135: x049a       350:                  .FILL  BAD_INT	; x35
+x0136: x049a       351:                  .FILL  BAD_INT	; x36
+x0137: x049a       352:                  .FILL  BAD_INT	; x37
+x0138: x049a       353:                  .FILL  BAD_INT	; x38
+x0139: x049a       354:                  .FILL  BAD_INT	; x39
+x013a: x049a       355:                  .FILL  BAD_INT	; x3A
+x013b: x049a       356:                  .FILL  BAD_INT	; x3B
+x013c: x049a       357:                  .FILL  BAD_INT	; x3C
+x013d: x049a       358:                  .FILL  BAD_INT	; x3D
+x013e: x049a       359:                  .FILL  BAD_INT	; x3E
+x013f: x049a       360:                  .FILL  BAD_INT	; x3F
+x0140: x049a       361:                  .FILL  BAD_INT	; x40
+x0141: x049a       362:                  .FILL  BAD_INT	; x41
+x0142: x049a       363:                  .FILL  BAD_INT	; x42
+x0143: x049a       364:                  .FILL  BAD_INT	; x43
+x0144: x049a       365:                  .FILL  BAD_INT	; x44
+x0145: x049a       366:                  .FILL  BAD_INT	; x45
+x0146: x049a       367:                  .FILL  BAD_INT	; x46
+x0147: x049a       368:                  .FILL  BAD_INT	; x47
+x0148: x049a       369:                  .FILL  BAD_INT	; x48
+x0149: x049a       370:                  .FILL  BAD_INT	; x49
+x014a: x049a       371:                  .FILL  BAD_INT	; x4A
+x014b: x049a       372:                  .FILL  BAD_INT	; x4B
+x014c: x049a       373:                  .FILL  BAD_INT	; x4C
+x014d: x049a       374:                  .FILL  BAD_INT	; x4D
+x014e: x049a       375:                  .FILL  BAD_INT	; x4E
+x014f: x049a       376:                  .FILL  BAD_INT	; x4F
+x0150: x049a       377:                  .FILL  BAD_INT	; x50
+x0151: x049a       378:                  .FILL  BAD_INT	; x51
+x0152: x049a       379:                  .FILL  BAD_INT	; x52
+x0153: x049a       380:                  .FILL  BAD_INT	; x53
+x0154: x049a       381:                  .FILL  BAD_INT	; x54
+x0155: x049a       382:                  .FILL  BAD_INT	; x55
+x0156: x049a       383:                  .FILL  BAD_INT	; x56
+x0157: x049a       384:                  .FILL  BAD_INT	; x57
+x0158: x049a       385:                  .FILL  BAD_INT	; x58
+x0159: x049a       386:                  .FILL  BAD_INT	; x59
+x015a: x049a       387:                  .FILL  BAD_INT	; x5A
+x015b: x049a       388:                  .FILL  BAD_INT	; x5B
+x015c: x049a       389:                  .FILL  BAD_INT	; x5C
+x015d: x049a       390:                  .FILL  BAD_INT	; x5D
+x015e: x049a       391:                  .FILL  BAD_INT	; x5E
+x015f: x049a       392:                  .FILL  BAD_INT	; x5F
+x0160: x049a       393:                  .FILL  BAD_INT	; x60
+x0161: x049a       394:                  .FILL  BAD_INT	; x61
+x0162: x049a       395:                  .FILL  BAD_INT	; x62
+x0163: x049a       396:                  .FILL  BAD_INT	; x63
+x0164: x049a       397:                  .FILL  BAD_INT	; x64
+x0165: x049a       398:                  .FILL  BAD_INT	; x65
+x0166: x049a       399:                  .FILL  BAD_INT	; x66
+x0167: x049a       400:                  .FILL  BAD_INT	; x67
+x0168: x049a       401:                  .FILL  BAD_INT	; x68
+x0169: x049a       402:                  .FILL  BAD_INT	; x69
+x016a: x049a       403:                  .FILL  BAD_INT	; x6A
+x016b: x049a       404:                  .FILL  BAD_INT	; x6B
+x016c: x049a       405:                  .FILL  BAD_INT	; x6C
+x016d: x049a       406:                  .FILL  BAD_INT	; x6D
+x016e: x049a       407:                  .FILL  BAD_INT	; x6E
+x016f: x049a       408:                  .FILL  BAD_INT	; x6F
+x0170: x049a       409:                  .FILL  BAD_INT	; x70
+x0171: x049a       410:                  .FILL  BAD_INT	; x71
+x0172: x049a       411:                  .FILL  BAD_INT	; x72
+x0173: x049a       412:                  .FILL  BAD_INT	; x73
+x0174: x049a       413:                  .FILL  BAD_INT	; x74
+x0175: x049a       414:                  .FILL  BAD_INT	; x75
+x0176: x049a       415:                  .FILL  BAD_INT	; x76
+x0177: x049a       416:                  .FILL  BAD_INT	; x77
+x0178: x049a       417:                  .FILL  BAD_INT	; x78
+x0179: x049a       418:                  .FILL  BAD_INT	; x79
+x017a: x049a       419:                  .FILL  BAD_INT	; x7A
+x017b: x049a       420:                  .FILL  BAD_INT	; x7B
+x017c: x049a       421:                  .FILL  BAD_INT	; x7C
+x017d: x049a       422:                  .FILL  BAD_INT	; x7D
+x017e: x049a       423:                  .FILL  BAD_INT	; x7E
+x017f: x049a       424:                  .FILL  BAD_INT	; x7F
+x0180: x049a       425:                  .FILL  BAD_INT	; x80
+x0181: x049a       426:                  .FILL  BAD_INT	; x81
+x0182: x049a       427:                  .FILL  BAD_INT	; x82
+x0183: x049a       428:                  .FILL  BAD_INT	; x83
+x0184: x049a       429:                  .FILL  BAD_INT	; x84
+x0185: x049a       430:                  .FILL  BAD_INT	; x85
+x0186: x049a       431:                  .FILL  BAD_INT	; x86
+x0187: x049a       432:                  .FILL  BAD_INT	; x87
+x0188: x049a       433:                  .FILL  BAD_INT	; x88
+x0189: x049a       434:                  .FILL  BAD_INT	; x89
+x018a: x049a       435:                  .FILL  BAD_INT	; x8A
+x018b: x049a       436:                  .FILL  BAD_INT	; x8B
+x018c: x049a       437:                  .FILL  BAD_INT	; x8C
+x018d: x049a       438:                  .FILL  BAD_INT	; x8D
+x018e: x049a       439:                  .FILL  BAD_INT	; x8E
+x018f: x049a       440:                  .FILL  BAD_INT	; x8F
+x0190: x049a       441:                  .FILL  BAD_INT	; x90
+x0191: x049a       442:                  .FILL  BAD_INT	; x91
+x0192: x049a       443:                  .FILL  BAD_INT	; x92
+x0193: x049a       444:                  .FILL  BAD_INT	; x93
+x0194: x049a       445:                  .FILL  BAD_INT	; x94
+x0195: x049a       446:                  .FILL  BAD_INT	; x95
+x0196: x049a       447:                  .FILL  BAD_INT	; x96
+x0197: x049a       448:                  .FILL  BAD_INT	; x97
+x0198: x049a       449:                  .FILL  BAD_INT	; x98
+x0199: x049a       450:                  .FILL  BAD_INT	; x99
+x019a: x049a       451:                  .FILL  BAD_INT	; x9A
+x019b: x049a       452:                  .FILL  BAD_INT	; x9B
+x019c: x049a       453:                  .FILL  BAD_INT	; x9C
+x019d: x049a       454:                  .FILL  BAD_INT	; x9D
+x019e: x049a       455:                  .FILL  BAD_INT	; x9E
+x019f: x049a       456:                  .FILL  BAD_INT	; x9F
+x01a0: x049a       457:                  .FILL  BAD_INT	; xA0
+x01a1: x049a       458:                  .FILL  BAD_INT	; xA1
+x01a2: x049a       459:                  .FILL  BAD_INT	; xA2
+x01a3: x049a       460:                  .FILL  BAD_INT	; xA3
+x01a4: x049a       461:                  .FILL  BAD_INT	; xA4
+x01a5: x049a       462:                  .FILL  BAD_INT	; xA5
+x01a6: x049a       463:                  .FILL  BAD_INT	; xA6
+x01a7: x049a       464:                  .FILL  BAD_INT	; xA7
+x01a8: x049a       465:                  .FILL  BAD_INT	; xA8
+x01a9: x049a       466:                  .FILL  BAD_INT	; xA9
+x01aa: x049a       467:                  .FILL  BAD_INT	; xAA
+x01ab: x049a       468:                  .FILL  BAD_INT	; xAB
+x01ac: x049a       469:                  .FILL  BAD_INT	; xAC
+x01ad: x049a       470:                  .FILL  BAD_INT	; xAD
+x01ae: x049a       471:                  .FILL  BAD_INT	; xAE
+x01af: x049a       472:                  .FILL  BAD_INT	; xAF
+x01b0: x049a       473:                  .FILL  BAD_INT	; xB0
+x01b1: x049a       474:                  .FILL  BAD_INT	; xB1
+x01b2: x049a       475:                  .FILL  BAD_INT	; xB2
+x01b3: x049a       476:                  .FILL  BAD_INT	; xB3
+x01b4: x049a       477:                  .FILL  BAD_INT	; xB4
+x01b5: x049a       478:                  .FILL  BAD_INT	; xB5
+x01b6: x049a       479:                  .FILL  BAD_INT	; xB6
+x01b7: x049a       480:                  .FILL  BAD_INT	; xB7
+x01b8: x049a       481:                  .FILL  BAD_INT	; xB8
+x01b9: x049a       482:                  .FILL  BAD_INT	; xB9
+x01ba: x049a       483:                  .FILL  BAD_INT	; xBA
+x01bb: x049a       484:                  .FILL  BAD_INT	; xBB
+x01bc: x049a       485:                  .FILL  BAD_INT	; xBC
+x01bd: x049a       486:                  .FILL  BAD_INT	; xBD
+x01be: x049a       487:                  .FILL  BAD_INT	; xBE
+x01bf: x049a       488:                  .FILL  BAD_INT	; xBF
+x01c0: x049a       489:                  .FILL  BAD_INT	; xC0
+x01c1: x049a       490:                  .FILL  BAD_INT	; xC1
+x01c2: x049a       491:                  .FILL  BAD_INT	; xC2
+x01c3: x049a       492:                  .FILL  BAD_INT	; xC3
+x01c4: x049a       493:                  .FILL  BAD_INT	; xC4
+x01c5: x049a       494:                  .FILL  BAD_INT	; xC5
+x01c6: x049a       495:                  .FILL  BAD_INT	; xC6
+x01c7: x049a       496:                  .FILL  BAD_INT	; xC7
+x01c8: x049a       497:                  .FILL  BAD_INT	; xC8
+x01c9: x049a       498:                  .FILL  BAD_INT	; xC9
+x01ca: x049a       499:                  .FILL  BAD_INT	; xCA
+x01cb: x049a       500:                  .FILL  BAD_INT	; xCB
+x01cc: x049a       501:                  .FILL  BAD_INT	; xCC
+x01cd: x049a       502:                  .FILL  BAD_INT	; xCD
+x01ce: x049a       503:                  .FILL  BAD_INT	; xCE
+x01cf: x049a       504:                  .FILL  BAD_INT	; xCF
+x01d0: x049a       505:                  .FILL  BAD_INT	; xD0
+x01d1: x049a       506:                  .FILL  BAD_INT	; xD1
+x01d2: x049a       507:                  .FILL  BAD_INT	; xD2
+x01d3: x049a       508:                  .FILL  BAD_INT	; xD3
+x01d4: x049a       509:                  .FILL  BAD_INT	; xD4
+x01d5: x049a       510:                  .FILL  BAD_INT	; xD5
+x01d6: x049a       511:                  .FILL  BAD_INT	; xD6
+x01d7: x049a       512:                  .FILL  BAD_INT	; xD7
+x01d8: x049a       513:                  .FILL  BAD_INT	; xD8
+x01d9: x049a       514:                  .FILL  BAD_INT	; xD9
+x01da: x049a       515:                  .FILL  BAD_INT	; xDA
+x01db: x049a       516:                  .FILL  BAD_INT	; xDB
+x01dc: x049a       517:                  .FILL  BAD_INT	; xDC
+x01dd: x049a       518:                  .FILL  BAD_INT	; xDD
+x01de: x049a       519:                  .FILL  BAD_INT	; xDE
+x01df: x049a       520:                  .FILL  BAD_INT	; xDF
+x01e0: x049a       521:                  .FILL  BAD_INT	; xE0
+x01e1: x049a       522:                  .FILL  BAD_INT	; xE1
+x01e2: x049a       523:                  .FILL  BAD_INT	; xE2
+x01e3: x049a       524:                  .FILL  BAD_INT	; xE3
+x01e4: x049a       525:                  .FILL  BAD_INT	; xE4
+x01e5: x049a       526:                  .FILL  BAD_INT	; xE5
+x01e6: x049a       527:                  .FILL  BAD_INT	; xE6
+x01e7: x049a       528:                  .FILL  BAD_INT	; xE7
+x01e8: x049a       529:                  .FILL  BAD_INT	; xE8
+x01e9: x049a       530:                  .FILL  BAD_INT	; xE9
+x01ea: x049a       531:                  .FILL  BAD_INT	; xEA
+x01eb: x049a       532:                  .FILL  BAD_INT	; xEB
+x01ec: x049a       533:                  .FILL  BAD_INT	; xEC
+x01ed: x049a       534:                  .FILL  BAD_INT	; xED
+x01ee: x049a       535:                  .FILL  BAD_INT	; xEE
+x01ef: x049a       536:                  .FILL  BAD_INT	; xEF
+x01f0: x049a       537:                  .FILL  BAD_INT	; xF0
+x01f1: x049a       538:                  .FILL  BAD_INT	; xF1
+x01f2: x049a       539:                  .FILL  BAD_INT	; xF2
+x01f3: x049a       540:                  .FILL  BAD_INT	; xF3
+x01f4: x049a       541:                  .FILL  BAD_INT	; xF4
+x01f5: x049a       542:                  .FILL  BAD_INT	; xF5
+x01f6: x049a       543:                  .FILL  BAD_INT	; xF6
+x01f7: x049a       544:                  .FILL  BAD_INT	; xF7
+x01f8: x049a       545:                  .FILL  BAD_INT	; xF8
+x01f9: x049a       546:                  .FILL  BAD_INT	; xF9
+x01fa: x049a       547:                  .FILL  BAD_INT	; xFA
+x01fb: x049a       548:                  .FILL  BAD_INT	; xFB
+x01fc: x049a       549:                  .FILL  BAD_INT	; xFC
+x01fd: x049a       550:                  .FILL  BAD_INT	; xFD
+x01fe: x049a       551:                  .FILL  BAD_INT	; xFE
+x01ff: x049a       552:                  .FILL  BAD_INT	; xFF
+x0200: xe002       556:                  LEA  R0,OS_START_MSG	; print a welcome message
+x0201: xf022       557:                  PUTS 
+x0202: xf025       558:                  HALT 
+x0203: x000a       560:     OS_START_MSG .STRINGZ  "\nWelcome to the LC-3 simulator.\n\nThe contents of the LC-3 tools distribution, including sources, management\ntools, and data, are Copyright (c) 2003 Steven S. Lumetta.\n\nThe LC-3 tools distribution is free software covered by the GNU General\nPublic License, and you are welcome to modify it and/or distribute copies\nof it under certain conditions.  The file COPYING (distributed with the\ntools) specifies those conditions.  There is absolutely no warranty for\nthe LC-3 tools distribution, as described in the file NO_WARRANTY (also\ndistributed with the tools).\n\nHave fun.\n"
+x0204: x0057       560:     OS_START_MSG  
+x0205: x0065       560:     OS_START_MSG  
+x0206: x006c       560:     OS_START_MSG  
+x0207: x0063       560:     OS_START_MSG  
+x0208: x006f       560:     OS_START_MSG  
+x0209: x006d       560:     OS_START_MSG  
+x020a: x0065       560:     OS_START_MSG  
+x020b: x0020       560:     OS_START_MSG  
+x020c: x0074       560:     OS_START_MSG  
+x020d: x006f       560:     OS_START_MSG  
+x020e: x0020       560:     OS_START_MSG  
+x020f: x0074       560:     OS_START_MSG  
+x0210: x0068       560:     OS_START_MSG  
+x0211: x0065       560:     OS_START_MSG  
+x0212: x0020       560:     OS_START_MSG  
+x0213: x004c       560:     OS_START_MSG  
+x0214: x0043       560:     OS_START_MSG  
+x0215: x002d       560:     OS_START_MSG  
+x0216: x0033       560:     OS_START_MSG  
+x0217: x0020       560:     OS_START_MSG  
+x0218: x0073       560:     OS_START_MSG  
+x0219: x0069       560:     OS_START_MSG  
+x021a: x006d       560:     OS_START_MSG  
+x021b: x0075       560:     OS_START_MSG  
+x021c: x006c       560:     OS_START_MSG  
+x021d: x0061       560:     OS_START_MSG  
+x021e: x0074       560:     OS_START_MSG  
+x021f: x006f       560:     OS_START_MSG  
+x0220: x0072       560:     OS_START_MSG  
+x0221: x002e       560:     OS_START_MSG  
+x0222: x000a       560:     OS_START_MSG  
+x0223: x000a       560:     OS_START_MSG  
+x0224: x0054       560:     OS_START_MSG  
+x0225: x0068       560:     OS_START_MSG  
+x0226: x0065       560:     OS_START_MSG  
+x0227: x0020       560:     OS_START_MSG  
+x0228: x0063       560:     OS_START_MSG  
+x0229: x006f       560:     OS_START_MSG  
+x022a: x006e       560:     OS_START_MSG  
+x022b: x0074       560:     OS_START_MSG  
+x022c: x0065       560:     OS_START_MSG  
+x022d: x006e       560:     OS_START_MSG  
+x022e: x0074       560:     OS_START_MSG  
+x022f: x0073       560:     OS_START_MSG  
+x0230: x0020       560:     OS_START_MSG  
+x0231: x006f       560:     OS_START_MSG  
+x0232: x0066       560:     OS_START_MSG  
+x0233: x0020       560:     OS_START_MSG  
+x0234: x0074       560:     OS_START_MSG  
+x0235: x0068       560:     OS_START_MSG  
+x0236: x0065       560:     OS_START_MSG  
+x0237: x0020       560:     OS_START_MSG  
+x0238: x004c       560:     OS_START_MSG  
+x0239: x0043       560:     OS_START_MSG  
+x023a: x002d       560:     OS_START_MSG  
+x023b: x0033       560:     OS_START_MSG  
+x023c: x0020       560:     OS_START_MSG  
+x023d: x0074       560:     OS_START_MSG  
+x023e: x006f       560:     OS_START_MSG  
+x023f: x006f       560:     OS_START_MSG  
+x0240: x006c       560:     OS_START_MSG  
+x0241: x0073       560:     OS_START_MSG  
+x0242: x0020       560:     OS_START_MSG  
+x0243: x0064       560:     OS_START_MSG  
+x0244: x0069       560:     OS_START_MSG  
+x0245: x0073       560:     OS_START_MSG  
+x0246: x0074       560:     OS_START_MSG  
+x0247: x0072       560:     OS_START_MSG  
+x0248: x0069       560:     OS_START_MSG  
+x0249: x0062       560:     OS_START_MSG  
+x024a: x0075       560:     OS_START_MSG  
+x024b: x0074       560:     OS_START_MSG  
+x024c: x0069       560:     OS_START_MSG  
+x024d: x006f       560:     OS_START_MSG  
+x024e: x006e       560:     OS_START_MSG  
+x024f: x002c       560:     OS_START_MSG  
+x0250: x0020       560:     OS_START_MSG  
+x0251: x0069       560:     OS_START_MSG  
+x0252: x006e       560:     OS_START_MSG  
+x0253: x0063       560:     OS_START_MSG  
+x0254: x006c       560:     OS_START_MSG  
+x0255: x0075       560:     OS_START_MSG  
+x0256: x0064       560:     OS_START_MSG  
+x0257: x0069       560:     OS_START_MSG  
+x0258: x006e       560:     OS_START_MSG  
+x0259: x0067       560:     OS_START_MSG  
+x025a: x0020       560:     OS_START_MSG  
+x025b: x0073       560:     OS_START_MSG  
+x025c: x006f       560:     OS_START_MSG  
+x025d: x0075       560:     OS_START_MSG  
+x025e: x0072       560:     OS_START_MSG  
+x025f: x0063       560:     OS_START_MSG  
+x0260: x0065       560:     OS_START_MSG  
+x0261: x0073       560:     OS_START_MSG  
+x0262: x002c       560:     OS_START_MSG  
+x0263: x0020       560:     OS_START_MSG  
+x0264: x006d       560:     OS_START_MSG  
+x0265: x0061       560:     OS_START_MSG  
+x0266: x006e       560:     OS_START_MSG  
+x0267: x0061       560:     OS_START_MSG  
+x0268: x0067       560:     OS_START_MSG  
+x0269: x0065       560:     OS_START_MSG  
+x026a: x006d       560:     OS_START_MSG  
+x026b: x0065       560:     OS_START_MSG  
+x026c: x006e       560:     OS_START_MSG  
+x026d: x0074       560:     OS_START_MSG  
+x026e: x000a       560:     OS_START_MSG  
+x026f: x0074       560:     OS_START_MSG  
+x0270: x006f       560:     OS_START_MSG  
+x0271: x006f       560:     OS_START_MSG  
+x0272: x006c       560:     OS_START_MSG  
+x0273: x0073       560:     OS_START_MSG  
+x0274: x002c       560:     OS_START_MSG  
+x0275: x0020       560:     OS_START_MSG  
+x0276: x0061       560:     OS_START_MSG  
+x0277: x006e       560:     OS_START_MSG  
+x0278: x0064       560:     OS_START_MSG  
+x0279: x0020       560:     OS_START_MSG  
+x027a: x0064       560:     OS_START_MSG  
+x027b: x0061       560:     OS_START_MSG  
+x027c: x0074       560:     OS_START_MSG  
+x027d: x0061       560:     OS_START_MSG  
+x027e: x002c       560:     OS_START_MSG  
+x027f: x0020       560:     OS_START_MSG  
+x0280: x0061       560:     OS_START_MSG  
+x0281: x0072       560:     OS_START_MSG  
+x0282: x0065       560:     OS_START_MSG  
+x0283: x0020       560:     OS_START_MSG  
+x0284: x0043       560:     OS_START_MSG  
+x0285: x006f       560:     OS_START_MSG  
+x0286: x0070       560:     OS_START_MSG  
+x0287: x0079       560:     OS_START_MSG  
+x0288: x0072       560:     OS_START_MSG  
+x0289: x0069       560:     OS_START_MSG  
+x028a: x0067       560:     OS_START_MSG  
+x028b: x0068       560:     OS_START_MSG  
+x028c: x0074       560:     OS_START_MSG  
+x028d: x0020       560:     OS_START_MSG  
+x028e: x0028       560:     OS_START_MSG  
+x028f: x0063       560:     OS_START_MSG  
+x0290: x0029       560:     OS_START_MSG  
+x0291: x0020       560:     OS_START_MSG  
+x0292: x0032       560:     OS_START_MSG  
+x0293: x0030       560:     OS_START_MSG  
+x0294: x0030       560:     OS_START_MSG  
+x0295: x0033       560:     OS_START_MSG  
+x0296: x0020       560:     OS_START_MSG  
+x0297: x0053       560:     OS_START_MSG  
+x0298: x0074       560:     OS_START_MSG  
+x0299: x0065       560:     OS_START_MSG  
+x029a: x0076       560:     OS_START_MSG  
+x029b: x0065       560:     OS_START_MSG  
+x029c: x006e       560:     OS_START_MSG  
+x029d: x0020       560:     OS_START_MSG  
+x029e: x0053       560:     OS_START_MSG  
+x029f: x002e       560:     OS_START_MSG  
+x02a0: x0020       560:     OS_START_MSG  
+x02a1: x004c       560:     OS_START_MSG  
+x02a2: x0075       560:     OS_START_MSG  
+x02a3: x006d       560:     OS_START_MSG  
+x02a4: x0065       560:     OS_START_MSG  
+x02a5: x0074       560:     OS_START_MSG  
+x02a6: x0074       560:     OS_START_MSG  
+x02a7: x0061       560:     OS_START_MSG  
+x02a8: x002e       560:     OS_START_MSG  
+x02a9: x000a       560:     OS_START_MSG  
+x02aa: x000a       560:     OS_START_MSG  
+x02ab: x0054       560:     OS_START_MSG  
+x02ac: x0068       560:     OS_START_MSG  
+x02ad: x0065       560:     OS_START_MSG  
+x02ae: x0020       560:     OS_START_MSG  
+x02af: x004c       560:     OS_START_MSG  
+x02b0: x0043       560:     OS_START_MSG  
+x02b1: x002d       560:     OS_START_MSG  
+x02b2: x0033       560:     OS_START_MSG  
+x02b3: x0020       560:     OS_START_MSG  
+x02b4: x0074       560:     OS_START_MSG  
+x02b5: x006f       560:     OS_START_MSG  
+x02b6: x006f       560:     OS_START_MSG  
+x02b7: x006c       560:     OS_START_MSG  
+x02b8: x0073       560:     OS_START_MSG  
+x02b9: x0020       560:     OS_START_MSG  
+x02ba: x0064       560:     OS_START_MSG  
+x02bb: x0069       560:     OS_START_MSG  
+x02bc: x0073       560:     OS_START_MSG  
+x02bd: x0074       560:     OS_START_MSG  
+x02be: x0072       560:     OS_START_MSG  
+x02bf: x0069       560:     OS_START_MSG  
+x02c0: x0062       560:     OS_START_MSG  
+x02c1: x0075       560:     OS_START_MSG  
+x02c2: x0074       560:     OS_START_MSG  
+x02c3: x0069       560:     OS_START_MSG  
+x02c4: x006f       560:     OS_START_MSG  
+x02c5: x006e       560:     OS_START_MSG  
+x02c6: x0020       560:     OS_START_MSG  
+x02c7: x0069       560:     OS_START_MSG  
+x02c8: x0073       560:     OS_START_MSG  
+x02c9: x0020       560:     OS_START_MSG  
+x02ca: x0066       560:     OS_START_MSG  
+x02cb: x0072       560:     OS_START_MSG  
+x02cc: x0065       560:     OS_START_MSG  
+x02cd: x0065       560:     OS_START_MSG  
+x02ce: x0020       560:     OS_START_MSG  
+x02cf: x0073       560:     OS_START_MSG  
+x02d0: x006f       560:     OS_START_MSG  
+x02d1: x0066       560:     OS_START_MSG  
+x02d2: x0074       560:     OS_START_MSG  
+x02d3: x0077       560:     OS_START_MSG  
+x02d4: x0061       560:     OS_START_MSG  
+x02d5: x0072       560:     OS_START_MSG  
+x02d6: x0065       560:     OS_START_MSG  
+x02d7: x0020       560:     OS_START_MSG  
+x02d8: x0063       560:     OS_START_MSG  
+x02d9: x006f       560:     OS_START_MSG  
+x02da: x0076       560:     OS_START_MSG  
+x02db: x0065       560:     OS_START_MSG  
+x02dc: x0072       560:     OS_START_MSG  
+x02dd: x0065       560:     OS_START_MSG  
+x02de: x0064       560:     OS_START_MSG  
+x02df: x0020       560:     OS_START_MSG  
+x02e0: x0062       560:     OS_START_MSG  
+x02e1: x0079       560:     OS_START_MSG  
+x02e2: x0020       560:     OS_START_MSG  
+x02e3: x0074       560:     OS_START_MSG  
+x02e4: x0068       560:     OS_START_MSG  
+x02e5: x0065       560:     OS_START_MSG  
+x02e6: x0020       560:     OS_START_MSG  
+x02e7: x0047       560:     OS_START_MSG  
+x02e8: x004e       560:     OS_START_MSG  
+x02e9: x0055       560:     OS_START_MSG  
+x02ea: x0020       560:     OS_START_MSG  
+x02eb: x0047       560:     OS_START_MSG  
+x02ec: x0065       560:     OS_START_MSG  
+x02ed: x006e       560:     OS_START_MSG  
+x02ee: x0065       560:     OS_START_MSG  
+x02ef: x0072       560:     OS_START_MSG  
+x02f0: x0061       560:     OS_START_MSG  
+x02f1: x006c       560:     OS_START_MSG  
+x02f2: x000a       560:     OS_START_MSG  
+x02f3: x0050       560:     OS_START_MSG  
+x02f4: x0075       560:     OS_START_MSG  
+x02f5: x0062       560:     OS_START_MSG  
+x02f6: x006c       560:     OS_START_MSG  
+x02f7: x0069       560:     OS_START_MSG  
+x02f8: x0063       560:     OS_START_MSG  
+x02f9: x0020       560:     OS_START_MSG  
+x02fa: x004c       560:     OS_START_MSG  
+x02fb: x0069       560:     OS_START_MSG  
+x02fc: x0063       560:     OS_START_MSG  
+x02fd: x0065       560:     OS_START_MSG  
+x02fe: x006e       560:     OS_START_MSG  
+x02ff: x0073       560:     OS_START_MSG  
+x0300: x0065       560:     OS_START_MSG  
+x0301: x002c       560:     OS_START_MSG  
+x0302: x0020       560:     OS_START_MSG  
+x0303: x0061       560:     OS_START_MSG  
+x0304: x006e       560:     OS_START_MSG  
+x0305: x0064       560:     OS_START_MSG  
+x0306: x0020       560:     OS_START_MSG  
+x0307: x0079       560:     OS_START_MSG  
+x0308: x006f       560:     OS_START_MSG  
+x0309: x0075       560:     OS_START_MSG  
+x030a: x0020       560:     OS_START_MSG  
+x030b: x0061       560:     OS_START_MSG  
+x030c: x0072       560:     OS_START_MSG  
+x030d: x0065       560:     OS_START_MSG  
+x030e: x0020       560:     OS_START_MSG  
+x030f: x0077       560:     OS_START_MSG  
+x0310: x0065       560:     OS_START_MSG  
+x0311: x006c       560:     OS_START_MSG  
+x0312: x0063       560:     OS_START_MSG  
+x0313: x006f       560:     OS_START_MSG  
+x0314: x006d       560:     OS_START_MSG  
+x0315: x0065       560:     OS_START_MSG  
+x0316: x0020       560:     OS_START_MSG  
+x0317: x0074       560:     OS_START_MSG  
+x0318: x006f       560:     OS_START_MSG  
+x0319: x0020       560:     OS_START_MSG  
+x031a: x006d       560:     OS_START_MSG  
+x031b: x006f       560:     OS_START_MSG  
+x031c: x0064       560:     OS_START_MSG  
+x031d: x0069       560:     OS_START_MSG  
+x031e: x0066       560:     OS_START_MSG  
+x031f: x0079       560:     OS_START_MSG  
+x0320: x0020       560:     OS_START_MSG  
+x0321: x0069       560:     OS_START_MSG  
+x0322: x0074       560:     OS_START_MSG  
+x0323: x0020       560:     OS_START_MSG  
+x0324: x0061       560:     OS_START_MSG  
+x0325: x006e       560:     OS_START_MSG  
+x0326: x0064       560:     OS_START_MSG  
+x0327: x002f       560:     OS_START_MSG  
+x0328: x006f       560:     OS_START_MSG  
+x0329: x0072       560:     OS_START_MSG  
+x032a: x0020       560:     OS_START_MSG  
+x032b: x0064       560:     OS_START_MSG  
+x032c: x0069       560:     OS_START_MSG  
+x032d: x0073       560:     OS_START_MSG  
+x032e: x0074       560:     OS_START_MSG  
+x032f: x0072       560:     OS_START_MSG  
+x0330: x0069       560:     OS_START_MSG  
+x0331: x0062       560:     OS_START_MSG  
+x0332: x0075       560:     OS_START_MSG  
+x0333: x0074       560:     OS_START_MSG  
+x0334: x0065       560:     OS_START_MSG  
+x0335: x0020       560:     OS_START_MSG  
+x0336: x0063       560:     OS_START_MSG  
+x0337: x006f       560:     OS_START_MSG  
+x0338: x0070       560:     OS_START_MSG  
+x0339: x0069       560:     OS_START_MSG  
+x033a: x0065       560:     OS_START_MSG  
+x033b: x0073       560:     OS_START_MSG  
+x033c: x000a       560:     OS_START_MSG  
+x033d: x006f       560:     OS_START_MSG  
+x033e: x0066       560:     OS_START_MSG  
+x033f: x0020       560:     OS_START_MSG  
+x0340: x0069       560:     OS_START_MSG  
+x0341: x0074       560:     OS_START_MSG  
+x0342: x0020       560:     OS_START_MSG  
+x0343: x0075       560:     OS_START_MSG  
+x0344: x006e       560:     OS_START_MSG  
+x0345: x0064       560:     OS_START_MSG  
+x0346: x0065       560:     OS_START_MSG  
+x0347: x0072       560:     OS_START_MSG  
+x0348: x0020       560:     OS_START_MSG  
+x0349: x0063       560:     OS_START_MSG  
+x034a: x0065       560:     OS_START_MSG  
+x034b: x0072       560:     OS_START_MSG  
+x034c: x0074       560:     OS_START_MSG  
+x034d: x0061       560:     OS_START_MSG  
+x034e: x0069       560:     OS_START_MSG  
+x034f: x006e       560:     OS_START_MSG  
+x0350: x0020       560:     OS_START_MSG  
+x0351: x0063       560:     OS_START_MSG  
+x0352: x006f       560:     OS_START_MSG  
+x0353: x006e       560:     OS_START_MSG  
+x0354: x0064       560:     OS_START_MSG  
+x0355: x0069       560:     OS_START_MSG  
+x0356: x0074       560:     OS_START_MSG  
+x0357: x0069       560:     OS_START_MSG  
+x0358: x006f       560:     OS_START_MSG  
+x0359: x006e       560:     OS_START_MSG  
+x035a: x0073       560:     OS_START_MSG  
+x035b: x002e       560:     OS_START_MSG  
+x035c: x0020       560:     OS_START_MSG  
+x035d: x0020       560:     OS_START_MSG  
+x035e: x0054       560:     OS_START_MSG  
+x035f: x0068       560:     OS_START_MSG  
+x0360: x0065       560:     OS_START_MSG  
+x0361: x0020       560:     OS_START_MSG  
+x0362: x0066       560:     OS_START_MSG  
+x0363: x0069       560:     OS_START_MSG  
+x0364: x006c       560:     OS_START_MSG  
+x0365: x0065       560:     OS_START_MSG  
+x0366: x0020       560:     OS_START_MSG  
+x0367: x0043       560:     OS_START_MSG  
+x0368: x004f       560:     OS_START_MSG  
+x0369: x0050       560:     OS_START_MSG  
+x036a: x0059       560:     OS_START_MSG  
+x036b: x0049       560:     OS_START_MSG  
+x036c: x004e       560:     OS_START_MSG  
+x036d: x0047       560:     OS_START_MSG  
+x036e: x0020       560:     OS_START_MSG  
+x036f: x0028       560:     OS_START_MSG  
+x0370: x0064       560:     OS_START_MSG  
+x0371: x0069       560:     OS_START_MSG  
+x0372: x0073       560:     OS_START_MSG  
+x0373: x0074       560:     OS_START_MSG  
+x0374: x0072       560:     OS_START_MSG  
+x0375: x0069       560:     OS_START_MSG  
+x0376: x0062       560:     OS_START_MSG  
+x0377: x0075       560:     OS_START_MSG  
+x0378: x0074       560:     OS_START_MSG  
+x0379: x0065       560:     OS_START_MSG  
+x037a: x0064       560:     OS_START_MSG  
+x037b: x0020       560:     OS_START_MSG  
+x037c: x0077       560:     OS_START_MSG  
+x037d: x0069       560:     OS_START_MSG  
+x037e: x0074       560:     OS_START_MSG  
+x037f: x0068       560:     OS_START_MSG  
+x0380: x0020       560:     OS_START_MSG  
+x0381: x0074       560:     OS_START_MSG  
+x0382: x0068       560:     OS_START_MSG  
+x0383: x0065       560:     OS_START_MSG  
+x0384: x000a       560:     OS_START_MSG  
+x0385: x0074       560:     OS_START_MSG  
+x0386: x006f       560:     OS_START_MSG  
+x0387: x006f       560:     OS_START_MSG  
+x0388: x006c       560:     OS_START_MSG  
+x0389: x0073       560:     OS_START_MSG  
+x038a: x0029       560:     OS_START_MSG  
+x038b: x0020       560:     OS_START_MSG  
+x038c: x0073       560:     OS_START_MSG  
+x038d: x0070       560:     OS_START_MSG  
+x038e: x0065       560:     OS_START_MSG  
+x038f: x0063       560:     OS_START_MSG  
+x0390: x0069       560:     OS_START_MSG  
+x0391: x0066       560:     OS_START_MSG  
+x0392: x0069       560:     OS_START_MSG  
+x0393: x0065       560:     OS_START_MSG  
+x0394: x0073       560:     OS_START_MSG  
+x0395: x0020       560:     OS_START_MSG  
+x0396: x0074       560:     OS_START_MSG  
+x0397: x0068       560:     OS_START_MSG  
+x0398: x006f       560:     OS_START_MSG  
+x0399: x0073       560:     OS_START_MSG  
+x039a: x0065       560:     OS_START_MSG  
+x039b: x0020       560:     OS_START_MSG  
+x039c: x0063       560:     OS_START_MSG  
+x039d: x006f       560:     OS_START_MSG  
+x039e: x006e       560:     OS_START_MSG  
+x039f: x0064       560:     OS_START_MSG  
+x03a0: x0069       560:     OS_START_MSG  
+x03a1: x0074       560:     OS_START_MSG  
+x03a2: x0069       560:     OS_START_MSG  
+x03a3: x006f       560:     OS_START_MSG  
+x03a4: x006e       560:     OS_START_MSG  
+x03a5: x0073       560:     OS_START_MSG  
+x03a6: x002e       560:     OS_START_MSG  
+x03a7: x0020       560:     OS_START_MSG  
+x03a8: x0020       560:     OS_START_MSG  
+x03a9: x0054       560:     OS_START_MSG  
+x03aa: x0068       560:     OS_START_MSG  
+x03ab: x0065       560:     OS_START_MSG  
+x03ac: x0072       560:     OS_START_MSG  
+x03ad: x0065       560:     OS_START_MSG  
+x03ae: x0020       560:     OS_START_MSG  
+x03af: x0069       560:     OS_START_MSG  
+x03b0: x0073       560:     OS_START_MSG  
+x03b1: x0020       560:     OS_START_MSG  
+x03b2: x0061       560:     OS_START_MSG  
+x03b3: x0062       560:     OS_START_MSG  
+x03b4: x0073       560:     OS_START_MSG  
+x03b5: x006f       560:     OS_START_MSG  
+x03b6: x006c       560:     OS_START_MSG  
+x03b7: x0075       560:     OS_START_MSG  
+x03b8: x0074       560:     OS_START_MSG  
+x03b9: x0065       560:     OS_START_MSG  
+x03ba: x006c       560:     OS_START_MSG  
+x03bb: x0079       560:     OS_START_MSG  
+x03bc: x0020       560:     OS_START_MSG  
+x03bd: x006e       560:     OS_START_MSG  
+x03be: x006f       560:     OS_START_MSG  
+x03bf: x0020       560:     OS_START_MSG  
+x03c0: x0077       560:     OS_START_MSG  
+x03c1: x0061       560:     OS_START_MSG  
+x03c2: x0072       560:     OS_START_MSG  
+x03c3: x0072       560:     OS_START_MSG  
+x03c4: x0061       560:     OS_START_MSG  
+x03c5: x006e       560:     OS_START_MSG  
+x03c6: x0074       560:     OS_START_MSG  
+x03c7: x0079       560:     OS_START_MSG  
+x03c8: x0020       560:     OS_START_MSG  
+x03c9: x0066       560:     OS_START_MSG  
+x03ca: x006f       560:     OS_START_MSG  
+x03cb: x0072       560:     OS_START_MSG  
+x03cc: x000a       560:     OS_START_MSG  
+x03cd: x0074       560:     OS_START_MSG  
+x03ce: x0068       560:     OS_START_MSG  
+x03cf: x0065       560:     OS_START_MSG  
+x03d0: x0020       560:     OS_START_MSG  
+x03d1: x004c       560:     OS_START_MSG  
+x03d2: x0043       560:     OS_START_MSG  
+x03d3: x002d       560:     OS_START_MSG  
+x03d4: x0033       560:     OS_START_MSG  
+x03d5: x0020       560:     OS_START_MSG  
+x03d6: x0074       560:     OS_START_MSG  
+x03d7: x006f       560:     OS_START_MSG  
+x03d8: x006f       560:     OS_START_MSG  
+x03d9: x006c       560:     OS_START_MSG  
+x03da: x0073       560:     OS_START_MSG  
+x03db: x0020       560:     OS_START_MSG  
+x03dc: x0064       560:     OS_START_MSG  
+x03dd: x0069       560:     OS_START_MSG  
+x03de: x0073       560:     OS_START_MSG  
+x03df: x0074       560:     OS_START_MSG  
+x03e0: x0072       560:     OS_START_MSG  
+x03e1: x0069       560:     OS_START_MSG  
+x03e2: x0062       560:     OS_START_MSG  
+x03e3: x0075       560:     OS_START_MSG  
+x03e4: x0074       560:     OS_START_MSG  
+x03e5: x0069       560:     OS_START_MSG  
+x03e6: x006f       560:     OS_START_MSG  
+x03e7: x006e       560:     OS_START_MSG  
+x03e8: x002c       560:     OS_START_MSG  
+x03e9: x0020       560:     OS_START_MSG  
+x03ea: x0061       560:     OS_START_MSG  
+x03eb: x0073       560:     OS_START_MSG  
+x03ec: x0020       560:     OS_START_MSG  
+x03ed: x0064       560:     OS_START_MSG  
+x03ee: x0065       560:     OS_START_MSG  
+x03ef: x0073       560:     OS_START_MSG  
+x03f0: x0063       560:     OS_START_MSG  
+x03f1: x0072       560:     OS_START_MSG  
+x03f2: x0069       560:     OS_START_MSG  
+x03f3: x0062       560:     OS_START_MSG  
+x03f4: x0065       560:     OS_START_MSG  
+x03f5: x0064       560:     OS_START_MSG  
+x03f6: x0020       560:     OS_START_MSG  
+x03f7: x0069       560:     OS_START_MSG  
+x03f8: x006e       560:     OS_START_MSG  
+x03f9: x0020       560:     OS_START_MSG  
+x03fa: x0074       560:     OS_START_MSG  
+x03fb: x0068       560:     OS_START_MSG  
+x03fc: x0065       560:     OS_START_MSG  
+x03fd: x0020       560:     OS_START_MSG  
+x03fe: x0066       560:     OS_START_MSG  
+x03ff: x0069       560:     OS_START_MSG  
+x0400: x006c       560:     OS_START_MSG  
+x0401: x0065       560:     OS_START_MSG  
+x0402: x0020       560:     OS_START_MSG  
+x0403: x004e       560:     OS_START_MSG  
+x0404: x004f       560:     OS_START_MSG  
+x0405: x005f       560:     OS_START_MSG  
+x0406: x0057       560:     OS_START_MSG  
+x0407: x0041       560:     OS_START_MSG  
+x0408: x0052       560:     OS_START_MSG  
+x0409: x0052       560:     OS_START_MSG  
+x040a: x0041       560:     OS_START_MSG  
+x040b: x004e       560:     OS_START_MSG  
+x040c: x0054       560:     OS_START_MSG  
+x040d: x0059       560:     OS_START_MSG  
+x040e: x0020       560:     OS_START_MSG  
+x040f: x0028       560:     OS_START_MSG  
+x0410: x0061       560:     OS_START_MSG  
+x0411: x006c       560:     OS_START_MSG  
+x0412: x0073       560:     OS_START_MSG  
+x0413: x006f       560:     OS_START_MSG  
+x0414: x000a       560:     OS_START_MSG  
+x0415: x0064       560:     OS_START_MSG  
+x0416: x0069       560:     OS_START_MSG  
+x0417: x0073       560:     OS_START_MSG  
+x0418: x0074       560:     OS_START_MSG  
+x0419: x0072       560:     OS_START_MSG  
+x041a: x0069       560:     OS_START_MSG  
+x041b: x0062       560:     OS_START_MSG  
+x041c: x0075       560:     OS_START_MSG  
+x041d: x0074       560:     OS_START_MSG  
+x041e: x0065       560:     OS_START_MSG  
+x041f: x0064       560:     OS_START_MSG  
+x0420: x0020       560:     OS_START_MSG  
+x0421: x0077       560:     OS_START_MSG  
+x0422: x0069       560:     OS_START_MSG  
+x0423: x0074       560:     OS_START_MSG  
+x0424: x0068       560:     OS_START_MSG  
+x0425: x0020       560:     OS_START_MSG  
+x0426: x0074       560:     OS_START_MSG  
+x0427: x0068       560:     OS_START_MSG  
+x0428: x0065       560:     OS_START_MSG  
+x0429: x0020       560:     OS_START_MSG  
+x042a: x0074       560:     OS_START_MSG  
+x042b: x006f       560:     OS_START_MSG  
+x042c: x006f       560:     OS_START_MSG  
+x042d: x006c       560:     OS_START_MSG  
+x042e: x0073       560:     OS_START_MSG  
+x042f: x0029       560:     OS_START_MSG  
+x0430: x002e       560:     OS_START_MSG  
+x0431: x000a       560:     OS_START_MSG  
+x0432: x000a       560:     OS_START_MSG  
+x0433: x0048       560:     OS_START_MSG  
+x0434: x0061       560:     OS_START_MSG  
+x0435: x0076       560:     OS_START_MSG  
+x0436: x0065       560:     OS_START_MSG  
+x0437: x0020       560:     OS_START_MSG  
+x0438: x0066       560:     OS_START_MSG  
+x0439: x0075       560:     OS_START_MSG  
+x043a: x006e       560:     OS_START_MSG  
+x043b: x002e       560:     OS_START_MSG  
+x043c: x000a       560:     OS_START_MSG  
+x043d: x0000       560:     OS_START_MSG  
+x043e: xfe00       562:          OS_KBSR .FILL  xFE00
+x043f: xfe02       563:          OS_KBDR .FILL  xFE02
+x0440: xfe04       564:           OS_DSR .FILL  xFE04
+x0441: xfe06       565:           OS_DDR .FILL  xFE06
+x0442: xfffe       566:           OS_MCR .FILL  xFFFE
+x0443: x7fff       567:          MASK_HI .FILL  x7FFF
+x0444: x00ff       568:       LOW_8_BITS .FILL  x00FF
+x0445: x0000       569:          TOUT_R1 .BLKW  1
+x0446: x0000       570:           TIN_R7 .BLKW  1
+x0447: x0000       571:            OS_R0 .BLKW  1
+x0448: x0000       572:            OS_R1 .BLKW  1
+x0449: x0000       573:            OS_R2 .BLKW  1
+x044a: x0000       574:            OS_R3 .BLKW  1
+x044b: x0000       575:            OS_R7 .BLKW  1
+x044c: xa1f1       579:                  LDI  R0,OS_KBSR		; wait for a keystroke
+x044d: x07fe       580:                  BRzp  TRAP_GETC
+x044e: xa1f0       581:                  LDI  R0,OS_KBDR		; read it and return
+x044f: xc1c0       582:                  RET 
+x0450: x33f4       585:                  ST  R1,TOUT_R1		; save R1
+x0451: xa3ee       587:                  LDI  R1,OS_DSR		; wait for the display to be ready
+x0452: x07fe       588:                  BRzp  TRAP_OUT_WAIT
+x0453: xb1ed       589:                  STI  R0,OS_DDR		; write the character and return
+x0454: x23f0       590:                  LD  R1,TOUT_R1		; restore R1
+x0455: xc1c0       591:                  RET 
+x0456: x31f0       594:                  ST  R0,OS_R0		; save R0, R1, and R7
+x0457: x33f0       595:                  ST  R1,OS_R1
+x0458: x3ff2       596:                  ST  R7,OS_R7
+x0459: x1220       597:                  ADD  R1,R0,#0		; move string pointer (R0) into R1
+x045a: x6040       600:                  LDR  R0,R1,#0		; write characters in string using OUT
+x045b: x0403       601:                  BRz  TRAP_PUTS_DONE
+x045c: xf021       602:                  OUT 
+x045d: x1261       603:                  ADD  R1,R1,#1
+x045e: x0ffb       604:                  BRnzp  TRAP_PUTS_LOOP
+x045f: x21e7       607:                  LD  R0,OS_R0		; restore R0, R1, and R7
+x0460: x23e7       608:                  LD  R1,OS_R1
+x0461: x2fe9       609:                  LD  R7,OS_R7
+x0462: xc1c0       610:                  RET 
+x0463: x3fe2       613:                  ST  R7,TIN_R7		; save R7 (no need to save R0, since we 
+x0464: xe036       615:                  LEA  R0,TRAP_IN_MSG	; prompt for input
+x0465: xf022       616:                  PUTS 
+x0466: xf020       617:                  GETC 			; read a character
+x0467: xf021       618:                  OUT 			; echo back to monitor
+x0468: x31de       619:                  ST  R0,OS_R0		; save the character
+x0469: x5020       620:                  AND  R0,R0,#0		; write a linefeed, too
+x046a: x102a       621:                  ADD  R0,R0,#10
+x046b: xf021       622:                  OUT 
+x046c: x21da       623:                  LD  R0,OS_R0		; restore the character
+x046d: x2fd8       624:                  LD  R7,TIN_R7		; restore R7
+x046e: xc1c0       625:                  RET 
+x046f: x31d7       632:                  ST  R0,OS_R0		; save R0, R1, R2, R3, and R7
+x0470: x33d7       633:                  ST  R1,OS_R1
+x0471: x35d7       634:                  ST  R2,OS_R2
+x0472: x37d7       635:                  ST  R3,OS_R3
+x0473: x3fd7       636:                  ST  R7,OS_R7
+x0474: x1220       637:                  ADD  R1,R0,#0		; move string pointer (R0) into R1
+x0475: x6440       640:                  LDR  R2,R1,#0		; read the next two characters
+x0476: x21cd       641:                  LD  R0,LOW_8_BITS	; use mask to get low byte
+x0477: x5002       642:                  AND  R0,R0,R2		; if low byte is NUL, quit printing
+x0478: x040f       643:                  BRz  TRAP_PUTSP_DONE
+x0479: xf021       644:                  OUT 			; otherwise print the low byte
+x047a: x5020       646:                  AND  R0,R0,#0		; shift high byte into R0
+x047b: x1628       647:                  ADD  R3,R0,#8
+x047c: x1000       649:                  ADD  R0,R0,R0		; shift R0 left
+x047d: x14a0       650:                  ADD  R2,R2,#0		; move MSB from R2 into R0
+x047e: x0601       651:                  BRzp  TRAP_PUTSP_MSB_0
+x047f: x1021       652:                  ADD  R0,R0,#1
+x0480: x1482       654:                  ADD  R2,R2,R2		; shift R2 left
+x0481: x16ff       655:                  ADD  R3,R3,#-1
+x0482: x03f9       656:                  BRp  TRAP_PUTSP_S_LOOP
+x0483: x1020       658:                  ADD  R0,R0,#0		; if high byte is NUL, quit printing
+x0484: x0403       659:                  BRz  TRAP_PUTSP_DONE
+x0485: xf021       660:                  OUT 			; otherwise print the low byte
+x0486: x1261       662:                  ADD  R1,R1,#1		; and keep going
+x0487: x0fed       663:                  BRnzp  TRAP_PUTSP_LOOP
+x0488: x21be       666:                  LD  R0,OS_R0		; restore R0, R1, R2, R3, and R7
+x0489: x23be       667:                  LD  R1,OS_R1
+x048a: x25be       668:                  LD  R2,OS_R2
+x048b: x27be       669:                  LD  R3,OS_R3
+x048c: x2fbe       670:                  LD  R7,OS_R7
+x048d: xc1c0       671:                  RET 
+x048e: xe021       675:                  LEA  R0,TRAP_HALT_MSG	; give a warning
+x048f: xf022       676:                  PUTS 
+x0490: xa1b1       677:                  LDI  R0,OS_MCR		; halt the machine
+x0491: x23b1       678:                  LD  R1,MASK_HI
+x0492: x5001       679:                  AND  R0,R0,R1
+x0493: xb1ae       680:                  STI  R0,OS_MCR
+x0494: x0ff9       681:                  BRnzp  TRAP_HALT		; HALT again...
+x0495: xe037       685:                  LEA  R0,BAD_TRAP_MSG	; give an error message
+x0496: xf022       686:                  PUTS 
+x0497: x0ff6       687:                  BRnzp  TRAP_HALT		; execute HALT
+x0498: x8000       691:         INT_PRIV RTI 
+x0499: x8000       692:          INT_ILL RTI 
+x049a: x8000       693:          BAD_INT RTI 
+x049b: x000a       695:      TRAP_IN_MSG .STRINGZ  "\nInput a character> "
+x049c: x0049       695:      TRAP_IN_MSG  
+x049d: x006e       695:      TRAP_IN_MSG  
+x049e: x0070       695:      TRAP_IN_MSG  
+x049f: x0075       695:      TRAP_IN_MSG  
+x04a0: x0074       695:      TRAP_IN_MSG  
+x04a1: x0020       695:      TRAP_IN_MSG  
+x04a2: x0061       695:      TRAP_IN_MSG  
+x04a3: x0020       695:      TRAP_IN_MSG  
+x04a4: x0063       695:      TRAP_IN_MSG  
+x04a5: x0068       695:      TRAP_IN_MSG  
+x04a6: x0061       695:      TRAP_IN_MSG  
+x04a7: x0072       695:      TRAP_IN_MSG  
+x04a8: x0061       695:      TRAP_IN_MSG  
+x04a9: x0063       695:      TRAP_IN_MSG  
+x04aa: x0074       695:      TRAP_IN_MSG  
+x04ab: x0065       695:      TRAP_IN_MSG  
+x04ac: x0072       695:      TRAP_IN_MSG  
+x04ad: x003e       695:      TRAP_IN_MSG  
+x04ae: x0020       695:      TRAP_IN_MSG  
+x04af: x0000       695:      TRAP_IN_MSG  
+x04b0: x000a       696:    TRAP_HALT_MSG .STRINGZ  "\n\n--- halting the LC-3 ---\n\n"
+x04b1: x000a       696:    TRAP_HALT_MSG  
+x04b2: x002d       696:    TRAP_HALT_MSG  
+x04b3: x002d       696:    TRAP_HALT_MSG  
+x04b4: x002d       696:    TRAP_HALT_MSG  
+x04b5: x0020       696:    TRAP_HALT_MSG  
+x04b6: x0068       696:    TRAP_HALT_MSG  
+x04b7: x0061       696:    TRAP_HALT_MSG  
+x04b8: x006c       696:    TRAP_HALT_MSG  
+x04b9: x0074       696:    TRAP_HALT_MSG  
+x04ba: x0069       696:    TRAP_HALT_MSG  
+x04bb: x006e       696:    TRAP_HALT_MSG  
+x04bc: x0067       696:    TRAP_HALT_MSG  
+x04bd: x0020       696:    TRAP_HALT_MSG  
+x04be: x0074       696:    TRAP_HALT_MSG  
+x04bf: x0068       696:    TRAP_HALT_MSG  
+x04c0: x0065       696:    TRAP_HALT_MSG  
+x04c1: x0020       696:    TRAP_HALT_MSG  
+x04c2: x004c       696:    TRAP_HALT_MSG  
+x04c3: x0043       696:    TRAP_HALT_MSG  
+x04c4: x002d       696:    TRAP_HALT_MSG  
+x04c5: x0033       696:    TRAP_HALT_MSG  
+x04c6: x0020       696:    TRAP_HALT_MSG  
+x04c7: x002d       696:    TRAP_HALT_MSG  
+x04c8: x002d       696:    TRAP_HALT_MSG  
+x04c9: x002d       696:    TRAP_HALT_MSG  
+x04ca: x000a       696:    TRAP_HALT_MSG  
+x04cb: x000a       696:    TRAP_HALT_MSG  
+x04cc: x0000       696:    TRAP_HALT_MSG  
+x04cd: x000a       697:     BAD_TRAP_MSG .STRINGZ  "\n\n--- undefined trap executed ---\n\n"
+x04ce: x000a       697:     BAD_TRAP_MSG  
+x04cf: x002d       697:     BAD_TRAP_MSG  
+x04d0: x002d       697:     BAD_TRAP_MSG  
+x04d1: x002d       697:     BAD_TRAP_MSG  
+x04d2: x0020       697:     BAD_TRAP_MSG  
+x04d3: x0075       697:     BAD_TRAP_MSG  
+x04d4: x006e       697:     BAD_TRAP_MSG  
+x04d5: x0064       697:     BAD_TRAP_MSG  
+x04d6: x0065       697:     BAD_TRAP_MSG  
+x04d7: x0066       697:     BAD_TRAP_MSG  
+x04d8: x0069       697:     BAD_TRAP_MSG  
+x04d9: x006e       697:     BAD_TRAP_MSG  
+x04da: x0065       697:     BAD_TRAP_MSG  
+x04db: x0064       697:     BAD_TRAP_MSG  
+x04dc: x0020       697:     BAD_TRAP_MSG  
+x04dd: x0074       697:     BAD_TRAP_MSG  
+x04de: x0072       697:     BAD_TRAP_MSG  
+x04df: x0061       697:     BAD_TRAP_MSG  
+x04e0: x0070       697:     BAD_TRAP_MSG  
+x04e1: x0020       697:     BAD_TRAP_MSG  
+x04e2: x0065       697:     BAD_TRAP_MSG  
+x04e3: x0078       697:     BAD_TRAP_MSG  
+x04e4: x0065       697:     BAD_TRAP_MSG  
+x04e5: x0063       697:     BAD_TRAP_MSG  
+x04e6: x0075       697:     BAD_TRAP_MSG  
+x04e7: x0074       697:     BAD_TRAP_MSG  
+x04e8: x0065       697:     BAD_TRAP_MSG  
+x04e9: x0064       697:     BAD_TRAP_MSG  
+x04ea: x0020       697:     BAD_TRAP_MSG  
+x04eb: x002d       697:     BAD_TRAP_MSG  
+x04ec: x002d       697:     BAD_TRAP_MSG  
+x04ed: x002d       697:     BAD_TRAP_MSG  
+x04ee: x000a       697:     BAD_TRAP_MSG  
+x04ef: x000a       697:     BAD_TRAP_MSG  
+x04f0: x0000       697:     BAD_TRAP_MSG  

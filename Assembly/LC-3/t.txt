@@ -5,12 +5,12 @@ BEST PLATFORM & ASSEMBLER : CentOS, simpl
 all these programs assemble correctly for the simpl assembler on Centos OS
 ===========================================================================
 
-This Assembler version:
+Assembler versions: from "lc3-master.zip"
+
+1. "lc3tools"
 
 Version 12 of the Unix LC-3 simulator available
 from McGraw Hill Introduction to Computing Systems, 2/e
-
-"lc3tools_v12.zip"
 
 to use: unzip folder, run "configure", and then run "make install"
 
@@ -20,3 +20,11 @@ Executables
 *lc3convert :
 *lc3sim     : LC3 simulator, loads only .obj AND .sym files
 *lc3sim-tk  :
+
+------------------------------------------------------------
+
+2. "lc3db"
+
+
+
+-------------------------------------------------------------

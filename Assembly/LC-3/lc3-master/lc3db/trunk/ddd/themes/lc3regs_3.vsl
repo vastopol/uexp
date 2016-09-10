@@ -1,0 +1,36 @@
+// lc3CPU regs in rows
+
+//#include "/usr/share/ddd/vsllib/verbose.vsl"
+
+i3(a) = indent(a);
+
+make_my_boxes3(a)           =  a & i3("")& i3("")& i3("");
+make_my_boxes3(a,b)         =  a & i3(b) & i3("")& i3("");
+make_my_boxes3(a,b,c)       =  a & i3(b) & i3(c) & i3("");
+make_my_boxes3(a,b,c,d)     =  a & i3(b) & i3(c) & i3(d) ;
+make_my_boxes3(a,b,c,d,...) = (a & i3(b) & i3(c) & i3(d)) | make_my_boxes3(...);
+
+#pragma override old_struct_member
+old_struct_member(...) -> struct_member(...);
+#pragma override struct_member
+//struct_member (...) -> old_struct_member(...);
+//struct_member (name, sep, value, name_width) -> 
+struct_member (name, _, value, name_width) -> 
+  vcenter(value_rm(name) | hspace(name_width)) & value_rm(value);
+
+#pragma override old_struct_value
+old_struct_value(...) -> struct_value(...);
+#pragma override struct_value
+struct_value (...) -> 
+  struct_color(frame(make_my_boxes3(...)));
+
+// Make the title tiny
+#pragma replace title_rm
+#pragma replace title_bf
+#pragma replace title_it
+#pragma replace title_bi
+
+title_rm(box) = tiny_rm(box);
+title_bf(box) = tiny_bf(box);
+title_it(box) = tiny_it(box);
+title_bi(box) = tiny_bi(box);

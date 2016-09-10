@@ -1,0 +1,107 @@
+###############################################################################
+##
+##  LC-3 Simulator
+##  Copyright (C) 2004  Anthony Liguori <aliguori@cs.utexas.edu>
+##
+##  This program is free software# you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation# either version 2 of the License, or
+##  (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY# without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program# if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+##
+###############################################################################
+
+LDFLAGS=@LDFLAGS@
+CXX=@CXX@
+CC=@CC@
+PACKAGE=@PACKAGE@
+VERSION=@VERSION@
+PREFIX=@prefix@
+
+LIBS=@LIBS@ @LIBREADLINE@
+CXXFLAGS=-Iinclude @CXXFLAGS@ -DPREFIX=\"$(PREFIX)/\" @DEFS@
+CFLAGS=@CFLAGS@
+
+OBJ=src/hardware.o src/source_info.o src/breakpoints.o src/memory.o src/main.o arch/lc3.o src/lc3.o src/gdb.o
+
+all: bin/lc3db lib/los.obj
+
+bin/lc3db: $(OBJ)
+	$(CXX) -o $@ $(CXXFLAGS) $(OBJ) $(LDFLAGS) $(LIBS)
+
+valgrind_leeks: bin/lc3db
+	DDD_STATE=/home/edgar/.lc3db/ ddd --debugger 'valgrind --log-file=/tmp/log --track-origins=yes --leak-check=full $<' "test/debug_info.obj"
+
+valgrind: bin/lc3db
+	DDD_STATE=/home/edgar/.lc3db/ ddd --debugger 'valgrind --log-file=/tmp/log --db-attach=yes --track-origins=yes $<' "test/debug_info.obj"
+
+lib/los.obj: bin/lc3db los/los.asm
+	#bin/lc3db -c los/los.asm && mv los/los.obj los/los.dbg lib/
+	lc3as los/los.asm && mv los/los.obj los/los.dbg lib/
+
+lc3db.1: bin/lc3db
+	help2man -N bin/lc3db > lc3db.1
+
+install: bin/lc3db lib/los.obj #lc3db.1
+	#install -D lc3db.sh $(PREFIX)/bin/lc3db
+	#install -D bin/lc3db $(PREFIX)/bin/lc3db.bin
+	install -D bin/lc3db $(PREFIX)/bin/lc3db
+	install -D lib/los.obj $(PREFIX)/lib/lc3db/los.obj
+	install -D lib/los.dbg $(PREFIX)/lib/lc3db/los.dbg
+	install -D ddd/init $(PREFIX)/share/lc3db/ddd/init
+	install -d $(PREFIX)/share/lc3db/ddd/themes/
+	install -D ddd/themes/* $(PREFIX)/share/lc3db/ddd/themes/
+	#install -D lc3db.1 $(PREFIX)/share/man/man1/lc3db.1
+
+distclean: really clean
+	$(RM) config.cache config.log config.status include/config.h Makefile \
+              src/Makefile ddd/init
+
+distcleancvs: distclean
+	$(RM) -r CVS arch/CVS bin/CVS include/CVS lib/CVS los/CVS src/CVS \
+	 	 ddd/CVS ddd/sessions/*
+
+dist:
+	rm -rf lc3db-$(VERSION) && \
+	mkdir lc3db-$(VERSION) && \
+	cp -r Makefile* configure* arch bin include lib los src ddd \
+              lc3db-$(VERSION) && \
+	$(MAKE) -C lc3db-$(VERSION) distcleancvs && \
+	tar cvfz lc3db-$(VERSION).tar.gz lc3db-$(VERSION) && \
+	rm -rf lc3db-$(VERSION)
+
+clean:
+	$(RM) $(OBJ)  bin/lc3db src/lc3.o src/lex.lc3.c lib/los.obj \
+                      lib/los.dbg lc3db.1 los/*.obj los/*.dbg
+
+really: depsclean
+	$(RM) *~ src/*~ arch/*~
+
+tidy:
+	$(RM) config.cache config.log config.status
+
+%.o: %.cpu
+	$(CXX) -c -o $@ $(CXXFLAGS) -xc++ $<
+
+src/lc3.o: src/lc3.f
+	flex -i -osrc/lex.lc3.c -Plc3 src/lc3.f
+	$(CC) -c -o src/lc3.o $(CFLAGS) src/lex.lc3.c
+
+# Automatic header dependencies
+%.d: %.cpp
+	$(CC) -MM $(CXXFLAGS) -MT "$@ $(@:.d=.o)" $< > $@
+
+-include $(OBJ:.o=.d)
+
+depsclean:
+	$(RM) $(OBJ:.o=.d)
+
+
