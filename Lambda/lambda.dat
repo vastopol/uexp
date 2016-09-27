@@ -1,0 +1,11 @@
+Folder for functional programming languages based on Lambda calculus.
+Includes both untyped and typed calculi.
+
+Examples:
+- LISP
+- Scheme
+- Haskell
+
+Use:
+
+Haskell -- GHC (GNU Haskell Compiler)
