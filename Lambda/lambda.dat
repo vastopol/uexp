@@ -8,6 +8,6 @@ Examples:
 
 Use:
 
-LISP -- clisp (Common LISP) || GCL (GNU Common LISP)
+LISP -- clisp (Common LISP) || GCL (GNU Common LISP - ASNI std.)
 
-Haskell -- GHC (GNU Haskell Compiler)
+Haskell -- GHC (Glasgow Haskell Compiler)
