@@ -3,6 +3,15 @@
 # script to build a generic .cpp class structure
 # include class name as comline arg 1
 
+#error check parameters
+if [ "$#" -eq 0 ]; then
+    echo "ERROR:: Missing Parameters"
+    exit
+elif [ "$#" -gt 1 ]; then
+    echo "ERROR:: Too Many Parameters" 
+    exit
+fi
+
 # create files
 touch "$1".cpp "$1".h
 
