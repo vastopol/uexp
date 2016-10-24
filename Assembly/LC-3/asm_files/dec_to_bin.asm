@@ -53,7 +53,7 @@ BRnzp go
 
 BAD_LOOP                ; ERROR CHECKING
   and r0, r0, #0
-  add r0, r0, #10	      ;\n
+  add r0, r0, #10       ;\n
   out
 
   LD R0, errorMessage  ;Output Error Message
@@ -80,7 +80,7 @@ OUT
 ;if \n: BR BAD_LOOP
 and r4, r4, #0
 ADD R4, R4, #-10
-ADD R4, R4, R0		; BREAK ON \n
+ADD R4, R4, R0        ; BREAK ON \n
 BRz BAD_LOOP
 
 
@@ -99,12 +99,12 @@ BRz makro
 ;if was number: BR special_goto
 and r4, r4, #0
 LD R4, conv
-ADD R4, R4, R0	; check nan < 0
+ADD R4, R4, R0        ; check nan < 0
 BRn BAD_LOOP
 
 and r4, r4, #0
 LD R4, NANmore9
-ADD R4, R4, R0	; check nan > 9
+ADD R4, R4, R0        ; check nan > 9
 BRp BAD_LOOP
 
 
@@ -113,7 +113,7 @@ BRnzp special_goto
 makro
   and r0, r0, #0
   add r0, r0, #1
-  ST R0, flag		; set negative sign flag for later
+  ST R0, flag         ; set negative sign flag for later
 
 
 ;//////////////////////
@@ -121,26 +121,26 @@ makro
 ;//////////////////////
 
 LOOP_1_START
-  GETC			; GET INPUTs
+  GETC                ; GET INPUTs
   OUT
 
   and r4, r4, #0
   ADD R4, R4, #-10
-  ADD R4, R4, R0	; BREAK ON \n
+  ADD R4, R4, R0      ; BREAK ON \n
   BRz LOOP_1_END
 
   and r4, r4, #0
   LD R4, conv
-  ADD R4, R4, R0	; check nan < 0
+  ADD R4, R4, R0      ; check nan < 0
   BRn BAD_LOOP
 
   and r4, r4, #0
   LD R4, NANmore9
-  ADD R4, R4, R0	; check nan > 9
+  ADD R4, R4, R0      ; check nan > 9
   BRp BAD_LOOP
   
 
-  special_goto		;MULTIPLY CURRENT BY 10, THEN ADD USER INPUT
+  special_goto        ;MULTIPLY CURRENT BY 10, THEN ADD USER INPUT
 
       ADD R0, R0, R2	; CONVERT R0 TO decimal val
 
@@ -150,9 +150,9 @@ LOOP_1_START
       AND R3, R3, #0
 
       LOOP_SUB
-	ADD R3, R3, R5	;  OLD *10
+	ADD R3, R3, R5    ; OLD *10
 
-	ADD R4, R4, #-1	; DECREMENT
+	ADD R4, R4, #-1   ; DECREMENT
       BRzp LOOP_SUB
 
       ; ADD INPUT + OLD
@@ -161,11 +161,11 @@ LOOP_1_START
       and r5, r5, #0
       add r5, r3, r0
 
-ADD R6, R6, #-1	; DECREMENT OUTER LOOP
+ADD R6, R6, #-1     ; DECREMENT OUTER LOOP
 BRp LOOP_1_START
 
 and r0, r0, #0
-add r0, r0, #10	;\n   extra?
+add r0, r0, #10     ;\n   extra?
 out
 
 LOOP_1_END
@@ -190,10 +190,10 @@ ADD R2, R5, #0		; print routines use R2
 
 
 LD R7, backup_R7	
-RET			; RETURN FROM SUBROUTINE
+RET               ; RETURN FROM SUBROUTINE
 
 
-bit_shifter		;HELPER
+bit_shifter       ;HELPER
   not r5, r5
   add r5, r5, #1
   BRnzp bop
@@ -211,9 +211,9 @@ NANmore9 .FILL #-57
 minus .fill #-45
 plus .fill #-43
 
-counter10 .FILL #9	;10 TIMES for mul * 10 part
+counter10 .FILL #9  ;10 TIMES for mul * 10 part
 
-flag .BLKW #1		; FLAG FOR NEGATIVE SIGN
+flag .BLKW #1       ; FLAG FOR NEGATIVE SIGN
 
 backup_R7 .BLKW #1
 ;=====================================================
@@ -227,28 +227,28 @@ backup_R7 .BLKW #1
 ; R4: SPACING INDEX
 ; R5: LOOP INDEX
 
-ST R7, backup2_R7	; SAVE RETURN ADDRESS
+ST R7, backup2_R7   ; SAVE RETURN ADDRESS
 
-LD R5, num_xx		; INDEX LOOP LOAD
+LD R5, num_xx       ; INDEX LOOP LOAD
 
 and r4, r4, #0
-ld R4, num_4		;WORD SPACING_INDEX RESET IN l3
+ld R4, num_4        ;WORD SPACING_INDEX RESET IN l3
 
 and r3, r3, #0
-ld R3, num_4		; number of spaces = 3
+ld R3, num_4        ; number of spaces = 3
 
 LOOP_START
-  ADD R2, R2, #0	; DUMMY INSTRUCTION TO REPRESENT R2
+  ADD R2, R2, #0    ; DUMMY INSTRUCTION TO REPRESENT R2
   BRzp poz
   BRn  neg
 
   neg
-    LD R0, num_01	;OUT '1'
+    LD R0, num_01   ;OUT '1'
     OUT
     BR gggg
 
   poz
-    LD R0, num_00	;OUT '0'
+    LD R0, num_00   ;OUT '0'
     OUT
 
   gggg
@@ -262,12 +262,12 @@ LOOP_START
     ADD R5, R5, #-1	; DECREMENT INNER LOOP
   BRp LOOP_START
 
-AND R0, R0, #0	;\n
+AND R0, R0, #0      ;\n
 ADD R0, R0, #10
 OUT
 
 LD R7, backup2_R7	
-RET			; RETURN FROM SUBROUTINE
+RET                 ; RETURN FROM SUBROUTINE
 
   ; HELPER_CODE
   ;--------------------------------------------
@@ -276,18 +276,18 @@ RET			; RETURN FROM SUBROUTINE
       BRz return_zone
     LD R0, space
     OUT
-    ADD R4, R4, #4	;WORD SPACING_INDEX RESET IN l3
+    ADD R4, R4, #4    ;WORD SPACING_INDEX RESET IN l3
   BR return_zone
 
 
 ;LOCAL DATA :: SUBROUTINE #2
 ;-------------------
-num_00 .FILL #48	; 0
-num_01 .FILL #49	; 1
-space  .STRINGZ " "	; ' '
+num_00 .FILL #48    ; 0
+num_01 .FILL #49    ; 1
+space  .STRINGZ " " ; ' '
 
-num_xx .FILL #16	;INDEX BITS
-num_4  .FILL #4		;INDEX SPACES
+num_xx .FILL #16  ;INDEX BITS
+num_4  .FILL #4   ;INDEX SPACES
 
 backup2_R7 .BLKW #1
 ;=============================================================
