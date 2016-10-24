@@ -25,10 +25,10 @@
 
 ST R7, bkup_r7_or
 
-NOT R4, R2	    ; not(A)
-NOT R5, R3	    ; not(B)
-AND R6, R4, R5	; not(A) and not(B)
-NOT R4, R6	    ; not(not(A) and not(B)) == OR
+NOT R4, R2      ; not(A)
+NOT R5, R3      ; not(B)
+AND R6, R4, R5  ; not(A) and not(B)
+NOT R4, R6      ; not(not(A) and not(B)) == OR
 
 LD R7, bkup_r7_or
 RET
@@ -46,14 +46,14 @@ bkup_r7_or .BLKW #1
 
 ST R7, bkup_r7_xor
 
-AND R4, R2, R3	; A and B
-NOT R4, R4	    ; not(A and B)
-AND R5, R2, R4	; A and not(A and B)
-AND R6, R3, R4	; B and not(A and B)
-NOT R5, R5	    ; not(A and not(A and B))
-NOT R6, R6	    ; not(B and not(A and B))
-AND R4, R5, R6	; not(A and not(A and B)) AND not(B and not(A and B))
-NOT R4, R4	    ; not(not(A and not(A and B)) AND not(B and not(A and B)))
+AND R4, R2, R3  ; A and B
+NOT R4, R4      ; not(A and B)
+AND R5, R2, R4  ; A and not(A and B)
+AND R6, R3, R4  ; B and not(A and B)
+NOT R5, R5      ; not(A and not(A and B))
+NOT R6, R6      ; not(B and not(A and B))
+AND R4, R5, R6  ; not(A and not(A and B)) AND not(B and not(A and B))
+NOT R4, R4      ; not(not(A and not(A and B)) AND not(B and not(A and B)))
 
 LD R7, bkup_r7_xor
 RET
@@ -71,12 +71,12 @@ bkup_r7_xor .BLKW #1
 
 ST R7, bkup_r7_nor
 
-NOT R4, R2	    ; not(A)
-NOT R5, R3	    ; not(B)
-AND R6, R4, R5	; not(A) and not(B)
-NOT R4, R6	    ; not(not(A) and not(B)) == OR
-AND R5, R4, R4	; not(not(A) and not(B)) and not(not(A) and not(B))
-NOT R4, R5	    ; not(not(not(A) and not(B)) and not(not(A) and not(B)))
+NOT R4, R2      ; not(A)
+NOT R5, R3      ; not(B)
+AND R6, R4, R5  ; not(A) and not(B)
+NOT R4, R6      ; not(not(A) and not(B)) == OR
+AND R5, R4, R4  ; not(not(A) and not(B)) and not(not(A) and not(B))
+NOT R4, R5      ; not(not(not(A) and not(B)) and not(not(A) and not(B)))
 
 LD R7, bkup_r7_nor
 RET
@@ -94,12 +94,12 @@ bkup_r7_nor .BLKW #1
 
 ST R7, bkup_r7_xnor
 
-AND R4, R2, R3	; A and B
-NOT R4, R4	    ; not(A and B)
-AND R5, R2, R4	; A and not(A and B)
-AND R6, R3, R4	; B and not(A and B)
-NOT R5, R5	    ; not(A and not(A and B))
-NOT R6, R6	    ; not(B and not(A and B))
+AND R4, R2, R3  ; A and B
+NOT R4, R4      ; not(A and B)
+AND R5, R2, R4  ; A and not(A and B)
+AND R6, R3, R4  ; B and not(A and B)
+NOT R5, R5      ; not(A and not(A and B))
+NOT R6, R6      ; not(B and not(A and B))
 AND R4, R5, R6  ; not(A and not(A and B)) AND not(B and not(A and B))
 
 LD R7, bkup_r7_xnor
