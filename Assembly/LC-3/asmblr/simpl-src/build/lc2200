@@ -1,0 +1,15 @@
+FILES="
+    lc2200/archlc2200.cpp
+    lc2200/formatlc2200.cpp
+    lc2200/machinelc2200.cpp
+    lc2200/asmformatlc2200.cpp"
+HEADERS="
+    lc2200/archlc2200.h
+    lc2200/archstrap.h
+    lc2200/asmformatlc2200.h
+    lc2200/formatlc2200.h
+    lc2200/machinelc2200.h
+    "
+LINK="-I./lc2200"
+COMPILECMD="cxxcompilefile"
+INCPACKAGES="core"

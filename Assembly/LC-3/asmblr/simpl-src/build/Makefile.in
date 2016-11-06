@@ -1,0 +1,176 @@
+MAIN_SOURCES=main.cpp asm/asmmain.cpp
+ALL_SOURCES+=$(MAIN_SOURCES)
+GUIFILES=simpl.desktop hi16-app-simpl.png
+TARDIR=simpl-src
+TARBALL=simp.tar.gz
+TARBALLGT16=simpgt16.tar.gz
+TARDIRGT16=simpl-src-gt16
+DOCZIP=simpl-doc.zip
+
+default: $(ALLEXEC)
+
+DOCFILES=README.CS2110 README LICENSE COPYING
+BUILD=build/build.sh
+
+BUILDFILES=build/Makefile.in build/*.sh build/targets build/packages build/core build/lc3 build/lc2200 build/qt build/text build/gt16 build/mips build/bf config.sh Doxyfile
+DISTFILES=README.COMPILING $(BUILDFILES) $(DOCFILES) $(GUIFILES) $(ALL_SOURCES)
+DISTFILESGT16=$(FILES_gt16) $(FILES_core) $(FILES_qt) $(FILES_text) $(MAIN_SOURCES) $(BUILDFILES) README.COMPILING $(DOCFILES) README.CS2200
+
+#-- LC-3 binaries
+
+lc3as: bin/core bin/lc3 asm/asmmain.cpp
+	$(BUILD) link $@ "$+"
+
+simp: bin/core bin/lc3 bin/lc2200 bin/text main.cpp
+	$(BUILD) link $@ "$+" -DARCHNAME=\"LC-3\"
+
+simpl: bin/qt bin/core bin/lc3 bin/lc2200 main.cpp
+	$(BUILD) link $@ "$+" -DARCHNAME=\"LC-3\"
+
+Simpl.app: simpl simp lc3as $(DOCFILES)
+	$(BUILD) qtmacapp $@ $< "$+"
+
+simpl-mac.tgz: Simpl.app
+	tar -czf $@ $+
+
+simpl-win.zip: simpl.exe lc3as.exe $(DOCFILES)
+	$(BUILD) qtwinapp Simpl-Win $@ "$+"
+
+#-- LC2200 Architecture
+
+gt8as: bin/core bin/lc2200 asm/asmmain.cpp
+	$(BUILD) link $@ "$+"
+
+gt8text: bin/core bin/lc2200 bin/text main.cpp
+	$(BUILD) link $@ "$+" -DARCHNAME=\"LC-2200\"
+
+gt8qt: bin/qt bin/core bin/lc2200 main.cpp
+	$(BUILD) link $@ "$+" -DARCHNAME=\"LC-2200\"
+
+GT8Run.app: gt8qt gt8text gt8as $(DOCFILES)
+	$(BUILD) qtmacapp $@ $< "$+"
+
+gt8run-mac.tgz: GT8Run.app
+	tar -czf $@ $+
+
+gt8run-win.zip: gt8qt.exe gt8as.exe $(DOCFILES)
+	$(BUILD) qtwinapp GT8Run-Win $@ "$+"
+
+#-- LC2200-16 Architecture
+
+gt16as: bin/core bin/gt16 asm/asmmain.cpp
+	$(BUILD) link $@ "$+"
+
+gt16text: bin/core bin/gt16 bin/text main.cpp
+	$(BUILD) link $@ "$+" -DARCHNAME=\"LC-2200\"
+
+gt16qt: bin/qt bin/core bin/gt16 main.cpp
+	$(BUILD) link $@ "$+" -DARCHNAME=\"LC-2200\"
+
+GT16Run.app: gt16qt gt16text gt16as $(DOCFILES)
+	$(BUILD) qtmacapp $@ $< "$+"
+
+gt16run-mac.tgz: GT16Run.app
+	tar -czf $@ $+
+
+gt16run-win.zip: gt16qt.exe gt16as.exe $(DOCFILES)
+	$(BUILD) qtwinapp GT16Run-Win $@ "$+"
+
+#-- BF Architecture
+
+bfas: bin/core bin/bf asm/asmmain.cpp
+	$(BUILD) link $@ "$+"
+
+bftext: bin/core bin/bf bin/text main.cpp
+	$(BUILD) link $@ "$+" -DARCHNAME=\"BF\"
+
+bfqt: bin/qt bin/core bin/bf main.cpp
+	$(BUILD) link $@ "$+" -DARCHNAME=\"BF\"
+
+BFRun.app: bfqt bftext bfas $(DOCFILES)
+	$(BUILD) qtmacapp $@ $< "$+"
+
+bfrun-mac.tgz: BFRun.app
+	tar -czf $@ $+
+
+bfrun-win.zip: bfqt.exe bfas.exe $(DOCFILES)
+	$(BUILD) qtwinapp BFRun-Win $@ "$+"
+
+#-- Mips Architecture
+
+# Removed until assembler can handle data/text segments
+#mipsas: bin/core bin/mips asm/asmmain.cpp
+#	$(BUILD) link $@ "$+"
+
+mipstext: bin/core bin/mips bin/text main.cpp
+	$(BUILD) link $@ "$+" -DARCHNAME=\"Mips\"
+
+mipsqt: bin/qt bin/core bin/mips main.cpp
+	$(BUILD) link $@ "$+" -DARCHNAME=\"Mips\"
+
+MipsRun.app: mipsqt mipstext mipsas $(DOCFILES)
+	$(BUILD) qtmacapp $@ $< "$+"
+
+mipsrun-mac.tgz: BFRun.app
+	tar -czf $@ $+
+
+mipsrun-win.zip: mipsqt.exe mipsas.exe $(DOCFILES)
+	$(BUILD) qtwinapp MipsRun-Win $@ "$+"
+
+#------------------------------------------------------------------------
+#--- Distribution/Documentation
+
+$(TARDIR): $(DISTFILES)
+	[ ! -e $@ ] || rm -rf $@
+	mkdir $@
+	cp --parents $+ $@
+
+$(TARBALL): $(TARDIR)
+	tar -czf $@ $+
+
+
+$(TARDIRGT16): $(DISTFILESGT16)
+	[ ! -e $@ ] || rm -rf $@
+	mkdir $@
+	cp --parents $+ $@
+	rm -f $@/build/targets
+	echo 'TARGTEXT="gt16text gt16as"' >>$@/build/targets
+	echo 'TARGQT="gt16qt"' >>$@/build/targets
+
+$(TARBALLGT16): $(TARDIRGT16)
+	tar -czf $@ $+
+
+
+doc/html: $(ALL_SOURCES) Doxyfile
+	rm -rf doc/html
+	doxygen
+
+doc/devdoc.pdf: doc/devdoc.tex
+	$(BUILD) texpdf $@
+
+docs: doc/html doc/devdoc.pdf
+
+$(DOCZIP): docs
+	rm -f $@
+	zip -9 $@ doc/html/* doc/*.html doc/*.pdf doc/*.tex
+
+doczip: $(DOCZIP)
+
+tarball: $(TARBALL)
+
+tarballgt16: $(TARBALLGT16)
+
+dist: $(TARDIR)
+
+clean:
+	rm -rf bin $(ALLEXEC) $(TARDIR) $(TARBALL) $(TARDIRGT16) $(TARBALLGT16)
+
+list:
+	@echo $(ALL_SOURCES)
+
+install: $(ALLEXEC) $(GUIFILES) $(DOCFILES)
+	$(BUILD) install "$+" "$(ALLEXEC)"
+
+count:
+	wc -l $(BUILDFILES) | sort -n
+	wc -l $(ALL_SOURCES) | sort -n

@@ -1,0 +1,15 @@
+FILES="
+    mips/archmips.cpp
+    mips/formatmips.cpp
+    mips/machinemips.cpp
+    mips/asmformatmips.cpp"
+HEADERS="
+    mips/archmips.h
+    mips/archstrap.h
+    mips/asmformatmips.h
+    mips/formatmips.h
+    mips/machinemips.h
+    "
+LINK="-I./mips"
+COMPILECMD="cxxcompilefile"
+INCPACKAGES="core"

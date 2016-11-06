@@ -1,0 +1,367 @@
+Welcome to a brief overview of working on a binary code program using the
+SimpLC-3 tools.
+
+LC-3 is an architecture specification.  It specifies how an LC-3 computer
+would work.  Since LC-3 was invented for learning purposes, it is not
+surprising that nobody mass produces LC-3 processors.  So, we have to use a
+program to simulate it.  And truth be told, a simulator is much nicer for
+debugging binary and assembly programs than a real piece of hardware.
+
+(This readme is directed towards students who are currently using Linux in
+the States cluster; however, if you installed it on your own computer,
+everything is pretty much the same, except instead of ~cs2110/pub/sim you
+should use the directories where you compiled the simulator and/or installed
+it to.)
+
+
+RUNNING
+
+If you are in the shell and you want to run the text-only simulator, you
+will use the command:
+
+   ~cs2110/pub/bin/simp
+
+To run the GUI simulator, use the following command:
+
+   ~cs2110/pub/bin/simpl
+
+Now, if you want easy access to the GUI version, you can put an icon for GUI
+simulator on your desktop, with this command:
+
+   cp ~cs2110/pub/bin/simpl.desktop ~/Desktop
+
+The rest of the instructions explain how to use the graphical Simpl program. 
+Most of the same concepts apply for the text version (they are all based on
+the same core code, they just look different!); however, you would be using
+the commands listed by the help command.
+
+
+MY FIRST BINARY PROGRAM
+
+When you write binary programs, make sure to have a list of the instruction
+formats handy.  Open your textbook to the back cover, or download the PDF
+off the textbook's website.
+
+To create a binary program, first open up your favorite text editor (such as
+emacs, vim, or kwrite).  Then, in the text editor, you could copy and paste
+in the following code, saving as addnums.bin:
+
+   0011000000000000
+   0101001001100000
+   0101100100100000
+   0001100100101010
+   1110010011111100
+   0110011010000000
+   0001010010100001
+   0001001001000011
+   0001100100111111
+   0000001111111011
+   1111000000100101
+
+Now, what does this code do?  These ones and zeros specify a program to add
+up the numbers in memory locations x3100 to x3109 and put the sum into the
+register R1.  Now, that chart is starting to look very handy.  Suppose you
+wrote this, and then a year, month, or even maybe just a week later had to
+change it.  I don't even need to explain what's going to happen, so of
+course, you would like to use the standard solution: comments!  You can add
+spaces to separate the fields for easier reading and comments to explain the
+purpose of the instruction.  So, a nicer version might be:
+
+   0011 0000 0000 0000 ;start the program at location x3000
+   0101 001 001 1 00000 ;clear R1, to be used for the running sum
+   0101 100 100 1 00000 ;clear R4, to be used as a counter
+   0001 100 100 1 01010 ;load R4 with #10, the number of times to add
+   1110 010 011111100 ;load the starting address of the data, ie, x3100
+   0110 011 010 000000 ;load the next number to be added
+   0001 010 010 1 00001 ;increment the memory address
+   0001 001 001 0 00 011 ;add the next number to the running sum
+   0001 100 100 1 11111 ;decrement the counter
+   0000 001 111111011 ;do it again if the counter is not yet zero
+   1111 0000 00100101 ;halt
+
+You can add spaces and comments to the files to your heart's content.  Now,
+keep in mind that we require useful comments in your homework turnins. The
+end result of this stage is that you have created (or copy/pasted) your
+first binary program.  Save the contents to a file called addnums.bin.
+
+
+THE BASIC INTERFACE
+
+The first step in running the code is to open up the GUI simulator.  You
+will see two windows: The machine's state, and the console.  The console is
+useless unless you are doing I/O; it be covered later.
+
+The largest piece of your view will be the list of all the memory.  Above
+that are a few fields you can use to browse and modify memory.  At the
+bottom, you will see the registers, and buttons for debugging purposes. 
+Right now, pretty much everything will be set to zero.
+
+
+RUNNING YOUR CODE
+
+Next, go to the File menu, and then choose load.  You will notice there are
+two load options.  Since the LC-3 is machine has just freshly initialized,
+it does not matter whether you choose to reinitialize before loading, so
+choose the first load option.  Then, select the addnums.bin file.
+
+To get anything out of the code that adds memory values together, you have
+to put numbers in memory.  Entering the numbers 1 through 10 is a good
+start.  First find memory location x3100 by typing x3100 in the "Addr:" text
+box near the top and pressing Enter.  The memory location x3100 will then be
+highlighted.  To change the value of that address, put the number 1 in
+either of the Value text boxes, and hit enter.  You can actually enter
+numbers in any of the text boxes using decimal, hex (by prepending an x), or
+binary (by prepending a b).  Then double click the memory address x3101, and
+type in the number 2 and hit enter.  You can also use the up and down arrows
+to change the memory location.
+
+Voila, now the values are in memory.  You did all that tedious labor, and
+now you want to see some action, right?  Click the "Run" button.  The list
+box will now have jumped to the halt statement, because the view is tracking
+the program counter.  Looking at the registers at the bottom, you will see
+that R1 now has the value 55 in it, which is the same as x0037 hexadecimal. 
+The whole process of adding the first 10 numbers just whizzed by and the
+results are now available.  If you do the math yourself, you can verify that
+the sum of the numbers 1 through 10 is indeed equal to 55.
+
+Now, suppose we wanted to run again with different values.  Click in either
+one of the text boxes at the bottom labelled PC, type in x3000, and hit
+enter.  This sets the program counter back to x3000.  Then, go back to the
+address x3100 and modify some of the numers.  Finally, you can run the code
+again with the different numbers and get a different result.
+
+If you do this enough, you will probably get really tired of entering in all
+the numbers.  Open up a text editor, and save the following into
+numbers.hex:
+
+   3100 ; This first line states the first address to start writing to
+   4000 ; These lines are the ten numbers we want.  This time
+   0400 ; we are entering a different set of numbers that should add to
+   0040 ; x7676.
+   0004
+   2000
+   0200
+   0020
+   0002
+   1000
+   0010
+
+After you save the contents, switch back to the simulator.  Go to the File
+menu, and select the "Load (without reinitialize)" option.  Select the
+numbers.hex file you just created.  The numbers listed above are now placed
+in memory at x3100.  However, the LC-3 simulator now thinks that the PC
+was supposed to be placed at x3100.  Because of the Von Neumann model, where
+both data and code are stored in memory, the LC-3 simulator is not able to
+guess very well whether you intend for the values to be entered to be data
+or code.  Thus, you must manually change the program counter back to x3000.
+
+Perhaps you're also tired of switching memory locations back and forth from
+the code and the the ten numbers.  Go to the "View" menu and select "New
+View".  You will now see a separate view of the same memory.  In the textbox
+labelled "Track", enter x3100.  The new memory view will now stay at x3100,
+and not change until you pick another address to track.  Looking at the
+contents of the memory list, you might think it is funny that the LC-3
+simulator is trying to guess that those numbers you loaded correspond to
+code instructions.  Once again, the simulator cannot guess very well if a
+piece of memory is code or data.  Right-click in the memory list, and select
+"View as Data".  This optimizes the view for data, by getting rid of some
+useless fields, and adding some extra information when available.
+
+For no reason, suppose you're interested in tracing the program to see how
+it works, instead of seeing it whiz by instantaneously.  Make sure once
+again that the PC is at x3000.  Instead of using the Run button this time,
+use the Step button.  (The difference between step and next is subtle; next
+will skip over subroutines, which you will learn about later.)  Push the
+step button!
+
+You will see a few changes.  The program counter has changed from x3000 to
+x3001, and R1 has been set to zero (unless it already was zero, in which
+case nothing interesting will have happened).  Hit the Step button again,
+and R4 will be cleared.  You can keep on stepping through the program and
+watch each instruction do what it is designed to do.  The register transfer
+notation listed in the memory should make it easy to follow what is going
+occurring.  After each iteration in the loop, you will notice:
+
+   R4, the loop counter, is decreasing from 10 to 0.
+   R2, the pointer, is decreasing from x3109 to x3100.
+   R3 receives each value that is listed in memory
+
+If you find watching programs run enjoyable, then you might have fun
+pressing the F11 key and holding it.
+
+
+DEBUGGING
+
+Let's try a new program, but this time we want to multiply two numbers.  As
+LC-3 has no multiply instruction (just like early models of Sun
+Microsystem's Sparc architecture), you will need to write code to do
+multiplication.  Enter the following code into a file called multiply.bin:
+
+  0011 0000 0000 0000   ; originate at x3000
+  0101 010 010 1 00000  ; clear R2
+  0001 010 010 0 00 100 ; add the value of R4 to R2
+  0001 101 101 1 11111  ; decrement R5 by 1
+  0000 011 111111101    ; go to x3001 if result is zero or positive
+  1111 0000 00100101    ; halt
+
+By looking at the program, it looks like R4 and R5 will be multiplied, by
+adding the value R4 together a total of R5 times.  The loop is written to
+decrement R5 by one, and loop back to x3001 as long as R5 does not become
+negative.
+
+So, let's try running the program.  Load up the simulator, and load the
+multiply.bin you just created.  Using the register edit boxes at the bottom,
+put the number 10 into R4, and the number 20 into R5, making sure to hit
+enter.  Click Run and watch the magic happen.  So, in R2, you should see 10
+* 20 = 200.  Right?  Wrong!  Instead you see 210.  What's the matter?  Well,
+it looks like it must have added an extra 10.  We'll confirm our suspicion.
+
+We will now trace through the program with a breakpoint.  We need to pick a
+good set of numbers so that we can test the loop quickly.  The numbers 5 and
+3 are good choices of values -- they are not too many iterations, but it's
+not a simple case with 0 or 1 where the result is rather boring.  Enter
+the values 3 and 4 into R4 and R5 respectively, but do not run yet.
+
+Next, you should set a breakpoint at x3003.  What exactly is a breakpoint?
+It is a message to the simulator to pause simulation right before that
+instruction is executed.  Putting the breakpoint at x3003 is a good choice:
+Since we think that the problem is that we are looping too many times, the
+branch instruction is probably the culprit.  To set the breakpoint, right
+click on the memory address and select "Mark as breakpoint." You will see a
+red rectangle.  Alternatively, clicking in the same area as the red
+rectangle will toggle a breakpoint.
+
+Reset the program counter to x3000 and select Run.  The program counter is
+now at x3004 at the branch instruction, but the instruction has not yet been
+executed.  R5 has now been decremented to the value 4, and the product R2
+currently has 3.  Hit Run again four times.  R5 has now reached zero, R2 is
+the correct product of 15, and your loop has executed five times.  Now, hit
+Step.  You will notice that the branch is taken!  This occurs because the
+previous instruction, which was to decrement R5 by 1, resulted in 0, which
+causes the "branch on >= 0" instruction to jump back to x3001.  This is
+certainly not what we want to happen!  How would you fix it?
+
+
+INTERFACE DETAILS
+
+Now for a rundown of the components.
+
+- Registers
+
+The registers at the bottom of the main window show the contents of all
+eight registers, plus the program counter and condition codes.  The left
+text box shows the hexadecimal number.  The right textbox shows decimal,
+unless there happens to be a label located at that particular number (you
+will see this useful when coding assembly).  You can enter values into them
+in a number of formats, including binary, decimal, hexadecimal, and labels. 
+For more information, hold the mouse still over one of the text boxes, and a
+tool tip will pop up.
+
+
+- Execution
+
+Above the registers are the four execution buttons.  The buttons do the
+following:
+
+  Step - Execute one single instruction
+  
+  Next - Go to the next line inside of the current subroutine.  This is
+  almost the same as step, but skips over other subroutines.  You will
+  learn about subroutines later if you do not know what they are.
+  
+  Run - Run until next breakpoint, or a halt.  This is useful when you have
+  set a breakpoint and want to step through each loop iteration, or you just
+  want to run the whole program.
+  
+  Pause - When the program is running, the Run button puts on a new mask and
+  becomes Pause.  Use this when your program is stuck in an infinite loop,
+  or you don't feel like entering input.
+  
+  Finish - Finish the current subroutine.  This button is disabled unless
+  the simulator has detected that you are inside a subroutine.
+
+
+- Memory
+
+Above the large colorful memory list box, there are several fields.  The
+first field is labeled Track, and it is very useful.  In it, you can choose
+to track pretty much anything you want:
+
+   Your program's execution: pc
+   The stack: r6
+   Stay put at some memory address: x3500
+
+To the right of that is a box that shows the current value of what you are
+tracking.  This changes every time the tracked value changes; however, you
+can temporarily change this to set a few values, but if the tracked value
+changes during your program's execution, it will be set back.  To the right
+of the address field is a text box that is most likely blank.  Typing into
+here and hitting enter will label the address specified.  Finally, at the
+right, is a view of the contents of the current address in hexadecimal and
+decimal.  You can change the memory's value using either text box.
+
+Below the top line, you see a big list of memory.  The memory is listed in
+one of three formats: register transfer notation, assembly, and data view. 
+You can try these out yourself, using either the right-click menu on the
+memory box, or the Format menu at the top of the window.
+
+In addition, there are a few shortcuts that you can do with the memory list
+box.  Double clicking on an address allows you to change the value, by
+putting the keyboard cursor into the "Value" text box.  Single clicking to
+the left of the column of green memory addresses marks or unmarks a
+breakpoint.
+
+One interesting feature of this simulator is that you can make new memory
+views.  Try the View...New View menu.  It will create another view of
+memory, and you can track something separate in that menu.  For instance,
+you might want to watch the stack grow and shrink in a recursive subroutine
+on the left, while watching the program counter move on the right.  To do
+that, you could enter r6 into the Track box, and select the Data display
+mode.  Alternatively, you can just click View...Show Stack.  Beware,
+however; if you have subroutines that do not take up any space on the stack,
+the stack listing can only show the name of one of the subroutines that have
+the same stack pointer.
+
+
+- Console
+
+During your first few weeks, the console will probably just get in your way. 
+However, once you start doing input/output, all input and output will be
+achieved with the console.  Think of the console as the computer screen of
+the LC-3.  In order for input to work, you have to make sure you click
+inside the console first.  But, what if you want to step through your
+program; wouldn't it be annoying to switch windows?  Fortunately, the F10,
+F11, F8, etc function keys all work inside the console, to make for easy
+typing and stepping.  Bored CS majors may find holding F11 and typing to be
+an enjoyable past time, or alternatively, a cure for insomnia.
+
+
+EXTRA FEATURES
+
+- Blackboxing
+
+In this simulator, you can blackbox a subroutine, by right-clicking on the
+first address of the routine and selecting "Blackbox this routine."  What
+blackboxing does is tell the simulator to always skip the contents of this
+subroutine.  Once you have a working multiplication subroutine, if two large
+numbers get multiplied together as part of your code, it would be
+inconvenient to trace through the huge multiplication, or have to set a
+breakpoint.  Instead, blackboxing will cause the simulator always to skip
+over the subroutine.
+
+- Save/Restore
+
+At any point in debugging, you can use the State | Save State option.  What
+this will do is save the entire machine's registers and memory into an
+invisible copy.  If you decide you want to go back to the saved point, just
+use the State | Resotre option.
+
+
+ACKNOWLEDGEMENTS
+
+ Special thanks to Kathy Buchheit of The University of Texas at Austin. The
+general layout and examples were borrwed from her wonderful manuals for the
+standard LC-3 tools.
+
+
+

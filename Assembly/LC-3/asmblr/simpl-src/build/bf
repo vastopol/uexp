@@ -1,0 +1,10 @@
+FILES="
+    bf/allbf.cpp
+    "
+HEADERS="
+    bf/allbf.h
+    bf/archstrap.h
+    "
+LINK="-I./bf"
+COMPILECMD="cxxcompilefile"
+INCPACKAGES="core"

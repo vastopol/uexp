@@ -1,0 +1,78 @@
+
+This program is a text and GUI simulator that is intended to work with
+multiple architectures.
+
+----------------------------------------------------------------------------
+  WHERE TO START
+----------------------------------------------------------------------------
+
+- README.COMPILING to compile it
+- README.CS2110 for a long LC-3 based tutorial of the tools
+- README.CS2200 for brief information on using the LC-2200-16 version
+
+----------------------------------------------------------------------------
+  ABOUT SIMPLC
+----------------------------------------------------------------------------
+
+
+The aim is to present a usable environment for students learning assembly
+for the first time can get a quick start at assembly programming, and not be
+tied to the Windows operating system.
+
+The console-only version is called "simp" and the GUI version is called
+"simpl".  To run, just type in the name of the executable.  You may specify
+filenames to load and various flags on the command line if you wish (for
+help use the -h option).
+
+Special thanks go out to Steven S. Lumetta for the LC-3 operating system
+used in the simulator.
+
+-----------------------------------------------------------------------------
+  SPECIAL FEATURES OF SIMPLC
+-----------------------------------------------------------------------------
+
+Modern, Multi-Platform UI
+
+  The UI, both text and graphical, is modern and gives plenty of information
+at a glance.  It was designed using pure text (easy to port), and the
+graphical interface is written in Qt.
+
+----------------------------------------------------------------------------
+
+Multiple Architectures
+
+  It is possible for developers to add different instruction sets to the
+simulator without having to handle all of the user interface issues from
+scratch.  This also means that users will not have to learn a new interface
+when dealing with learning a new instruction set.
+
+----------------------------------------------------------------------------
+
+Blackboxing
+
+  Sometimes you are debugging a program, and you have subroutines such as
+multiplication or division which you already know work.  Sometimes you want
+to do a lot of stepping, but then the program gets trapped in the lengthy
+subroutine, and you really do not care what is going on inside.  In both
+simulators, you can blackbox a subroutine, by right-clicking on the address
+of the subroutine and selecting "blackbox" or by using the blackbox command.
+
+
+----------------------------------------------------------------------------
+
+Fake Trap Mechanism
+
+  The SimpLC-3 simulator by default does not follow the true LC-3
+specification when executing traps.  The simulator will by default use its
+own implementation of traps.  For example, rather than calling the LC-3
+operating system, a GETC trap will immediately read in a character, and a
+halt trap will halt the processor.  At the same time, attempts to use the
+machine's memory mapped I/O will result in a warning.  Calling any
+non-standard trap is be treated as a halt instruction.
+
+  However, you may select to use the true trap mechanism, by using the "-t"
+command line option or by using the option in the State menu.  In this case,
+the lc3os.obj code is loaded and any "trap" instruction will result in a
+call to the subroutine specified in the trap table.
+
+----------------------------------------------------------------------------

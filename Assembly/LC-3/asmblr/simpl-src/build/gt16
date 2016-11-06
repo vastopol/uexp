@@ -1,0 +1,15 @@
+FILES="
+    gt16/archgt16.cpp
+    gt16/formatgt16.cpp
+    gt16/machinegt16.cpp
+    gt16/asmformatgt16.cpp"
+HEADERS="
+    gt16/archgt16.h
+    gt16/archstrap.h
+    gt16/asmformatgt16.h
+    gt16/formatgt16.h
+    gt16/machinegt16.h
+    "
+LINK="-I./gt16"
+COMPILECMD="cxxcompilefile"
+INCPACKAGES="core"

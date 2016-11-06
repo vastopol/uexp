@@ -1,0 +1,10 @@
+PACKAGES="
+    core
+    lc3
+    lc2200
+    gt16
+    mips
+    text
+    qt
+    bf
+"
