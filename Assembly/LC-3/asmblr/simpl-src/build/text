@@ -1,9 +1,0 @@
-FILES="
-    text/textui.cpp
-    text/term.cpp
-    text/terminalstream.cpp
-    "
-LINK="$READLINE $CURSES -I./text $CXXFLAGS"
-HEADERS=text/*.h
-COMPILECMD="cxxcompilefile"
-INCPACKAGES="core"
