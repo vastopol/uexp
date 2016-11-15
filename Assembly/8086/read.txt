@@ -11,3 +11,14 @@ http://files.mpoli.fi/unpacked/software/programm/general/ddj0392.zip/
 
 package name:
 ucrasm.zip
+
+//----------------------------------------------------------
+
+inside of my ucrasm folder, subfolders contain unmodified code
+    - lib = {STDLIB.A, STDLIB.LIB, STDLIB6.A}
+    - source = unzip SOURCE.ZIP
+        -- src = { *.ASM }
+        -- {MAKLIB.BAT, SOURCE.ZIP, STDLIB.TXT}
+    - tests = unzip TESTS.ZIP
+        -- tsts = { *.ASM }
+        -- {TESTS.ZIP}
