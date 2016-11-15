@@ -1,0 +1,146 @@
+$Id: snobol4blocks.1.pea,v 1.10 2014/12/31 16:52:08 phil Exp $
+=pea
+=sect NAME
+snobol4blocks \- SNOBOL4 BLOCKS extension
+
+=sect DESCRIPTION
+The BLOCKS extension was developed by Jim Gimpel while at Bell Labs.
+A BLOCK is a data type that extends string concatenation to three dimensions.
+
+Enabling the BLOCKS extension with the B<-BLOCKS> control line (see
+B<snobol4ctrl>(1)) or the B<-B> command line option (see
+B<snobol4cmd>(1)) alters the definition and precedence of percent and
+pound (see B<snobol4op>(1)):
+
+White space concatenates two BLOCKs in the horizontal dimension,
+the percent sign (B<%>) concatenates two BLOCKs in the vertical dimension,
+and the pound sign (B<#>) concatenates two BLOCKs in the dimension
+``normal'' to the paper (over-strike).
+
+The functions defined below are always present when CSNOBOL4 has been
+built with blocks enabled.
+
+=subsect Functions
+For I<dir> arguments: B<0>=``vertical'', B<1>=``horizontal'', B<2>=``normal''
+
+=item B<BCHAR(>I<b>B<)>
+Returns character representation of BLOCK I<b> as an ARRAY of strings,
+dimensioned I<d> x I<h>, where I<d> is the depth of the block and I<h>
+is the height of the block (renamed from B<CHAR>).
+
+=item B<BOX(>I<h,w,d>B<)>
+Returns a BLOCK of fill characters of height I<h>, width I<w> and depth I<d>.
+
+=item B<BLOCKSIZE(>I<b,dir>B<)>
+Return INTEGER size of block I<b> in direction I<dir>.
+
+=item B<CC(>I<unit>B<)>
+Accessor function to change carriage control on I/O unit I<unit>.
+If value is positive ASA (FORTRAN style) carriage control is output in
+column one (the B<asa2pdf> program converts ASA format to PDF).
+If value is zero, no carriage control is output.
+If value is negative, ASCII carriage control characters are output
+(B<CSNOBOL4> extension).
+
+=item B<DEF(>I<b>B<)>
+Returns a BLOCK whose organization is I<deferred>.
+
+=item B<DEPTH(>I<b>B<)>
+Returns INTEGER depth of BLOCK I<b>.
+
+=item B<DUP(>I<b,dir,n>B<)>
+Duplicate BLOCK I<b> I<n> times in direction I<dir>.
+
+=item B<EJECT(>[I<i,...>]B<)>
+Eject a page and return the null string.
+Optional unit numbers may be given to ``broadcast'' the form feed.
+
+=item B<FIX(>I<b>B<)>
+Returns a block whose organization is I<physical> -- all positioning is
+done at this time, and no information on how the block was formed is
+retained.
+
+=item B<FRONT(>I<h,w>B<)>
+A special case of B<BOX()>.
+Returns a BLOCK of fill characters of height I<h> and width I<w> and of depth zero.
+
+=item B<HEIGHT(>I<b>B<)>
+Returns INTEGER height of BLOCK I<b>.
+
+=item B<HOR(>I<n>B<)>
+A special case of B<BOX()>.
+Returns a block of fill characters whose width in I<n>
+and height and depth zero.
+
+=item B<HOR_REG(>I<b>B<)>
+Accessor which returns or sets the horizontal registration of BLOCK I<b>.
+Values: B<'RIGHT'>, B<'RIGHT'>, B<\'\'> (centered).
+
+=item B<IT(>I<b>B<)>
+Returns a block whose organization is I<iterated> orthogonally to parent.
+
+=item B<LOC(>I<n,b,dir>B<)>
+Returns the location of NODE I<n> in BLOCK I<b> in direction I<dir>.
+
+=item B<LRECL(>I<unit>B<)>
+Undocumented!! Accessor for I/O unit record length???
+
+=item B<MERGE(>I<b1,b2,....>B<)>
+Returns a BLOCK whose organization is I<merged>.
+
+=item B<NODE(>I<b>B<)>
+Returns a BLOCK whose organization is I<deferred>.
+
+=item B<NORM_REG(>I<b>B<)>
+Accessor which returns or sets the normal plane registration of BLOCK I<b>.
+Values: B<'FRONT'>, B<'REAR'>, B<\'\'> (centered).
+
+=item B<OVY(>I<b1>,I<b2>B<)>
+``Overlay'' -- concatenation in the ``normal'' plane.
+
+=item B<PRINT(>I<b>,[I<i1,....>]B<)>
+Prints block to I/O unit 5.
+Additional unit numbers may be given to ``broadcast'' BLOCK I<b>.
+
+=item B<REP(>I<b>B<)>
+Returns a BLOCK whose organization is I<replicated>.
+
+=item B<SER(>I<b1>,I<b2>B<)>
+``Serial?'' -- concatenation in the vertical plane.
+
+=item B<SLAB(>I<b,dir,offset,length>B<)>
+Returns a physical block which is a cross-sectional cut of I<b>,
+in direction I<dir>
+
+=item B<VER(>I<n>B<)>
+A special case of B<BOX()>.
+Returns a BLOCK of fill characters whose height is I<n>.
+
+=item B<VER_REG(>I<b>B<)>
+Accessor which returns or sets the vertical registration of BLOCK I<b>.
+Values: B<'TOP'>, B<'BOTTOM'>, B<\'\'> (centered).
+
+=item B<WIDTH(>I<b>B<)>
+Returns INTEGER width of BLOCK I<b>.
+=subsect Keywords
+
+=item B<&FILL>
+The fill character (defaults to space).
+
+=sect SEE ALSO
+B<snobol4>(1)
+
+I<Blocks a new datatype for SNOBOL4>,
+James F. Gimpel,
+I<Communications of the ACM>,
+Volume 15 Issue 6, June 1972,
+Pages 438-447
+
+=item L<http://deepblue.lib.umich.edu/bitstream/handle/2027.42/79574/MTSVol09-SNOBOLInMTS-May1984.pdf>
+Contains a manual for the BLOCKS extension.
+
+=item L<http://home.comcast.net/~urbanjost/LIBRARY/EXE/ASA/html/asa2pdf_doc.html>
+A utility to convert ``ASA carriage control'' into B<PDF>, complete with green
+stripes.
+
+L<http://www.snobol4.org/blocks/>

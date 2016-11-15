@@ -1,0 +1,9 @@
+# config generated Thu Jan 1 23:54:49 EST 2015
+	MAN3DIR = '/usr/local/man/man3'
+	SLEEP_C = 'posix/sleep.c'
+	NDBM_LDFLAGS = ''
+	READLINE_LDFLAGS = '-lreadline'
+	SQLITE_INCLUDE = '/usr/local/include'
+	SQLITE_LIBDIR = '/usr/local/lib'
+	FFI_INCLUDE = '/usr/local/include'
+	FFI_LIBDIR = '/usr/local/lib'

@@ -1,0 +1,51 @@
+#!/bin/sh
+
+# build source and binary RPM's from tar file in local directory
+# moves rpm files back to local directory, and cleans up.
+
+if [ `whoami` != 'root' ]; then
+	echo must be run as root 1>&2
+	exit 1
+fi
+
+VERS=snobol4-1.1
+SVERS=1
+SPEC=${VERS}-${SVERS}
+
+if [ ! -f ${VERS}.tar.gz ]; then
+	echo missing ${VERS}.tar.gz 1>&2
+	exit 1
+fi
+
+# attempt to avoid wiring in i386
+ARCH=`uname -i`
+
+for DIR in /usr/src/packages /usr/src/redhat; do
+	# look for RPMS/$ARCH?
+	if [ -d $DIR -a -d $DIR/RPMS ]; then
+		BASE=$DIR
+		break
+	fi
+done
+
+if [ ! "$BASE" ]; then
+	echo Could not find package base directory 1>&2
+	exit 1
+fi
+
+cp ${VERS}.tar.gz ${BASE}/SOURCES/
+
+# crawl along PATH looking for rpmbuild or rpm?
+RPMCMD=rpmbuild
+
+if $RPMCMD -ba ${SPEC}.spec; then
+	echo $RPMCMD command succeeded.  Copying files... 1>&2
+	mv ${BASE}/SRPMS/${SPEC}.src.rpm .
+	mv ${BASE}/RPMS/${ARCH}/${SPEC}.${ARCH}.rpm .
+	rm ${BASE}/SOURCES/${VERS}.tar.gz
+	rm -rf ${BASE}/BUILD/${VERS}
+	exit 0
+else
+	echo $RPMCMD command failed 1>&2
+	exit 1
+fi

@@ -1,0 +1,204 @@
+/* $Id: pml.h,v 1.44 2014/10/20 21:15:23 phil Exp $ */
+
+/*
+ * ``Poor Man's LOAD''
+ * list of functions loaded with snobol4 image.
+ *
+ * NOTE!! After version 1.5, all new functionality being built/installed
+ * in dynamicly loadable files!!
+ *
+ * The following are only defined if "configure --force-pml" is used:
+ * PML_LOGIC, PML_STCL, PML_NDBM, PML_TIME, PML_RANDOM
+ *
+ * See lib/snolib *.c for example functions
+ */
+
+/*
+ * NOTE!! PMLFUNC2 used for entry points renamed due to 
+ * name collisions (many due to VMS config.h define games)
+ */
+
+#ifndef NO_PML_HOST
+PMLFUNC(HOST)				/* SPITBOL compat */
+PMPROTO("HOST()")			/* two polymorphic params */
+#endif /* NO_PML_HOST not defined */
+
+#ifndef NO_PML_EXIT
+PMLFUNC2("EXIT",EXIT)			/* SPITBOL compat */
+PMPROTO("EXIT()")			/* one polymorphic param */
+#endif /* NO_PML_EXIT not defined */
+
+#ifndef NO_PML_REAL
+#ifndef NO_PML_SQRT
+PMLFUNC2("SQRT",SQRT)
+PMPROTO("SQRT(REAL)REAL")
+#endif /* NO_PML_SQRT not defined */
+
+#ifndef NO_PML_EXP
+PMLFUNC2("EXP",EXP)
+PMPROTO("EXP(REAL)REAL")
+#endif /* NO_PML_EXP not defined */
+
+#ifndef NO_PML_LOG
+PMLFUNC2("LOG",LOG)
+PMPROTO("LOG(REAL)REAL")
+
+/* 1/23/2011 */
+PMLFUNC2("LN",LOG)
+PMPROTO("LN(REAL)REAL")
+#endif /* NO_PML_LOG not defined */
+
+#ifndef NO_PML_CHOP
+PMLFUNC(CHOP)
+PMPROTO("CHOP(REAL)REAL")
+#endif /* NO_PML_CHOP not defined */
+
+#ifndef NO_PML_TRIG
+PMLFUNC2("SIN",SIN)
+PMPROTO("SIN(REAL)REAL")
+
+PMLFUNC2("COS",COS)
+PMPROTO("COS(REAL)REAL")
+
+PMLFUNC2("TAN",TAN)
+PMPROTO("TAN(REAL)REAL")
+
+/* 1/23/2011 */
+PMLFUNC2("ATAN",ATAN)
+PMPROTO("ATAN(REAL)REAL")
+#endif /* NO_PML_TRIG not defined */
+#endif /* NO_PML_REAL not defined */
+
+#ifndef NO_PML_FILE
+PMLFUNC2("FILE",FILE2)			/* SITBOL compat */
+PMPROTO("FILE(STRING)STRING")
+
+/* 2/14/2012 -- extensions */
+PMLFUNC(FILE_ISDIR)
+PMPROTO("FILE_ISDIR(STRING)STRING")
+PMLFUNC(FILE_ABSPATH)
+PMPROTO("FILE_ABSPATH(STRING)STRING")
+
+#endif /* NO_PML_FILE not defined */
+
+#ifndef NO_PML_DELETE
+PMLFUNC2("DELETE",DELETE)		/* SITBOL compat */
+PMPROTO("DELETE(STRING)STRING")
+#endif /* NO_PML_DELETE not defined */
+
+#ifndef NO_PML_RENAME
+PMLFUNC2("RENAME",RENAME)		/* SITBOL compat */
+PMPROTO("RENAME(STRING)STRING")
+#endif /* NO_PML_RENAME not defined */
+
+/* 4/7/97; */
+PMLFUNC2("IO_FINDUNIT",IO_FINDUNIT)
+PMPROTO("IO_FINDUNIT()INTEGER")
+
+/* experimental 3/12/99; */
+PMLFUNC(SSET)
+PMPROTO("SSET(INTEGER,INTEGER,INTEGER,INTEGER)INTEGER")
+
+/* 4/27/2001; */
+#ifdef PML_SERV
+PMLFUNC(SERV_LISTEN)
+PMPROTO("SERV_LISTEN(STRING,STRING,STRING)INTEGER")
+#endif /* PML_SERV defined */
+
+/* 12/6/2001; */
+PMLFUNC(ORD)
+PMPROTO("ORD(STRING)INTEGER")
+
+/* 1/21/2002; */
+#ifdef PML_LOGIC
+PMLFUNC(LOGIC)
+/* LOAD() in logic.sno */
+#endif
+
+/* 6/19/2004; */
+#ifdef PML_COM
+PMLFUNC(COM_LOAD)
+PMPROTO("COM_LOAD(STRING)INTEGER")
+
+PMLFUNC(COM_INVOKE)
+PMPROTO("COM_INVOKE(INTEGER,STRING,)")
+
+PMLFUNC(COM_GETPROP)
+PMPROTO("COM_GETPROP(INTEGER,STRING,)")
+
+PMLFUNC(COM_PUTPROP)
+PMPROTO("COM_PUTPROP(INTEGER,STRING,)STRING")
+
+PMLFUNC(COM_RELEASE)
+PMPROTO("COM_RELEASE(INTEGER)STRING")
+#endif
+
+/* 8/25/2004; */
+#ifdef PML_STCL
+/* prototypes in snolib/stcl.sno LOAD() calls */
+PMLFUNC(STCL_CREATEINTERP)
+PMLFUNC(STCL_EVALFILE)
+PMLFUNC(STCL_GETVAR)
+PMLFUNC(STCL_SETVAR)
+PMLFUNC(STCL_EVAL)
+PMLFUNC(STCL_DELETEINTERP)
+/* New: 9/1/2004 */
+PMLFUNC(STCL_NEWSTRINGOBJ)
+PMLFUNC(STCL_GETSTRINGFROMOBJ)
+PMLFUNC(STCL_APPENDTOOBJ)
+PMLFUNC(STCL_EVALOBJEX)
+PMLFUNC(STCL_GETOBJRESULT)
+PMLFUNC(STCL_OBJSETVAR2)
+PMLFUNC(STCL_OBJGETVAR2)
+PMLFUNC(STCL_RELEASEOBJ)
+#endif
+
+#ifdef PML_NDBM
+/* prototypes in snolib/ndbm.sno LOAD() calls */
+PMLFUNC(DBM_OPEN)
+PMLFUNC(DBM_CLOSE)
+PMLFUNC(DBM_STORE)
+PMLFUNC(DBM_FETCH)
+PMLFUNC(DBM_FIRSTKEY)
+PMLFUNC(DBM_NEXTKEY)
+PMLFUNC(DBM_DELETE)
+PMLFUNC(DBM_ERROR)
+PMLFUNC(DBM_CLEARERR)
+#endif
+
+/* 12/15/2010 */
+#ifdef PML_TIME
+/* prototypes in snolib/time.sno LOAD() calls */
+PMLFUNC(GETTIMEOFDAY_)
+PMLFUNC(LOCALTIME_)
+PMLFUNC(GMTIME_)
+PMLFUNC(STRFTIME)
+PMLFUNC(MKTIME)
+#ifdef HAVE_SLEEP
+PMLFUNC(SLEEP)
+#endif
+#ifdef HAVE_STRPTIME
+PMLFUNC(STRPTIME_)
+#endif
+#endif
+
+/* 1/22/2011 */
+/* prototypes moved to readline.sno 1/3/2011 */
+#ifdef PML_READLINE
+PMLFUNC(READLINE)
+PMLFUNC(ADD_HISTORY)
+PMLFUNC(HISTORY_EXPAND)
+#endif
+
+/* 1/25/2011 */
+#ifdef PML_RANDOM
+PMLFUNC(RANDOM)
+
+/* 12/29/2011 */
+PMLFUNC(SRANDOM)
+PMLFUNC(SRANDOMDEV)
+#endif
+
+/* 8/31/2013 */
+PMLFUNC(BREAKPOINT)
+PMPROTO("BREAKPOINT(INTEGER,INTEGER)INTEGER")

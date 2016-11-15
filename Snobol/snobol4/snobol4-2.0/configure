@@ -1,0 +1,2066 @@
+#!/bin/sh
+
+ID='$Id: configure,v 1.278 2015/01/02 04:54:27 phil Exp $'
+
+# Create config.m4 and config.h for SNOBOL4 compilation
+#
+# Phil Budne
+# August 24, 1996
+
+OPTIONS="$*"
+
+# needed in Makefile2 and config.h
+VERSION=2.0
+VERSION_DATE="January 1, 2015"
+
+if [ ! "$CC" ]; then
+    # on most system gcc is preferred if it can be found
+    WANTGCC=true
+fi
+
+# save any CFLAGS passed to us...
+INITIAL_CFLAGS="$CFLAGS"
+
+# largefile support OK
+LARGEFILE_OK=true
+
+# inline by default
+INLINE_OK=true
+
+# debug this script
+DEBUG=
+
+PREFIX=/usr/local
+
+OS=`(uname -s || echo unknown) 2>/dev/null`
+OSREL=`(uname -r || echo unknown) 2>/dev/null`
+OSVERS=`(uname -v || echo unknown) 2>/dev/null`
+MACHINE=`(uname -m || echo unknown) 2>/dev/null`
+
+case "$OS" in
+MINGW*)
+    echo "MinGW detected; run make -f config/win32/mingw.mak"
+    exit 1
+    ;;
+esac
+
+DATE=`date`
+
+# run hostname from subshell to redirect shell "not found message"
+HOST=`(hostname) 2>/dev/null || uname -n`
+
+VERSION_H=version.h.tmp
+CONFIG_H=config.h.tmp
+CONFIG_M4=config.m4.tmp
+CONFIG_SNO=config.sno.tmp
+
+# DANGER: It's no longer safe to try to grep include files
+# (too many systems move them around), use sparingly!!
+INCDIR=/usr/include
+
+rm -f $CONFIG_H $CONFIG_M4 $VERSION_H $CONFIG_SNO
+trap "rm -f $CONFIG_H $CONFIG_M4 $CONFIG_SNO; exit 1" 1 2 15
+
+echo "# config generated "$DATE			>> $CONFIG_M4
+echo "# on $HOST ($OS)"				>> $CONFIG_M4
+echo "# by $ID"					>> $CONFIG_M4
+if [ "x$OPTIONS" != x ]; then
+   echo "# options: $OPTIONS"			>> $CONFIG_M4
+fi
+echo 'undefine([include])'			>> $CONFIG_M4
+
+echo "# config generated "$DATE			>> $CONFIG_SNO
+
+################
+# most defines now in config.h so seperately compiled
+# (LOAD()able) files can get the config information!!
+
+echo 'ADD_CPPFLAGS([-DHAVE_CONFIG_H])'		>> $CONFIG_M4
+echo '# see config.h for more defines'		>> $CONFIG_M4
+
+echo '/*'					>> $VERSION_H
+echo ' * generated '$DATE			>> $VERSION_H
+echo ' * on '"$HOST ($OS)"			>> $VERSION_H
+echo ' * by '"$ID"				>> $VERSION_H
+echo ' */'					>> $VERSION_H
+echo ''						>> $VERSION_H
+echo '#define VERSION "'$VERSION'"'		>> $VERSION_H
+echo '#define VERSION_DATE "'$VERSION_DATE'"'	>> $VERSION_H
+echo "VERS=$VERSION"				>> $CONFIG_M4
+
+echo '/*'					>> $CONFIG_H
+echo ' * generated '$DATE			>> $CONFIG_H
+echo ' * on '"$HOST ($OS)"			>> $CONFIG_H
+echo ' * by '"$ID"				>> $CONFIG_H
+echo ' */'					>> $CONFIG_H
+echo ''						>> $CONFIG_H
+
+# for windows install.bat
+echo $VERSION					> version
+
+if [ "x$OPTIONS" != x ]; then
+    echo '#define CONFIG_OPTIONS "'"$OPTIONS"'"' >> $CONFIG_H
+fi
+if [ "x$HOST" != x ]; then
+    echo '#define CONFIG_HOST "'"$HOST"'"'	>> $CONFIG_H
+fi
+echo '#define CONFIG_DATE "'$DATE'"'		>> $CONFIG_H
+
+ADD_DEFINE_USED=
+while [ $# -gt 0 ]; do
+    case "$1" in
+    --add-cflags=*)
+	STUFF=`echo "$1" | sed 's/--add-cflags=//'`
+	echo 'ADD_CFLAGS(['"$STUFF"'])'		>> $CONFIG_M4
+	;;
+    --add-cppflags=*)
+	STUFF=`echo "$1" | sed 's/--add-cppflags=//'`
+	echo 'ADD_CPPFLAGS(['"$STUFF"'])'	>> $CONFIG_M4
+	;;
+    --add-define=*)
+	if [ ! "$ADD_DEFINE_USED" ]; then
+	    echo '/* from command line: */'	>> $CONFIG_H
+	    ADD_DEFINE_USED=true
+	fi
+	STUFF=`echo "$1" | sed -e 's/--add-define=//' -e 's/=/ /'`
+	echo '#define '"$STUFF"			>> $CONFIG_H
+	;;
+    --add-ldflags=*)
+	STUFF=`echo "$1" | sed 's/--add-ldflags=//'`
+	echo 'ADD_LDFLAGS(['"$STUFF"'])'	>> $CONFIG_M4
+	;;
+    --add-objs=*)
+	STUFF=`echo "$1" | sed 's/--add-objs=//'`
+	echo 'ADD_OBJS(['"$STUFF"'])'		>> $CONFIG_M4
+	;;
+    --add-opt=*)
+	STUFF=`echo "$1" | sed 's/--add-opt=//'`
+	echo 'ADD_OPT(['"$STUFF"'])'		>> $CONFIG_M4
+	;;
+    --add-srcs=*)
+	STUFF=`echo "$1" | sed 's/--add-srcs=//'`
+	echo 'ADD_SRCS(['"$STUFF"'])'		>> $CONFIG_M4
+    	;;
+    --add-warn=*)
+	# deprecated: exactly the same as --add-flags!
+	STUFF=`echo "$1" | sed 's/--add-warn=//'`
+	echo 'ADD_CFLAGS(['"$STUFF"'])'		>> $CONFIG_M4
+	;;
+    --bindir=*)
+	STUFF=`echo "$1" | sed 's/--bindir=//'`
+	echo "BINDIR=$STUFF"			>> $CONFIG_M4
+    	;;
+    --snolibdir=*)
+	SNOLIB_BASE=`echo "$1" | sed 's/--snolibdir=//'`
+    	;;
+    --debug)
+	DEBUG=true
+	set -x
+	;;
+    --double)
+	DOUBLE=true
+	;;
+    --fast)
+	FAST=true
+	;;
+    --force-gcc)
+	FORCEGCC=true
+	#WANTGCC=true
+	CC=
+	;;
+    --force-memmove)
+	FORCE_MEMMOVE=true
+	;;
+    --force-pml)
+	FORCE_PML=true
+	;;
+    --force-sdbm)
+	FORCE_SDBM=true
+	;;
+    --longlong)
+	LONGLONG=true
+	;;
+    --lp64)
+	LP64=true
+	;;
+    --mandir=*)
+	MANDIR=`echo "$1" | sed 's/--mandir=//'`
+    	;;
+    --no-bitfields)
+	NO_BITFIELDS=true
+	;;
+    --no-dlopen)
+	NO_DLOPEN=true
+	;;
+    --no-dynlib)
+	NO_DYNLIB=true
+	;;
+    --no-gcc)
+	WANTGCC=
+	#FORCEGCC=
+	CC=
+	;;
+    --no-inline)
+	INLINE_OK=
+	;;
+    --no-largefile)
+	LARGEFILE_OK=
+	;;
+    --no-opt)
+	NO_OPT=true
+	;;
+    --opt=*)
+	# NOTE!! just sets shell variable
+	UOPT=`echo "$1" | sed 's/--opt=//'`
+	if [ "x$UOPT" = x ]; then
+		NO_OPT=true
+	else
+		NO_OPT=
+	fi
+	;;
+    --prefix=*)
+	PREFIX=`echo "$1" | sed 's/--prefix=//'`
+	;;
+    --universal)
+	UNIVERSAL=true
+	;;
+    --without-com)
+	WITHOUT_COM=1
+	;;
+    --without-readline)
+	WITHOUT_READLINE=1
+	;;
+    --without-blocks)
+	WITHOUT_BLOCKS=1
+	;;
+    --with-tcl=*)
+	TCONF=`echo "$1" | sed 's/--with-tcl=//'`
+	if [ "x$TCONF" = x ]; then
+	    echo " --with-tcl requires path to tclConfig.sh" 1>&2
+	elif [ -d "$TCONF" -a -f "$TCONF/tclConfig.sh" ]; then
+	    TCONF="$TCONF/tclConfig.sh"
+	elif [ ! -f "$TCONF" ]; then
+	    echo "$TCONF is not a file or directory" 1>&2
+	    exit 1
+	fi
+	;;
+    '')
+	;;
+    *)
+	cat 1>&2 <<EOF
+See INSTALL for documentation on options;
+
+Makefile additions;
+	--add-cflags=STR	--add-cppflags=STR	
+	--add-define=NAME[=VALUE] --add-ldflags=STR
+	--add-objs=STR	--add-srcs=STR
+
+C Compiler selection;
+	--force-gcc		--no-gcc
+
+C Compiler settings;
+	--add-cflags=STR	--opt=STR
+	--add-warn=STR		--fast
+	--no-inline		--universal
+
+SNOBOL4 Datatype selection;
+	--double		--longlong
+	--lp64			--no-bitfields
+
+C Library support selection;
+	--force-memmove		--no-dlopen
+	--no-dynlib		--no-largefile
+
+Install location;
+	--prefix=PATH		[default: /usr/local]
+	--bindir=PATH		[default: PREFIX/bin]
+	--mandir=PATH		[default: PREFIX/share/man]
+	--snolibdir=PATH	[default: PREFIX/lib/snobol4]
+
+Optional items;
+	--with-tcl=/path/to/tclConfig.sh
+	--without-blocks	--force-pml
+	--without-readline	--force-sdbm
+	--without-com
+EOF
+
+	rm -f $CONFIG_M4 $CONFIG_H
+	exit 1
+	;;
+    esac
+    shift
+done
+
+BINDIR="$PREFIX/bin"
+if [ "x$MANDIR" = x ]; then
+    # config filename varies:
+    #	/etc/manpaths (OSX 10.6)
+    #   /etc/manpath.config (FreeBSD 7)
+    #	/etc/man.config (RHEL 6)
+    # Thoughts: if both present in config file, check in that order
+    # for existance of "man1" subdir.
+    SD="$PREFIX/share/man"
+    if grep "$SD" /etc/man* >/dev/null 2>&1; then
+	MANDIR="$SD"
+    else
+	MANDIR="$PREFIX/man"
+    fi
+fi
+MAN1DIR="$MANDIR/man1"
+MAN3DIR="$MANDIR/man3"
+MAN7DIR="$MANDIR/man7"
+if [ "x$SNOLIB_BASE" = x ]; then
+    SNOLIB_BASE="$PREFIX/lib/snobol4"
+fi
+SNOLIB="$SNOLIB_BASE/$VERSION"
+SNOLIB_LIB="$SNOLIB/lib"
+SNOLIB_DOC="$SNOLIB"
+# XXX use $PREFIX/include/snobol4 ???
+INCLUDE_DIR="$SNOLIB/include"
+
+DOC_DIR="$PREFIX/share/doc/snobol4-$VERSION"
+
+echo 'BINDIR=$(DESTDIR)'"$BINDIR"		>> $CONFIG_M4
+echo 'MANDIR=$(DESTDIR)'"$MANDIR"		>> $CONFIG_M4
+echo 'MAN1DIR=$(DESTDIR)'"$MAN1DIR"		>> $CONFIG_M4
+echo 'MAN3DIR=$(DESTDIR)'"$MAN3DIR"		>> $CONFIG_M4
+echo 'MAN7DIR=$(DESTDIR)'"$MAN7DIR"		>> $CONFIG_M4
+echo 'SNOLIB=$(DESTDIR)'"$SNOLIB_BASE"		>> $CONFIG_M4
+echo 'SNOLIB_LIB=$(DESTDIR)'"$SNOLIB_LIB"	>> $CONFIG_M4
+echo 'SNOLIB_DOC=$(DESTDIR)'"$SNOLIB_DOC"	>> $CONFIG_M4
+echo 'INCLUDE_DIR=$(DESTDIR)'"$INCLUDE_DIR"	>> $CONFIG_M4
+echo 'DOC_DIR=$(DESTDIR)'"$DOC_DIR"		>> $CONFIG_M4
+
+echo "	MAN3DIR = '$MAN3DIR'"			>> $CONFIG_SNO
+
+if [ "$ADD_DEFINE_USED" ]; then
+    echo '/* end defines from command line */'	>> $CONFIG_H
+fi
+
+# HOST() values (why didn't I just put them into an -INCLUDE file?)
+echo '#define DIR_SEP "/"'			>> $CONFIG_H
+echo '#define PATH_SEP ":"'			>> $CONFIG_H
+echo '#define OBJECT_EXT ".o"'			>> $CONFIG_H
+echo '#define SETUP_SYS "posix"'		>> $CONFIG_H
+echo '#define SHARED_OBJ_SUBDIR "shared"'	>> $CONFIG_H
+
+# safe on all Unix systems (requires "fork")
+echo '#define PML_SERV'				>> $CONFIG_H
+
+# should work on all Unix systems:
+if [ "$FORCE_PML" ]; then
+    # NOTE! Only includes v1.5 extensions!!
+    echo '#define PML_LOGIC'			>> $CONFIG_H
+    echo '#define PML_RANDOM'			>> $CONFIG_H
+    echo '#define PML_TIME'			>> $CONFIG_H
+    echo 'ADD_OBJS([logic.o random.o time.o sleep.o])'	>> $CONFIG_M4
+else
+    MODULES='dirs logic random stat time sprintf fork'
+    # force common routines to be linked into snobol4 executable:
+    echo 'EXTRA_OBJS=getstring.o retstring.o handle.o' >> $CONFIG_M4
+    echo 'ADD_SRCS([$(GETSTRING_C) $(RETSTRING_C) $(HANDLE_C)])' >> $CONFIG_M4
+fi
+
+# Unix Makefile2 created build.c
+echo '#define HAVE_BUILD_VARS'			>> $CONFIG_H
+
+if [ "$CC" ]; then
+    echo 'using CC environment variable' 1>&2
+    CCPATH="$CC"
+fi
+
+if [ "$WANTGCC" ]; then
+    # look for gcc up front (for Solaris/x86)
+    echo 'looking for gcc' 1>&2
+    for DIR in `echo $PATH | tr ':' ' '`; do
+	if [ -x $DIR/gcc ]; then
+	    echo "found gcc in $DIR" 1>&2
+	    GCCPATH=gcc
+	    break
+	fi
+    done
+fi
+
+TMP=conf$$
+
+# didn't find gcc in PATH; check if CC is gcc or clang
+if [ ! "$GCCPATH" ]; then
+    echo 'checking cc' 1>&2
+    # vanilla bsd43 systems can't use <<- AND EOF must be in col 0!
+    cat << EOF > $TMP.c
+#include <stdio.h>
+int
+main() {
+#ifdef __clang__
+    printf("clang\n"); /* bitches that puts() deprecated in C99! */
+#else
+#if defined(__gcc__) || defined(__GNUC__)
+    printf("gcc\n");
+#else
+    printf("unknown\n");
+#endif
+#endif
+    return 0;
+}
+EOF
+    if [ "x$CC" = x ]; then
+	XCC=cc
+    else
+	XCC="$CC"
+    fi
+    if $XCC -o $TMP $TMP.c; then
+	CC_IS=`./$TMP`
+	if [ "$CC_IS" ]; then
+	    echo "$XCC is $CC_IS" 1>&2
+	    echo "# $XCC is $CC_IS"		>> $CONFIG_M4
+	    if [ "$CC_IS" = gcc ]; then
+		GCCPATH="$XCC"
+
+		# if cc is gcc, disregard --no-gcc
+		WANTGCC=true
+	    fi
+	fi
+    fi
+    rm -f $TMP $TMP.c $TMP.exe
+fi
+
+# clang does not qualify!
+if [ "$FORCEGCC" -a ! "$GCCPATH" ]; then
+    echo ' gcc not available' 1>&2
+    exit 1
+fi
+
+# nearly generic gcc3 option for LP64
+GCC64=-m64
+
+# machine, os, release, version
+MORV="${MACHINE}:${OS}:${OSREL}:${OSVERS}"
+
+# library support, C compiler choice, flags
+case "$MORV" in
+9000/[678]??:HP-UX:*:*)
+    # dlfcn.h present on hpux 11 systems,
+    # but no library on 32-bit systems
+    # (this will be reset below for 64-bit compilation)
+    NO_DLOPEN=true
+
+    # look for unbundled C; prefer it to gcc
+    if [ ! "$FORCEGCC" ]; then
+	if [ -x /bin/c89 -o -x /usr/bin/c89 ]; then
+	    # ASSume presense of c89 means cc is unbundled compiler
+	    # used to use c89 with -D_HPUX_SOURCE
+	    echo 'using unbundled cc' 1>&2
+	    CCPATH=cc
+	    WANTGCC=
+
+	    # LARGEFILE requires cc -Ae or c89 +e -D__STDC_EXT__
+	    echo 'ADD_CFLAGS([-Ae])'	>> $CONFIG_M4
+	else
+	    # gcc is preferable to bundled C, if it works,
+	    # but often gives trouble, so don't use if if
+	    # not forced!
+	    WANTGCC=
+	fi
+    fi
+    ;;
+
+ia64:HP-UX:*:*)
+    # default on HP-UX/ia64 is ILP32!
+    # different option to get LP64!
+    GCC64=-mlp64
+
+    # ia64 has dlopen(), regardless of data model
+
+    # look for unbundled C; prefer it to gcc
+    if [ ! "$FORCEGCC" ]; then
+	if [ -x /bin/c89 -o -x /usr/bin/c89 ]; then
+	    # ASSume presense of c89 means cc is unbundled compiler
+	    # used to use c89 with -D_HPUX_SOURCE
+	    echo 'using unbundled cc' 1>&2
+	    CCPATH=cc
+	    WANTGCC=
+
+	    # LARGEFILE requires cc -Ae or c89 +e -D__STDC_EXT__
+	    echo 'ADD_CFLAGS([-Ae])'	>> $CONFIG_M4
+	elif [ "$LP64" ]; then
+	    # gcc version 3.2 20020329 (experimental) beats
+	    # (Bundled) cc: HP ANSI C++/C B3910B A.05.36 [Apr 18 2002]
+	    # for ILP32 compilations (but doesn't support LP64?!)
+	    WANTGCC=
+
+	    # compiler ignores -O (complains)
+	    #NO_OPT=true
+	fi
+    fi
+    ;;
+
+9000/[34]??:4.3bsd:*:*)
+    # Mt Xinu 4.3 on hp300
+    echo 'using dummy isnan() and finite() functions' 1>&2
+    echo 'ADD_OBJS([isnan.o finite.o])'		>> $CONFIG_M4
+    echo 'ADD_SRCS([$(ISNAN_C) $(FINITE_C)])'	>> $CONFIG_M4
+    ;;
+
+# POWER(RS6k)/PowerPC AIX
+*:AIX:2:3|*:AIX:*:[45])
+    # prefer regular cc to gcc (only use gcc if forced)
+    WANTGCC="$FORCEGCC"
+    ;;
+
+*:Darwin:*:*)
+    # includes MacOS X
+    # libm integrated into libc
+    echo 'MATHLIB='				>> $CONFIG_M4
+    # symbol conflict with curses (also in libc)
+    echo '#define GT GTX'			>> $CONFIG_H
+    ;;
+
+*:CYGWIN*:*:*)
+    # Cygnus Unix emulation under Win32
+    echo 'EXT=.exe'				>> $CONFIG_M4
+    CYGWIN=1
+    ;;
+
+*:SunOS:*:*)
+    if grep 'finite(' /usr/include/ieeefp.h > /dev/null 2>&1; then
+	echo '#define FINITE_IN_IEEEFP_H'	>> $CONFIG_H
+    fi
+esac
+
+# compiler options
+if [ "$GCCPATH" -a "$WANTGCC" ]; then
+    echo using gcc 1>&2
+    CCPATH="$GCCPATH"
+    CCVERS=-v
+    echo 'CCM=$(CC) -M'				>> $CONFIG_M4
+
+    # w/ gcc v3 -O3 turns on things OTHER than -finline-functions,
+    # so make -O3 the default, and use -fno-inline-functions
+    OPT=-O3
+
+    if [ ! "$INLINE_OK" ]; then
+	echo 'ADD_OPT([-fno-inline-functions])'	>> $CONFIG_M4
+    fi
+    # on by default in clang??
+    echo 'ADD_CFLAGS([-Wall])'			>> $CONFIG_M4
+
+    # disable warnings enabled by default in code generated from SIL;
+    echo 'SNOBOL4_C_CFLAGS=-Wno-return-type -Wno-switch' >> $CONFIG_M4
+
+    case "$MORV" in
+    *:Darwin:*:*)
+        if cc -v 2>&1 | grep 19991024 >/dev/null; then
+	    # "Apple gcc-934.3, based on gcc version 2.95.2 19991024"
+	    # screws up data_init.c when compiled with -O2
+	    echo 'DATA_INIT_CFLAGS=[]_CFLAGS $(MYCPPFLAGS) -O' >> $CONFIG_M4
+	fi
+
+	# MacOS has different file types for shared libraries (dylibs)
+	# and dynamicly loaded extensions (bundles)
+	# -fPIC is the default on OS X
+
+	SO_EXT=.dylib
+	SO_LD=$CCPATH
+	SO_LDFLAGS=-dynamiclib
+
+	DL_EXT=.bundle
+	DL_LD=$CCPATH
+	DL_LDFLAGS='-bundle -undefined dynamic_lookup'
+
+	# don't strip installed binary; 
+	# need symbols to find (m)getstring....
+	echo "INSTALL_BIN_FLAGS="	>> $CONFIG_M4
+
+	# old!!!
+	UNIVERSAL_SDK_DIR=/Developer/SDKs/MacOSX10.4u.sdk
+	if [ "$UNIVERSAL" -a -d $UNIVERSAL_SDK_DIR ]; then
+	    echo "ADD_CFLAGS([-arch ppc])"	>> $CONFIG_M4
+	    echo "ADD_CFLAGS([-arch i386])"	>> $CONFIG_M4
+	    echo "ADD_CFLAGS([-isysroot $UNIVERSAL_SDK_DIR])"	>> $CONFIG_M4
+	fi
+
+	# try:
+	# -exported_symbols_list filename
+	# or
+	# -exported_symbol getstring ......
+	;;
+
+    *:SunOS:4*:*)
+	SO_EXT=.so
+	SO_CFLAGS=-fPIC
+	SO_LD=/usr/bin/ld
+	SO_LDFLAGS='-assert nodefinitions'
+	;;
+
+    *:CYGWIN*)
+	SO_EXT=.dll
+	SO_CFLAGS=
+	SO_LD=$CCPATH
+	SO_LDFLAGS=-shared
+	echo 'ADD_LDFLAGS([-Wl,--out-implib,libsnobol4.a])' >> $CONFIG_M4
+	# libsnobol4.a not created unless this given???:
+	echo 'ADD_LDFLAGS([-Wl,--export-all-symbols])' >> $CONFIG_M4
+	echo 'define([INSTALL_SYSDEP],[$(INSTALL) -m 644 libsnobol4.a $(SNOLIB)]) >> $CONFIG_M4
+	;;
+
+    *)
+	SO_EXT=.so
+	SO_CFLAGS=-fPIC
+	SO_LD=$CCPATH
+	# gcc: "For predictable results, you must also specify the
+	# same set of options that were used to generate code (-fpic,-fPIC)
+	# when you specify -shared"
+	SO_LDFLAGS="-shared $SO_CFLAGS"
+	;;
+    esac
+
+    # -fstrength-reduce is no gain?
+    # -fomit-frame-pointer can make debugging harder, so put it here
+    #	(on systems where it's harmless, it's turned on by -O)
+    FASTFLAGS=-fomit-frame-pointer
+
+    USING_GCC=true
+elif [ "$CC_IS" = clang ]; then
+    CCVERS=-v
+    echo 'CCM=$(CC) -M'				>> $CONFIG_M4
+
+    OPT=-O3
+
+    # disable warnings enabled by default in code generated from SIL;
+    echo 'SNOBOL4_C_CFLAGS=-Wno-return-type -Wno-switch' >> $CONFIG_M4
+
+    case "$MORV" in
+    *:Darwin:*:*)
+	# MacOS has different file types for shared libraries (dylibs)
+	# and dynamicly loaded extensions (bundles)
+	# -fPIC is the default on OS X
+	# ~sigh~ copied from gcc case!
+
+	SO_EXT=.dylib
+	SO_LD=$CCPATH
+	SO_LDFLAGS=-dynamiclib
+
+	DL_EXT=.bundle
+	DL_LD=$CCPATH
+	DL_LDFLAGS='-bundle -undefined dynamic_lookup'
+
+	# don't strip installed binary; 
+	# need symbols to find (m)getstring....
+	echo "INSTALL_BIN_FLAGS="	>> $CONFIG_M4
+	;;
+
+
+    *)
+	# ~sigh~ copied from gcc case!
+	SO_EXT=.so
+	SO_CFLAGS=-fPIC		# ??
+	SO_LD=$CCPATH
+	# gcc: "For predictable results, you must also specify the
+	# same set of options that were used to generate code (-fpic,-fPIC)
+	# when you specify -shared"
+	SO_LDFLAGS="-shared $SO_CFLAGS"
+	;;
+    esac
+else
+    # required options for native compilers
+    case "$MORV" in
+    9000/[34]*:HP-UX:*:*)
+	# HP-UX 68K
+	# bundled C compiler lacks -O flag??
+	NO_OPT=true
+	;;
+    9000/[678]*:HP-UX:*:*)
+	# HP-UX PA-RISC
+	KERNEL_BITS=`(/usr/bin/getconf SC_KERNEL_BITS || echo 32) 2>/dev/null`
+	if [ "$KERNEL_BITS" = 64 -a "$LP64" ]; then
+	    ARCH_OPT=`getconf XBS5_LP64_OFF64_CFLAGS`
+	    # dlopen available in 64-bit world!
+	    NO_DLOPEN=
+	fi
+	if [ -x /bin/c89 -o -x /usr/bin/c89 ]; then
+	    SO_EXT=.sl
+	    # or +Z
+	    SO_CFLAGS=+z
+	    SO_LD=ld
+	    SO_LDFLAGS=-b
+	fi
+	FASTFLAGS=-fast
+	;;
+    ia64:HP-UX:*:*)
+	if [ "$LP64" ]; then
+	    # +DA2.0W seen under B.11.22!!
+	    ARCH_OPT=`getconf XBS5_LP64_OFF64_CFLAGS | sed 's/+DA2.0W/+DD64/'`
+	fi
+	if [ -x /bin/c89 -o -x /usr/bin/c89 ]; then
+	    SO_EXT=.sl
+	    # or +Z
+	    SO_CFLAGS=+z
+	    SO_LD=ld
+	    SO_LDFLAGS=-b
+	fi
+	FASTFLAGS=-fast
+	# works for unbundled compiler
+	CCVERS=-V
+	;;
+    *:IRIX*:*:*)
+	echo 'CCM=$(CC) -M'			>> $CONFIG_M4
+	FASTFLAGS=-Ofast=$MACHINE
+	CCVERS=-version
+
+	# Kill warnings: only needed with n32 and 64bit ABI
+	# compilers (but harmless with old compiler)?
+	echo 'ADD_CFLAGS([-w])'			>> $CONFIG_M4
+
+	# optional 64-bit world;
+	# (only allow if "$OS" = IRIX64 ??
+	if [ "$LP64" ]; then
+	    ARCH_OPT=`getconf XBS5_LP64_OFF64_CFLAGS`
+	    # XXX check if non-null?
+
+	    ARCH_LDFLAGS=`getconf XBS5_LP64_OFF64_LDFLAGS`
+	    if [ "x$ARCH_LDFLAGS" != x ]; then
+		echo 'ADD_LDFLAGS(['$ARCH_LDFLAGS'])'>> $CONFIG_M4
+	    fi
+	    OPT=-O3
+	else
+	    # o32 compiler's -O3 wants all files on one line
+	    # (to do interprocedural optimization).
+	    # n32 compiler's -O3 beats o32 -O2
+	    # To override this, use "configure --opt=whatever"
+	    OPT='-n32 -O3'
+	fi
+
+	SO_EXT=.so
+	# -KPIC is default
+	SO_CFLAGS=
+	# use LD?
+	SO_LD=cc
+	SO_LDFLAGS=-shared
+	;;
+    *:AIX:2:3)
+	# AIX3 (not tested)
+	# for data_init.o
+	echo 'ADD_CFLAGS([-qmaxmem=32000])'	>> $CONFIG_M4
+	;;
+    *:AIX:*:[45])
+	# AIX4/xlc
+	# -M creates .u files
+	# -v outputs man page!!
+	# -qlonglong enables "long long"?
+	# -Q! turns off inlining (C++ only?)
+	CFLAGS_LONGLONG=-qlonglong
+	if [ "$FAST" ]; then
+	    OPT=-O4
+	else
+	    OPT=-O3
+	fi
+	# for data_init.o
+	echo 'ADD_CFLAGS([-qmaxmem=32000])'	>> $CONFIG_M4
+
+	# XXX check if available? (how?) check for getconf error??
+	if [ "$LP64" ]; then
+	    ARCH_OPT=`getconf XBS5_LP64_OFF64_CFLAGS`
+	    echo 'ARXFLAGS=-X64'		>> $CONFIG_M4
+	else
+	    # XBS5 model to try if "getconf LFS_CFLAGS" fails
+	    XBS5_MODEL=XBS5_ILP32_OFFBIG_CFLAGS
+	    # on Sun this assumes native compiler, undefines stuff,
+	    # and fiddles with ANSI mode (sets __STDC__ to zero), so
+	    # we only use it when the obvious fails!
+	fi
+
+	# "AIX 4.3 and later"
+	SO_EXT=.so
+	SO_LDFLAGS=-bM:SRE
+	;;
+    *:OSF1:*:*)
+	OPT=-O4
+	if [ ! "$INLINE_OK" ]; then
+	    echo 'ADD_OPT([-no_inline])'	>> $CONFIG_M4
+	fi
+	echo 'CCM=$(CC) -M'			>> $CONFIG_M4
+
+	case "$OSREL" in
+	V[1-3].*) ;;
+	*) OPT="$OPT -fast" ;;
+	esac
+
+	CCVERS=-V
+
+	# no cc flags needed
+	SO_EXT=.so
+	SO_LD=cc
+	# NOTE! quoting make it useless in Makefile!
+	SO_LDFLAGS="-shared -expect_unresolved '\\*'"
+	;;
+
+    *:SunOS:4*:*)
+	# SunOS 4 cc
+	echo 'CCM=$(CC) -M'			>> $CONFIG_M4
+	OPT=-O2
+	# cc can't optimize data_init.c at ALL
+	echo 'DATA_INIT_CFLAGS=[]_CFLAGS $(MYCPPFLAGS)'	>> $CONFIG_M4
+
+	SO_EXT=.so
+	SO_CFLAGS=-pic
+	SO_LD=/bin/ld
+	SO_LDFLAGS='-assert nodefinitions'
+	;;
+    *:SunOS:5*:*)
+	# SunPRO;
+	if [ "$INLINE_OK" ]; then
+	    OPT=-xO4
+	else
+	    OPT=-xO3
+	fi
+	echo 'CCM=$(CC) -xM'			>> $CONFIG_M4
+	FASTFLAGS=-fast
+	CCVERS=-V
+	if [ "$LP64" -a -x /usr/bin/isainfo ] && \
+	   /usr/bin/isainfo -v | grep '^64' >/dev/null; then
+	    ARCH_OPT=`getconf XBS5_LP64_OFF64_CFLAGS`
+	fi
+
+	SO_EXT=.so
+	SO_CFLAGS=-Kpic
+	SO_LD=$CCPATH
+	SO_LDFLAGS=-G
+	;;
+    esac
+fi
+
+# sanity check 1/1/2015:
+if [ "x$LDFLAGS" != x -a "SO_LD" = "" ]; then
+    echo 'LDFLAGS set without SO_LD' 1>&2
+    exit 1
+fi
+
+if [ "$CCPATH" ]; then
+    echo "CC=$CCPATH"				>> $CONFIG_M4
+    # for "check" script:
+    CC=$CCPATH
+    export CC
+fi
+
+# include C compiler version output in comments
+if [ "x$CCVERS" != x ]; then
+    echo '################'			>> $CONFIG_M4
+    echo '# C Compiler:'			>> $CONFIG_M4
+    echo '#' ${CCPATH-cc} $CCVERS		>> $CONFIG_M4
+    ${CCPATH-cc} $CCVERS 2>&1 | sed 's/^/# /'	>> $CONFIG_M4
+    echo '################'			>> $CONFIG_M4
+fi
+
+echo checking sizes of C types 1>&2
+# detect compilers/architectures where LP64 is the default
+# MUST be after compiler choice
+cat << EOF > $TMP.c
+#include <stdio.h>
+
+struct foo {
+    char c;
+    double y;
+};
+
+int
+main() {
+    printf("%d %d %d %d %d %lu\n", (int)sizeof(void *),
+	(int)sizeof(int), (int)sizeof(long),
+	(int)sizeof(float), (int)sizeof(double),
+	(unsigned long)&((struct foo *)0)->y);
+    return 0;
+}
+EOF
+if ${CCPATH-cc} $CFLAGS -o $TMP $TMP.c && ./$TMP > $TMP.out &&
+  read SPTR SINT SLONG SFLOAT SDOUBLE ADOUBLE < $TMP.out; then
+    echo 'sizeof(int) = '$SINT		1>&2
+    echo '# sizeof(int) = '$SINT	>> $CONFIG_M4
+
+    echo 'sizeof(void *) = '$SPTR	1>&2
+    echo '# sizeof(void *) = '$SPTR	>> $CONFIG_M4
+
+    echo 'sizeof(long) = '$SLONG	1>&2
+    echo '# sizeof(long) = '$SLONG	>> $CONFIG_M4
+
+    echo 'sizeof(float) = '$SFLOAT	1>&2
+    echo '# sizeof(float) = '$SFLOAT	>> $CONFIG_M4
+
+    echo 'sizeof(double) = '$SDOUBLE	1>&2
+    echo '# sizeof(double) = '$SDOUBLE	>> $CONFIG_M4
+
+    echo 'alignment(double) = '$ADOUBLE	1>&2
+    echo '# alignment(double) = '$ADOUBLE	>> $CONFIG_M4
+
+    # XXX ASSume sizeof(char) == 1 (8 bits)
+    if [ "$SPTR" = 8 -a "$SLONG" = 8 ]; then
+	echo 'LP64 is native programming model' 1>&2
+	LP64=true
+	LP64_NATIVE=true
+    fi
+fi
+if [ "$LONGLONG" -a "x$LP64_NATIVE" = x ]; then
+cat << EOF > $TMP.c
+#include <stdio.h>
+
+int
+main() {
+    printf("%d\n", (int)sizeof(long long));
+    return 0;
+}
+EOF
+    if ${CCPATH-cc} $CFLAGS $CFLAGS_LONGLONG -o $TMP $TMP.c && ./$TMP > $TMP.out; then
+	SLONGLONG=`cat $TMP.out`
+	echo 'sizeof(long long) = '$SLONGLONG		1>&2
+	echo '# sizeof(long long) = '$SLONGLONG		>> $CONFIG_M4
+    fi
+fi
+rm -f $TMP $TMP.c $TMP.out $TMP.exe
+
+# after size checks;
+if [ "$USING_GCC" ]; then
+    # avoid trying option where LP64 is the default, and the compiler could
+    # be gcc2 -- there was no generic option back then!
+    if [ "$LP64" -a ! "$LP64_NATIVE" ]; then
+	ARCH_CFLAGS="$GCC64"
+	# for "check" script
+	CFLAGS="$GCC64"
+	export CFLAGS
+    fi
+fi
+
+# after size checks;
+if [ "$LP64" ]; then
+    # In 64-bit environments, alignment restrictions on int_t/pointer
+    # data is likely to pad descriptors out to 16 bytes, so don't pack
+    # DESCR "v" field into 24 bits.
+    NO_BITFIELDS=true
+
+    # make real_t same size as int_t
+    DOUBLE=true
+
+    # make --longlong a noop
+    LONGLONG=
+elif [ "$DOUBLE" ]; then
+    # if double in use for float_t, and would force 16 byte descriptors
+    # (eg; on sparc or w/ -malign-double) don't pack "v" field into 24 bits
+    if [ "$ADOUBLE" = "$SDOUBLE" ]; then
+	NO_BITFIELDS=true
+    fi
+fi
+
+if [ "$ARCH_CFLAGS" ]; then
+    echo 'ADD_CFLAGS(['$ARCH_CFLAGS'])'		>> $CONFIG_M4
+fi
+
+
+if [ "$NO_OPT" ]; then
+    echo OPT=					>> $CONFIG_M4
+else
+    if [ "x$UOPT" != x ]; then
+	echo "OPT=$UOPT"			>> $CONFIG_M4
+    elif [ "x$OPT" != x ]; then
+	echo "OPT=$OPT"				>> $CONFIG_M4
+    fi
+    if [ "$FAST" -a "x$FASTFLAGS" != x ]; then
+	echo 'ADD_OPT(['"$FASTFLAGS"'])'	>> $CONFIG_M4
+    fi
+fi
+
+if [ ! "$INLINE_OK" ]; then
+    # use non-reordered file
+    echo 'SNOBOL4=snobol4'			>> $CONFIG_M4
+fi
+
+if [ "$LONGLONG" ]; then
+    # Force use of 64-bit int and real types on ILP32 systems.
+    # Not tested in all environments (some compilers
+    # may require options to enable "long long" data type)
+    if [ "$SLONGLONG" = '' ]; then
+	echo 'FATAL: --longlong selected but no long long type available' 1>&2
+	exit 1
+    fi
+    # make real_t same size as int_t
+    DOUBLE=true
+
+    # turn off bitfields
+    NO_BITFIELDS=true
+
+    echo using long long for SNOBOL4 INTEGER type 1>&2
+    echo '#define INT_T long long'		>> $CONFIG_H
+    SIZEOF_INT_T=$SLONGLONG
+
+    if [ "x$CFLAGS_LONGLONG" != x ]; then
+	# add any flags necessary to enable "long long"
+	echo 'ADD_CFLAGS(['$CFLAGS_LONGLONG'])' >> $CONFIG_M4
+    fi
+    if config/check stdlib.h 'strtoll("", 0, 0)'; then
+	# XXX try running a program to verify??
+	echo 'using C99 printf %lld' 1>&2
+	echo 'SPCINT_C=$(SRCDIR)lib/c99/spcint.c' >> $CONFIG_M4
+	echo 'using C99 strtoll()' 1>&2
+	echo 'INTSPC_C=$(SRCDIR)lib/c99/intspc.c' >> $CONFIG_M4
+    else
+	# here with gcc on SunOS4, for example
+	echo 'using private string to integer' 1>&2
+	echo 'SPCINT_C=$(SRCDIR)lib/longlong/spcint.c' >> $CONFIG_M4
+	echo 'using private integer to string' 1>&2
+	echo 'INTSPC_C=$(SRCDIR)lib/longlong/intspc.c' >> $CONFIG_M4
+    fi
+
+    if [ "$USING_GCC" -o "$CC_IS" = clang ]; then
+	# keep gcc (& clang?) from screaming about copious warnings
+        echo 'ADD_CFLAGS([-Wno-pointer-to-int-cast -Wno-int-to-pointer-cast])' >> $CONFIG_M4
+    fi
+else
+    LONGLONG=
+    SIZEOF_INT_T=$SLONG
+fi
+
+
+if [ "$NO_BITFIELDS" ]; then
+    echo '#define NO_BITFIELDS'			>> $CONFIG_H
+
+    if [ "$LONGLONG" -o "$LP64" ]; then
+	# int_t is wide, so should be safe to use all 32-bits of "v" field
+	# (can't be confused for a negative int_t)
+	echo '#define SIZLIM (~(VFLD_T)0)'	>> $CONFIG_H
+    fi
+    # otherwise snotypes uses 2^31-1 if NO_BITFIELDS defined.
+fi
+
+if [ "$DOUBLE" ]; then
+    # sizeof(real_t) must be <= sizeof(int_t), or IDENT(REAL,REAL) won't work
+    echo using double for SNOBOL4 REAL type 1>&2
+    echo '#define REAL_T double'		>> $CONFIG_H
+    # print lots of digits -- possibly suboptimal, but safe
+    # wikipedia page on IEEE FP says binary64 format has 15.95 sig digs
+    echo '#define REALST_FORMAT "%.15lg"'	>> $CONFIG_H
+    SIZEOF_REAL_T=$SDOUBLE
+else
+    SIZEOF_REAL_T=$SFLOAT
+fi
+
+echo '#define SIZEOF_INT_T	'$SIZEOF_INT_T'	/* for use in ifdefs */' >> $CONFIG_H
+echo '#define SIZEOF_REAL_T	'$SIZEOF_REAL_T'	/* for use in ifdefs */' >> $CONFIG_H
+
+if config/check stdlib.h; then
+    echo 'using ANSI stdlib.h' 1>&2
+    echo '#define HAVE_STDLIB_H'		>> $CONFIG_H
+    HAVE_STDLIB_H=1
+fi
+
+if config/check unistd.h; then
+    echo 'using POSIX unistd.h' 1>&2
+    echo '#define HAVE_UNISTD_H'		>> $CONFIG_H
+    HAVE_UNISTD_H=1
+fi
+
+# N.B. This works on FreeBSD10, but by default offers no additional
+# resolution, and might suffer the same issues as getrusage()?!
+GETTIME="struct timespec ts; int i; clockid_t c; clock_getcpuclockid(0, &c); for (i=0;i<1000000;i++) if (clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &ts)<0) return 1; else if (ts.tv_nsec) return 0; return 1;"
+if [ "$CYGWIN" ]; then
+    # Cygwin has getrusage(), but it only works under NT, so use the
+    # Win32 native mstime.c, which will fall back to Win9x compatibility.
+    echo 'using Win32 native calls for runtimes' 1>&2
+    echo 'MSTIME_C=$(SRCDIR)lib/win32/mstime.c'	>> $CONFIG_M4
+elif config/check -r "time.h" "$GETTIME"; then
+    # -lrt not needed w/ kernel 3.9 and libc 2.17?
+    echo 'using POSIX.1-2001 clock_gettime() for runtimes' 1>&2
+    echo 'MSTIME_C=$(SRCDIR)lib/posix2001/mstime.c' >> $CONFIG_M4
+elif config/check -r "time.h" "$GETTIME" "-lrt"; then
+    echo 'using POSIX.1-2001 clock_gettime() for runtimes (with -lrt)' 1>&2
+    echo 'MSTIME_C=$(SRCDIR)lib/posix2001/mstime.c' >> $CONFIG_M4
+    LIBRT=-lrt
+elif config/check "sys/time.h sys/resource.h" \
+    "struct rusage r; getrusage(&r, RUSAGE_SELF)"; then
+    echo 'using getrusage() for runtimes' 1>&2
+    echo 'MSTIME_C=$(SRCDIR)lib/bsd/mstime.c'	>> $CONFIG_M4
+
+    # user time can run backwards for processes with small
+    # runtimes on BSD44 based systems; time deltas in &TRACE can
+    # appear negative!!
+    case "$OS" in
+    FreeBSD|NetBSD|BSD/OS|BSD/386|Darwin|4.4BSD|OpenBSD)
+	echo '#define GETRUSAGE_BUG'		>> $CONFIG_H
+	;;
+    esac
+elif [ "$HAVE_UNISTD_H" ]; then
+    echo 'using times() + sysconf() for runtimes' 1>&2
+    echo 'MSTIME_C=$(SRCDIR)lib/posix/mstime.c'	>> $CONFIG_M4
+elif config/check sys/times.h "struct tms tt; times(&tt)"; then
+    # V7 had times(), but not times.h!!!
+    echo 'using times() for runtimes' 1>&2
+    # XXX warning????
+    # XXX message about presumed HZ value??
+    echo 'MSTIME_C=$(SRCDIR)lib/generic/mstime.c' >> $CONFIG_M4
+    case "$MORV" in
+    9000/[34]??:HP-UX:*:*)
+	# HPUX on 68040 (hp4xx) and HPUX 9
+	echo '#define HZ 50'			>> $CONFIG_H
+	;;
+    esac
+elif [ "$HAVE_STDLIB_H" ]; then
+    echo 'using clock() for runtimes' 1>&2
+    # least preferable; includes system time (or may be wall clock time)
+    # may need to guess tick size
+    echo 'MSTIME_C=$(SRCDIR)lib/ansi/mstime.c'	>> $CONFIG_M4
+else
+    echo 'using dummy mstime.c' 1>&2	
+    echo 'MSTIME_C=$(SRCDIR)lib/dummy/mstime.c'	>> $CONFIG_M4
+fi
+
+
+# prefer C99 "isfinite" function:
+# hpux9 and hpux10 have finite(). hpux11 has isfinite().
+if config/check math.h 'float f; isfinite(f)'; then
+    echo 'using system isfinite()' 1>&2
+    echo '#define HAVE_ISFINITE'		>> $CONFIG_H
+fi
+
+# prefer ranlib
+if [ -f /usr/bin/ranlib -o -f /bin/ranlib ]; then
+    echo 'using ranlib' 1>&2
+else
+    # dummy out RANLIB
+    echo 'RANLIB=true'				>> $CONFIG_M4
+fi
+
+# prefer uname(2/3)
+# NeXT/Open Step have $INCDIR/bsd/sys/utsname.h?? transparent??
+if config/check sys/utsname.h "struct utsname u; uname(&u)"; then
+    echo 'using uname() for system name information' 1>&2
+else
+    OSNAME="$OS $OSREL"
+    if [ "$OSNAME" = 'unknown unknown' ]; then
+	OSNAME='unknown'
+    fi
+    echo 'using "'$MACHINE'" for hardware name' 1>&2
+    echo '#define HWNAME "'$MACHINE'"'		>> $CONFIG_H
+    echo 'using "'$OSNAME'" for system name' 1>&2
+    echo '#define OSNAME "'$OSNAME'"'		>> $CONFIG_H
+    echo 'SYS_C=$(SRCDIR)lib/generic/sys.c'	>> $CONFIG_M4
+fi
+
+# prefer v7/berkeley string functions
+# These days strings.h may be just the "bstring" functions (bzero, bcopy)
+# and the index/rindex functions, and not include the basic str* functions.
+# Or, it may be indentical to string.h (one just includes the other), or
+# it might be a superset of string.h.  I haven't (yet) seen a situation
+# where it's fatal to include both.
+
+if config/check strings.h 'rindex("", 65)'; then
+    echo '#define HAVE_STRINGS_H'		>> $CONFIG_H
+    echo 'using BSD strings.h' 1>&2
+    HAVE_STRINGS_H=1
+fi
+
+if config/check string.h 'strchr("", 65)'; then
+    echo 'using ANSI string.h' 1>&2
+    echo '#define HAVE_STRING_H'		>> $CONFIG_H
+    if [ "$HAVE_STRINGS_H" ]; then
+	true
+    elif grep bcopy $INCDIR/string.h >/dev/null; then
+	echo 'using system provided bcopy() function' 1>&2
+    elif test "$FORCE_MEMMOVE" && \
+        grep memmove $INCDIR/string.h >/dev/null; then
+	# The only system with no bcopy() which has memmove()
+	# is Solaris 2.4, and our bcopy() beats memmove()?!
+	echo 'using system provided memmove() function' 1>&2
+	echo '#define USE_MEMMOVE'		>> $CONFIG_H
+    else
+	echo 'using private bcopy() function' 1>&2
+	echo 'ADD_OBJS([bcopy.o])'		>> $CONFIG_M4
+	echo 'ADD_SRCS([$(BCOPY_C)])'		>> $CONFIG_M4
+	echo '#define NEED_BCOPY'		>> $CONFIG_H
+    fi
+
+    # memset may be optimized for zeroing, or may not!
+    if [ "$HAVE_STRINGS_H" ] || grep bzero $INCDIR/string.h >/dev/null; then
+	echo 'using system provided bzero() function' 1>&2
+    else
+	echo 'using private bzero() function' 1>&2
+	echo 'ADD_OBJS([bzero.o])'		>> $CONFIG_M4
+	echo 'ADD_SRCS([$(BZERO_C)])'		>> $CONFIG_M4
+	echo '#define NEED_BZERO'		>> $CONFIG_H
+    fi
+fi
+
+if config/check 'sys/types.h sys/socket.h' ""; then
+    echo 'using sockets for TCP/IP support' 1>&2
+
+    # check if network libraries needed
+    SOCKINC='sys/types.h sys/socket.h netdb.h'
+    SOCKFRAG='int s = socket(AF_INET, SOCK_STREAM, 0); struct hostent *hp = gethostbyname("")'
+    if config/check "$SOCKINC" "$SOCKFRAG"; then
+	NETLIBS=
+    elif config/check "$SOCKINC" "$SOCKFRAG" -lsocket; then
+	echo 'using libsocket' 1>&2
+	echo 'ADD_LDFLAGS([-lsocket])'		>> $CONFIG_M4
+	NETLIBS=-lsocket
+    elif config/check "$SOCKINC" "$SOCKFRAG" '-lsocket -lnsl'; then
+	echo 'using libsocket' 1>&2
+	echo 'ADD_LDFLAGS([-lsocket])'		>> $CONFIG_M4
+	echo 'using libnsl' 1>&2
+	echo 'ADD_LDFLAGS([-lnsl])'		>> $CONFIG_M4
+	NETLIBS='-lsocket -lnsl'
+    fi
+
+    if config/check "$SOCKINC" \
+	'struct addrinfo aa[2], *ap; getaddrinfo("", "", aa, &ap)' \
+	"$NETLIBS"; then
+	echo 'using getaddrinfo() for TCP/IPv6 compatibility' 1>&2
+	echo 'INET_O=inet6.o'			>> $CONFIG_M4
+	if config/check 'sys/types.h rpc/rpc.h' 'struct sockaddr sa; bindresvport_sa(0, &sa);' >/dev/null 2>&1; then
+	    # FreeBSD 4-7, NetBSD, MacOS
+	    echo 'using system bindresvport_sa() function (with rpc/rpc.h)' 1>&2
+	    echo '#define BINDRESVPORT_IN_RPC_H' >> $CONFIG_H
+	    # OpenBSD 5.6
+	elif config/check 'sys/types.h sys/socket.h netinet/in.h unistd.h' 'struct sockaddr sa; bindresvport_sa(0, &sa);' >/dev/null 2>&1; then
+	    echo 'using system bindresvport_sa() function' 1>&2
+	else
+	    echo 'using private bindresvport_sa() function' 1>&2
+	    echo '#define NEED_BINDRESVPORT_SA'	>> $CONFIG_H
+	    AUX_BINDRESVPORT=true
+	fi
+    else # no getaddrinfo/IPv6
+	BINDRESVTEST='struct sockaddr_in sin; bindresvport(0, &sin)'
+	if config/check 'sys/types.h rpc/rpc.h' "$BINDRESVTEST" >/dev/null 2>&1; then
+	    # FreeBSD 3.x
+	    echo 'using system bindresvport() function (with rpc/rpc.h)' 1>&2
+	    echo '#define BINDRESVPORT_IN_RPC_H' >> $CONFIG_H
+	elif config/check 'netinet/in.h unistd.h' "$BINDRESVTEST" >/dev/null 2>&1; then
+	    echo 'using system bindresvport() function' 1>&2
+	else
+	    echo 'using private bindresvport() function' 1>&2
+	    echo '#define NEED_BINDRESVPORT' >> $CONFIG_H
+	    AUX_BINDRESVPORT=true
+	fi
+    fi
+    if [ "$AUX_BINDRESVPORT" ]; then
+	echo 'ADD_OBJS([bindresvport.o])'	>> $CONFIG_M4
+	echo 'ADD_SRCS([$(BINDRESVPORT_C)])'	>> $CONFIG_M4
+    fi
+
+    if config/check netinet/in.h 'struct sockaddr_in6 in6' || \
+	config/check netinet6/in.h 'struct sockaddr_in6 in6'; then
+	echo '#define HAVE_SOCKADDR_IN6' >> $CONFIG_H
+    fi
+
+    # use socklen_t if avaialble
+    if config/check sys/socket.h 'socklen_t len'; then
+	echo '#define SOCKLEN_T socklen_t'	>> $CONFIG_H
+    else
+	echo '#define SOCKLEN_T int'		>> $CONFIG_H
+    fi
+
+    # use BSD bidirectional popen if socketpair available
+    # (could try to use two pipes??)
+    if config/check sys/socket.h \
+	'int s[2]; socketpair(AF_INET, SOCK_STREAM, 0, s)'; then
+	echo 'using private popen() function' 1>&2
+	echo 'ADD_OBJS([popen.o])'		>> $CONFIG_M4
+	echo 'ADD_SRCS([$(POPEN_C)])'		>> $CONFIG_M4
+	NEED_PATHS_H=1
+	if config/check vfork.h 'vfork()'; then
+	    echo 'using vfork() from vfork.h' 1>&2
+	    echo '#define HAVE_VFORK_H'		>> $CONFIG_H
+	elif config/check unistd.h 'vfork()'; then
+	    echo 'using vfork() (with unistd.h)' 1>&2
+	    echo '/* vfork() in unistd.h */'	>> $CONFIG_H
+	elif config/check '' 'vfork()'; then
+	    echo 'using vfork()' 1>&2
+	    echo '/* vfork() */'		>> $CONFIG_H
+	else
+	    NO_VFORK=1
+	fi
+	if [ "$NO_VFORK" ]; then
+	    echo 'using fork() for vfork()' 1>&2
+	    echo '#define vfork fork'		>> $CONFIG_H
+	fi
+    fi
+else
+    echo 'no sockets; TCP not available' 1>&2
+    echo 'INET_C=$(SRCDIR)lib/dummy/inet.c'	>> $CONFIG_M4
+fi
+
+FORKPTY="int f; pid_t pid = forkpty(&f, 0, 0, 0);"
+if config/check "sys/types.h libutil.h" "$FORKPTY" -lutil; then
+    # FreeBSD
+    echo 'using forkpty() with libutil.h and -lutil' 1>&2
+    echo '#define HAVE_FORKPTY'		>> $CONFIG_H
+    echo '#define HAVE_LIBUTIL_H'	>> $CONFIG_H
+    echo "ADD_LDFLAGS([-lutil])"	>> $CONFIG_M4
+    NEED_PATHS_H=1
+elif config/check "sys/types.h util.h" "$FORKPTY"; then
+    # OSX
+    echo 'using forkpty() with util.h' 1>&2
+    echo '#define HAVE_FORKPTY'		>> $CONFIG_H
+    echo '#define HAVE_UTIL_H'		>> $CONFIG_H
+    NEED_PATHS_H=1
+elif config/check "sys/types.h util.h" "$FORKPTY" -lutil; then
+    # NetBSD, OpenBSD
+    echo 'using forkpty() with util.h and -lutil' 1>&2
+    echo '#define HAVE_FORKPTY'		>> $CONFIG_H
+    echo '#define HAVE_UTIL_H'		>> $CONFIG_H
+    echo "ADD_LDFLAGS([-lutil])"	>> $CONFIG_M4
+    NEED_PATHS_H=1
+elif config/check "sys/types.h pty.h" "$FORKPTY" -lutil; then
+    # Linux
+    echo 'using forkpty() with pty.h and -lutil' 1>&2
+    echo '#define HAVE_FORKPTY'		>> $CONFIG_H
+    echo '#define HAVE_PTY_H'		>> $CONFIG_H
+    echo "ADD_LDFLAGS([-lutil])"	>> $CONFIG_M4
+    NEED_PATHS_H=1
+fi
+
+if [ "$NEED_PATHS_H" ]; then
+    if config/check paths.h 'char *foo = _PATH_BSHELL'; then
+	echo 'using paths.h for shell path' 1>&2
+	echo '#define HAVE_PATHS_H'		>> $CONFIG_H
+    else
+	# XXX outer loop for sh, ksh, bash, csh, tcsh?
+	for DIR in /usr/bin /bin `echo $PATH | tr ':' ' '`; do
+	    if [ -x $DIR/sh ]; then
+		BSHELL=$DIR/sh
+		break
+	    fi
+	done
+	if [ "$BSHELL" ]; then
+	    echo "using $BSHELL for shell" 1>&2
+	    echo '#define _PATH_BSHELL "'$BSHELL'"'	>> $CONFIG_H
+	else
+	    echo 'WARNING: could not find shell!' 1>&2
+	fi
+    fi
+fi
+
+if config/check termios.h 'struct termios t; tcgetattr(0, &t)'; then
+    echo 'using termios.h for tty modes' 1>&2
+    echo 'TTY_C=$(SRCDIR)lib/posix/tty.c'	>> $CONFIG_M4
+elif config/check termio.h 'struct termio t; ioctl(0, TCGETA, &t)'; then
+    echo 'using termio.h for tty modes' 1>&2
+    echo '#define USE_TERMIO'			>> $CONFIG_H
+    echo 'TTY_C=$(SRCDIR)lib/posix/tty.c'	>> $CONFIG_M4
+elif config/check sgtty.h 'struct sgtty s; gtty(0, &s)'; then
+    # systems with both termio/termios and sgtty usually
+    # are simulating sgtty, so it's the last check.
+    echo 'using sgtty.h for tty modes' 1>&2
+    echo 'TTY_C=$(SRCDIR)lib/bsd/tty.c'		>> $CONFIG_M4
+elif config/check sys/ttyio.h 'struct sgtty s; gtty(0, &s)'; then
+    # Bell Research Unix
+    echo 'using sys/ttyio.h for tty modes' 1>&2
+    echo 'TTY_C=$(SRCDIR)lib/bsd/tty.c'		>> $CONFIG_M4
+    echo '#define USE_TTYIO'			>> $CONFIG_H
+else
+    echo 'no tty support found' 1>&2
+    echo 'TTY_C=$(SRCDIR)lib/dummy/tty.c'	>> $CONFIG_M4
+fi
+
+# Look for getopt definition in stdio.h include file which might
+# conflict with our K&R getopt.c causing warnings, and even compile
+# failure.  If none found compile our own getopt.o into snolib.a.
+# An alternative would be to try compiling a small program which uses
+# getopt() (using $CCPATH as compiler), but grep seems faster!
+
+# getopt() now in POSIX.2; check stdlib.h and unistd.h (our getopt.c
+# doesn't include them, but avoid compiling our own if system version
+# available).
+
+if config/check stdio.h 'getopt(argc, argv, "")' || \
+   config/check stdlib.h 'getopt(argc, argv, "")' || \
+   config/check unistd.h 'getopt(argc, argv, "")'; then
+    echo 'using system provided getopt() function' 1>&2
+else
+    # may not be needed, but should compile without error!
+    echo 'using private getopt() function' 1>&2
+    echo 'ADD_OBJS([getopt.o])'			>> $CONFIG_M4
+    echo 'ADD_SRCS([$(GETOPT_C)])'		>> $CONFIG_M4
+fi
+
+# look for dynamic library support for "load";
+# overrides "dummy" and "bsd" style, unless given --no-dynlib
+if [ ! "$NO_DYNLIB" ]; then
+    # look for sun/unix98 style dlopen()
+    if [ ! "$NO_DLOPEN" ]; then
+      if config/check dlfcn.h 'dlopen("", 0)' || \
+	  config/check dlfcn.h 'dlopen("", 0)' -ldl; then
+	LOAD=unix98
+	echo 'using dlopen() for LOAD() support' 1>&2
+	HAVE_DLOPEN=1
+	echo 'LOAD_C=$(SRCDIR)lib/unix98/load.c' >> $CONFIG_M4
+	# XXX use .dll under Cygwin??
+	SNOLIB_FILE=snolib.so
+
+	case "${OS}${OSREL}" in
+	Darwin*)
+	    # darwin dlopen() support in cctools/libdyld??
+	    if [ -f /usr/lib/libdl.dylib ]; then
+		# Darwin 7.9 (OS X 10.3) and later??
+		echo 'ADD_LDFLAGS([-ldl])'	>> $CONFIG_M4
+	    elif [ -f /sw/lib/libdl.dylib ]; then
+		echo 'ADD_LDFLAGS([-L/sw/lib -ldl])' >> $CONFIG_M4
+	    fi
+	    TRY_UNDERSCORE=true
+	    SNOLIB_FILE=snolib.bundle
+	    ;;
+	*BSD*)
+	    if file /bin/ls | grep -i elf >/dev/null; then
+		# only on ELF systems with GNU ld:
+		echo 'ADD_LDFLAGS([-rdynamic])' >> $CONFIG_M4
+	    else
+		# old a.out systems:
+		# COFF may not, but this should be mostly harmless
+		TRY_UNDERSCORE=true
+	    fi
+	    ;;
+	Linux*)
+	    # XXX detect a.out systems?
+	    echo 'ADD_LDFLAGS([-ldl])'		>> $CONFIG_M4
+	    # only on ELF systems with GNU ld:
+	    echo 'ADD_LDFLAGS([-rdynamic])' >> $CONFIG_M4
+	    ;;
+	SunOS4*)
+	    echo 'ADD_LDFLAGS([-ldl])'		>> $CONFIG_M4
+	    # a.out system; need underscore
+	    TRY_UNDERSCORE=true
+	    ;;
+	SunOS5*)
+	    echo 'ADD_LDFLAGS([-ldl])'		>> $CONFIG_M4
+	    ;;
+	esac
+	if [ "$TRY_UNDERSCORE" ]; then
+	    echo '#define TRY_UNDERSCORE'	>> $CONFIG_H
+	fi
+	# new load support (honors SNOPATH)
+	echo 'ADD_OBJS([loadx.o])'		>> $CONFIG_M4
+      fi
+    elif config/check dl.h 'shl_load("", BIND_DEFERRED, 0L)'; then
+	LOAD=hpux
+	echo 'using HP-UX shl_load() for LOAD() support' 1>&2
+	echo 'undefine([hpux])'			>> $CONFIG_M4
+	echo 'LOAD_C=$(SRCDIR)lib/hpux/load.c'	>> $CONFIG_M4
+	SNOLIB_FILE=snolib.sl
+	# export all symbols
+	echo 'ADD_LDFLAGS([-Wl,-E])'		>> $CONFIG_M4
+	echo 'ADD_LDFLAGS([-ldld])'		>> $CONFIG_M4
+    elif config/check mach-o/dyld.h 'NSObjectFileImage ofi'; then
+	LOAD=next
+	echo 'using NextStep/Darwin LOAD() support' 1>&2
+	echo 'LOAD_C=$(SRCDIR)lib/next/load.c'	>> $CONFIG_M4
+	if [ "$OS" = Darwin ]; then
+	    echo '#define TRY_UNDERSCORE'	>> $CONFIG_H
+	    SNOLIB_FILE=snolib.bundle
+	else
+	    SNOLIB_FILE=snolib.dyld
+	fi
+    elif config/check a.out.h 'struct exec a; int x = OMAGIC'; then
+	LOAD=aout
+	echo 'using a.out ld for LOAD() support' 1>&2
+	echo 'LOAD_C=$(SRCDIR)lib/bsd/load.c'	>> $CONFIG_M4
+	if [ -f /usr/bin/ld ]; then
+	    echo 'found /usr/bin/ld' 1>&2
+	elif [ -f /bin/ld ]; then
+	    echo 'found /bin/ld' 1>&2
+	    echo '#define LD_PATH "/bin/ld"'	>> $CONFIG_H
+	fi
+	SNOLIB_FILE=snolib.a
+    fi
+fi
+
+# used to construct default SNOPATH
+echo '#define SNOLIB_BASE "'"$SNOLIB_BASE"'"'	>> $CONFIG_H
+# used by old load.c functions and host.c:
+echo '#define SNOLIB_DIR "'"$SNOLIB_LIB"'"'	>> $CONFIG_H
+# host.c:
+echo '#define INCLUDE_DIR "'"$INCLUDE_DIR"'"'	>> $CONFIG_H
+
+if [ "$SNOLIB_FILE" ]; then
+    echo '# NOTE: SNOLIB_FILE in config.h too!'	>> $CONFIG_M4
+    echo 'SNOLIB_FILE='$SNOLIB_FILE		>> $CONFIG_M4
+    echo '/* NOTE: SNOLIB_FILE in config.m4 too! */' >> $CONFIG_H
+    echo '#define SNOLIB_FILE "'$SNOLIB_FILE'"' >> $CONFIG_H
+fi
+
+if [ ! "$LOAD" ]; then
+    echo 'using dummy LOAD() support' 1>&2
+    echo 'LOAD_C=$(SRCDIR)lib/dummy/load.c'	>> $CONFIG_M4
+fi
+
+# Seperate from LARGEFILE;  BSD4.4 systems have large file
+# support by default, without any LARGEFILE define chicanery.
+
+# fseeko isn't needed if "long" (the offset type used by fseek)
+# is 64 bits, but should be safe in any case (famous last words).
+if config/check stdio.h 'fseeko(stdout, 0, 0)'; then
+    echo 'using fseeko() for file positioning' 1>&2
+    echo '#define HAVE_FSEEKO'			>> $CONFIG_H
+fi
+
+# detect GNU libc (glibc) -- run in subshell to redirect error output
+# if --version not a valid option.  Future versions might not print
+# version as last item on line (currently it's the 4th), but at this
+# moment, I only care about detecting version 2.1;
+GLIBC=`(getconf --version)2>&1 | awk '/GNU libc/ || /EGLIBC/ { print $NF }'`
+
+if [ "x$GLIBC" != x ]; then
+    echo "# GLIBC version $GLIBC"		>> $CONFIG_M4
+    echo '#define HAVE_GLIBC'			>> $CONFIG_H
+    echo "detected GNU libc version $GLIBC" 1>&2
+
+    # glibc 2.1 is broken; fseeko() cannot be used
+    case "$GLIBC" in
+    2.1*)
+	LARGEFILE_OK=
+	;;
+    esac
+fi
+
+# if using a native 64bit data model no options should be needed
+# for large file support
+if [ "$LP64" ]; then
+    LARGEFILE_OK=
+fi
+
+if [ "$LARGEFILE_OK" ] &&
+   egrep 'LARGEFILE|LARGE_FILE' $INCDIR/stdio.h >/dev/null 2>&1; then
+    echo 'using large file support' 1>&2
+    if [ "x$GLIBC" = x -a -f /usr/bin/getconf ]; then
+	if getconf LFS_CFLAGS >/dev/null 2>&1; then
+	    USE_FLAGS=LFS_CFLAGS
+	elif [ "$XBS5_MODEL" ]; then
+	    if getconf $XBS5_MODEL >/dev/null 2>&1; then
+		USE_FLAGS="$XBS5_MODEL"
+	    fi
+	fi
+    fi
+    if [ "$USE_FLAGS" ]; then
+	FLAGS=`getconf $USE_FLAGS`
+	echo "using getconf ${USE_FLAGS}: $FLAGS" 1>&2
+	for X in $FLAGS; do
+	    case "$X" in
+	    -D*)
+		echo "X$X" | \
+		    sed -e 's/^X-D/#define /' -e 's/=/ /' >> $CONFIG_H
+		;;
+	    -U*)
+		echo "X$X" | \
+		    sed -e 's/^X-U/#undef /' -e 's/=/ /' >> $CONFIG_H
+		;;
+	    *)
+		echo 'ADD_CFLAGS(['$X'])'		>> $CONFIG_M4
+		;;
+	    esac
+	done
+    else
+	# gnu libc getconf LFS_CFLAGS leaves out _LARGEFILE_SOURCE!!
+	# so does HP-UX getconf XBS5_ILP32_OFFBIG_CFLAGS
+	echo 'using default LARGEFILE defines' 1>&2
+	echo '#define _LARGEFILE_SOURCE'	>> $CONFIG_H
+	echo '#define _FILE_OFFSET_BITS 64'	>> $CONFIG_H
+    fi
+fi
+
+# RedHat 6.0 has mman.h, but not madvise()
+if config/check sys/mman.h 'madvise(0, 0, MADV_RANDOM)' || \
+    config/check sys/mman.h 'posix_madvise(0, 0, POSIX_MADV_RANDOM)'; then
+    echo 'using madvise() during GC' 1>&2
+    echo 'DYNAMIC_C=$(SRCDIR)lib/posix/dynamic.c' >> $CONFIG_M4
+elif config/check sys/vadvise.h 'vadvise(VA_ANOM)'; then
+    echo 'using vadvise() during GC' 1>&2
+    echo 'DYNAMIC_C=$(SRCDIR)lib/bsd/dynamic.c'	>> $CONFIG_M4
+else
+    echo 'using generic dynamic.c' 1>&2
+    echo 'DYNAMIC_C=$(SRCDIR)lib/generic/dynamic.c' >> $CONFIG_M4
+fi
+
+# just give in & compile a little program that uses SIGTSTP??
+if config/check signal.h 'int i = SIGTSTP'; then
+    if config/check signal.h 'sigset_t ss; sigemptyset(&ss)'; then
+	echo 'using POSIX suspend.c' 1>&2
+    elif config/check signal.h 'sigmask(0)'; then
+	echo 'using BSD suspend.c' 1>&2
+	echo 'SUSPEND_C=$(SRCDIR)lib/bsd/suspend.c'	>> $CONFIG_M4
+    else
+	# can't figure out how to unblock SIGTSTP in handler; use SIGSTOP
+	echo 'using generic suspend.c' 1>&2
+	echo 'SUSPEND_C=$(SRCDIR)lib/generic/suspend.c' >> $CONFIG_M4
+    fi
+else
+    echo 'using dummy suspend.c' 1>&2
+    echo 'SUSPEND_C=$(SRCDIR)lib/dummy/suspend.c' >> $CONFIG_M4
+fi
+
+if config/check sys/time.h \
+    'struct timeval tv; int x; gettimeofday(&tv,0); x = tv.tv_sec'; then
+    echo 'using gettimeofday()' 1>&2
+    echo '#define HAVE_GETTIMEOFDAY'		>> $CONFIG_H
+fi
+if config/check time.h 'struct tm tm; int i = tm.tm_gmtoff'; then
+    echo 'using tm_gmtoff' 1>&2
+    echo '#define HAVE_TM_GMTOFF'		>> $CONFIG_H
+fi
+
+SLEEP_C=bsd/sleep.c
+echo '#define HAVE_SLEEP'			>> $CONFIG_H
+SELECT_FRAG='fd_set x; struct timeval tv; select(0,&x,&x,&x,&tv);'
+if config/check time.h 'struct timespec ts; nanosleep(&ts,0)'; then
+    echo 'using POSIX nanosleep()' 1>&2
+    SLEEP_C=posix/sleep.c
+elif config/check sys/select.h "$SELECT_FRAG"; then
+    echo 'using posix select() for sleep'	1>&2
+    echo '#define HAVE_SELECT_H'		>> $CONFIG_H
+elif config/check 'sys/time.h sys/types.h' "$SELECT_FRAG"; then
+    echo 'using select() for sleep' 1>&2
+else
+    echo 'using generic sleep()' 1>&2
+    SLEEP_C=generic/sleep.c			>> $CONFIG_M4
+fi
+echo 'SLEEP_C=$(SRCDIR)'$SLEEP_C		>> $CONFIG_M4
+echo "	SLEEP_C = '$SLEEP_C'"			>> $CONFIG_SNO
+
+if config/check time.h 'struct tm tm; strptime("", "", &tm)'; then
+    echo 'using strptime()' 1>&2
+    echo '#define HAVE_STRPTIME'		>> $CONFIG_H
+fi
+
+if config/check time.h 'struct tm tm; timegm(&tm)'; then
+    echo 'using timegm()' 1>&2
+    echo '#define HAVE_TIMEGM'			>> $CONFIG_H
+fi
+
+# output SO/DL defines
+
+# on everything except Darwin, one format suffices
+if [ "x$SO_EXT" != x -a "x$DL_EXT" = x ]; then
+    DL_EXT="$SO_EXT"
+    DL_CFLAGS="$SO_CFLAGS"
+    DL_LD="$SO_LD"
+    DL_LDFLAGS="$SO_LDFLAGS"
+fi
+
+if [ "x$SO_EXT" != x ]; then
+# not used:
+    echo '# Shared Object Libraries'	>> $CONFIG_M4
+    echo "SO_EXT=$SO_EXT"		>> $CONFIG_M4
+    echo "SO_CFLAGS=$SO_CFLAGS"		>> $CONFIG_M4
+    echo "SO_LD=$SO_LD"			>> $CONFIG_M4
+    echo "SO_LDFLAGS=$SO_LDFLAGS"	>> $CONFIG_M4
+
+    echo '/* Shared Object Libraries (in config.m4 too) */' >> $CONFIG_H
+    echo "#define SO_EXT \"$SO_EXT\""	>> $CONFIG_H
+    echo "#define SO_CFLAGS \"$SO_CFLAGS\"" >> $CONFIG_H
+    echo "#define SO_LD \"$SO_LD\""	>> $CONFIG_H
+    echo "#define SO_LDFLAGS \"$SO_LDFLAGS\"" >> $CONFIG_H
+fi
+
+if [ "x$DL_EXT" != x ]; then
+    echo '# Dynamicly Loaded Extensions' >> $CONFIG_M4
+    echo "DL_EXT=$DL_EXT"		>> $CONFIG_M4
+    echo "DL_CFLAGS=$DL_CFLAGS"		>> $CONFIG_M4
+    echo "DL_LD=$DL_LD"			>> $CONFIG_M4
+    echo "DL_LDFLAGS=$DL_LDFLAGS"	>> $CONFIG_M4
+    echo '/* Dynamicly Loaded Extensions (in config.m4 too) */' >> $CONFIG_H
+    echo "#define DL_EXT \"$DL_EXT\""	>> $CONFIG_H
+    echo "#define DL_CFLAGS \"$DL_CFLAGS\"" >> $CONFIG_H
+    echo "#define DL_LD \"$DL_LD\""	>> $CONFIG_H
+    echo "#define DL_LDFLAGS \"$DL_LDFLAGS\"" >> $CONFIG_H
+fi
+
+if [ "x$TCONF" = x ]; then
+    # Tcl auto-detect is only easy on Mac (system supplied, no version in path)
+    FRAMEWORK=/System/Library/Frameworks/Tcl.framework/tclConfig.sh
+    if [ -f $FRAMEWORK ]; then
+	TCONF=$FRAMEWORK
+    fi
+fi
+# Include STCL (tcl) support, if available/requested
+# (Tk loads as package in 8.4+)
+if [ "$TCONF" -a -f "$TCONF" ]; then
+  . "$TCONF"
+  if [ "$TCL_VERSION" ]; then
+    echo "Using Tcl version $TCL_VERSION" 1>&2
+    if [ "$FORCE_PML" ]; then
+	echo '#define PML_STCL'	>> $CONFIG_H
+	echo "ADD_LDFLAGS([$TCL_LIB_SPEC])" >> $CONFIG_M4
+	echo 'ADD_OBJS([stcl.o])'	>> $CONFIG_M4
+	echo 'ADD_SRCS([$(STCL_C)])' >> $CONFIG_M4
+	echo "ADD_CPPFLAGS([$TCL_INCLUDE_SPEC])" >> $CONFIG_M4
+    else
+	MODULES="$MODULES stcl"
+	echo "	TCL_LIB_SPEC = '$TCL_LIB_SPEC'" >> $CONFIG_SNO
+	echo "	TCL_INCLUDE_SPEC = '$TCL_INCLUDE_SPEC'" >> $CONFIG_SNO
+    fi
+  fi
+fi
+
+if true; then
+    NDBM_LIBS=
+    DBM_FRAG='DBM *db = dbm_open("", 0, 0)'
+    if [ "$FORCE_SDBM" ]; then
+	# bypass checks
+	USE_SDBM=1
+    elif config/check ndbm.h "$DBM_FRAG"; then
+	echo "using ndbm.h for DBM support" 1>&2
+	echo '#define HAVE_NDBM_H'		>> $CONFIG_H
+    elif config/check ndbm.h "$DBM_FRAG" -ldb; then
+	echo "using ndbm.h for DBM support (with -ldb)" 1>&2
+	echo '#define HAVE_NDBM_H'		>> $CONFIG_H
+	NDBM_LIBS='-ldb'
+    elif config/check db.h "$DBM_FRAG" '-DDB_DBM_HSEARCH'; then
+	# check for Berkeley DB in libc
+	echo "using db.h for DBM support" 1>&2
+	echo '#define DB_DBM_HSEARCH 1'		>> $CONFIG_H
+	echo '#define HAVE_DB_H'		>> $CONFIG_H
+    elif config/check db.h "$DBM_FRAG" '-ldb -DDB_DBM_HSEARCH'; then
+	# works with libdb4.8
+	echo "using db.h for DBM support (with -ldb)" 1>&2
+	echo '#define DB_DBM_HSEARCH 1'		>> $CONFIG_H
+	echo '#define HAVE_DB_H'		>> $CONFIG_H
+	NDBM_LIBS='-ldb'
+    else
+	# not force sdbm, or ndbm.h w/o libs, or db.h
+	# (ie; here on most Linux systems w/o Berkeley DB)
+	# Some Linux distributions fraction off ndbm compatibility:
+	# many different names/locations for compat header file: try them all.
+
+	# *BUT* will still fail (and silently use SDBM) if *all*
+	# the right (dev) packages not installed!!!
+	for COMPAT in '' ' -lgdbm_compat'; do
+	    NDBM_LIBS="-lgdbm$COMPAT"
+	    if config/check ndbm.h "$DBM_FRAG" "$NDBM_LIBS"; then
+		# cygwin
+		USE_GDBM=1
+		echo "using ndbm.h for DBM support (with $NDBM_LIBS)" 1>&2
+		echo '#define HAVE_NDBM_H'	>> $CONFIG_H
+		break
+	    elif config/check gdbm/ndbm.h "$DBM_FRAG" "$NDBM_LIBS"; then
+		USE_GDBM=1
+		echo "using gdbm/ndbm.h for DBM support (with $NDBM_LIBS)" 1>&2
+		echo '#define HAVE_GDBM_SLASH_NDBM_H'	>> $CONFIG_H
+		break
+	    elif config/check gdbm-ndbm.h "$DBM_FRAG" "$NDBM_LIBS"; then
+		USE_GDBM=1
+		echo "using gdbm-ndbm.h for DBM support (with $NDBM_LIBS)" 1>&2
+		echo '#define HAVE_GDBM_DASH_NDBM_H'	>> $CONFIG_H	
+		break
+	    fi
+	    NDBM_LIBS=""
+	done
+	if [ ! "$USE_GDBM" ]; then
+	    USE_SDBM=1
+	fi
+    fi
+
+    if [ "$FORCE_PML" ]; then
+	echo '#define PML_NDBM'		>> $CONFIG_H
+	echo 'ADD_OBJS([ndbm.o])'	>> $CONFIG_M4
+	echo 'ADD_SRCS([$(NDBM_C)])'	>> $CONFIG_M4
+	if [ "x$NDBM_LIBS" != x ]; then
+	    echo "ADD_LDFLAGS([$NDBM_LIBS])" >> $CONFIG_M4
+	fi
+    else
+	echo "	NDBM_LDFLAGS = '$NDBM_LIBS'" >> $CONFIG_SNO
+	MODULES="$MODULES ndbm"
+    fi
+    if [ "$USE_SDBM" ]; then
+	echo "using SDBM for DBM support" 1>&2
+	if [ "$FORCE_PML" ]; then
+	    echo 'ADD_CPPFLAGS([-Imodules/ndbm/sdbm])' >> $CONFIG_M4
+	    echo 'ADD_SRCS([$(SDBM_C)$(SDBM_HASH_C) $(SDBM_PAIR_C)])' >> $CONFIG_M4
+	    echo 'ADD_OBJS([sdbm.o sdbm_hash.o sdbm_pair.o])' >> $CONFIG_M4
+	else
+	    # for modules/ndbm/setup.sno:
+	    echo '	NDBM_INCLUDE = "sdbm"' >> $CONFIG_SNO
+	    echo '	NDBM_SRCS = ",sdbm/sdbm.c,sdbm/sdbm_hash.c,sdbm/sdbm_pair.c"' >> $CONFIG_SNO
+	fi
+	echo '#define HAVE_SDBM_H'	>> $CONFIG_H
+	echo '#define DUFF'		>> $CONFIG_H
+    fi
+fi
+
+# Include readline support, if found
+if [ ! "$WITHOUT_READLINE" ]; then
+    RL_INC='stdio.h readline/readline.h readline/history.h'
+    RL_FRAG='readline("?")'
+    if config/check "$RL_INC" "$RL_FRAG" -lreadline; then
+	RL_LIBS="-lreadline"
+    elif config/check "$RL_INC" "$RL_FRAG" '-lreadline -lncurses'; then
+	RL_LIBS="-lreadline -lncurses"
+    elif config/check "$RL_INC" "$RL_FRAG" '-ledit'; then
+	RL_LIBS="-ledit"
+    fi
+
+    if [ "x$RL_LIBS" != x ]; then
+	echo "using readline (with $RL_LIBS)" 1>&2
+	if [ "$FORCE_PML" ]; then
+	    echo 'ADD_OBJS([readline.o])'	>> $CONFIG_M4
+	    echo 'ADD_SRCS([$(READLINE_C)])'	>> $CONFIG_M4
+	    echo '#define PML_READLINE'		>> $CONFIG_H
+	else
+	    echo "	READLINE_LDFLAGS = '$RL_LIBS'" >> $CONFIG_SNO
+	    MODULES="$MODULES readline"
+	fi
+	echo "ADD_LDFLAGS([$RL_LIBS])"		>> $CONFIG_M4
+	# Make optional?
+	echo '#define COMPILER_READLINE'	>> $CONFIG_H
+	# NetBSD/OSX have rl_[gs]et_keymap, but they're noops,
+	# rl_copy_keymap() isn't even faked.
+	if config/check "$RL_INC" "rl_copy_keymap()" $RL_LIBS; then
+	    echo "using rl_set_keymap()" 1>&2
+	    echo '#define HAVE_RL_SET_KEYMAP'	>> $CONFIG_H
+	fi
+    fi
+fi
+
+# test lstat() for "stat" package
+if config/check 'sys/types.h sys/stat.h' 'struct stat st; lstat("foo", &st)'; then
+    echo '#define HAVE_LSTAT'	>> $CONFIG_H
+    echo 'using lstat()' 1>&2
+fi
+
+# MacPorts: /opt/local
+SEARCH_DIRS='/usr/local /opt/local'
+if [ ! "$FORCE_PML" ]; then
+    SQLITE_FRAG='sqlite3 *db; sqlite3_open("foo", &db)'
+    if config/check 'sqlite3.h' "$SQLITE_FRAG" '-lsqlite3'; then
+	echo 'using sqlite3' 1>&2
+	MODULES="$MODULES sqlite3"
+	SQLITE_INCLUDE=
+	SQLITE_LIBDIR=
+    else
+	for DIR in $SEARCH_DIRS; do
+	    if config/check sqlite3.h "$SQLITE3_FRAG" "-I$DIR/include -L$DIR/lib -lsqlite3"; then
+	        echo "using sqlite3 from $DIR" 1>&2
+		echo "	SQLITE_INCLUDE = '$DIR/include'" >> $CONFIG_SNO
+		echo "	SQLITE_LIBDIR = '$DIR/lib'" >> $CONFIG_SNO
+		MODULES="$MODULES sqlite3"
+		break
+	    fi
+	done
+    fi
+
+    if [ "$HAVE_DLOPEN" ]; then
+	FFI_FRAG='ffi_cif cif; ffi_prep_cif(&cif, FFI_DEFAULT_ABI, 0, 0, 0)'
+	if config/check 'ffi.h' "$FFI_FRAG" '-lffi'; then
+	    echo 'using ffi' 1>&2
+	    MODULES="$MODULES ffi"
+	    FFI_INCLUDE=
+	    FFI_LIBDIR=
+	else
+	    for DIR in $SEARCH_DIRS; do
+		if config/check ffi.h "$FFI_FRAG" "-I$DIR/include -L$DIR/lib -lffi"; then
+		    echo "using ffi from $DIR" 1>&2
+		    echo "	FFI_INCLUDE = '$DIR/include'" >> $CONFIG_SNO
+		    echo "	FFI_LIBDIR = '$DIR/lib'" >> $CONFIG_SNO
+		    MODULES="$MODULES ffi"
+		    break
+		fi
+	    done
+	fi
+    fi
+fi
+
+# Include COM support under Cygwin!
+if [ "$CYGWIN" -a ! "$WITHOUT_COM" -a -f $INCDIR/w32api/objbase.h ]; then
+    echo 'using Win32 COM support' 1>&2
+    MODULES="$MODULES com"
+    if grep wcschr $INCDIR/wchar.h >/dev/null 2>&1; then
+	echo '#define USE_WCHAR_H'		>> $CONFIG_H
+    else
+	# XXX look in $INCDIR/w32api??
+	echo '#define NEED_WCSCHR'		>> $CONFIG_H
+    fi
+    if grep CoGetObject $INCDIR/w32api/objbase.h >/dev/null; then
+	echo '/* found CoGetObject in w32api/objbase.h */' >> $CONFIG_H
+    else
+	echo '#define NEED_COGETOBJECT'		>> $CONFIG_H
+    fi
+
+    # -L/usr/lib/w32api needed on Windows 7 (thanks to Robert Shanley!)
+    echo '	COM_LIBDIRS = "/usr/lib/w32api"' >> $CONFIG_SNO
+
+    # -lstdc++ needed w/ gcc 3.3.1 cygwin 1.5.9 (0.122/4/2)
+    echo '	COM_LIBS = "ole32,uuid,oleaut32,stdc++"' >> $CONFIG_SNO
+fi
+
+if [ "$INITIAL_CFLAGS" ]; then
+     # stolen from getconf handling... make into function?
+     echo 'using CFLAGS environment variable' 1>&2
+     echo '/* from CFLAGS: */' >> $CONFIG_H
+     for X in $INITIAL_CFLAGS; do
+	 case "$X" in
+	 -D*)
+	     echo "X$X" | \
+		 sed -e 's/^X-D/#define /' -e 's/=/ /' >> $CONFIG_H
+	     ;;
+	 -U*)
+	     echo "X$X" | \
+		 sed -e 's/^X-U/#undef /' -e 's/=/ /' >> $CONFIG_H
+	     ;;
+	 *)
+	     echo 'ADD_CFLAGS(['$X'])'		>> $CONFIG_M4
+	     ;;
+	 esac
+     done
+fi
+if [ "$CPPFLAGS" ]; then
+    # stolen from getconf handling... make into function?
+    echo 'using CPPFLAGS environment variable' 1>&2
+    echo '/* from CPPFLAGS: */' >> $CONFIG_H
+    for X in $CPPFLAGS; do
+	case "$X" in
+	-D*)
+	    echo "X$X" | \
+		sed -e 's/^X-D/#define /' -e 's/=/ /' >> $CONFIG_H
+	    ;;
+	-U*)
+	    echo "X$X" | \
+		sed -e 's/^X-U/#undef /' -e 's/=/ /' >> $CONFIG_H
+	    ;;
+	*)
+	    echo 'ADD_CPPFLAGS(['$X'])'		>> $CONFIG_M4
+	    ;;
+	esac
+    done
+fi
+if [ "$LDFLAGS" ]; then
+	echo 'using LDFLAGS environment variable' 1>&2
+	echo 'ADD_LDFLAGS(['$LDFLAGS'])'	>> $CONFIG_M4
+fi
+if [ "x$LIBRT" != x ]; then
+	echo 'ADD_LDFLAGS(['$LIBRT'])'		>> $CONFIG_M4
+fi
+## check if pow() available? use dummy/expops.c if not?
+
+# avoid:
+# Solaris 8 /usr/sbin/install
+# AIX /bin/install
+# SysV /etc/install, /usr/sbin/install
+# SunOS /usr/etc/install
+# IRIX /sbin/install
+
+# should always find ./install-sh
+for DIR in /usr/bin /usr/ucb /usr/local/bin /bin .; do
+    for INSTALL in install ginstall scoinst install-sh; do
+	IPATH=$DIR/$INSTALL
+	if [ -d $IPATH ]; then
+	    continue
+	fi
+	if [ -x $IPATH ]; then
+	    # avoid broken AIX installer
+	    # this test blows on cygwin, where -x /usr/bin/install
+	    # succeeds for /usr/bin/install.exe, but grep on
+	    # /usr/bin/install fails, so send stderr to /dev/null
+	    if grep dspmsg $IPATH >/dev/null 2>&1; then
+		continue
+	    fi
+	    echo "using $IPATH for make install" 1>&2
+	    echo "INSTALL=$IPATH"		>> $CONFIG_M4
+	    break 2
+	fi
+    done
+done
+
+################################
+# construct new "with" file
+
+WITH=with.new
+rm -f $WITH
+touch $WITH
+if [ ! "$WITHOUT_BLOCKS" ]; then
+    echo "BLOCKS=1"				>> $CONFIG_M4
+    echo '#define BLOCKS'			>> $CONFIG_H
+    echo ' --with BLOCKS'			>> $WITH
+fi
+
+################################
+# should be last thing done;
+
+BUILD_DL=
+BUILD_INC=
+# for host.sno:
+TEST_SNOPATH=..
+echo 'RUNSETUP=SNOLIB=$(SNOLIB) SNOPATH=../..:../../snolib ../../xsnobol4 -N setup.sno' >> $CONFIG_M4
+for M in $MODULES; do
+    DL="modules/$M/$M$DL_EXT"
+    INC="modules/$M/$M.sno"
+    MAN="modules/$M/snobol4$M.3"
+    HTML="modules/$M/snobol4$M.3.html"
+    BUILD_DL="$BUILD_DL $DL"
+    BUILD_INC="$BUILD_INC $INC"
+    BUILD_MAN="$BUILD_MAN $MAN"
+    BUILD_HTML="$BUILD_HTML $HTML"
+    TEST_SNOPATH="$TEST_SNOPATH:../modules/$M"
+    echo ''					>> $CONFIG_M4
+    echo "$DL $INC $MAN $HTML: xsnobol4 snolib/setuputil.sno modules/$M/setup.sno" >> $CONFIG_M4
+    echo "	cd modules/$M; \$(RUNSETUP) build" >> $CONFIG_M4
+done
+TEST_SNOPATH="$TEST_SNOPATH:../snolib:."
+echo ''						>> $CONFIG_M4
+echo "MODULES=$MODULES"				>> $CONFIG_M4
+echo "MODULES_LOADABLE=$BUILD_DL"		>> $CONFIG_M4
+echo "MODULES_INCLUDE=$BUILD_INC"		>> $CONFIG_M4
+echo "MODULES_MAN=$BUILD_MAN"			>> $CONFIG_M4
+echo "MODULES_HTML=$BUILD_HTML"			>> $CONFIG_M4
+# omitting  $(MODULES_MAN) $(MODULES_HTML) until all modules contain pea/POD docs
+echo 'MODULES_GENERATED=$(MODULES_LOADABLE) $(MODULES_INCLUDE)' >> $CONFIG_M4
+echo "TEST_SNOPATH=$TEST_SNOPATH"		>> $CONFIG_M4
+echo ''						>> $CONFIG_M4
+echo 'clean_modules:'				>> $CONFIG_M4
+echo '	rm -f $(MODULES_GENERATED)'		>> $CONFIG_M4
+echo ''						>> $CONFIG_M4
+echo 'build_modules: $(MODULES_GENERATED)'	>> $CONFIG_M4
+echo ''						>> $CONFIG_M4
+
+if [ -f local-config ]; then
+    echo 'using local-config' 1>&2
+    echo '################'			>> $CONFIG_M4
+    echo '# local-config:'			>> $CONFIG_M4
+    cat local-config				>> $CONFIG_M4
+    echo '# end local-config'			>> $CONFIG_M4
+    echo '################'			>> $CONFIG_M4
+else
+    echo '# if the file local-config existed it would have been incorporated here' >> $CONFIG_M4
+fi
+
+################
+
+if [ -f local-defines ]; then
+    echo 'using local-defines' 1>&2
+    echo '/********************'		>> $CONFIG_H
+    echo ' * local-defines:'			>> $CONFIG_H
+    echo ' */'					>> $CONFIG_H
+    cat local-defines				>> $CONFIG_H
+    echo '/*'					>> $CONFIG_H
+    echo ' * end local-defines'			>> $CONFIG_H
+    echo ' ********************/'		>> $CONFIG_H
+else
+
+    echo ''					>> $CONFIG_H
+    echo '/* if the file local-defines existed it would have been incorporated here */' >> $CONFIG_H
+fi
+
+if [ ! "$DEBUG" ]; then
+    if [ $CONFIG_H != config.h ]; then
+	mv -f $CONFIG_H config.h
+    fi
+    if [ $CONFIG_M4 != config.m4 ]; then
+	mv -f $CONFIG_M4 config.m4
+    fi
+    if [ $CONFIG_SNO != config.sno ]; then
+	mv -f $CONFIG_SNO config.sno
+    fi
+    if [ $VERSION_H != version.h ]; then
+	mv -f $VERSION_H version.h
+    fi
+    # updating "with" file causes regeneration of .sno files
+    # which requires an installed snobol4 binary
+    if [ $WITH != with ]; then
+	if cmp $WITH with >/dev/null 2>&1; then
+	    rm -f $WITH
+	else
+	    # XXX check if snobol4 executable can be found???
+	    mv $WITH with
+	fi
+    fi
+fi

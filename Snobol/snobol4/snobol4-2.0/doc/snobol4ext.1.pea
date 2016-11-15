@@ -1,0 +1,165 @@
+$Id: snobol4ext.1.pea,v 1.6 2014/12/20 21:05:42 phil Exp $
+=pea
+=sect NAME
+snobol4ext \- CSNOBOL4 extensions
+
+=sect DESCRIPTION
+This page describes extensions to the Bell Telephone Laboratories
+portable implementation of SNOBOL4 in B<snobol4>(1).
+
+=item B<ARRAY/TABLE> access
+Multiple B<ARRAY> and/or B<TABLE> index operations may appear in a
+row, without having to resort to use of the B<ELEMENT> function, so
+long as no intervening spaces (or line continuations) appear.
+
+=item Case folding
+By default the compiler folds identifiers and directives to upper
+case, so programs can be entered in either case:
+see B<snobol4>(1),
+B<-CASE> in B<snobol4ctrl>(1),
+B<&CASE> in B<snobol4key>(1).
+
+=item Control lines
+The following additional ``control lines'' are implemented:
+B<-CASE>,
+B<-COPY>,
+B<-ERROR>,
+B<-NOERRORS>,
+B<-EXECUTE>,
+B<-NOEXECUTE>,
+B<-HIDE>,
+B<-INCLUDE>,
+B<-LINE>:
+See B<snobol4ctrl>(1).
+
+=item Functions
+The following additional functions are implemented:
+B<ATAN()>,
+B<BREAKX()>,
+B<CHAR()>,
+B<CHOP()>
+B<COS()>,
+B<DATE()>,
+B<DELETE()>,
+B<EXP()>,
+B<FILE()>,
+B<FILE_ABSPATH()>,
+B<FILE_ISDIR()>
+B<FREEZE()>,
+B<FUNCTION()>,
+B<HOST()>,
+B<IO_FINDUNIT()>
+B<LABEL()>,
+B<LEQ()>,
+B<LGE()>,
+B<LLE()>,
+B<LLT()>,
+B<LN()>,
+B<LNE()>,
+B<LOG()>,
+B<LPAD()>,
+B<ORD()>,
+B<RENAME()>,
+B<REVERSE()>,
+B<RPAD()>,
+B<RSORT()>,
+B<SET()>
+B<SETEXIT()>,
+B<SIN()>,
+B<SORT()>,
+B<SQRT()>,
+B<SSET()>,
+B<SUBSTR()>,
+B<TAN()>,
+B<THAW()>,
+B<VDIFFER()>:
+see B<snobol4func>(1).
+
+=item Keywords
+The following additional keywords are implemented:
+B<&amp;CASE>,
+B<&amp;DIGITS>,
+B<&amp;ERRTEXT>
+B<&amp;FILE>,
+B<&amp;GCTIME>,
+B<&amp;GTRACE>
+B<&amp;LASTFILE>,
+B<&amp;LASTLINE>,
+B<&amp;LCASE>,
+B<&amp;LINE>,
+B<&amp;MAXINT>,
+B<&amp;PARM>,
+B<&amp;PI>,
+B<&amp;STEXEC>,
+B<&amp;UCASE>:
+see B<snobol4key>(1).
+
+=item B<REAL> numbers in B<INTEGER> contexts
+B<REAL> numbers (or strings convertible to B<REAL>) are accepted in
+all contexts which previously required an B<INTEGER> (or string
+convertible to B<INTEGER>).  Contexts include B<TABLE()>, B<ITEM()>,
+array indices, B<INPUT()>, B<OUTPUT(),> B<SET()>, keyword values,
+B<CHAR()>, B<RPAD()>, B<LPAD()>, B<FIELD()>, B<COLLECT()>, B<DUMP()>,
+B<DUPL()>, B<OPSYN()>, B<SUBSTR()>.
+
+=item Scientific notation
+B<REAL> number syntax has been expanded to allow exponents of the
+form: I<ANY('Ee') ('+' | '-' | '') SPAN('0123456789')>.  Exponential
+format reals need not contain a decimal point.
+
+=item B<SPITBOL> operators
+The SPITBOL scan (?) and assignment (=) operators have been added.  A
+pattern match can appear within an expression, and returns the matched
+string as its value.  Similarly assignment can appear in an
+expression, and returns the assigned value. An assignment after a scan
+(ie; I<STRING ? PATTERN = VALUE>) performs a scan and replace.
+Assignment is right associative, and has the lowest precedence, while
+scan is left associative and has a precedence just higher than
+assignment.
+
+=item
+The SPITBOL selection/alternative construction can be used in any
+expression.  It consists of a comma separated list of expressions
+inside parentheses.  The expressions are evaluated until one succeeds,
+and its value is returned.  Abuse of this construction may result in
+incomprehensible code.
+
+=item
+The type B<NUMERIC> with B<CONVERT()> and the removal of leading
+spaces from strings converted to numbers (implicitly or explicitly)
+are also legal when SPITBOL extensions are enabled.  SPITBOL
+extensions can be enabled and disabled using the B<-PLUSOPS>
+directive.  B<-PLUSOPS 0> or B<-PLUSOPS> disables SPITBOL operators,
+while B<-PLUSOPS >I<n> where I<n> is a non-zero integer enables them.
+SPITBOL extensions are enabled by default.
+
+=item B<TERMINAL> I/O variable
+The variable B<TERMINAL> is associated with the standard error file
+descriptor for both input and output.
+
+=item B<TRACE()> function type argument
+The second argument of the B<TRACE()> function can be abbreviated to a
+single letter:
+B<C> (CALL),
+B<F> (FUNCTION),
+B<K> (KEYWORD),
+B<L> (LABEL),
+B<R> (RETURN), or
+B<V> (VALUE) as in Macro SPITBOL.
+
+=item B<TRACE()> of additional keywords
+B<&amp;ERRTEXT> and B<&amp;STFCOUNT> can be traced.
+
+=item Value B<TRACE()> on pattern match assignments
+variable changes by B<.> and B<$> operators are visible via value trace.
+
+=sect BUGS
+A lot of stuff still needs to move to other pages!
+
+Group the keywords, control lines, functions, operators together!
+
+=sect SEE ALSO
+B<snobol4>(1).
+B<snobol4ctrl>(1),
+B<snobol4func>(1),
+B<snobol4key>(1).

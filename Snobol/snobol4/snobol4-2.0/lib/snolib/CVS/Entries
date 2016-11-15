@@ -1,0 +1,25 @@
+/atan.c/1.2/Mon Dec 15 20:58:11 2014//
+/chop.c/1.5/Mon Apr 21 18:04:19 2003//
+/cos.c/1.8/Sun Dec 11 16:55:54 2005//
+/delete.c/1.7/Fri Oct 17 22:00:50 2014//
+/environ.c/1.2/Tue Feb  5 17:51:00 2002//
+/exit.c/1.8/Fri Oct 17 22:00:50 2014//
+/exp.c/1.9/Mon Dec 15 20:58:11 2014//
+/file.c/1.11/Wed Feb 15 20:59:28 2012//
+/findunit.c/1.5/Mon Apr 21 18:31:40 2003//
+/getenv.c/1.7/Fri Oct 17 22:03:42 2014//
+/getstring.c/1.11/Tue Dec 14 19:59:22 2004//
+/handle.c/1.14/Wed Dec 24 05:33:11 2014//
+/host.c/1.36/Tue Dec 23 17:06:03 2014//
+/host.h/1.19/Tue Dec 23 17:06:03 2014//
+/log.c/1.5/Mon Apr 21 18:04:19 2003//
+/ord.c/1.4/Mon Apr 21 18:07:04 2003//
+/rename.c/1.9/Fri Oct 17 22:03:42 2014//
+/retstring.c/1.13/Fri Jul  4 20:01:09 2003//
+/serv.c/1.16/Tue Sep 24 00:18:39 2013//
+/sin.c/1.6/Mon Apr 21 18:04:19 2003//
+/sqrt.c/1.7/Mon Apr 21 18:04:19 2003//
+/sset.c/1.6/Mon Apr 21 18:31:40 2003//
+/system.c/1.5/Fri Jul  4 20:01:09 2003//
+/tan.c/1.8/Mon Dec 15 20:58:11 2014//
+D
