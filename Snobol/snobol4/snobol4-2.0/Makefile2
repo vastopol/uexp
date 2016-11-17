@@ -1,0 +1,2249 @@
+# DO NOT EDIT. machine generated from Makefile2.m4
+# add local changes to local-config
+# $Id: Makefile2.m4,v 1.243 2014/12/31 07:04:21 phil Exp $
+
+################################################################
+# defaults (may be overridden in config.m4)
+
+OPT=-O
+
+CCM=./cc-M
+
+# for pow(3)
+MATHLIB=-lm
+
+SH=sh
+SHELL=/bin/sh
+
+# library random accessifier
+RANLIB=ranlib
+
+# filename for external function library
+SNOLIB_A=snolib.a
+
+# default file to load
+SNOLIB_FILE=snolib.a
+
+# either snobol4 or isnobol4;
+# isnobol4 has had functions reordered for better inlining.
+# if compiler does not perform inlining, snobol4 can be used
+# with no penalty (and slightly simpler build process).
+
+SNOBOL4=isnobol4
+#SNOBOL4=snobol4
+
+# default flags for install of binaries:
+INSTALL_BIN_FLAGS=-s
+
+########
+# default lib source files
+
+BAL_C=$(SRCDIR)lib/bal.c
+BREAK_C=$(SRCDIR)lib/break.c
+DATE_C=$(SRCDIR)lib/date.c
+DUMP_C=$(SRCDIR)lib/dump.c
+DYNAMIC_C=$(SRCDIR)lib/bsd/dynamic.c
+ENDEX_C=$(SRCDIR)lib/endex.c
+EXISTS_C=$(SRCDIR)lib/generic/exists.c
+EXPOPS_C=$(SRCDIR)lib/generic/expops.c
+HASH_C=$(SRCDIR)lib/hash.c
+INET_C=$(SRCDIR)lib/bsd/inet.c
+INET6_C=$(SRCDIR)lib/bsd/inet6.c
+INIT_C=$(SRCDIR)lib/init.c
+INTSPC_C=$(SRCDIR)lib/generic/intspc.c
+IO_C=$(SRCDIR)lib/io.c
+LEXCMP_C=$(SRCDIR)lib/lexcmp.c
+LOAD_C=$(SRCDIR)lib/bsd/load.c
+LOADX_C=$(SRCDIR)lib/loadx.c
+MSTIME_C=$(SRCDIR)lib/bsd/mstime.c
+ORDVST_C=$(SRCDIR)lib/ordvst.c
+PAIR_C=$(SRCDIR)lib/pair.c
+PAT_C=$(SRCDIR)lib/pat.c
+PML_C=$(SRCDIR)lib/pml.c
+POPEN_C=$(SRCDIR)lib/bsd/popen.c
+REALST_C=$(SRCDIR)lib/realst.c
+REPLACE_C=$(SRCDIR)lib/replace.c
+SPCINT_C=$(SRCDIR)lib/ansi/spcint.c
+SPREAL_C=$(SRCDIR)lib/ansi/spreal.c
+STREAM_C=$(SRCDIR)lib/stream.c
+SUSPEND_C=$(SRCDIR)lib/posix/suspend.c
+STR_C=$(SRCDIR)lib/str.c
+TERM_C=$(SRCDIR)lib/posix/term.c
+TOP_C=$(SRCDIR)lib/top.c
+TREE_C=$(SRCDIR)lib/tree.c
+TTY_C=$(SRCDIR)lib/posix/tty.c
+
+# aux sources
+BZERO_C=$(SRCDIR)lib/auxil/bzero.c
+BCOPY_C=$(SRCDIR)lib/auxil/bcopy.c
+GETOPT_C=$(SRCDIR)lib/auxil/getopt.c
+BINDRESVPORT_C=$(SRCDIR)lib/auxil/bindresvport.c
+
+# dummy sources
+EXECL_C=$(SRCDIR)lib/dummy/execl.c
+FINITE_C=$(SRCDIR)lib/dummy/finite.c
+GETENV_C=$(SRCDIR)lib/dummy/getenv.c
+ISNAN_C=$(SRCDIR)lib/dummy/isnan.c
+SYSTEM_C=$(SRCDIR)lib/dummy/system.c
+
+# SDBM sources
+SDBM_C=$(SRCDIR)modules/sdbm/sdbm.c
+SDBM_PAIR_C=$(SRCDIR)modules/sdbm/sdbm_pair.c
+SDBM_HASH_C=$(SRCDIR)modules/sdbm/sdbm_hash.c
+
+# snolib sources
+ATAN_C=$(SRCDIR)lib/snolib/atan.c
+CHOP_C=$(SRCDIR)lib/snolib/chop.c
+COS_C=$(SRCDIR)lib/snolib/cos.c
+DELETE_C=$(SRCDIR)lib/snolib/delete.c
+ENVIRON_C=$(SRCDIR)lib/snolib/environ.c
+EXECUTE_C=$(SRCDIR)lib/generic/execute.c
+EXIT_C=$(SRCDIR)lib/snolib/exit.c
+EXP_C=$(SRCDIR)lib/snolib/exp.c
+FILE_C=$(SRCDIR)lib/snolib/file.c
+FINDUNIT_C=$(SRCDIR)lib/snolib/findunit.c
+FORK_C=$(SRCDIR)modules/fork/fork.c
+GETSTRING_C=$(SRCDIR)lib/snolib/getstring.c
+HANDLE_C=$(SRCDIR)lib/snolib/handle.c
+HOST_C=$(SRCDIR)lib/snolib/host.c
+LOG_C=$(SRCDIR)lib/snolib/log.c
+LOGIC_C=$(SRCDIR)modules/logic/logic.c
+NDBM_C=$(SRCDIR)modues/ndbm/ndbm.c
+ORD_C=$(SRCDIR)lib/snolib/ord.c
+RANDOM_C=$(SRCDIR)modules/random/random.c
+READLINE_C=$(SRCDIR)modules/readline/readline.c
+RENAME_C=$(SRCDIR)lib/snolib/rename.c
+RETSTRING_C=$(SRCDIR)lib/snolib/retstring.c
+SERV_C=$(SRCDIR)lib/snolib/serv.c
+SIN_C=$(SRCDIR)lib/snolib/sin.c
+# SLEEP_C set by configure
+SPRINTF_C=$(SRCDIR)modules/sprintf/sprintf.c
+SQRT_C=$(SRCDIR)lib/snolib/sqrt.c
+SSET_C=$(SRCDIR)lib/snolib/sset.c
+STCL_C=$(SRCDIR)lib/snolib/stcl.c
+SYS_C=$(SRCDIR)lib/posix/sys.c
+TAN_C=$(SRCDIR)lib/snolib/tan.c
+TIME_C=$(SRCDIR)modules/time/time.c
+# for cygwin!
+COM_CPP=$(SRCDIR)lib/win32/com.cpp
+
+# private copy of CFLAGS for data_init.o; here so it can be overridden
+# (ie; to just $(MYCPPFLAGS)) by config.m4 during debug (optimizing it
+# is painful but worthwhile for production, or for compiler bugs!)
+
+DATA_INIT_CFLAGS=$(CFLAGS)
+
+################ objects
+
+# or inet6.o
+INET_O=	inet.o
+
+# end of defaults
+################################################################
+# config.m4:
+# config generated Thu Nov 17 23:13:23 UTC 2016
+# on vastopol-neutral-4034544 (Linux)
+# by $Id: configure,v 1.278 2015/01/02 04:54:27 phil Exp $
+
+# see config.h for more defines
+VERS=2.0
+BINDIR=$(DESTDIR)/usr/local/bin
+MANDIR=$(DESTDIR)/usr/local/share/man
+MAN1DIR=$(DESTDIR)/usr/local/share/man/man1
+MAN3DIR=$(DESTDIR)/usr/local/share/man/man3
+MAN7DIR=$(DESTDIR)/usr/local/share/man/man7
+SNOLIB=$(DESTDIR)/usr/local/lib/snobol4
+SNOLIB_LIB=$(DESTDIR)/usr/local/lib/snobol4/2.0/lib
+SNOLIB_DOC=$(DESTDIR)/usr/local/lib/snobol4/2.0
+INCLUDE_DIR=$(DESTDIR)/usr/local/lib/snobol4/2.0/include
+DOC_DIR=$(DESTDIR)/usr/local/share/doc/snobol4-2.0
+EXTRA_OBJS=getstring.o retstring.o handle.o
+CCM=$(CC) -M
+SNOBOL4_C_CFLAGS=-Wno-return-type -Wno-switch
+CC=gcc
+################
+# C Compiler:
+# gcc -v
+# Using built-in specs.
+# COLLECT_GCC=gcc
+# COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/4.8/lto-wrapper
+# Target: x86_64-linux-gnu
+# Configured with: ../src/configure -v --with-pkgversion='Ubuntu 4.8.4-2ubuntu1~14.04.3' --with-bugurl=file:///usr/share/doc/gcc-4.8/README.Bugs --enable-languages=c,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-4.8 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --with-gxx-include-dir=/usr/include/c++/4.8 --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --enable-gnu-unique-object --disable-libmudflap --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-4.8-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-4.8-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-4.8-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
+# Thread model: posix
+# gcc version 4.8.4 (Ubuntu 4.8.4-2ubuntu1~14.04.3) 
+################
+# sizeof(int) = 4
+# sizeof(void *) = 8
+# sizeof(long) = 8
+# sizeof(float) = 4
+# sizeof(double) = 8
+# alignment(double) = 8
+OPT=-O3
+MSTIME_C=$(SRCDIR)lib/posix2001/mstime.c
+INET_O=inet6.o
+TTY_C=$(SRCDIR)lib/posix/tty.c
+LOAD_C=$(SRCDIR)lib/unix98/load.c
+# NOTE: SNOLIB_FILE in config.h too!
+SNOLIB_FILE=snolib.so
+# GLIBC version 2.19
+DYNAMIC_C=$(SRCDIR)lib/posix/dynamic.c
+SLEEP_C=$(SRCDIR)posix/sleep.c
+# Shared Object Libraries
+SO_EXT=.so
+SO_CFLAGS=-fPIC
+SO_LD=gcc
+SO_LDFLAGS=-shared -fPIC
+# Dynamicly Loaded Extensions
+DL_EXT=.so
+DL_CFLAGS=-fPIC
+DL_LD=gcc
+DL_LDFLAGS=-shared -fPIC
+INSTALL=/usr/bin/install
+BLOCKS=1
+RUNSETUP=SNOLIB=$(SNOLIB) SNOPATH=../..:../../snolib ../../xsnobol4 -N setup.sno
+
+modules/dirs/dirs.so modules/dirs/dirs.sno modules/dirs/snobol4dirs.3 modules/dirs/snobol4dirs.3.html: xsnobol4 snolib/setuputil.sno modules/dirs/setup.sno
+	cd modules/dirs; $(RUNSETUP) build
+
+modules/logic/logic.so modules/logic/logic.sno modules/logic/snobol4logic.3 modules/logic/snobol4logic.3.html: xsnobol4 snolib/setuputil.sno modules/logic/setup.sno
+	cd modules/logic; $(RUNSETUP) build
+
+modules/random/random.so modules/random/random.sno modules/random/snobol4random.3 modules/random/snobol4random.3.html: xsnobol4 snolib/setuputil.sno modules/random/setup.sno
+	cd modules/random; $(RUNSETUP) build
+
+modules/stat/stat.so modules/stat/stat.sno modules/stat/snobol4stat.3 modules/stat/snobol4stat.3.html: xsnobol4 snolib/setuputil.sno modules/stat/setup.sno
+	cd modules/stat; $(RUNSETUP) build
+
+modules/time/time.so modules/time/time.sno modules/time/snobol4time.3 modules/time/snobol4time.3.html: xsnobol4 snolib/setuputil.sno modules/time/setup.sno
+	cd modules/time; $(RUNSETUP) build
+
+modules/sprintf/sprintf.so modules/sprintf/sprintf.sno modules/sprintf/snobol4sprintf.3 modules/sprintf/snobol4sprintf.3.html: xsnobol4 snolib/setuputil.sno modules/sprintf/setup.sno
+	cd modules/sprintf; $(RUNSETUP) build
+
+modules/fork/fork.so modules/fork/fork.sno modules/fork/snobol4fork.3 modules/fork/snobol4fork.3.html: xsnobol4 snolib/setuputil.sno modules/fork/setup.sno
+	cd modules/fork; $(RUNSETUP) build
+
+modules/ndbm/ndbm.so modules/ndbm/ndbm.sno modules/ndbm/snobol4ndbm.3 modules/ndbm/snobol4ndbm.3.html: xsnobol4 snolib/setuputil.sno modules/ndbm/setup.sno
+	cd modules/ndbm; $(RUNSETUP) build
+
+modules/readline/readline.so modules/readline/readline.sno modules/readline/snobol4readline.3 modules/readline/snobol4readline.3.html: xsnobol4 snolib/setuputil.sno modules/readline/setup.sno
+	cd modules/readline; $(RUNSETUP) build
+
+modules/sqlite3/sqlite3.so modules/sqlite3/sqlite3.sno modules/sqlite3/snobol4sqlite3.3 modules/sqlite3/snobol4sqlite3.3.html: xsnobol4 snolib/setuputil.sno modules/sqlite3/setup.sno
+	cd modules/sqlite3; $(RUNSETUP) build
+
+modules/ffi/ffi.so modules/ffi/ffi.sno modules/ffi/snobol4ffi.3 modules/ffi/snobol4ffi.3.html: xsnobol4 snolib/setuputil.sno modules/ffi/setup.sno
+	cd modules/ffi; $(RUNSETUP) build
+
+MODULES=dirs logic random stat time sprintf fork ndbm readline sqlite3 ffi
+MODULES_LOADABLE= modules/dirs/dirs.so modules/logic/logic.so modules/random/random.so modules/stat/stat.so modules/time/time.so modules/sprintf/sprintf.so modules/fork/fork.so modules/ndbm/ndbm.so modules/readline/readline.so modules/sqlite3/sqlite3.so modules/ffi/ffi.so
+MODULES_INCLUDE= modules/dirs/dirs.sno modules/logic/logic.sno modules/random/random.sno modules/stat/stat.sno modules/time/time.sno modules/sprintf/sprintf.sno modules/fork/fork.sno modules/ndbm/ndbm.sno modules/readline/readline.sno modules/sqlite3/sqlite3.sno modules/ffi/ffi.sno
+MODULES_MAN= modules/dirs/snobol4dirs.3 modules/logic/snobol4logic.3 modules/random/snobol4random.3 modules/stat/snobol4stat.3 modules/time/snobol4time.3 modules/sprintf/snobol4sprintf.3 modules/fork/snobol4fork.3 modules/ndbm/snobol4ndbm.3 modules/readline/snobol4readline.3 modules/sqlite3/snobol4sqlite3.3 modules/ffi/snobol4ffi.3
+MODULES_HTML= modules/dirs/snobol4dirs.3.html modules/logic/snobol4logic.3.html modules/random/snobol4random.3.html modules/stat/snobol4stat.3.html modules/time/snobol4time.3.html modules/sprintf/snobol4sprintf.3.html modules/fork/snobol4fork.3.html modules/ndbm/snobol4ndbm.3.html modules/readline/snobol4readline.3.html modules/sqlite3/snobol4sqlite3.3.html modules/ffi/snobol4ffi.3.html
+MODULES_GENERATED=$(MODULES_LOADABLE) $(MODULES_INCLUDE)
+TEST_SNOPATH=..:../modules/dirs:../modules/logic:../modules/random:../modules/stat:../modules/time:../modules/sprintf:../modules/fork:../modules/ndbm:../modules/readline:../modules/sqlite3:../modules/ffi:../snolib:.
+
+clean_modules:
+	rm -f $(MODULES_GENERATED)
+
+build_modules: $(MODULES_GENERATED)
+
+# if the file local-config existed it would have been incorporated here
+
+# end of local config
+################################################################
+
+
+# after local config
+
+# NOTE: NOT named CPPFLAGS; some versions of make include CPPFLAGS in cc cmd
+MYCPPFLAGS=-Iinclude -I.  -DHAVE_CONFIG_H
+
+COPT= $(OPT)
+
+LDFLAGS= -lutil -ldl -rdynamic -lreadline $(MATHLIB)
+
+################
+# compiler flags
+
+CFLAGS= -Wall $(COPT) $(MYCPPFLAGS) 
+
+################
+
+# XXX replace SNOLIB_A with SNOLIB_FILE??
+#	need to add rules to make shared libraries (to config/xxx.m4 files)
+
+OBJS=	main.o $(SNOBOL4).o data.o data_init.o syn.o bal.o break.o date.o \
+	dump.o dynamic.o endex.o expops.o hash.o $(INET_O) init.o \
+	intspc.o io.o lexcmp.o load.o mstime.o ordvst.o pair.o pat.o \
+	pml.o realst.o replace.o spcint.o spreal.o str.o stream.o \
+	suspend.o term.o top.o tree.o tty.o \
+	$(EXTRA_OBJS) $(SNOLIB_A)
+
+AUX_SRCS= $(GETSTRING_C) $(RETSTRING_C) $(HANDLE_C) $(BINDRESVPORT_C) $(POPEN_C)
+SRCS=	main.c $(SNOBOL4).c data.c data_init.c syn.c $(BAL_C) $(BREAK_C) \
+	$(DATE_C) $(DUMP_C) $(DYNAMIC_C) $(ENDEX_C) $(EXPOPS_C) \
+	$(HASH_C) $(INET_C) $(INIT_C) $(INTSPC_C) $(IO_C) $(LEXCMP_C) \
+	$(LOAD_C) $(MSTIME_C) $(ORDVST_C) $(PAIR_C) $(PAT_C) $(PML_C) \
+	$(REALST_C) $(REPLACE_C) $(SPCINT_C) $(SPREAL_C) $(STREAM_C) \
+	$(STR_C) $(SUSPEND_C) $(TOP_C) $(TERM_C) $(TREE_C) $(TTY_C) \
+	$(AUX_SRCS) $(SNOLIB_SRCS)
+
+GENERATED_DOCS_DOCDIR1=doc/sdb.1 doc/snobol4.1 doc/snopea.1 \
+	doc/snobol4blocks.1 doc/snobol4cmd.1 doc/snobol4ctrl.1 \
+	doc/snobol4error.1 doc/snobol4ext.1 doc/snobol4func.1 \
+	doc/snobol4io.1 doc/snobol4key.1
+
+GENERATED_DOCS_DOCDIR3=doc/snolib.3
+
+GENERATED_DOCS_DOCDIR7=doc/snopea.7
+
+GENERATED_DOCS_DOCDIR=$(GENERATED_DOCS_DOCDIR1) \
+	$(GENERATED_DOCS_DOCDIR3) \
+	$(GENERATED_DOCS_DOCDIR7)
+
+GENERATED_DOCS=	$(GENERATED_DOCS_DOCDIR)
+
+################
+# link, regression test & timing
+
+.PRECIOUS: $(SNOBOL4).o data_init.o snobol4
+
+all:	build_all timing.out
+
+BUILD_ALL=sdb snobol4 snopea $(GENERATED_DOCS)
+build_all: $(BUILD_ALL)
+
+
+xsnobol4: $(OBJS)
+	rm -f build.c
+	echo '/* MACHINE GENERATED.  EDITING IS FUTILE */'	> build.c
+	echo '#include "h.h"'					>> build.c
+	echo 'const char build_files[] = "'$(SRCS)'";'		>> build.c
+	echo 'const char build_date[] = "'`date`'";'		>> build.c
+	echo 'const char build_dir[] = "'`pwd`'";'		>> build.c
+	$(CC) $(CFLAGS) -c build.c
+	rm -f xsnobol4$(EXT)
+	$(CC) -o xsnobol4 $(OBJS) build.o $(LDFLAGS)
+
+
+# avoid CFLAGS: -O causes crash on gcc 4.4.6 x86_64?
+cpuid:	cpuid.c
+	$(CC) -o cpuid cpuid.c
+
+################
+# run regression tests.
+
+timing.out: tested xsnobol4 timing timing.sno test/bench.sno test/v311.sil
+	@echo Running timing script...
+	./timing > timing.out.tmp
+	mv timing.out.tmp timing.out
+	@echo '********************************************************' 1>&2
+	@echo 'Please consider mailing timing.out to timing@snobol4.org' 1>&2
+	@echo 'Anonymized results are posted at http://www.snobol4.org' 1>&2
+	@echo 'And you will be notified when test versions are available.' 1>&2
+	@echo '********************************************************' 1>&2
+
+tested snobol4: xsnobol4 test/tests.in cpuid $(MODULES_GENERATED)
+	@echo Running regression tests...
+	(cd test; BLOCKS=$(BLOCKS) SNOPATH="$(TEST_SNOPATH)" ./run.sh ../xsnobol4 -N)
+	@echo Passed regression tests.
+	-rm -f snobol4$(EXT)
+	cp xsnobol4$(EXT) snobol4$(EXT)
+	date > tested
+
+################
+
+# may need additional options due to size (and SIL code issues)
+$(SNOBOL4).o: $(SRCDIR)$(SNOBOL4).c 
+	$(CC) $(CFLAGS) $(SNOBOL4_C_CFLAGS) -c $(SRCDIR)$(SNOBOL4).c
+
+main.o: $(SRCDIR)main.c
+	$(CC) $(CFLAGS) -c $(SRCDIR)main.c
+
+data.o: $(SRCDIR)data.c
+	$(CC) $(CFLAGS) -c $(SRCDIR)data.c
+
+# NOTE: private options; includes data_init.h, which is huge and tends
+# to gum up the optimizer.  For development, I keep a local-config
+# file with the line "DATA_INIT_CFLAGS=$(MYCPPFLAGS)" so that no
+# attempt to optimize compilation of data_init.c occurs.  This may
+# result in a slightly larger executable, or slower startup, but since
+# I may compile data_init.c many times in the course of a debug
+# session, it's worth it.
+# NOTE! 9/2013: gcc no longer takes forever!!
+data_init.o: $(SRCDIR)data_init.c 
+	$(CC) $(DATA_INIT_CFLAGS) -c $(SRCDIR)data_init.c
+
+syn.o: $(SRCDIR)syn.c
+	$(CC) $(CFLAGS) -c $(SRCDIR)syn.c
+
+################ scripts
+
+sdb:	sdb.sh config.m4
+	rm -f sdb
+	sed -e "s@<SNOLIB_LIB>@$(SNOLIB_LIB)@" \
+	    -e "s@<BINDIR>@$(BINDIR)@" \
+	    -e "s@<VERS>@-$(VERS)@" \
+	    < sdb.sh > sdb
+	chmod a+x sdb
+
+snopea:	snopea.in config.m4
+	rm -f snopea
+	sed -e "s@<BINDIR>@$(BINDIR)@" \
+	    -e "s@<VERS>@-$(VERS)@" \
+	    < snopea.in > snopea
+	chmod a+x snopea
+
+#################################################################
+# lib files
+
+bal.o:	$(BAL_C)
+	$(CC) $(CFLAGS) -c $(BAL_C)
+
+break.o: $(BREAK_C)
+	$(CC) $(CFLAGS) -c $(BREAK_C)
+
+date.o:	$(DATE_C)
+	$(CC) $(CFLAGS) -c $(DATE_C)
+
+dump.o:	$(DUMP_C)
+	$(CC) $(CFLAGS) -c $(DUMP_C)
+
+dynamic.o: $(DYNAMIC_C)
+	$(CC) $(CFLAGS) -c $(DYNAMIC_C)
+
+endex.o: $(ENDEX_C)
+	$(CC) $(CFLAGS) -c $(ENDEX_C)
+
+exists.o: $(EXISTS_C)
+	$(CC) $(CFLAGS) -c $(EXISTS_C)
+
+expops.o: $(EXPOPS_C)
+	$(CC) $(CFLAGS) -c $(EXPOPS_C)
+
+hash.o:	$(HASH_C)
+	$(CC) $(CFLAGS) -c $(HASH_C)
+
+inet.o:	$(INET_C)
+	$(CC) $(CFLAGS) -c $(INET_C)
+
+inet6.o: $(INET6_C)
+	$(CC) $(CFLAGS) -c $(INET6_C)
+
+init.o:	$(INIT_C)
+	$(CC) $(CFLAGS) -c $(INIT_C)
+
+intspc.o: $(INTSPC_C)
+	$(CC) $(CFLAGS) -c $(INTSPC_C)
+
+io.o:	$(IO_C) $(MAKEFILE2)
+	$(CC) $(CFLAGS) -c $(IO_C)
+
+lexcmp.o: $(LEXCMP_C)
+	$(CC) $(CFLAGS) -c $(LEXCMP_C)
+
+load.o:	$(LOAD_C) $(MAKEFILE2)
+	$(CC) $(CFLAGS) -c $(LOAD_C)
+
+loadx.o: $(LOADX_C)
+	$(CC) $(CFLAGS) -c $(LOADX_C)
+
+mstime.o: $(MSTIME_C)
+	$(CC) $(CFLAGS) -c $(MSTIME_C)
+
+ordvst.o: $(ORDVST_C)
+	$(CC) $(CFLAGS) -c $(ORDVST_C)
+
+pair.o:	$(PAIR_C)
+	$(CC) $(CFLAGS) -c $(PAIR_C)
+
+pat.o:	$(PAT_C)
+	$(CC) $(CFLAGS) -c $(PAT_C)
+
+pml.o:	$(PML_C)
+	$(CC) $(CFLAGS) -c $(PML_C)
+
+popen.o: $(POPEN_C)
+	$(CC) $(CFLAGS) -c $(POPEN_C)
+
+realst.o: $(REALST_C)
+	$(CC) $(CFLAGS) -c $(REALST_C)
+
+replace.o: $(REPLACE_C)
+	$(CC) $(CFLAGS) -c $(REPLACE_C)
+
+sleep.o: modules/time/$(SLEEP_C)
+	$(CC) $(CFLAGS) -c modules/time/$(SLEEP_C)
+
+spcint.o: $(SPCINT_C)
+	$(CC) $(CFLAGS) -c $(SPCINT_C)
+
+spreal.o: $(SPREAL_C)
+	$(CC) $(CFLAGS) -c $(SPREAL_C)
+
+str.o:	$(STR_C)
+	$(CC) $(CFLAGS) -c $(STR_C)
+
+stream.o: $(STREAM_C)
+	$(CC) $(CFLAGS) -c $(STREAM_C)
+
+suspend.o: $(SUSPEND_C)
+	$(CC) $(CFLAGS) -c $(SUSPEND_C)
+
+term.o:	$(TERM_C)
+	$(CC) $(CFLAGS) -c $(TERM_C)
+
+top.o:	$(TOP_C)
+	$(CC) $(CFLAGS) -c $(TOP_C)
+
+tree.o:	$(TREE_C)
+	$(CC) $(CFLAGS) -c $(TREE_C)
+
+tty.o:	$(TTY_C)
+	$(CC) $(CFLAGS) -c $(TTY_C)
+
+#################
+# aux files -- porting aids not used in all builds;
+
+bzero.o: $(BZERO_C)
+	$(CC) $(CFLAGS) -c $(BZERO_C)
+
+bcopy.o: $(BCOPY_C)
+	$(CC) $(CFLAGS) -c $(BCOPY_C)
+
+getopt.o: $(GETOPT_C)
+	$(CC) $(CFLAGS) -c $(GETOPT_C)
+
+bindresvport.o: $(BINDRESVPORT_C)
+	$(CC) $(CFLAGS) -c $(BINDRESVPORT_C)
+
+################
+# SDBM files -- only when needed
+
+sdbm.o: $(SDBM_C)
+	$(CC) $(CFLAGS) -c $(SDBM_C)
+
+sdbm_hash.o: $(SDBM_HASH_C)
+	$(CC) $(CFLAGS) -c $(SDBM_HASH_C)
+
+sdbm_pair.o: $(SDBM_PAIR_C)
+	$(CC) $(CFLAGS) -c $(SDBM_PAIR_C)
+
+################
+# dummy files
+
+isnan.o: $(ISNAN_C)
+	$(CC) $(CFLAGS) -c $(ISNAN_C)
+
+# for snolib/host.c
+getenv.o: $(GETENV_C)
+	$(CC) $(CFLAGS) -c $(GETENV_C)
+
+# for snolib/host.c
+system.o: $(SYSTEM_C)
+	$(CC) $(CFLAGS) -c $(SYSTEM_C)
+
+################################################################
+# snolib -- library of external functions (and their support functions)
+# all loaded by default w/ "PML" and available w/o LOAD()
+# everything else is now built as a module!
+
+AUX_OBJS= bindresvport.o popen.o loadx.o
+
+SNOLIB_OBJS=atan.o chop.o cos.o delete.o environ.o execute.o exists.o \
+	exit.o exp.o file.o findunit.o host.o ord.o log.o rename.o \
+	serv.o sin.o sqrt.o sset.o sys.o tan.o $(AUX_OBJS) \
+	retstring.o getstring.o handle.o
+
+$(SNOLIB_A): $(SNOLIB_OBJS)
+	rm -f $(SNOLIB_A)
+	ar $(ARXFLAGS) rv $(SNOLIB_A) $(SNOLIB_OBJS)
+	$(RANLIB) $(SNOLIB_A)
+
+################
+# snolib files
+
+SNOLIB_SRCS=$(ATAN_C) $(CHOP_C) $(COS_C) $(DELETE_C) $(ENVIRON_C) \
+	$(EXISTS_C) $(EXIT_C) $(EXECUTE_C) $(EXP_C) $(FILE_C) \
+	$(FINDUNIT_C) $(FORK_C) $(GETSTRING_C) $(HOST_C) $(LOG_C) \
+	$(LOGIC_C) $(ORD_C) $(RANDOM_C) $(RENAME_C) \
+	$(RETSTRING_C) $(SERV_C) $(SIN_C) $(SPRINTF_C) $(SQRT_C) \
+	$(SSET_C) $(SYS_C) $(TAN_C) $(TIME_C)
+
+atan.o:	$(ATAN_C)
+	$(CC) $(CFLAGS) -c $(ATAN_C)
+
+chop.o: $(CHOP_C)
+	$(CC) $(CFLAGS) -c $(CHOP_C)
+
+cos.o: $(COS_C)
+	$(CC) $(CFLAGS) -c $(COS_C)
+
+delete.o: $(DELETE_C)
+	$(CC) $(CFLAGS) -c $(DELETE_C)
+
+environ.o: $(ENVIRON_C)
+	$(CC) $(CFLAGS) -c $(ENVIRON_C)
+
+execute.o: $(EXECUTE_C)
+	$(CC) $(CFLAGS) -c $(EXECUTE_C)
+
+exit.o: $(EXIT_C)
+	$(CC) $(CFLAGS) -c $(EXIT_C)
+
+exp.o: $(EXP_C)
+	$(CC) $(CFLAGS) -c $(EXP_C)
+
+file.o: $(FILE_C)
+	$(CC) $(CFLAGS) -c $(FILE_C)
+
+findunit.o: $(FINDUNIT_C)
+	$(CC) $(CFLAGS) -c $(FINDUNIT_C)
+
+fork.o: $(FORK_C)
+	$(CC) $(CFLAGS) -c $(FORK_C)
+
+getstring.o: $(GETSTRING_C)
+	$(CC) $(CFLAGS) -c $(GETSTRING_C)
+
+handle.o: $(HANDLE_C)
+	$(CC) $(CFLAGS) -c $(HANDLE_C)
+
+HOST_C_CFLAGS=-DCC=\""$(CC)"\" -DCOPT=\""$(COPT)"\"
+host.o: $(HOST_C)
+	$(CC) $(CFLAGS) $(HOST_C_CFLAGS) -c $(HOST_C)
+
+log.o: $(LOG_C)
+	$(CC) $(CFLAGS) -c $(LOG_C)
+
+logic.o: $(LOGIC_C)
+	$(CC) $(CFLAGS) -c $(LOGIC_C)
+
+ndbm.o: $(NDBM_C)
+	$(CC) $(CFLAGS) -c $(NDBM_C)
+
+ord.o: $(ORD_C)
+	$(CC) $(CFLAGS) -c $(ORD_C)
+
+random.o: $(RANDOM_C)
+	$(CC) $(CFLAGS) -c $(RANDOM_C)
+
+readline.o: $(READLINE_C)
+	$(CC) $(CFLAGS) -c $(READLINE_C)
+
+rename.o: $(RENAME_C)
+	$(CC) $(CFLAGS) -c $(RENAME_C)
+
+retstring.o: $(RETSTRING_C)
+	$(CC) $(CFLAGS) -c $(RETSTRING_C)
+
+serv.o: $(SERV_C)
+	$(CC) $(CFLAGS) -c $(SERV_C)
+
+sin.o: $(SIN_C)
+	$(CC) $(CFLAGS) -c $(SIN_C)
+
+sprintf.o: $(SPRINTF_C)
+	$(CC) $(CFLAGS) -c $(SPRINTF_C)
+
+sqrt.o: $(SQRT_C)
+	$(CC) $(CFLAGS) -c $(SQRT_C)
+
+sset.o: $(SSET_C)
+	$(CC) $(CFLAGS) -c $(SSET_C)
+
+stcl.o: $(STCL_C)
+	$(CC) $(CFLAGS) -c $(STCL_C)
+
+sys.o:	$(SYS_C)
+	$(CC) $(CFLAGS) -c $(SYS_C)
+
+tan.o:	$(TAN_C)
+	$(CC) $(CFLAGS) -c $(TAN_C)
+
+time.o:	$(TIME_C)
+	$(CC) $(CFLAGS) -c $(TIME_C)
+
+com.o:	$(COM_CPP)
+	$(CC) $(CFLAGS) -c $(COM_CPP)
+
+#################
+# lint picking
+
+lint:   llib-lf.ln
+	lint -h llib-lf.ln $(MYCPPFLAGS) $(SRCS) > LINT 2>&1
+
+llib-lf.ln:
+	lint -Cf $(MYCPPFLAGS) $(SRCS) > /dev/null 2>&1
+
+################
+# GENERATED_DOCS:
+
+SNOPEA=./snobol4 -N -Isnolib -I. snopea.in
+
+snopea.1: snopea snolib/snopea.sno snobol4
+	$(SNOPEA) snopea snopea.1
+
+snopea.1.html: snopea snolib/snopea.sno snobol4
+	$(SNOPEA) snopea snopea.1.html
+
+$(GENERATED_DOCS_DOCDIR): snopea snolib/snopea.sno snobol4
+	cd doc; make
+
+#################
+# installation
+
+# install .h files for dynamicly loaded functions
+INSTALL_H=include/h.h include/snotypes.h include/macros.h \
+	include/load.h include/dt.h include/str.h include/handle.h \
+	config.h equ.h version.h
+
+# generated SNOLIB files (host.sno generated at top level)
+GENSNOLIB=host.sno config.sno
+
+SNOLIB_FILES=snolib/*.sno $(GENSNOLIB) $(MODULES_INCLUDE)
+
+install: snobol4 sdb timing.out $(GENERATED_DOCS)
+	$(INSTALL) -d $(BINDIR)
+	$(INSTALL) $(INSTALL_BIN_FLAGS) snobol4 $(BINDIR)/snobol4-$(VERS)
+	$(INSTALL) sdb $(BINDIR)/sdb-$(VERS)
+	$(INSTALL) snopea $(BINDIR)/snopea-$(VERS)
+	rm -f $(BINDIR)/snobol4 $(BINDIR)/sdb $(BINDIR)/snopea
+	ln -s $(BINDIR)/snobol4-$(VERS) $(BINDIR)/snobol4
+	ln -s $(BINDIR)/sdb-$(VERS) $(BINDIR)/sdb
+	ln -s $(BINDIR)/snopea-$(VERS) $(BINDIR)/snopea
+	$(INSTALL) -d $(MAN1DIR)
+	for F in $(GENERATED_DOCS_DOCDIR1); do \
+		$(INSTALL) -m 644 $$F $(MAN1DIR); \
+	done
+	$(INSTALL) -d $(MAN3DIR)
+	$(INSTALL) -m 644 doc/snolib.3 $(MAN3DIR)
+	$(INSTALL) -m 644 doc/snobol4setup.3 $(MAN3DIR)
+	$(INSTALL) -d $(MAN7DIR)
+	for F in $(GENERATED_DOCS_DOCDIR7); do \
+		$(INSTALL) -m 644 $$F $(MAN7DIR); \
+	done
+	$(INSTALL) -d $(SNOLIB)
+	$(INSTALL) -d $(SNOLIB_DOC)
+	$(INSTALL) -m 644 README $(SNOLIB_DOC)
+	$(INSTALL) -m 644 CHANGES $(SNOLIB_DOC)
+	$(INSTALL) -d $(SNOLIB)
+	$(INSTALL) -d $(SNOLIB)/local
+	$(INSTALL) -d $(SNOLIB)/local/shared
+	$(INSTALL) -d $(SNOLIB_LIB)
+	$(INSTALL) -d $(SNOLIB_LIB)/shared
+	rm -f $(SNOLIB_LIB)/dynload
+	rm -f $(MAN3DIR)/snobol4tcl.3 $(MAN3DIR)/snobol4dbm.3
+	for F in $(SNOLIB_FILES); do \
+		$(INSTALL) -m 644 $$F $(SNOLIB_LIB); \
+	done
+	for M in $(MODULES); do \
+		(cd modules/$$M; $(RUNSETUP) install); \
+	done
+	$(INSTALL) -d $(INCLUDE_DIR)
+	for F in $(INSTALL_H); do \
+		$(INSTALL) -m 644 $$F $(INCLUDE_DIR); \
+	done
+	$(INSTALL) -d $(DOC_DIR)
+	for F in doc/load.txt doc/*.html modules/*/*.html; do \
+		$(INSTALL) -m 644 $$F $(DOC_DIR); \
+	done
+	@echo '*********************************************************' 1>&2
+	@echo 'Have you mailed a copy of timing.out to timing@snobol4.org ?' 1>&2
+	@echo '*********************************************************' 1>&2
+
+printenv:
+	env
+
+################
+MAKEFILE2=Makefile2
+DEPENDFLAGS=$(MYCPPFLAGS)
+
+depend:
+	sed '/^# DO NOT DELETE THIS LINE/q' $(MAKEFILE2) > $(MAKEFILE2).tmp
+	$(CCM) $(DEPENDFLAGS) $(SRCS) >> $(MAKEFILE2).tmp
+	mv -f $(MAKEFILE2).tmp $(MAKEFILE2)
+# DO NOT DELETE THIS LINE. make depend uses it.
+main.o: main.c /usr/include/stdc-predef.h config.h /usr/include/stdlib.h \
+ /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/stdio.h \
+ /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/lib.h include/gen.h include/macros.h proc.h \
+ equ.h data.h res.h version.h
+isnobol4.o: isnobol4.c /usr/include/stdc-predef.h mlink.h parms.h \
+ config.h /usr/include/stdio.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h /usr/include/math.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_val.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_valf.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_vall.h \
+ /usr/include/x86_64-linux-gnu/bits/inf.h \
+ /usr/include/x86_64-linux-gnu/bits/nan.h \
+ /usr/include/x86_64-linux-gnu/bits/mathdef.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h include/snotypes.h \
+ include/h.h include/syntab.h include/libret.h include/macros.h \
+ include/units.h include/str.h /usr/include/strings.h \
+ /usr/include/xlocale.h /usr/include/string.h equ.h res.h data.h syn.h \
+ proc.h static.h lib/pair.c lib/hash.c lib/top.c lib/pat.c include/lib.h
+data.o: data.c /usr/include/stdc-predef.h config.h include/h.h \
+ include/snotypes.h equ.h res.h
+data_init.o: data_init.c /usr/include/stdc-predef.h config.h \
+ include/snotypes.h include/h.h include/macros.h include/units.h \
+ include/gen.h equ.h res.h data.h proc.h data_init.h
+syn.o: syn.c /usr/include/stdc-predef.h config.h include/h.h \
+ include/snotypes.h include/syntab.h include/gen.h syn.h equ.h res.h \
+ data.h syn_init.h
+bal.o: lib/bal.c /usr/include/stdc-predef.h config.h /usr/include/stdio.h \
+ /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/macros.h include/lib.h
+break.o: lib/break.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdlib.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/stdio.h \
+ /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/macros.h include/lib.h include/str.h \
+ /usr/include/strings.h /usr/include/xlocale.h /usr/include/string.h \
+ include/load.h equ.h res.h data.h
+date.o: lib/date.c /usr/include/stdc-predef.h config.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/time.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/xlocale.h \
+ /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h \
+ /usr/include/wchar.h /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/macros.h equ.h include/lib.h include/str.h \
+ /usr/include/strings.h /usr/include/string.h
+dump.o: lib/dump.c /usr/include/stdc-predef.h config.h
+dynamic.o: lib/posix/dynamic.c /usr/include/stdc-predef.h config.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/time.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h \
+ /usr/include/x86_64-linux-gnu/sys/mman.h \
+ /usr/include/x86_64-linux-gnu/bits/mman.h \
+ /usr/include/x86_64-linux-gnu/bits/mman-linux.h /usr/include/stdlib.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/stdio.h \
+ /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/lib.h
+endex.o: lib/endex.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdlib.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/stdio.h \
+ /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/macros.h equ.h res.h data.h include/lib.h
+expops.o: lib/generic/expops.c /usr/include/stdc-predef.h config.h \
+ /usr/include/math.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_val.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_valf.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_vall.h \
+ /usr/include/x86_64-linux-gnu/bits/inf.h \
+ /usr/include/x86_64-linux-gnu/bits/nan.h \
+ /usr/include/x86_64-linux-gnu/bits/mathdef.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h /usr/include/stdio.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/macros.h include/lib.h
+hash.o: lib/hash.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdio.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/macros.h include/lib.h equ.h
+inet.o: lib/bsd/inet.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdlib.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/unistd.h \
+ /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+ /usr/include/x86_64-linux-gnu/bits/environments.h \
+ /usr/include/x86_64-linux-gnu/bits/confname.h /usr/include/getopt.h \
+ /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h \
+ /usr/include/wchar.h /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h /usr/include/ctype.h \
+ /usr/include/xlocale.h /usr/include/x86_64-linux-gnu/sys/socket.h \
+ /usr/include/x86_64-linux-gnu/sys/uio.h \
+ /usr/include/x86_64-linux-gnu/bits/uio.h \
+ /usr/include/x86_64-linux-gnu/bits/socket.h \
+ /usr/include/x86_64-linux-gnu/bits/socket_type.h \
+ /usr/include/x86_64-linux-gnu/bits/sockaddr.h \
+ /usr/include/x86_64-linux-gnu/asm/socket.h \
+ /usr/include/asm-generic/socket.h \
+ /usr/include/x86_64-linux-gnu/asm/sockios.h \
+ /usr/include/asm-generic/sockios.h /usr/include/netinet/in.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdint.h /usr/include/stdint.h \
+ /usr/include/x86_64-linux-gnu/bits/wchar.h \
+ /usr/include/x86_64-linux-gnu/bits/in.h /usr/include/netinet/tcp.h \
+ /usr/include/arpa/inet.h /usr/include/netdb.h /usr/include/rpc/netdb.h \
+ /usr/include/x86_64-linux-gnu/bits/netdb.h include/h.h \
+ include/snotypes.h include/lib.h include/str.h /usr/include/strings.h \
+ /usr/include/string.h include/bindresvport.h
+init.o: lib/init.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdlib.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/stdio.h \
+ /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h /usr/include/signal.h \
+ /usr/include/x86_64-linux-gnu/bits/signum.h \
+ /usr/include/x86_64-linux-gnu/bits/siginfo.h \
+ /usr/include/x86_64-linux-gnu/bits/sigaction.h \
+ /usr/include/x86_64-linux-gnu/bits/sigcontext.h \
+ /usr/include/x86_64-linux-gnu/bits/sigstack.h \
+ /usr/include/x86_64-linux-gnu/sys/ucontext.h \
+ /usr/include/x86_64-linux-gnu/bits/sigthread.h /usr/include/unistd.h \
+ /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+ /usr/include/x86_64-linux-gnu/bits/environments.h \
+ /usr/include/x86_64-linux-gnu/bits/confname.h /usr/include/getopt.h \
+ include/h.h include/snotypes.h include/macros.h include/lib.h \
+ include/str.h /usr/include/strings.h /usr/include/xlocale.h \
+ /usr/include/string.h include/units.h equ.h res.h data.h proc.h \
+ version.h
+intspc.o: lib/generic/intspc.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdio.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/macros.h include/lib.h include/str.h \
+ /usr/include/strings.h /usr/include/xlocale.h /usr/include/string.h \
+ equ.h
+io.o: lib/io.c /usr/include/stdc-predef.h config.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h /usr/include/stdlib.h \
+ /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/stdio.h \
+ /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h /usr/include/ctype.h \
+ /usr/include/xlocale.h /usr/include/unistd.h \
+ /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+ /usr/include/x86_64-linux-gnu/bits/environments.h \
+ /usr/include/x86_64-linux-gnu/bits/confname.h /usr/include/getopt.h \
+ /usr/include/x86_64-linux-gnu/sys/wait.h /usr/include/signal.h \
+ /usr/include/x86_64-linux-gnu/bits/signum.h \
+ /usr/include/x86_64-linux-gnu/bits/siginfo.h \
+ /usr/include/x86_64-linux-gnu/bits/sigaction.h \
+ /usr/include/x86_64-linux-gnu/bits/sigcontext.h \
+ /usr/include/x86_64-linux-gnu/bits/sigstack.h \
+ /usr/include/x86_64-linux-gnu/sys/ucontext.h \
+ /usr/include/x86_64-linux-gnu/bits/sigthread.h /usr/include/errno.h \
+ /usr/include/x86_64-linux-gnu/bits/errno.h /usr/include/linux/errno.h \
+ /usr/include/x86_64-linux-gnu/asm/errno.h \
+ /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
+ /usr/include/pty.h /usr/include/termios.h \
+ /usr/include/x86_64-linux-gnu/bits/termios.h \
+ /usr/include/x86_64-linux-gnu/sys/ttydefaults.h \
+ /usr/include/x86_64-linux-gnu/sys/ioctl.h \
+ /usr/include/x86_64-linux-gnu/bits/ioctls.h \
+ /usr/include/x86_64-linux-gnu/asm/ioctls.h \
+ /usr/include/asm-generic/ioctls.h /usr/include/linux/ioctl.h \
+ /usr/include/x86_64-linux-gnu/asm/ioctl.h \
+ /usr/include/asm-generic/ioctl.h \
+ /usr/include/x86_64-linux-gnu/bits/ioctl-types.h /usr/include/paths.h \
+ include/h.h include/units.h include/snotypes.h include/macros.h \
+ include/path.h include/libret.h include/lib.h include/str.h \
+ /usr/include/strings.h /usr/include/string.h equ.h res.h data.h proc.h \
+ /usr/include/readline/readline.h /usr/include/readline/rlstdc.h \
+ /usr/include/readline/rltypedefs.h /usr/include/readline/keymaps.h \
+ /usr/include/readline/chardefs.h /usr/include/readline/tilde.h \
+ /usr/include/readline/history.h
+lexcmp.o: lib/lexcmp.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdio.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/macros.h include/lib.h
+load.o: lib/unix98/load.c /usr/include/stdc-predef.h config.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/time.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h \
+ /usr/include/x86_64-linux-gnu/sys/stat.h \
+ /usr/include/x86_64-linux-gnu/bits/stat.h /usr/include/stdio.h \
+ /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h /usr/include/dlfcn.h \
+ /usr/include/x86_64-linux-gnu/bits/dlfcn.h /usr/include/stdlib.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h include/h.h \
+ include/snotypes.h include/macros.h include/path.h include/load.h \
+ include/lib.h include/str.h /usr/include/strings.h \
+ /usr/include/xlocale.h /usr/include/string.h
+mstime.o: lib/posix2001/mstime.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdio.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h /usr/include/xlocale.h \
+ /usr/include/x86_64-linux-gnu/sys/time.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/sys/resource.h \
+ /usr/include/x86_64-linux-gnu/bits/resource.h include/h.h \
+ include/snotypes.h include/lib.h
+ordvst.o: lib/ordvst.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdlib.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/stdio.h \
+ /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/macros.h include/lib.h include/str.h \
+ /usr/include/strings.h /usr/include/xlocale.h /usr/include/string.h \
+ equ.h res.h data.h
+pair.o: lib/pair.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdio.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/macros.h include/lib.h equ.h
+pat.o: lib/pat.c /usr/include/stdc-predef.h config.h /usr/include/stdio.h \
+ /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/macros.h include/lib.h
+pml.o: lib/pml.c /usr/include/stdc-predef.h config.h /usr/include/stdio.h \
+ /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/macros.h include/load.h include/lib.h \
+ include/str.h /usr/include/strings.h /usr/include/xlocale.h \
+ /usr/include/string.h pml.h
+realst.o: lib/realst.c /usr/include/stdc-predef.h config.h \
+ /usr/include/ctype.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h /usr/include/xlocale.h \
+ /usr/include/stdio.h /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/macros.h include/lib.h include/str.h \
+ /usr/include/strings.h /usr/include/string.h equ.h
+replace.o: lib/replace.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdio.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/macros.h include/syntab.h include/lib.h
+spcint.o: lib/ansi/spcint.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdlib.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/stdio.h \
+ /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h /usr/include/errno.h \
+ /usr/include/x86_64-linux-gnu/bits/errno.h /usr/include/linux/errno.h \
+ /usr/include/x86_64-linux-gnu/asm/errno.h \
+ /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
+ include/h.h include/snotypes.h include/macros.h include/lib.h \
+ include/str.h /usr/include/strings.h /usr/include/xlocale.h \
+ /usr/include/string.h equ.h res.h data.h
+spreal.o: lib/ansi/spreal.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdio.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/macros.h include/lib.h include/str.h \
+ /usr/include/strings.h /usr/include/xlocale.h /usr/include/string.h \
+ equ.h res.h data.h
+stream.o: lib/stream.c /usr/include/stdc-predef.h config.h include/h.h \
+ include/snotypes.h include/syntab.h include/macros.h equ.h res.h data.h
+str.o: lib/str.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdlib.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h /usr/include/ctype.h \
+ /usr/include/xlocale.h /usr/include/stdio.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/macros.h include/lib.h include/str.h \
+ /usr/include/strings.h /usr/include/string.h
+suspend.o: lib/posix/suspend.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdio.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h /usr/include/signal.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/signum.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/bits/siginfo.h \
+ /usr/include/x86_64-linux-gnu/bits/sigaction.h \
+ /usr/include/x86_64-linux-gnu/bits/sigcontext.h \
+ /usr/include/x86_64-linux-gnu/bits/sigstack.h \
+ /usr/include/x86_64-linux-gnu/sys/ucontext.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h \
+ /usr/include/x86_64-linux-gnu/bits/sigthread.h include/h.h \
+ include/snotypes.h include/lib.h
+top.o: lib/top.c /usr/include/stdc-predef.h config.h /usr/include/stdio.h \
+ /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/macros.h include/lib.h
+term.o: lib/posix/term.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdio.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h /usr/include/unistd.h \
+ /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+ /usr/include/x86_64-linux-gnu/bits/environments.h \
+ /usr/include/x86_64-linux-gnu/bits/confname.h /usr/include/getopt.h \
+ include/h.h include/snotypes.h include/lib.h
+tree.o: lib/tree.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdio.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/macros.h equ.h include/lib.h
+tty.o: lib/posix/tty.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdlib.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/stdio.h \
+ /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h /usr/include/termios.h \
+ /usr/include/x86_64-linux-gnu/bits/termios.h \
+ /usr/include/x86_64-linux-gnu/sys/ttydefaults.h /usr/include/unistd.h \
+ /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+ /usr/include/x86_64-linux-gnu/bits/environments.h \
+ /usr/include/x86_64-linux-gnu/bits/confname.h /usr/include/getopt.h \
+ /usr/include/signal.h /usr/include/x86_64-linux-gnu/bits/signum.h \
+ /usr/include/x86_64-linux-gnu/bits/siginfo.h \
+ /usr/include/x86_64-linux-gnu/bits/sigaction.h \
+ /usr/include/x86_64-linux-gnu/bits/sigcontext.h \
+ /usr/include/x86_64-linux-gnu/bits/sigstack.h \
+ /usr/include/x86_64-linux-gnu/sys/ucontext.h \
+ /usr/include/x86_64-linux-gnu/bits/sigthread.h \
+ /usr/include/x86_64-linux-gnu/sys/stat.h \
+ /usr/include/x86_64-linux-gnu/bits/stat.h include/h.h include/snotypes.h \
+ include/lib.h
+getstring.o: lib/snolib/getstring.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdlib.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h include/str.h \
+ /usr/include/strings.h /usr/include/xlocale.h /usr/include/string.h \
+ include/h.h equ.h include/snotypes.h include/macros.h include/load.h
+retstring.o: lib/snolib/retstring.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdlib.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/stdio.h \
+ /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h equ.h \
+ include/snotypes.h include/macros.h include/load.h include/str.h \
+ /usr/include/strings.h /usr/include/xlocale.h /usr/include/string.h
+handle.o: lib/snolib/handle.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdlib.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/stdio.h \
+ /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/snotypes.h \
+ include/h.h include/load.h include/handle.h include/str.h \
+ /usr/include/strings.h /usr/include/xlocale.h /usr/include/string.h
+bindresvport.o: lib/auxil/bindresvport.c /usr/include/stdc-predef.h \
+ config.h /usr/include/x86_64-linux-gnu/sys/types.h \
+ /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/time.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h \
+ /usr/include/x86_64-linux-gnu/sys/socket.h \
+ /usr/include/x86_64-linux-gnu/sys/uio.h \
+ /usr/include/x86_64-linux-gnu/bits/uio.h \
+ /usr/include/x86_64-linux-gnu/bits/socket.h \
+ /usr/include/x86_64-linux-gnu/bits/socket_type.h \
+ /usr/include/x86_64-linux-gnu/bits/sockaddr.h \
+ /usr/include/x86_64-linux-gnu/asm/socket.h \
+ /usr/include/asm-generic/socket.h \
+ /usr/include/x86_64-linux-gnu/asm/sockios.h \
+ /usr/include/asm-generic/sockios.h /usr/include/netinet/in.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdint.h /usr/include/stdint.h \
+ /usr/include/x86_64-linux-gnu/bits/wchar.h \
+ /usr/include/x86_64-linux-gnu/bits/in.h /usr/include/unistd.h \
+ /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+ /usr/include/x86_64-linux-gnu/bits/environments.h \
+ /usr/include/x86_64-linux-gnu/bits/confname.h /usr/include/getopt.h \
+ /usr/include/errno.h /usr/include/x86_64-linux-gnu/bits/errno.h \
+ /usr/include/linux/errno.h /usr/include/x86_64-linux-gnu/asm/errno.h \
+ /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
+ include/h.h include/str.h /usr/include/strings.h /usr/include/xlocale.h \
+ /usr/include/string.h include/bindresvport.h
+popen.o: lib/bsd/popen.c /usr/include/stdc-predef.h config.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/time.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h \
+ /usr/include/x86_64-linux-gnu/sys/wait.h /usr/include/signal.h \
+ /usr/include/x86_64-linux-gnu/bits/signum.h \
+ /usr/include/x86_64-linux-gnu/bits/siginfo.h \
+ /usr/include/x86_64-linux-gnu/bits/sigaction.h \
+ /usr/include/x86_64-linux-gnu/bits/sigcontext.h \
+ /usr/include/x86_64-linux-gnu/bits/sigstack.h \
+ /usr/include/x86_64-linux-gnu/sys/ucontext.h \
+ /usr/include/x86_64-linux-gnu/bits/sigthread.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h \
+ /usr/include/x86_64-linux-gnu/sys/socket.h \
+ /usr/include/x86_64-linux-gnu/sys/uio.h \
+ /usr/include/x86_64-linux-gnu/bits/uio.h \
+ /usr/include/x86_64-linux-gnu/bits/socket.h \
+ /usr/include/x86_64-linux-gnu/bits/socket_type.h \
+ /usr/include/x86_64-linux-gnu/bits/sockaddr.h \
+ /usr/include/x86_64-linux-gnu/asm/socket.h \
+ /usr/include/asm-generic/socket.h \
+ /usr/include/x86_64-linux-gnu/asm/sockios.h \
+ /usr/include/asm-generic/sockios.h /usr/include/errno.h \
+ /usr/include/x86_64-linux-gnu/bits/errno.h /usr/include/linux/errno.h \
+ /usr/include/x86_64-linux-gnu/asm/errno.h \
+ /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
+ /usr/include/paths.h /usr/include/stdlib.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/unistd.h \
+ /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+ /usr/include/x86_64-linux-gnu/bits/environments.h \
+ /usr/include/x86_64-linux-gnu/bits/confname.h /usr/include/getopt.h \
+ /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h \
+ /usr/include/wchar.h /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/str.h \
+ /usr/include/strings.h /usr/include/xlocale.h /usr/include/string.h \
+ include/h.h
+atan.o: lib/snolib/atan.c /usr/include/stdc-predef.h config.h \
+ /usr/include/math.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_val.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_valf.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_vall.h \
+ /usr/include/x86_64-linux-gnu/bits/inf.h \
+ /usr/include/x86_64-linux-gnu/bits/nan.h \
+ /usr/include/x86_64-linux-gnu/bits/mathdef.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h include/h.h \
+ include/snotypes.h include/macros.h include/load.h equ.h
+chop.o: lib/snolib/chop.c /usr/include/stdc-predef.h config.h \
+ /usr/include/math.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_val.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_valf.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_vall.h \
+ /usr/include/x86_64-linux-gnu/bits/inf.h \
+ /usr/include/x86_64-linux-gnu/bits/nan.h \
+ /usr/include/x86_64-linux-gnu/bits/mathdef.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h include/h.h \
+ include/snotypes.h include/macros.h include/load.h equ.h
+cos.o: lib/snolib/cos.c /usr/include/stdc-predef.h config.h \
+ /usr/include/math.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_val.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_valf.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_vall.h \
+ /usr/include/x86_64-linux-gnu/bits/inf.h \
+ /usr/include/x86_64-linux-gnu/bits/nan.h \
+ /usr/include/x86_64-linux-gnu/bits/mathdef.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h include/h.h \
+ include/snotypes.h include/macros.h include/load.h equ.h
+delete.o: lib/snolib/delete.c /usr/include/stdc-predef.h config.h \
+ /usr/include/unistd.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+ /usr/include/x86_64-linux-gnu/bits/environments.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/confname.h /usr/include/getopt.h \
+ /usr/include/stdlib.h /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h include/h.h equ.h \
+ include/snotypes.h include/macros.h include/load.h
+environ.o: lib/snolib/environ.c /usr/include/stdc-predef.h config.h
+exists.o: lib/generic/exists.c /usr/include/stdc-predef.h config.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/time.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h \
+ /usr/include/x86_64-linux-gnu/sys/stat.h \
+ /usr/include/x86_64-linux-gnu/bits/stat.h /usr/include/stdio.h \
+ /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/lib.h
+exit.o: lib/snolib/exit.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdio.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h /usr/include/stdlib.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h include/h.h \
+ include/snotypes.h include/macros.h include/load.h equ.h include/lib.h
+execute.o: lib/generic/execute.c /usr/include/stdc-predef.h config.h \
+ /usr/include/unistd.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+ /usr/include/x86_64-linux-gnu/bits/environments.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/confname.h /usr/include/getopt.h \
+ /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h \
+ /usr/include/wchar.h /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/lib.h
+exp.o: lib/snolib/exp.c /usr/include/stdc-predef.h config.h \
+ /usr/include/math.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_val.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_valf.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_vall.h \
+ /usr/include/x86_64-linux-gnu/bits/inf.h \
+ /usr/include/x86_64-linux-gnu/bits/nan.h \
+ /usr/include/x86_64-linux-gnu/bits/mathdef.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h include/h.h \
+ include/snotypes.h include/macros.h include/load.h equ.h
+file.o: lib/snolib/file.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdio.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h /usr/include/stdlib.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h include/h.h equ.h \
+ include/snotypes.h include/macros.h include/load.h include/lib.h
+findunit.o: lib/snolib/findunit.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdio.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/macros.h include/load.h equ.h include/lib.h
+fork.o: modules/fork/fork.c /usr/include/stdc-predef.h config.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/time.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h \
+ /usr/include/x86_64-linux-gnu/sys/wait.h /usr/include/signal.h \
+ /usr/include/x86_64-linux-gnu/bits/signum.h \
+ /usr/include/x86_64-linux-gnu/bits/siginfo.h \
+ /usr/include/x86_64-linux-gnu/bits/sigaction.h \
+ /usr/include/x86_64-linux-gnu/bits/sigcontext.h \
+ /usr/include/x86_64-linux-gnu/bits/sigstack.h \
+ /usr/include/x86_64-linux-gnu/sys/ucontext.h \
+ /usr/include/x86_64-linux-gnu/bits/sigthread.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/unistd.h \
+ /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+ /usr/include/x86_64-linux-gnu/bits/environments.h \
+ /usr/include/x86_64-linux-gnu/bits/confname.h /usr/include/getopt.h \
+ /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h \
+ /usr/include/wchar.h /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/macros.h include/load.h equ.h include/str.h \
+ /usr/include/strings.h /usr/include/xlocale.h /usr/include/string.h
+getstring.o: lib/snolib/getstring.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdlib.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h include/str.h \
+ /usr/include/strings.h /usr/include/xlocale.h /usr/include/string.h \
+ include/h.h equ.h include/snotypes.h include/macros.h include/load.h
+host.o: lib/snolib/host.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdlib.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/stdio.h \
+ /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h /usr/include/ctype.h \
+ /usr/include/xlocale.h include/h.h include/snotypes.h include/macros.h \
+ include/load.h equ.h lib/snolib/host.h include/lib.h include/str.h \
+ /usr/include/strings.h /usr/include/string.h
+log.o: lib/snolib/log.c /usr/include/stdc-predef.h config.h \
+ /usr/include/math.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_val.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_valf.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_vall.h \
+ /usr/include/x86_64-linux-gnu/bits/inf.h \
+ /usr/include/x86_64-linux-gnu/bits/nan.h \
+ /usr/include/x86_64-linux-gnu/bits/mathdef.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h include/h.h \
+ include/snotypes.h include/macros.h include/load.h equ.h
+logic.o: modules/logic/logic.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdlib.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/ctype.h \
+ /usr/include/xlocale.h include/h.h include/snotypes.h include/macros.h \
+ include/load.h equ.h
+ord.o: lib/snolib/ord.c /usr/include/stdc-predef.h config.h include/h.h \
+ include/snotypes.h include/macros.h include/load.h equ.h
+random.o: modules/random/random.c /usr/include/stdc-predef.h config.h \
+ /usr/include/x86_64-linux-gnu/sys/time.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h /usr/include/fcntl.h \
+ /usr/include/x86_64-linux-gnu/bits/fcntl.h \
+ /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
+ /usr/include/x86_64-linux-gnu/bits/stat.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdint.h /usr/include/stdint.h \
+ /usr/include/x86_64-linux-gnu/bits/wchar.h /usr/include/stdio.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h /usr/include/stdlib.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/unistd.h \
+ /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+ /usr/include/x86_64-linux-gnu/bits/environments.h \
+ /usr/include/x86_64-linux-gnu/bits/confname.h /usr/include/getopt.h \
+ include/h.h equ.h include/snotypes.h include/macros.h include/load.h
+rename.o: lib/snolib/rename.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdlib.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/stdio.h \
+ /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h equ.h \
+ include/snotypes.h include/macros.h include/load.h
+retstring.o: lib/snolib/retstring.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdlib.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/stdio.h \
+ /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h equ.h \
+ include/snotypes.h include/macros.h include/load.h include/str.h \
+ /usr/include/strings.h /usr/include/xlocale.h /usr/include/string.h
+serv.o: lib/snolib/serv.c /usr/include/stdc-predef.h config.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/time.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h \
+ /usr/include/x86_64-linux-gnu/sys/wait.h /usr/include/signal.h \
+ /usr/include/x86_64-linux-gnu/bits/signum.h \
+ /usr/include/x86_64-linux-gnu/bits/siginfo.h \
+ /usr/include/x86_64-linux-gnu/bits/sigaction.h \
+ /usr/include/x86_64-linux-gnu/bits/sigcontext.h \
+ /usr/include/x86_64-linux-gnu/bits/sigstack.h \
+ /usr/include/x86_64-linux-gnu/sys/ucontext.h \
+ /usr/include/x86_64-linux-gnu/bits/sigthread.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h \
+ /usr/include/x86_64-linux-gnu/sys/socket.h \
+ /usr/include/x86_64-linux-gnu/sys/uio.h \
+ /usr/include/x86_64-linux-gnu/bits/uio.h \
+ /usr/include/x86_64-linux-gnu/bits/socket.h \
+ /usr/include/x86_64-linux-gnu/bits/socket_type.h \
+ /usr/include/x86_64-linux-gnu/bits/sockaddr.h \
+ /usr/include/x86_64-linux-gnu/asm/socket.h \
+ /usr/include/asm-generic/socket.h \
+ /usr/include/x86_64-linux-gnu/asm/sockios.h \
+ /usr/include/asm-generic/sockios.h /usr/include/errno.h \
+ /usr/include/x86_64-linux-gnu/bits/errno.h /usr/include/linux/errno.h \
+ /usr/include/x86_64-linux-gnu/asm/errno.h \
+ /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
+ /usr/include/stdlib.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/unistd.h \
+ /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+ /usr/include/x86_64-linux-gnu/bits/environments.h \
+ /usr/include/x86_64-linux-gnu/bits/confname.h /usr/include/getopt.h \
+ /usr/include/netdb.h /usr/include/netinet/in.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdint.h /usr/include/stdint.h \
+ /usr/include/x86_64-linux-gnu/bits/wchar.h \
+ /usr/include/x86_64-linux-gnu/bits/in.h /usr/include/rpc/netdb.h \
+ /usr/include/x86_64-linux-gnu/bits/netdb.h /usr/include/ctype.h \
+ /usr/include/xlocale.h /usr/include/x86_64-linux-gnu/sys/un.h \
+ /usr/include/string.h /usr/include/stdio.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/macros.h include/load.h equ.h include/lib.h \
+ include/str.h /usr/include/strings.h
+sin.o: lib/snolib/sin.c /usr/include/stdc-predef.h config.h \
+ /usr/include/math.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_val.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_valf.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_vall.h \
+ /usr/include/x86_64-linux-gnu/bits/inf.h \
+ /usr/include/x86_64-linux-gnu/bits/nan.h \
+ /usr/include/x86_64-linux-gnu/bits/mathdef.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h include/h.h \
+ include/snotypes.h include/macros.h include/load.h equ.h
+sprintf.o: modules/sprintf/sprintf.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdio.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/macros.h include/load.h include/str.h \
+ /usr/include/strings.h /usr/include/xlocale.h /usr/include/string.h \
+ equ.h
+sqrt.o: lib/snolib/sqrt.c /usr/include/stdc-predef.h config.h \
+ /usr/include/math.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_val.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_valf.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_vall.h \
+ /usr/include/x86_64-linux-gnu/bits/inf.h \
+ /usr/include/x86_64-linux-gnu/bits/nan.h \
+ /usr/include/x86_64-linux-gnu/bits/mathdef.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h include/h.h \
+ include/snotypes.h include/macros.h include/load.h equ.h
+sset.o: lib/snolib/sset.c /usr/include/stdc-predef.h config.h \
+ /usr/include/stdio.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/macros.h include/load.h equ.h include/lib.h
+sys.o: lib/posix/sys.c /usr/include/stdc-predef.h config.h \
+ /usr/include/x86_64-linux-gnu/sys/utsname.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/bits/utsname.h /usr/include/stdio.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h include/h.h \
+ include/snotypes.h include/lib.h include/str.h /usr/include/strings.h \
+ /usr/include/xlocale.h /usr/include/string.h
+tan.o: lib/snolib/tan.c /usr/include/stdc-predef.h config.h \
+ /usr/include/math.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_val.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_valf.h \
+ /usr/include/x86_64-linux-gnu/bits/huge_vall.h \
+ /usr/include/x86_64-linux-gnu/bits/inf.h \
+ /usr/include/x86_64-linux-gnu/bits/nan.h \
+ /usr/include/x86_64-linux-gnu/bits/mathdef.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h include/h.h \
+ include/snotypes.h include/macros.h include/load.h equ.h
+time.o: modules/time/time.c /usr/include/stdc-predef.h config.h \
+ /usr/include/x86_64-linux-gnu/sys/time.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h /usr/include/stdio.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h /usr/include/getopt.h \
+ include/h.h equ.h include/snotypes.h include/macros.h include/load.h \
+ include/lib.h include/str.h /usr/include/strings.h /usr/include/string.h
