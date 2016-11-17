@@ -9,9 +9,10 @@ intended for experiments with non C style languages
     http://files.mpoli.fi/unpacked/software/programm/general/ddj0392.zip/
 * LC-3 educational programming language
 
-### Lambda (unstarted)
-* Lisp
-* Haskell
+### Lambda 
+* Lisp                  
+    http://files.mpoli.fi/unpacked/software/programm/general/lisp1.zip/
+* Haskell (unstarted)
 
 ### Prolog
 * SWI Prolog code, now defunct
