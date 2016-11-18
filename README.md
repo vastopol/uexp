@@ -4,7 +4,7 @@
 intended for experiments with non C style languages
 
 For interesting stuff see:
-* Metropoli BBS files (tendency for files to contain junk chars or not work... written for DOS)
+* Metropoli BBS files (tendency for files to contain junk chars, not work, written for DOS...)
 * The Software Preservation Society
 
 ### Assembly
