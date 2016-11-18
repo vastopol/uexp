@@ -9,21 +9,21 @@
 *                                                               *
 ****************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
+#include "stdio.h"
+#include "ctype.h"
+#include "stdlib.h" //?
 
 /* Very crude but very effective C source debugger. Counts the numbers of
 matching braces, parenthesis and comments, and displays them at the left edge
 of the screen. The best way to see what it does is to do it; try
 
         CC CC.C         /* C Check CC.C */
-
+/*
 Properly handles parens and brackets inside comments; they are ignored. 
 */
 
-main(argc,argv)
-int argc;
-char **argv;
+
+main(int argc, char** argv)
 {
 int file;       
 char c,lastc;
@@ -80,4 +80,3 @@ not the compiler does is your responsibility */
         if (parens) cprintf("Unbalanced parenthesis\r\n");
         if (comments) cprintf("Unbalanced comments\r\n");
 }
-nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn

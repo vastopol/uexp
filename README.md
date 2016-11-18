@@ -3,6 +3,9 @@
 
 intended for experiments with non C style languages
 
+For interesting stuff see:
+* Metropoli BBS files (tendency for files to contain junk chars or not work...)
+* The Software Preservation Society
 
 ### Assembly
 * x8086 The UCR Standard Library for Assembly Language Programmers 2.1
@@ -10,9 +13,10 @@ intended for experiments with non C style languages
 * LC-3 educational programming language
 
 ### Lambda 
-* Lisp                  
+* Lisp  
+  Lisp1 (doesnt work...)
     http://files.mpoli.fi/unpacked/software/programm/general/lisp1.zip/
-* Haskell (unstarted)
+
 
 ### Prolog
 * SWI Prolog code, now defunct
