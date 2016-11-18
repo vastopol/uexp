@@ -34,7 +34,7 @@ char hdr[40];
         file= open(argv[1],0x8000);
         if (file == -1) {
                 cprintf("File missing. Try CC <filename.ext> \r\n");
-                exit();
+                exit(1);
         }
         brackets= parens= comments= 0;
         line= 0; col= 0;
