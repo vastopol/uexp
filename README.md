@@ -4,8 +4,9 @@
 intended for experiments with non C style languages
 
 For interesting stuff see:
-* Metropoli BBS (some files: don't compile/assemble, contain junk symbols, corrupted, written for DOS...)
-* The Software Preservation Group
+* Metropoli BBS Files (http://www.mpoli.fi/files/ )                 
+   (some files: don't compile/assemble, contain junk symbols, corrupted, written for DOS...)
+* The Software Preservation Group (http://www.softwarepreservation.org/)
 
 ### Assembly
 * x8086 The UCR Standard Library for Assembly Language Programmers 2.1  (currently doesnt work...)
