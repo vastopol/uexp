@@ -1,0 +1,834 @@
+Furry Paws
+==========
+
+
+This is a small tutorial and reference that describes the "FP"
+language, as implemented by this system. For more information about
+FP, see http://en.wikipedia.org/wiki/FP_(programming_language)
+
+
+Constants and values
+--------------------
+
+This implementation of FP understands the following data objects:
+
+* "fixnums": signed integers, 31 bits on 32-bit CPUs, 63 bits on
+  64-bit systems, including sign).
+
+* atoms (interned strings, internally zero-terminated).
+
+* sequences of fixnums, atoms or other sequences.
+
+Atoms must begin with an uppercase character or must be enclosed
+inside \` characters. 
+
+The special atom `F` designates the "false" value, all other
+values are considered true.
+
+Strings are simply sequences of character codes.
+
+
+Definitions
+-----------
+
+An FP program consists of a set of definitions which either
+define modules, containing other definitions, or define functions
+by combining other intrinsic or user-defined functions with
+"functional forms" (see below).
+
+Let's define a simple function that multiplies its argument with
+itself:
+
+    square = mul.[id, id]
+
+`square` "composes" two functions: `mul`, which is the intrinsic
+multiplication function, and `[...]` which is a so called 
+"construction", a function that creates a sequence by applying
+its argument to each function designated by the construction
+elements. In this case the elements are both `id`, the intrinsic
+function to return its argument unchanged.
+
+We can also put definitions inside "modules", which are isolated
+scopes to avoid naming conflicts:
+
+my_module = {
+
+  add_ten = add.[id, ~10]
+
+}
+
+Here we use another functional form: `~` takes a constant
+argument and designates a function that always returns the
+given constant, regardless of the argument it receives.
+The definition is placed in a module, and can be accessed
+using a "qualified" reference of the form `my_module:add_ten`.
+
+Modules are "open", and can be extended:
+
+my_module = {
+
+  add_eleven = add1 . my_module:add_ten
+  add_twelve = add1 . add_eleven
+
+}
+
+Inside a module we can access other definitions in the same
+module body without the qualifier.
+
+
+Functional forms
+----------------
+
+FP understands these functional forms:
+
+`<function1> . <function2>`
+
+  This is the function composition, the most fundamental of all
+  functional forms. It applies `<function2>` to the current argument
+  and then applies `<function1>` to the result.
+
+`~ <constant>`
+
+  Ignores the argument and always returns the given constant value.
+
+`@ <function>`
+
+  Applies `<function>` to every element of the argument (which should
+  be a sequence).
+
+`<function1> -> <function2> ; <function3>`
+
+  The conditional: invokes `<function2>` or `<function3>`, depending
+  on whether `<function1>` returns true or false, respectively.
+  Note that all functions are called with the same argument.
+  The alternative part (the third function) can be omitted, defaulting
+  to `id`.
+
+`/ <function>`
+
+  "Inserts" from the right - this is like placing the operator
+  `<function>` between each element of the argument sequence, with the
+  operator associating to the right (`<function>` will be called with
+  a sequence to two arguments). If the argument sequence is of length
+  1, the single sequence element is returned (without invoking
+  `<function>`). If the sequence is empty, the "unit" value for
+  `<function>` is returned.
+
+`\ <function>`
+
+  "Inserts" from the left, with the operator associating to the left.
+
+`! <number>`
+
+  Syntactic shortcut for `select.[<number>, id]`.
+
+`unit <function>`
+
+  Returns the unit value for the given function. Unit values are
+  defined for the following primitives, or definitions that resolve
+  after inlining to them:
+
+    add, sub           0
+    mul, div           1
+    band, bor, bxor    0
+
+  Taking the unit value of other function will trigger a runtime
+  error.
+
+`[ <function1>, ... ]`
+
+  "Construction", calls each function with the argument and returns
+  a sequence of the results.
+
+`[| <function1>, ... |]`
+
+  "Predicate construction", returns `T` (true) or `F` (false),
+  depending on whether its argument is a sequence with as many
+  elements as the number of functions given and for which all
+  functions return true, when given the associated sequence element as
+  argument. Predicate construction is handy for argument sequence
+  validation, so another syntactical shortcut allows "guarded"
+  definitions that fail when the arguments do not match:
+
+    my_def [| ... |] = ...
+
+  is equivalent to
+
+    my_def = [| ... |] -> ...; _
+
+  The last element may be `..`, which means that the argument sequence
+  may be longer than the list of funtions.
+
+  Two syntactical shortcuts that are useful for this construct are:
+
+  #    
+    always returns true (`T`).
+
+  ? <constant>
+
+    takes a constant as argument and compares it with the current
+    argument. Equivalent to `eq.[~constant, id]`.
+
+`trace <constant>`
+
+  A debugging form that prints `<constant>` and the argument and
+  returns the argument unchanged.
+
+`while <function1> <function2>`
+
+  A looping construct. Calls `<function1>` with the current argument
+  and if it returns true, invokes `<function2>` (with the same
+  argument), repeating the process with the result of calling
+  `<function2>`. If the test returns false, the loop is terminated
+  and returns the argument unchanged.
+
+`<function1> ; <function2>`
+
+  A sequencing function, calls both functions and returns the
+  result of the second. This makes only sense if `<function1>`
+  performs a side-effect.
+
+`<function1> ^ <function2>`
+
+  Syntactic shortcut for `app.[<function1>, <function2>]`.
+
+`catch <handler> <function>`
+
+  Invokes `<function>` and, if an exception is thrown (using the
+  `_throw` intrinsic or `throw` prelude function) during the execution
+  of `<function>`, invokes `<handler>` with the thrown value as
+  argument, returning the result of the handler. During execution of
+  the handler, a throw propagates further down the handler chain (if
+  one exists).
+
+`<function1> + <function2>`
+
+  Reverse composition, equivalent to `<function2> . <function1>`.
+
+`<function1> & <function2>`
+`<function1> | <function2>`
+
+  Boolean connectives, which evaluate their second arguments only
+  if needed.
+
+`extern <atom>`
+
+  Binds to an externally defined function written in C.
+
+`* <exp>`
+
+  Returns an object representing the function containing the passed
+  expression.
+
+`(<exp1> [<exp2> ...])`
+
+  Parantheses can be used for grouping or for a fancy style of
+  function invocation syntax. A single expression inside parantheses
+  represents the expression. A group of expressions on the other hand
+  is rewritten to
+
+    <exp1>.[id, *<exp2>, ...]
+
+`(| <exp1>, <exp2> |)`
+
+  A "catamorphism" or "fold", a slightly more general form of `/`
+  ("insert-right"). Equivalent to
+
+    <tmp> = null -> <exp1>; <exp2>.[s1, <tmp>.tl]
+
+  Note that this form is implemented iteratively.
+
+
+Grammar
+-------
+
+This grammar may help figure out operator precedence:
+
+    PRG = TOP ...                           toplevel forms
+    TOP = "\"" ... "\""                     include source-file verbatim
+	| DEF                               
+    DEF = ID "=" BODY                       function definition
+        | ID PCONS "=" SEQ                  equivalent to "ID = PCONS -> SEQ; _"
+    BODY = "{" DEF ... "}"                  module (new scope)
+	 | SEQ
+    SEQ = EXP0 [";" SEQ]                    execute sequence, discard all but last result
+    EXP0 = COND ["+" EXP0]                  reverse composition
+    COND = BEXP ["->" BEXP [";" COND]]      conditional (alternative defaults to "id")
+    BEXP = EXP [("&" | "|") BEXP]           short-circuit AND and OR
+    FEXP = EXP ["^" FEXP]   		    function application
+    EXP = VAL ["." EXP]                     composition
+    VAL = ID [":" ID]                       "qualified" module-reference
+        | PCONS
+	| "(" SEQ [SEQ ...] ")"		    grouping or "delayed" function invocation syntax
+	| "(|" SEQ "," SEQ "|)"             catamorphism
+	| "~" CONST			    constant
+	| "@" VAL			    apply-to-all
+	| "/" VAL			    insert (right)
+	| "\" VAL			    insert (left)
+	| "[" SEQ "," ... "]"		    construction
+	| "trace" CONST	   		    print atom and argument to stderr
+	| "while" EXP EXP		    iteration
+	| "catch" EXP EXP		    catch exception triggered with "throw"
+	| "extern" ATOM			    declare externally defined function
+	| "*" VAL  			    function object
+	| "#"                               equivalent to "~T"
+        | "?" CONST 			    equivalent to "eq.[~CONST, id]"
+        | "!" NUMBER 			    equivalent to "select.[~NUMBER, id]"
+    PCONS = "[|" SEQ "," ... [".."] "|]"    predicate-construction (true, if every component succeeds)
+    CONST = NUMBER
+	  | ATOM
+	  | "<" CONST "," ... ">"
+
+
+Lexical syntax
+--------------
+
+    ID = IDCHAR1 {IDCHAR}
+    NUMBER = {NUMCHAR}+
+    ATOM = UPPER {ATOMCHAR}+
+    SYMBOL = {SYMBOLCHAR}+
+
+    SYMBOLCHARS = [-~"@/\~=:;(){}[]<>.,&|+?!#]
+    NUMCHAR = [0123456789]
+    IDCHAR1 = "_" | LOWER
+    IDCHAR = [abcdefghijklmnopqrstuvwxyz0123456789_%$'?!]
+    ATOMCHAR = [ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_%$'?!]
+    UPPER = [ABCDEFGHIJKLMNOPQRSTUVWXYZ]
+    LOWER = [abcdefghijklmnopqrstuvwxyz]
+
+Everything following "% ..." up and including the end of line
+is ignored.
+
+If the first line of a source file begins with `#! ...` ("she-bang"),
+then it is ignored.
+
+Quoted string and atom literals ("..." and \`...`) may contain escape
+sequences with the usual backslash:
+
+  \n         newline (ASCII 10)
+  \r         carriage return (ASCII 13)
+  \t         tab (ASCII 9)
+
+Any other character is taken verbatim.
+
+
+Intrinsics
+----------
+
+"Intrinsics" are functions that are included in the C runtime system.
+
+Meaning of argument specifiers:
+
+* `n`: number
+* `x`, `y`: value
+* `a`: atom
+* `s`: sequence
+* `b`: boolean (where `F` is false, any any other value true)
+
+
+`_ : x -> _|_ `
+
+Prints "undefined", dumps argument and exits with failure code.
+Note that this can not be caught via `catch`. 
+
+
+`add : <n1, n2> -> n3`
+
+Adds the arguments and returns the result.
+
+
+`al : <x, <y1, ...>> -> <x, y1, ...>`
+
+Returns a new sequence with the contents of `<y1, ...>` with `x` added
+to the front.
+
+
+`app : <f, x> -> y`
+
+Applies `x` to the function represented by the object `f` (which has
+probably be produced by the `*` functional form).
+
+
+`ar : <<x1, ..., xn>, y> -> <x1, ..., xn, y>`
+
+Returns a new sequence with the contents of `<x1, ...>` with `y` added
+to the end.
+
+
+`atom : x -> b`
+
+Returns `T` if `x` is an atom or number or `F' otherwise. Note that
+this function returns `F` for the empty sequence.
+
+
+`band : <n1, n2> -> n3`
+
+Performs a bitwise AND of `n1` and `n2` and returns the result.
+
+
+`bnot : <n1> -> n2`
+
+Inverts the bits in `n1` and returns the result.
+
+
+`bor : <n1, n2> -> n3`
+
+Performs a bitwise OR of `n1` and `n2` and returns the result.
+
+
+`bshl : <n1, n2> -> n3`
+
+Shifts the bits in `n1` by `n2` positions to the left, filling up
+with zero on the right and returns the result.
+
+
+`bshr : <n1, n2> -> n3`
+
+Shifts the bits in `n1` by `n2` positions to the right, filling up
+with `1`, if `n1` is negative or `0`if positive. Returns the result.
+
+
+`bxor : <n1, n2> -> n3`
+
+Performs a bitwise XOR of `n1` and `n2` and returns the result.
+
+
+`cat : <<x1, ...>, <y1, ...>, ...> -> <x1, ..., y1, ..., ...>`
+
+Returns all argument sequences concatenated together.
+
+
+`cmp : <x1, x2> -> b`
+
+Returns `-1`, `0` or `1`, depending on whether `x1` is greater, equal
+or less than `x2`. The ordering of data objects is numbers < atoms <
+sequences, atoms are compared lexicographically, sequences are
+compared element-wise. If one argument sequence is the prefix of the
+other, the larger is considered greater.
+
+
+`div : <n1, n2> -> n3`
+
+Divides `n1` by `n2` and returns the result. If `n2` is zero, performs
+the equivalent of
+
+    _throw : <ERROR, message, n2>
+
+
+`dl : <x, <y1, ...>> -> <<x, y1>, ...>`
+
+"Distribute left": creates a sequence that pairs the first argument
+and every element of the second (which must be a sequence).
+
+
+`dr : <<x1, ...>, y> -> <<x1, y>, ...>`
+
+"Distribute right": creates a sequence that pairs every element of the
+second (which must be a sequence) and the second argument.
+
+
+`_emit : x -> x`
+
+Writes `x` to stdout. `x` is processed recursively and displayed
+according to its type:
+
+* number: emit single character
+* atom: emit name of atom
+* sequence: emit all elements in order
+
+
+`_env : a -> F | a'`
+
+Returns the value of the enironment variable given in `a` as an atom.
+If no such environment variable is defined, returns `F`.
+
+
+`eq : <x, y> -> b`
+
+Returns `T`, if `x` is structurally equal to `y` or `F` otherwise.
+
+
+`gc : x -> x`
+
+Performs a garbage collection.
+
+
+`_get : n -> <c1, ...>`
+
+Reads `n` characters from stdin and returns a string containing the
+input. Premature EOF will return a string with length less than `n`.
+
+
+`id : x -> x`
+
+Returns `x` unchanged.
+
+
+`_in : filename -> s`
+
+Read file with the filename given in the atom or string `filename` and
+returns its contents as a string.
+
+
+`iota : n -> <1, ..., n>`
+
+Constructs a sequence initialized of numbers `1` to `n`.
+
+
+`len : s -> n`
+
+Returns the length of the argument sequence (constant time).
+
+
+`mod : <n1, n2> -> n3`
+
+Divides `n1` by `n2` and returns the remainder. If `n2` is zero,
+performs the equivalent of
+
+    _throw : <ERROR, message, n2>
+
+
+`make : <n, x> -> <x, ...>`
+
+Creates a sequence of length `n`, with each element initialized
+to `x`.
+
+
+`mul : <n1, n2> -> n3`
+
+Multiplies the arguments and returns the product.
+
+
+`num : x -> b`
+
+Returns `T` if `x` is a number or `F' otherwise.
+
+
+`_out : <filename, s> -> s`
+
+Writes the contents of the string `s` the file with the name given in
+the string o atom `filename` and returns `s`.
+
+
+`_rnd : n -> n'`
+
+Returns a random number between 0 and `n-1`.
+
+
+`select : <n, s> -> x`
+
+Returns the `n`th item of the sequence `x`, note that counting starts
+from 1.
+
+
+`_show : x -> x`
+
+Write a textual representation of `x` to stdout and return `x`.
+
+
+`string : x -> b`
+
+Returns `T` if `x` is a string (a sequence of graphical or whitespace
+character codes) or `F` otherwise.
+
+
+`sub : <n1, n2> -> n3`
+
+Subtracts `n2` from `n1`and returns the result.
+
+
+`subseq : <n1, n2, s> -> s2`
+
+Returns the subsequence of the elements at index `n1` to `n2`
+(inclusive) of sequence `s`. The indices are adjusted up or down
+if they exceed the range of valid indices.
+
+
+`_system : cmd -> n`
+
+Executes the shell command `cmd` which may be an atom or a string and
+returns the exit code.
+
+
+`_throw : x`
+
+Performs a non-local exit, "throwing" the exception with the value
+`x`.  If a `catch` is active in the current dynamic extent of the call
+to `throw`, then the catch-handler is invoked with `x` as argument.
+If no catcher is currently active, then the program is terminated with
+an error message.
+
+
+`tl : <x1, x2, ...> -> <x2, ...>`
+
+Returns a copy of the argument sequence with the first element removed.
+
+
+`toa : x -> a`
+
+Converts `x` to an atom. A string is interned into the symbol-table
+as the name of a new or existing atom. A number is converted first
+to a string and then interned. An atom is returned unchanged.
+
+
+`ton : x -> n`
+
+Converts `x` to a number. If `x` is a string, it is parsed as
+containing a decimal textual representation. If `x` is an atom,
+its name is parsed. If `x` is a number, it is returned unchanged.
+
+
+`tos : x -> s`
+
+Converts `x` to a string. If `x` is a number, it converted to
+its decimal representation. If `x` is an atom, the result is a string
+containing the characters of its name. If `x` is a string, it is
+returned unchanged.
+
+
+The Prelude
+-----------
+
+The "prelude" provides the base library of functions available
+for FP programs and is included by default. See `prelude.fp`
+for more information.
+
+
+Other Features
+--------------
+
+* The "main" function
+
+  The program starts by invoking the `main` definition, which must be
+  supplied by the user. `main` is called with a sequence containing a
+  sequence of the command-line arguments (as atoms) and the initial
+  I/O state (see below for details about this). The function should
+  return a sequence of two items, of which the first is ignored and
+  the second being the final I/O state (which is subsequently passed
+  to `exit`).
+
+* When string literals appear at toplevel, they are processed as
+  "include" statements: the string should contain the pathname of
+  a file to be included literally in the compiled source code.
+  If the filename ends with ".c" or ".h", it is treated as if 
+  `-include "<filename>"` has been passed on the command line.
+
+
+Referentially Transparent I/O
+-----------------------------
+
+The compiler performs various algebraic transformations on the code
+under the assumption that all code is referentially transparent and
+thus has no side-effects. To make I/O possible in such a context a
+very simple method is used to ensure that all I/O operations are
+executed in a well defined order: every side-effecting operation takes
+an argument-sequence of two values, the real argument and an
+additional unique "IO-tag". The operation performs whatever it is
+supposed to do and returns a sequence of two values: the normal result
+and the modified IO-tag which can now be used for the next
+side-effecting operation. I/O operations register the state of the
+IO-tag internally (using `_iostep`) and so make sure that the same
+IO-tag is only used once. This strategy doesn't enforce the proper
+serialization of I/O per se, but will at least detect when a
+side-effecting operation happens out of order.
+
+All I/O-intrinsics like `_emit`, `_show`, etc. have a corresponding
+wrapper in `prelude.fp` that has the standard IO-function signature
+and is named like the intrinsic, but without the `_`.
+
+
+Usage of the Compiler
+---------------------
+
+    fpc OPTION | FILENAME ...
+
+`fpc` will translate the FP source file `FILENAME` to `FILENAME.c`
+(after removing the file-extension of the source file, if it has
+one) and optionally invoke the C compiler, producing an executable.
+
+The options have the following meaning:
+
+`-c`
+
+  After translation to C, the code will be compiled to a binary
+  executable, with all C compiler options passed in the command line.
+  By default, the name of the output file is the same as the FP
+  source file, with the file-extension removed.
+
+`-debug` 
+`-dump`
+
+  Enables \"debug\" mode, which will print additional descriptive output
+  during compilation. `-dump` will also dump the program at various
+  intermediate stages.
+
+`-help`
+
+  Prints this text and exits.
+
+`-heap <HEAPSIZE>`
+
+  Sets the default heap size of the compiled file. The size argument
+  may be suffixed with either \"k\"/\"K\", \"m\"/\"M\" or \"g\"/\"G\",
+  meaning kilobytes, megabytes or gigabytes, respectively. The heap
+  is made up of two spaces, which means half the amount of memory
+  will be available for the allocation of data-structures.
+
+`-include <FILENAME>`
+
+  Includes the given file via
+
+    #include \"<FILENAME>\"
+
+  in the generated code. The `#include` statement will be textually
+  preceded by the inclusion of the default headers and runtime code.
+
+`-limit LIMIT`
+
+  Sets the size limit beyond which functions will not be inlined. The
+  default limit is 5. The size of a function corresponds to the number
+  of nodes (roughly, each functional form or variable reference counts
+  as 1).
+
+`-o <FILENAME>`
+
+  Specifies an alternative output-file name.
+
+`-prelude <FILENAME>`
+
+  Specifies an alternative \"prelude\" file (the base library
+  available to all FP programs).
+
+`-no-check`
+
+  Disable checking pass - only needed for development of the compiler
+  itself.
+
+`-nodes`
+
+  Stop after optimization and write internal node-tree to stdout.
+
+`-unparse`
+
+  Stop after optimization and translate internal node-tree back to
+  FP (sort of), writing it to stdout.
+
+`-version`
+
+  Show version number and exit.
+
+`-entry-point NAME`
+
+  Set alternative entry-point. After initialization the default
+  entry-point `start` in the prelude is called with the set of
+  command-line arguments as a sequence of atoms, which in turn invokes
+  `main`. By using this option you can select a different entry-point.
+
+`-<ccoption>`
+
+  Unrecognized options are directly passed to the C compiler.
+
+
+Compile-time parameters
+-----------------------
+
+You can set various compile-time parameters, passed using the 
+´-D...` option of the C compiler:
+
+`NDEBUG`
+
+  Disable debugging support code.
+
+`STRESS_GC`
+
+  Trigger GC on every allocation. This will slow down your
+  code heavily.
+
+`CAREFUL`
+
+  Enable extra checks at runtime.
+
+`EXTRA_CAREFUL`
+
+  Enable more extra checks at runtime.
+
+`STACK_LIMIT=<limit>`
+
+  Abort, if the C stack appears to be larger than `<limit>` (in
+  bytes).
+
+
+Runtime options
+---------------
+
+The compiler (and programs compiled with it) understand the following
+runtime-options on the command-line:
+
+`-:?`
+
+`Lists the available runtime-options and exits the program.
+
+`-:a<atoms>`
+
+Overrides the default size of the internal "atom-table".
+
+`-:d`
+
+Enable debug-mode, which prints out some runtime information during
+execution.
+
+`-:e`
+
+Write error and warning messages to a file named `stderr.txt`
+instead of the error output channel.
+
+`-:h<heapsize>`
+
+Override the heap-size of the executable (which is either a default or
+has been compiled in usin the `-heap` compiler option).
+
+`-:s`
+
+Force output of strings as number sequences.
+
+`-:t<tracelength>`
+
+Overrides the default size of the trace-buffer, which records function
+call entries.
+
+Runtime options will not be passed to the `main` function.
+
+
+Notes on Programming Style and Algorithmic Complexity
+-----------------------------------------------------
+
+It is advisable to keep code simple and use small definitions.  Do not
+take the (rather convoluted) coding style used in the compiler sources
+as an example.
+
+Sequences are implemented as vectors with constant access time, and
+constant-time length computation. This means recursive construction
+and deconstruction of sequences is a slow and memory-intensive
+operation.
+
+The available memory for allocation of data does not expand
+automatically, so a working set that exceeds the default size of the
+heap will result in program termination.
+
+Tail-recursion optimization is supported if the recursive call is in
+tail position. A tail position is
+
+* the topmost value-expression in a definition
+
+* the branches in a conditional, provided the conditional is in tail-
+  position
+
+* the left-hand side of a composition expression (`.`) or the
+  right-hand side of a reverse-composition expression (`+`), provided
+  the composition is in tail-position
+
+* the right-hand side of a sequence expression, provided the sequence
+  is in tail-position
+
+* the right-hand side of a "or" expression (`|`), provided the
+  expression is in tail-position

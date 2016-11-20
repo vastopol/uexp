@@ -14,6 +14,9 @@ For interesting stuff see:
     http://files.mpoli.fi/unpacked/software/programm/general/ddj0392.zip/
 * LC-3 educational assembly programming language
 
+### FP
+* FurryPaws (http://www.call-with-current-continuation.org/fp/)
+
 ### Lambda 
 * Lisp  
   * XLisp (http://files.mpoli.fi/unpacked/software/programm/general/lisp1.zip/)
