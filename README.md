@@ -15,7 +15,7 @@ For interesting stuff see:
 
 ### Lambda 
 * Lisp  
-  Lisp1 (currently doesnt work...)
+  * XLisp (currently doesnt work...)
     http://files.mpoli.fi/unpacked/software/programm/general/lisp1.zip/
 
 

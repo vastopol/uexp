@@ -1,10 +1,9 @@
-
-                     CONTENTS OF THIS DISKETTE
+                     CONTENTS OF LISP1.ZIP
 
 8087     ASM     8125       Assembler macros for 8087 instructions
 AUTODEX  EXE    32000       Fantastic fullscreen directory/file manipulater
 CC       C       3544       C source program checker, catches mismatched parens
-DOSINTS  TXT     5940       Tells all about secrent DOS interrupt functions!
+DOSINTS  TXT     5940       Tells all about secret DOS interrupt functions!
 DOS_ERR  TXT     3456       Information on DOS I/O redirection bugs
 FIND     PAT     1024       Patch to DOS FIND command, makes it a better filter
 LOAD     COM      291       Load COM files bigger than 64K: LOAD <file name>
