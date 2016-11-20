@@ -269,8 +269,6 @@ In addition, at the beginning of each of the category is a brief
 discussion of the purpose of its routines.
 
 
-
-
 
 Character Input Routines
 ------------------------
@@ -282,7 +280,6 @@ routines receive the characters they either place the characters on the stack
 and/or return.  The character input routines work similar to the "C" character
 input routines.
 
-
 
 Routine:  Getc
 --------------
@@ -360,8 +357,7 @@ Description:  This routine reads a character from the standard input device.
 
 Include:	stdlib.a   
 
-
-
+;--------------------------------------------------------------------------------------
 
 Routine:   GetcStdIn
 --------------------
@@ -398,8 +394,7 @@ Description:    This routine reads a character from the DOS standard input
 Include:		stdlib.a
 
 
-
-
+;--------------------------------------------------------------------------------------
 
 
 Routine:   GetcBIOS
@@ -431,8 +426,9 @@ Description:   This routine reads a character from the keyboard.  This call is
 
 
 Include:		stdlib.a
-
 
+
+;--------------------------------------------------------------------------------------
 
 Routine:  SetInAdrs
 -------------------
@@ -469,7 +465,7 @@ Description:    This routine redirects the stdlib standard input so that it
 Include:                stdlib.a
 
 
-
+;--------------------------------------------------------------------------------------
 
 
 Routine:   GetInAdrs
@@ -499,7 +495,10 @@ Description:   You can use this function to get the address of the current
 
 
 Include:		stdlib.a
-
+
+
+;--------------------------------------------------------------------------------------
+
 
 
 Routine:   PushInAdrs
@@ -536,7 +535,8 @@ Description:   This routine "pushes" the current input address onto an
 
 Include:	stdlib.a
 
-
+
+;--------------------------------------------------------------------------------------
 
 
 
@@ -568,7 +568,9 @@ Description:   PopInAdrs undoes the effects of PushInAdrs.  It pops an item
 Include:	stdlib.a
 
 
-
+
+;--------------------------------------------------------------------------------------
+
 
 
 Routine:  Gets, Getsm
@@ -629,7 +631,8 @@ Description:   	Reads a line of text from the stdlib standard input device.
 
 Include:              	stdlib.a
 
-
+
+;--------------------------------------------------------------------------------------
 
 
 
@@ -691,7 +694,9 @@ Description:   * Formatted input from stdlib standard input.
 
 Include:                stdlib.a
 
-
+
+;--------------------------------------------------------------------------------------
+
 
  
 Character Output Routines
@@ -718,7 +723,8 @@ immediately following the terminating byte, therefore, it is important
 to remember to terminate your string with zero or you will print an 
 unexpected sequence of characters.
 
-
+
+
 
 Routine:  Putc
 --------------
@@ -747,7 +753,10 @@ Description:  Putc is the primitive character output routine.  Most other
 
 
 Include:                stdlib.a
-
+
+
+;--------------------------------------------------------------------------------------
+
 
 
 Routine:  PutCR
@@ -770,7 +779,11 @@ Description:  Using PutCR is an easy way of printing a newline to the stdlib
 
 
 Include:                stdlib.a
-
+
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine: PutcStdOut
 -------------------
@@ -797,7 +810,11 @@ Description:  PutcStdOut calls DOS to print the character in AL to the standard
 
 
 Include:                stdlib.a
-
+
+
+;--------------------------------------------------------------------------------------
+
+
 
 
 Routine: PutcBIOS
@@ -826,7 +843,11 @@ Description:  PutcBIOS prints the character in AL using the BIOS routines,
 
 
 Include:     	stdlib.a
-
+
+
+;--------------------------------------------------------------------------------------
+
+
 
 
 Routine: GetOutAdrs
@@ -853,7 +874,10 @@ Description:  GetOutAdrs gets the address of the current output routine, perhaps
 
 Include:	stdlib.a
 
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 
 Routine:  SetOutAdrs
@@ -885,7 +909,11 @@ Description:  This routine redirects the stdlib standard output so that it
 
 
 Include:        stdlib.a
-
+
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  PushOutAdrs
 ---------------------
@@ -921,7 +949,11 @@ Description:  This routine "pushes" the current output address onto an internal
 
 
 Include:      	stdlib.a
-
+
+
+;--------------------------------------------------------------------------------------
+
+
 
 
 Routine:  PopOutAdrs
@@ -953,7 +985,9 @@ Description:  PopOutAdrs undoes the effects of PushOutAdrs.  It pops an item off
               the stack.
 
 Include:	stdlib.a
-
+
+
+;--------------------------------------------------------------------------------------
 
 
 
@@ -983,7 +1017,10 @@ Description:   Puts prints a zero-terminated string whose address appears
 
 
 Include:        stdlib.a
-
+
+
+;--------------------------------------------------------------------------------------
+
 
 
 Routine:  Puth
@@ -1009,7 +1046,10 @@ Description:    The Puth routine Prints the value in the AL register as two
 
 
 Include:        stdlib.a 
-
+
+
+;--------------------------------------------------------------------------------------
+
 
 
 Routine:  Putw
@@ -1034,7 +1074,9 @@ Description:  The Putw routine prints the value in the AX register as four
               to print all characters.
 
 Include:        stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
 
 
 Routine:  Puti
@@ -1061,7 +1103,8 @@ Description:  Puti prints the value in the AX register as a decimal integer.
 
 
 Include:        stdlib.a
-
+
+;--------------------------------------------------------------------------------------
 
 
 Routine:  Putu
@@ -1088,7 +1131,9 @@ Description:  Putu prints the value in the AX register as an unsigned integer.
 
 Include:        stdlib.a
 
-
+
+;--------------------------------------------------------------------------------------
+
 
 
 Routine:  Putl
@@ -1118,7 +1163,9 @@ Description:   Putl prints the value in the DX:AX registers as an integer.
 
 Include:        stdlib.a
 
-
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  Putul
 ---------------
@@ -1145,7 +1192,10 @@ Description:    Putul prints the value in the DX:AX registers as an unsigned
 
 
 Include:        stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  PutISize
 ------------------
@@ -1190,7 +1240,10 @@ Description:    PutISize prints the signed integer value in AX to the
 
 
 Include:        stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 
 Routine:  PutUSize
@@ -1219,7 +1272,9 @@ Description:  PutUSize prints the value in AX as an unsigned decimal integer.
 
 
 Include:        stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
 
 
 Routine:  PutLSize
@@ -1246,7 +1301,8 @@ Description:   PutLSize is similar to PutISize, except this prints the long
                11 print positions (e.g., -1,000,000,000).
 
 Include:        stdlib.a
-
+
+;--------------------------------------------------------------------------------------
 
 
 
@@ -1280,7 +1336,10 @@ Description:  Prints the value in DX:AX as a long unsigned decimal integer.
 
 
 Include:        stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:   Print
 ----------------
@@ -1314,7 +1373,10 @@ Description:   Print lets you print string literals in a convenient
 
 
 Include:        stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:        Printf
 ----------------------
@@ -1524,7 +1586,9 @@ Descriptions:   Printf, like its "C" namesake, provides formatted output
 		facilities, it doesn't appear here.  Check out PRINTFF.
 
 Include:        stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
 
 
 Routine:  PRINTFF
@@ -1582,7 +1646,9 @@ Description:
 		point package, making your program considerably larger.
 
 Include:              	stdlib.a
-
+
+
+;===========================================================================================
 
 
 Conversion Routines
@@ -1601,7 +1667,8 @@ carry flag to show error status.  If the error flag is set then an error has
 occured and things are okay if the carry flag is clear.
 
 
-
+;--------------------------------------------------------------------------------------
+
 
 
 Routine:  ATOL (2)
@@ -1638,7 +1705,10 @@ Description:  ATOL converts the string of digits that ES:DI points at to a
 
 
 Include:              	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 
 Routine:  AtoUL (2)
@@ -1670,7 +1740,10 @@ Description:  AtoUL converts the string pointed by ES:DI to a 32-bit unsigned
 
 Include:        stdlib.a
 
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:    ATOU (2)
 --------------------
@@ -1696,7 +1769,10 @@ Description:    ATOU converts an ASCII string of digits, pointed to by ES:DI,
 
 Include:        stdlib.a
 
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine: ATOH (2)
 -----------------
@@ -1724,7 +1800,10 @@ Description:  ATOH converts a string of hexadecimal digits, pointed to by
 	      pointing at the first character beyond the string of hex digits.
 
 Include:        stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine: ATOLH (2)
 ------------------
@@ -1751,7 +1830,10 @@ Description:  ATOLH converts a string of hexadecimal digits, pointed to by
 
 
 Include:        stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 
 Routine:   ATOI (2)
@@ -1776,7 +1858,10 @@ Description:   Works just like ATOL except it translates the string to a
 
 
 Include:              stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine ITOA (2,M)
 ------------------
@@ -1836,7 +1921,10 @@ Description:	These routines convert an integer value to a string of
 		to routines like ITOA2.
 
 Include:        stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 
 Routine:   UTOA (2,M)
@@ -1882,7 +1970,10 @@ Description:    UTOAx converts a 16-bit unsigned integer value in AX to a
 
 
 Include:       stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 
 Routine:   HTOA (2,M)
@@ -1910,7 +2001,10 @@ Description:    The HTOAx routines convert an 8-bit value in AL to the two-
 
 
 Include:        stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  WTOA (2,M)
 --------------------
@@ -1939,7 +2033,9 @@ Description:  WTOAx converts the 16-bit value in AX to a string of four
 
 Include:        stdlib.a
 
-
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  LTOA (2,M)
 --------------------
@@ -1976,7 +2072,10 @@ Description:    LtoA converts the 32-bit signed integer in DX:AX to a string
 		to the string in ES:DI.
 
 Include:        stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 
 Routine:  ULTOA (2,M)
@@ -2001,7 +2100,9 @@ Example of Usage:
 Description:  Like LTOA except this routine handles unsigned integer values.
 
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
 
 
 Routine:  SPrintf (2,M)
@@ -2053,7 +2154,9 @@ Description:   SPrintf is an in-memory formatting routine. It is similar to
 	       sized buffer to hold the result.
 
 Include:             stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
 
 
 Routine:  SScanf
@@ -2087,7 +2190,9 @@ Description:  SScanf provides formatted input in a fashion analogous to scanf.
 
 Include:                stdlib.a
 
-
+;--------------------------------------------------------------------------------------
+
+
 
 
 Routine:  ToLower
@@ -2120,7 +2225,10 @@ Description:  ToLower checks the character in the AL register, if it is upper
 
 
 Include:             stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 
 Routine:   ToUpper
@@ -2148,8 +2256,8 @@ Description:  ToUpper checks the character in the AL register, if it is lower
 
 Include:              stdlib.a
 
-
 
+;===========================================================================================
 
 
 Utility Routines
@@ -2163,7 +2271,10 @@ this section check the character in the AL register to see whether it is a
 hexidecimal digit, if it alphabetic, if it is a lower case alphabetic, if it
 is a upper case alphabetic, and if it is numeric.
 
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 
 Routine:  ISize
@@ -2197,7 +2308,8 @@ Description:         This routine computes the number of print positions
 
 Include:             stdlib.a
 
-
+;--------------------------------------------------------------------------------------
+
 
 
 Routine:  USize
@@ -2232,7 +2344,10 @@ Description:         This routine computes the number of print positions
 
 
 Include:             stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  LSize
 ---------------
@@ -2265,7 +2380,10 @@ Description:         This routine computes the number of print positions
 
 
 Include:             stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 
 Routine:  ULSize
@@ -2292,7 +2410,9 @@ Description:          ULSize computes the minimum number of character
 
 
 Include:              stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
 
 
 Routine:  IsAlNum
@@ -2321,7 +2441,10 @@ Description :         This routine checks the character in the AL register to
 
 
 Include:              stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  IsXDigit
 ------------------
@@ -2348,7 +2471,10 @@ Description:            This routine checks the character in the AL register to
 
 
 Include:                stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:   IsDigit
 ------------------
@@ -2374,7 +2500,10 @@ Description:         This routine checks the character in the AL register to
 
 
 Include:             stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:   IsAlpha
 ------------------
@@ -2399,8 +2528,8 @@ Description:         This routine checks the character in the AL register to
 		     if it is not in the range).
 
 Include:             stdlib.a
-
 
+;--------------------------------------------------------------------------------------
 
 
 Routine: IsLower
@@ -2431,7 +2560,10 @@ Description:          This routine checks the character in the AL register to
 
 
 Include:              stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  IsUpper
 -----------------
@@ -2458,7 +2590,10 @@ Description:          This routine checks the character in the AL register to
 
 
 Include:              stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  Argc
 --------------
@@ -2488,7 +2623,11 @@ Description:    This routine returns the number of command line para-
 
 
 Include:              stdlib.a
-
+
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  Argv
 --------------
@@ -2524,7 +2663,9 @@ string).
 
 
 Include:              stdlib.a
-
+
+
+;====================================================================================
 
 
 String Handling Routines
@@ -2564,7 +2705,10 @@ string on the heap and return a pointer to this string in ES:DI.
 Routines of the form strxxxlm have a literal source string in the code
 stream and allocate storage for the destination string on the heap.
 
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  Strcpy (l)
 --------------------
@@ -2614,7 +2758,10 @@ Description:  Strcpy is used to copy a zero-terminated string from one
 	      using names which are familiar to MSC and Borland C users.
 
 Include:              stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  StrDup (l)
 --------------------
@@ -2662,7 +2809,10 @@ Description:  StrDup and StrDupl duplicate strings.  You pass them
 
 
 Include:             stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  Strlen
 ----------------
@@ -2689,7 +2839,10 @@ Description:  Strlen computes the length of the string whose address
 	      up to, but not including, the zero terminating byte.
 
 Include:             stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  Strcat (m,l,ml)
 -------------------------
@@ -2740,18 +2893,6 @@ Description:  These routines concatenate two strings together.  They differ
 	      enough to hold the resulting string.  Strcat does NOT perform
 	      bounds checking on the data.
 
-	      ( continued on next page )
-
-
-
-
-
-
-
-Routine:  Strcat (m,l,ml)   ( continued )
------------------------------------------
-
-
 	      Strcatm computes the length of the two strings pointed at by ES:DI
 	      and DX:SI and attempts to allocate this much storage on the heap.
 	      If it is not successful, Strcatm returns with the Carry flag set,
@@ -2766,7 +2907,10 @@ Routine:  Strcat (m,l,ml)   ( continued )
 
 
 Include:             stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  Strchr
 ----------------
@@ -2803,7 +2947,10 @@ Description:  Strchr locates the first occurrence of a character within a
 
 
 Include:             stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  Strstr (l)
 --------------------
@@ -2851,7 +2998,10 @@ Description:  Strstr searches for the position of a substring
 
 
 Include:              stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  Strcmp (l)
 --------------------
@@ -2896,7 +3046,10 @@ Description:  Strcmp compares the first strings pointed by ES:DI with
 	      containing the offset of the zero byte in the two strings.
 
 Include:             stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  Strupr (m)
 --------------------
@@ -2936,7 +3089,10 @@ Description:  Strupr converts the input string pointed by ES:DI to
 	      case.  It returns a pointer to the new string in ES:DI.
 
 Include:             stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  Strlwr (m)
 --------------------
@@ -2977,7 +3133,10 @@ Description:  Strlwr converts the input string pointed by ES:DI to
 
 
 Include:             stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 
 Routine:  Strset (m)
@@ -3014,7 +3173,10 @@ Description:  Strset overwrites the data on input string pointed by
 	      are initialized with the value in AL.
 
 Include:             stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  Strspan (l)
 ---------------------
@@ -3068,7 +3230,10 @@ Description:  Strspan(l) scans a string, counting the number of characters which
 
 
 Include:               stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  Strcspan, Strcspanl
 -----------------------------
@@ -3122,7 +3287,10 @@ Description:  Strcspan(l) scans a string, counting the number of characters
 	      little more space.
 
 Include:              stdlib.a
-
+
+
+;--------------------------------------------------------------------------------------
+
 
 Routine:  StrIns (m,l,ml)
 -------------------------
@@ -3178,12 +3346,6 @@ Description:  These routines insert one string into another string.  ES:DI
 	      ES:DI must be large enough to hold the resulting string.  StrIns
 	      does NOT perform bounds checking on the data.
 
-     ( continued on next page )
-
-
-Routine:  StrIns (m,l,ml)   ( continued )
------------------------------------------
-
 	      StrInsm does not modify the source or destination strings, but
 	      instead attempts to allocate a new buffer on the heap to hold the
 	      resulting string.  If it is not successful, StrInsm returns with
@@ -3194,7 +3356,9 @@ Routine:  StrIns (m,l,ml)   ( continued )
 	      supply the second string as a literal constant immediately AFTER
 	      the call rather than pointing DX:SI at it (see examples above).
 
-
+
+;--------------------------------------------------------------------------------------
+
 
 Routine:  StrDel, StrDelm
 -------------------------
@@ -3248,7 +3412,10 @@ Description:  StrDel deletes characters from a string.  It works by computing
 	      properly allocated the storage on the heap.
 
 Include:               stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  StrRev, StrRevm
 -------------------------
@@ -3276,7 +3443,9 @@ Description:  StrRev reverses the characters in a string.  StrRev reverses,
 
 
 Include:              stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
 
 Routine:  ToHex
 ---------------
@@ -3330,7 +3499,10 @@ This routine allocates storage for the string on the heap and returns a pointer
 to that string in ES:DI.
 
 Include:              stdlib.a
-
+
+
+;======================================================================================
+
 
 Memory Management Routines
 --------------------------
@@ -3363,7 +3535,10 @@ use by the caller (malloc, et. al., return a pointer to the first byte beyond
 the memory management overhead structure).
 
 
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  MemInit
 -----------------
@@ -3451,7 +3626,10 @@ Description:  This routine initializes the memory manager system.  You must
 
 
 Include:                stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  Malloc
 ----------------
@@ -3506,7 +3684,10 @@ Description:  Malloc is the workhorse routine you use to allocate a block of
 	      will produce erratic and, perhaps, disasterous results.
 
 Include:              stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  Realloc
 -----------------
@@ -3544,7 +3725,10 @@ Description:  Realloc lets you change the size of an allocated block in the
 
 
 Include:               stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  Free
 --------------
@@ -3589,7 +3773,10 @@ Description:  Free (possibly) deallocates storage allocated on the heap by
 
 
 Include:               stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  DupPtr
 ----------------
@@ -3619,7 +3806,10 @@ Description:  DupPtr increments the pointer count for the block at the
 
 
 Include:              stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  IsInHeap
 ------------------
@@ -3655,7 +3845,10 @@ Description:  This routine lets you know if es:di contains the address of
 
 
 Include:              stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  IsPtr
 ---------------
@@ -3685,7 +3878,10 @@ Description:  IsPtr is much more specific than IsInHeap.  This routine returns
 
 
 Include:                stdlib.a
-
+
+
+;=====================================================================================
+
 
 Character Set Routines
 ----------------------
@@ -3748,7 +3944,10 @@ cations.  The set membership operation for example, is much faster that the
 strspan routine found in the string package.  Proper use of character sets
 can produce a program which runs much faster than some of the equivalent
 string operations.
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  Createsets
 --------------------
@@ -3777,7 +3976,10 @@ Description:  Createsets allocates 272 bytes on the heap.   This is sufficient
 	      all the bits to zero.
 
 Include:              stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  EmptySet
 ------------------
@@ -3805,7 +4007,11 @@ Description:  Emptyset clears out the bits in a character set to zero
 	      these bytes upon entry into Emptyset.
 
 Include:              stdlib.a
-
+
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  Rangeset
 ------------------
@@ -3834,7 +4040,10 @@ Description:  This routine adds a range of values to a set with ES:DI as the
 	      AL, otherwise, there will an error).
 
 Include:              stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  Addstr (l)
 --------------------
@@ -3873,7 +4082,10 @@ Description:  Addstr lets you add a group of characters to a set by
 	      via ES:DI.
 
 Include:              stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  Rmvstr (l)
 --------------------
@@ -3914,7 +4126,10 @@ Description:  This routine is to remove a string from a set with ES:DI
 	      set follows the call in the code stream.
 
 Include:              stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  AddChar
 -----------------
@@ -3939,7 +4154,10 @@ Description:  AddChar lets you add a single character (passed in AL)
 	      to a set.
 
 Include:              stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  Rmvchar
 -----------------
@@ -3964,7 +4182,11 @@ Description:  This routine removes the character in AL from a set.
 	      bit in the set is cleared to zero.
 
 Include:              stdlib.a
-
+
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  Member
 ----------------
@@ -3993,7 +4215,10 @@ Description:  Member is used to find out if the character in AL is in a set
 	      set to zero.
 
 Include:              stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  CopySet
 -----------------
@@ -4023,7 +4248,10 @@ Description:  CopySet copies the items from one set to another.  This is a
 
 
 Include:             stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  SetUnion
 ------------------
@@ -4051,7 +4279,10 @@ Description:  The SetUnion routine computes the union of two sets.
 	      operation.
 
 Include:             stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  SetIntersect
 ----------------------
@@ -4078,7 +4309,10 @@ Description:  SetIntersect computes the intersection of two sets, leaving
 	      both the source and destination sets.
 
 Include:             stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  SetDifference
 -----------------------
@@ -4105,7 +4339,10 @@ Description:  SetDifference computes the result of (ES:DI) := (ES:DI) -
 	      items minus those items which are also in the source set.
 
 Include:             stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  Nextitem
 ------------------
@@ -4130,7 +4367,10 @@ Description:  Nextitem is the routine to search the first character (item)
 	      will contain zero.
 
 Include:              stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  Rmvitem
 -----------------
@@ -4155,7 +4395,9 @@ Description:  Rmvitem locates the first available item in the set and
 
 Include:              stdlib.a
 
-
+
+;===========================================================================================
+
 
 Floating Point Routines
 -----------------------
@@ -4191,7 +4433,10 @@ these routines and add additional functions to the package.
 
 					*** Randy Hyde
 
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  lsfpa
 ---------------
@@ -4214,7 +4459,10 @@ Description:	LSFPA loads a single precision floating point value into the
 		floating point package.
 
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 Routine:  ssfpa
 ---------------
 
@@ -4240,7 +4488,10 @@ Description:	SSFPA stores the floating point accumulator into a single
 		returns with the carry flag set.
 
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  ldfpa
 ---------------
@@ -4263,7 +4514,10 @@ Description:	LDFPA loads a double precision floating point value into the
 		floating point package.
 
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 Routine:  sdfpa
 ---------------
 
@@ -4289,7 +4543,10 @@ Description:	SDFPA stores the floating point accumulator into a double
 		returns with the carry flag set.
 
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  lefpa
 ---------------
@@ -4313,7 +4570,10 @@ Description:	LEFPA loads an extended precision floating point value into
 		floating point package.
 
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  lefpal
 ----------------
@@ -4340,7 +4600,11 @@ Description:	LEFPAL loads an extended precision floating point value into
 		stream.  You must follow the call to lefpal with a ten-byte
 		(80-bit) floating point constant.
 Include:	stdlib.a
-
+
+
+;--------------------------------------------------------------------------------------
+
+
 Routine:  sefpa
 ---------------
 
@@ -4366,7 +4630,10 @@ Description:	SEFPA stores the floating point accumulator into an extended
 		returns with the carry flag set.
 
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  lsfpo
 ---------------
@@ -4389,7 +4656,10 @@ Description:	LSFPA loads a single precision floating point value into the
 		floating point package.
 
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  ldfpo
 ---------------
@@ -4412,7 +4682,10 @@ Description:	LDFPO loads a double precision floating point value into the
 		floating point package.
 
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  lefpo
 ---------------
@@ -4436,7 +4709,10 @@ Description:	LEFPO loads an extended precision floating point value into
 		floating point package.
 
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  lefpol
 ----------------
@@ -4463,7 +4739,10 @@ Description:	LEFPOL loads an extended precision floating point value into
 		stream.  You must follow the call to lefpal with a ten-byte
 		(80-bit) floating point constant.
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  itof
 --------------
@@ -4485,7 +4764,10 @@ Description:	ITOF converts the 16-bit signed integer in AX to a floating
 		accumuator.
 
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  utof
 --------------
@@ -4507,7 +4789,10 @@ Description:	UTOF converts the 16-bit unsigned integer in AX to a floating
 		accumuator.
 
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  ultof
 ---------------
@@ -4530,7 +4815,10 @@ Description:	ULTOF converts the 32-bit unsigned integer in DX:AX to a
 		point accumuator.
 
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  ltof
 --------------
@@ -4553,7 +4841,10 @@ Description:	LTOF converts the 32-bit signed integer in DX:AX to a
 		point accumuator.
 
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  ftoi
 --------------
@@ -4577,7 +4868,10 @@ Description:	FTOI converts the floating point accumulator value to a
 		with the carry flag set.
 
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  ftou
 --------------
@@ -4601,7 +4895,10 @@ Description:	FTOU converts the floating point accumulator value to a
 		with the carry flag set.
 
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  ftol
 --------------
@@ -4625,7 +4922,10 @@ Description:	FTOL converts the floating point accumulator value to a
 		with the carry flag set.
 
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  ftoul
 ---------------
@@ -4649,7 +4949,10 @@ Description:	FTOUL converts the floating point accumulator value to a
 		with the carry flag set.
 
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  fpadd
 ---------------
@@ -4670,7 +4973,10 @@ Description:	FPADD adds the floating point operand to the floating point
 		accumulator.
 
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  fpsub
 ---------------
@@ -4691,7 +4997,10 @@ Description:	FPSUB subtracts the floating point operand from the floating
 		accumulator.
 
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  fpcmp
 ---------------
@@ -4722,7 +5031,10 @@ Description:	FPCMP compares the floating point accumulator to the
 			 1	FPACC > FPOP
 
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  fpmul
 --------------
@@ -4743,7 +5055,10 @@ Description:	FPMUL multiplies the floating point accumulator by the floating
 		accumulator.
 
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  fpdiv
 ---------------
@@ -4764,7 +5079,10 @@ Description:	FPDIV divides the floating point accumulator by the floating
 		accumulator.
 
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  ftoa (2,m)
 --------------------
@@ -4816,7 +5134,10 @@ Description:	FTOA (2,M) converts the value in the floating point accumulator
 		operand.
 
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  etoa (2,m)
 --------------------
@@ -4865,7 +5186,10 @@ Description:	ETOA (2,M) converts the value in the floating point accumulator
 		operand.
 
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  atof
 --------------
@@ -4900,7 +5224,7 @@ Description:    ATOF converts the string pointed at by ES:DI into a floating
 
 
 Include:	stdlib.a
-
+
 
 
 ******************************************************************************
@@ -4971,6 +5295,9 @@ Example:
 		mov     fileptr, ax             ;Save the filehandle stored in
 						;the ax register for future
 						;use
+
+;--------------------------------------------------------------------------------------
+
 
 fopen
 *	Opens a file for reading or writing.
@@ -5075,6 +5402,10 @@ Example:
                                                 ;the ax register for future
                                                 ;use
 
+
+;--------------------------------------------------------------------------------------
+
+
 fclose
 *	Closes an open file
 *	Filehandle for file to be closed needs to be in the ax register
@@ -5111,6 +5442,9 @@ Example:
 		fclose
 		cmp	ax, 6
 		je	error
+
+;--------------------------------------------------------------------------------------
+
 
 fwriteon
 *	Turns on the write to file mode.
@@ -5170,6 +5504,9 @@ Example:
 ;Since fwriteoff redirects the putc ouput back to normal (See docs for fwriteoff
 ;for more info) the character in al will be put on the screen.
 
+;--------------------------------------------------------------------------------------
+
+
 fwriteoff
 *	Turns off the write to file mode
 *	Redirects the output of putc back to normal (the screen!)
@@ -5195,6 +5532,10 @@ Example:
 						;normal
 		putc				;Prints character in al to
 						;screen
+
+;--------------------------------------------------------------------------------------
+
+
 fflush
 *	Flushes the buffer in an opened write file to that file
 Inputs:	AX- Contains Stdlib filehandle of file whose buffer is to be flushed
@@ -5205,6 +5546,9 @@ Updated:        6/14/91         First public release
 This routine takes all data from the buffer associated with the Stdlib
 filehandle passed in AX and writes it to the file. It then clears the buffer.
 NOTE: This routine is automatically called on by Fclose.
+
+;--------------------------------------------------------------------------------------
+
 
 freadon
 *	Turns on the read from file mode
@@ -5252,6 +5596,9 @@ loop1:		getc				;Get character from buffer and
 		freadoff			;turn read mode off from this
 						;file
 
+;--------------------------------------------------------------------------------------
+
+
 freadoff
 *	Turns off the read from file mode
 *	Redirects the source of the data for stdlib's getc routine back to
@@ -5264,6 +5611,8 @@ it's "character" from the keyboard.
 
 For code example of how to use freadoff, see the example of code above for
 freadon.
+
+;--------------------------------------------------------------------------------------
 
 
 fseek
@@ -5313,6 +5662,9 @@ position.
 						;File pointer position.
 
 
+;--------------------------------------------------------------------------------------
+
+
 DOSHandle
 *	Returns in the ax register the true DOS filehandle for a file
 Input:	AX- Contains the filehandle for the file given to the user from
@@ -5347,7 +5699,10 @@ Example:
 						;a file and store it in the
 						;ax register
 		mov	truehandle, ax
- 
+
+;--------------------------------------------------------------------------------------
+
+
 frename
 *	Renames a file
 Input:	DX:SI- Contains the original pathname of the file
@@ -5376,6 +5731,9 @@ Example:
 		frename
 		jc	error
 
+;--------------------------------------------------------------------------------------
+
+
 fdel
 *	Deletes a file
 Input: ES:DI- Contains the address of zero terminated pathname of file
@@ -5396,7 +5754,10 @@ Example:
 		jc	error			;Jump to error code if an error
 
 
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 ======================
 Miscellaneous Routines
@@ -5409,7 +5770,10 @@ Mostly (like the rest of this library) they have simply been stuck here
 until somebody gets the time to reorganize *everything*.
 
 
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  Random
 ----------------
@@ -5445,7 +5809,10 @@ routine which tweaks the seed table based on the current time of day clock
 value.
 
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  Randomize
 -------------------
@@ -5487,7 +5854,10 @@ Furthermore, once the seeds are randomized, random does a pretty good job of
 randomizing the results.
 
 Include:	stdlib.a
-
+
+;--------------------------------------------------------------------------------------
+
+
 
 Routine:  cpuid
 ---------------
@@ -5526,4 +5896,4 @@ are floating around.  Intel's blessing doesn't guarantee that this routine
 is perfect, though; always keep that in mind.
 
 Include:	stdlib.a
-
+

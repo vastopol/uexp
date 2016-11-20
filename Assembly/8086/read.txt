@@ -1,7 +1,8 @@
 The UCR Standard Assembly Language Library for 80x86
 By Randall Hyde, March 01, 1992
-
 Provides a slate of useful high-level assembly language routines.
+
+//---------------------------------------------------------
 
 useful online description:
 http://www.drdobbs.com/parallel/the-ucr-standard-assembly-language-libra/parallel/the-ucr-standard-assembly-language-libra/184408724#0086_000a
@@ -14,11 +15,13 @@ ucrasm.zip
 
 //----------------------------------------------------------
 
-inside of my ucrasm folder, subfolders contain unmodified code
+UNZIP
+inside of my ucrasm folder:
+    subfolder's zips contain unmodified code
     - lib = {STDLIB.A, STDLIB.LIB, STDLIB6.A}
-    - source = unzip SOURCE.ZIP
+    - source
         -- src = { *.ASM }
-        -- {MAKLIB.BAT, SOURCE.ZIP, STDLIB.TXT}
-    - tests = unzip TESTS.ZIP
+        -- {SOURCE.ZIP, STDLIB.TXT}
+    - tests
         -- tsts = { *.ASM }
         -- {TESTS.ZIP}
