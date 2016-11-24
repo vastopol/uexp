@@ -19,7 +19,9 @@ For interesting stuff see:
 
 ### Lambda 
 * Lisp  
-  * XLisp (http://files.mpoli.fi/unpacked/software/programm/general/lisp1.zip/)
+  * XLisp                   
+  (http://files.mpoli.fi/unpacked/software/programm/general/lisp1.zip/)                 
+  (http://www.xlisp.org/)
 
 ### Prolog
 * SWI Prolog stuff, now defunct && unfinished
