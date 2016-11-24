@@ -5,6 +5,7 @@ Examples of languages based on lambda calculus
 - LISP
 - Scheme
 - Clojure
+- Racket
 - Haskell
 
 Compilers && Interpreters
