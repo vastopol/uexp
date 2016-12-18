@@ -1,6 +1,6 @@
 This is a folder for bash shell scripting..
 
-after creating a y.sh file
+after creating "y.sh" file
 
 use 
 chmod 711 y.sh
