@@ -12,11 +12,11 @@ For interesting stuff see:
 ### FP
 * FurryPaws (http://www.call-with-current-continuation.org/fp/)
 
-### Lambda 
-* Lisp  
+### Lisp  
   * XLisp                   
   (http://files.mpoli.fi/unpacked/software/programm/general/lisp1.zip/)                 
   (http://www.xlisp.org/)
+  * Lispkit_lisp (http://www.softwarepreservation.org/projects/LISP/lispkit/)
 
 ### Prolog
 * SWI Prolog stuff, now defunct && unfinished
