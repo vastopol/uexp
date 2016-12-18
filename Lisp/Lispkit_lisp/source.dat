@@ -1,0 +1,15 @@
+Software preservation group
+home/projects/lisp/lispkit
+---------------------------
+
+Lispkit lisp implementations:
+
+Original OUCL PRG LispKit == LispKit1.tar.gz
+
+Aaron Gray's port of LispKit to GNU Pascal == LispKit2.tar.gz
+
+-----------------------------
+
+both dont really work... ver1 not even unix software...
+
+see also: https://github.com/hanshuebner/secd
