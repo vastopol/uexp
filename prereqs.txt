@@ -1,0 +1,9 @@
+apt-get install
+----------------
+
+scala
+scala-doc
+
+racket
+racket-doc
+racket-common
