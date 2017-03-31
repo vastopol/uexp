@@ -24,9 +24,6 @@ For interesting stuff see:
 ### Setl 
 * Setl 0.1.2 binary x86 64bit   (http://setl.org/setl/bin/Linux-x86-64bit/)
 
-### Shell
-* Linux BASH shell scripting
-
 ### Snobol
 * Snobol4 - C snobol4 2.0       (ftp://ftp.snobol4.org/snobol/snobol4-2.0.tar.gz)
 * Spitbol - x64 implementation  (https://github.com/spitbol/x64.git)
