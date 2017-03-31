@@ -1,6 +1,8 @@
 apt-get install
 ----------------
 
+scheme
+
 scala
 scala-doc
 

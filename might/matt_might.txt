@@ -4,4 +4,18 @@ The main languages are: Racket, Scheme, and Scala
 
 * Racket
     - 7 lines of code, 3 minutes: Implement a programming language from scratch
-      "minilang.rkt"
+      "minilang"
+    
+    - Higher Order List Opreations
+      "holo"
+    
+    - Compiling to Lambda Calculus
+      "comp"
+          
+* Scala
+    - Architectures for interpreters: substitutional, denotational, big-step, and small-step
+      "four_styles"
+      
+* Scheme
+    - First-class (run-time) macros and meta-circular evaluation
+      "mac"
