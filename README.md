@@ -2,4 +2,10 @@
 various designs for constructing interpreters
 
 * might = designs by matt might
-* snakes = various lisps implemented in python
+  * Racket
+  * Scala
+  * Scheme
+
+* snakes = various interpreters implemented in python
+  * forth
+  * lisp
