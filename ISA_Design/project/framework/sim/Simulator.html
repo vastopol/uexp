@@ -1,0 +1,113 @@
+
+<!-- saved from url=(0066)https://cseweb.ucsd.edu/classes/sp12/cse141/project/simulator.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Simulator</title>
+</head>
+<body>
+<h2>Simulator </h2>
+<p>
+With a simulator, you can 1) easily verify your ISA 
+without actually implementing hardware, 2) debug your application without 
+having actual hardware, and 3) improve your ISA by spotting performance 
+bottlenecks in benchmark programs. Your simulator operates instruction by 
+instruction; you must be able to execute instructions one by one and watch 
+all the programmer visible states (eg. register, memory, ...) at a certain 
+time when the execution of an instruction is completed. Assume that your 
+simulator starts executing at address 0x0 upon power-on.
+</p>
+
+<p>
+  The source for the simulator is available via the asm-sim-framework repository.
+</p>
+
+
+<h3> Simulator Commands </h3>
+<p>You may add whichever commands you find useful. However, your simulator 
+must support the following commands:
+</p>
+<ul>
+ <li> <i>iload $i_file.coe $start_addr</i></li>
+     <p>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; loads *.coe files at <i>$start_addr
+     </i> of the instruction memory</p>
+ <p></p><li> <i>dload $d_file.coe $start_addr</i></li><p></p>
+     <p>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; loads *.coe files at <i>$start_addr
+     </i> of the data memory</p>
+
+ <p></p><li> <i>go $number</i></li><p></p>
+     <p>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; simulates next <i>$number</i> 
+     instructions</p>
+ <p></p><li> <i>dump_reg</i></li><p></p>
+     <p>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; prints values in all registers</p>
+ <p></p><li> <i>set_reg $reg_num $value</i></li><p></p>
+     <p>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; sets the register <i>$reg_num </i> 
+     with the value <i>$value</i></p>
+ <p></p><li> <i>dump_imem $addr $size</i></li><p></p>
+     <p>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; disassembles instructions in the 
+     instruction memory from <i>$addr</i> to <i>$addr + $size</i>, which 
+     might not be exactly the same with the assembly instruction appeared 
+     in your assembly file</p>
+ <p></p><li> <i>set_imem $addr $value</i></li><p></p>
+     <p>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; sets the value at  <i>$addr</i> of 
+     the instruction memory with the value <i>$value</i></p>
+ <p></p><li> <i>dump_dmem $addr $size</i></li><p></p>
+     <p>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; prints data memory values from 
+     <i>$addr</i> to <i>$addr + $size</i></p>
+ <p></p><li> <i>set_dmem $addr $value</i></li><p></p>
+     <p>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; sets the value at  <i>$addr</i> 
+     of the data memory with the value <i>$value</i></p>
+ <p></p><li> <i>dump_channel $channel </i></li><p></p>
+     <p>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; prints values put on channel 
+     <i>$channel</i> by <i>out</i> instruction</p>
+ <p></p><li> <i>clear_channel $channel </i></li><p></p>
+     <p>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; discards all values written to 
+     channel <i>$channel</i> so that <i>out</i> instruction can proceed</p>
+
+ <p></p><li> <i>put_channel $channel $value</i></li><p></p>
+     <p>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; puts $value on channel 
+     <i>$channel</i> so that <i>in</i> instruction can get a value</p>
+
+
+ <p></p><li> <i>set_buf_size $value</i></li><p></p>
+     <p>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; changes the buffer size for 
+     each channel to <i>$value</i>. the initial size is 32</p>
+
+ <p></p><li> <i>instr_count</i></li><p></p>
+     <p>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; shows the number of executed 
+     instructions</p>
+</ul>
+
+<h3> How to Test</h3>
+<ul>
+<p></p><li> <b> <i>in</i> and <i>out</i></b> </li><p></p>
+<p> Among provided benchmarks, SuperGarbage uses <i>in</i> and 
+<i>out</i> instructions. To make these instructions work, you should 
+use <i>put_channel</i> and <i>dump_channel</i> commands which emulate 
+actual I/O operations of hardware. If an <i>out</i> instruction blocks 
+due to the lack of buffer space, you should use <i>clear_channel</i> 
+command to make space so that <i>out</i> instructions could succeed. 
+You can set the buffer space for each channel by using 
+<i>set_buf_size</i> command before starting a simulation.</p>
+
+<p></p><li><b>Validation</b></li><p></p>
+<p> After executing a benchmark program, you should check whether your 
+program behaved as you expected. You can easily validate the simulation 
+result by examining register and memory values. In specific, the return 
+register should have an appropriate value when a Fibonacci simulation 
+ends. Similarly, memory values should be properly updated when Program 
+Loader or SuperGarbage are executed.
+</p>
+</ul>
+<h3>Tips to create your own simulator</h3>
+<p>
+To create your own simulator, you may modify the switch statement in the
+"execute" method in the provided ISASimulator class. The input of the switch
+statement is the opcode of an instruction. For example, if you define opcode
+0 for "add" operation, you may perform all the required operations for the
+add under "case 0:". The reg_file and data_mem array store the register and
+memory values, respectively. The two arrays are Int34 type, and you may use
+the methods in the Int34 class or transform them into "long" to update their 
+values.
+</p>
+
+
+</body></html>
