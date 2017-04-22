@@ -1,0 +1,26 @@
+gcc-info.txt - output of "gcc -dumpversion; gcc -dumpmachine"
+	3.4.6
+	x86_64-redhat-linux
+---------------------------------------------
+
+uname-a.txt - output of "uname -a"
+	Linux host256.hostmonster.com 2.6.28-9.16.intel.BHsmp #1 SMP Sat Apr 18 11:41:59 MDT 2009 x86_64 x86_64 x86_64 GNU/Linux
+---------------------------------------------
+
+tar-tv.txt - output of "tar tvfz setlbin.tgz" (file list)
+	-rwxr-xr-x setlorg/setlorg 1717427 2009-07-09 14:51:45 setl
+	-rwxr-xr-x setlorg/setlorg  257835 2009-07-09 14:51:45 setlcpp
+	-rwxr-xr-x setlorg/setlorg  605398 2009-07-09 14:51:45 setltran
+----------------------------------------------
+
+cksum.txt - output of "cksum setlbin.tgz"
+	1777282762 844210 setlbin.tgz
+-----------------------------------------------
+
+md5sum.txt    -  output of "md5sum setlbin.tgz"
+	74ed85446def1975dcb36a7d3cbcf00b  setlbin.tgz
+-----------------------------------------------
+
+version.txt - output of "setl --version"
+	GNU SETL 0.1.2
+	Copyright (C) 2009 dB.

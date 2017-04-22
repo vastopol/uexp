@@ -7,13 +7,16 @@ executables.  It can be unpacked like this:
 The other files in this directory are small text files, the first two
 indicating the environment that was used to compile the executables:
 
-  gcc-info.txt  -  output of "gcc -dumpversion; gcc -dumpmachine"
-  uname-a.txt   -  output of "uname -a"
-  tar-tv.txt    -  output of "tar tvfz setlbin.tgz" (file list)
-  cksum.txt     -  output of "cksum setlbin.tgz"
-  md5sum.txt    -  output of "md5sum setlbin.tgz"
-  version.txt   -  output of "setl --version"
   bugs.txt      -  Honest Dave's epistemology
+  summary.txt
+  {
+    gcc-info.txt  -  output of "gcc -dumpversion; gcc -dumpmachine"
+    uname-a.txt   -  output of "uname -a"
+    tar-tv.txt    -  output of "tar tvfz setlbin.tgz" (file list)
+    cksum.txt     -  output of "cksum setlbin.tgz"
+    md5sum.txt    -  output of "md5sum setlbin.tgz"
+    version.txt   -  output of "setl --version"
+  }
 
 Each of the executables has a "--help" option.
 

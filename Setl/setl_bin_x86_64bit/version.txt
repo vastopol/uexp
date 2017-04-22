@@ -1,2 +1,0 @@
-GNU SETL 0.1.2
-Copyright (C) 2009 dB.
