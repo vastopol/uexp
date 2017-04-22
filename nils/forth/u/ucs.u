@@ -1,0 +1,268 @@
+g| useless calc sheet; by NMH 2011; in the PD |
+g|        ***** UNFINISHED! *****             |
+
+'[ ----- miscellanea  ----- ]
+'0verrp      '( error message pointer )
+'0verrk      '( error message length )
+:err_errk!_errp!
+:clrerr'0_errk!
+'[ ----- memory management ----- ]
+'8192nk             '( memory pool size )
+'vprg_tbl_k.a       '( program cells )
+'vval_tbl_k.a       '( value cells )
+@prg.vptr           '( cell pool pointer )
+'0vtprg             '( top of program pool )
+'0vtval             '( top of value pool )
+@tprg.vt            '( top pointer pointer )
+:useprg@prg_ptr!@tprg_t!
+:useval@val_ptr!@tval_t!
+:algn'1c\-+'1c\-~&
+:ins o+_t??'3p-t_ptr?+t_ptr?+tbm
+:siz'2c+\+_algn
+:len_ptr?+
+:idn'1c+_ptr?+
+:dat'2c+_ptr?+
+:savhdr_len!so_idn!
+:savdat_dat.o\+ob!\+.sbm
+:rem_k_t??-
+:save o_rem>["memory full!"_err.xxx'0;_sav2]
+:sav2'0`d_t??<{oo_idn?<[_sav3.y]d_len?+}_sav3
+:sav3 d'4p_siz.oo_ins.s._savhdr.dr>_savdat.r<_len.d?_t?\!
+:find'0`d_t??<{oo_idn?=[sx_len.y]d_len?+}xx'0
+:delt_find.d[d?oo+t_t??_len'3p-bm%_t?\!;x]
+:repl d_delt_save
+:psave_useprg_save
+:pfind_useprg_find
+:pdelt_useprg_delt
+:prepl_useprg_repl
+:vsave_useval_save
+:vfind_useval_find
+:vdelt_useval_delt
+:vrepl_useval_repl
+:tofile_useprg.fo"UCS"fw_nl'0`d_t??<{d_writrec.d_len?+}x""fo
+:writrec d_idn?.f,_bl_dat.db?_snext.fw_nl
+:fromfile_useprg'0_t?!fi_ckmagic[`_readrec.f@{}]""fi
+:ckmagic h'5_getl.hs"UCS"_seql
+:readrec f'f?xh'65_getl.d[hst_save.x;x]
+'[ ----- interpreter ----- ]
+'100nstkl            '( stack size )
+'vstk_tbl_stkl.ca    '( stack )
+'0vsp                '( stack pointer )
+'vrst_tbl_stkl.ca    '( return stack )
+'0vrp                '( return stack pointer )
+'vprog               '( program text )
+:push_sp?_stkl<#["stack overflow!"_err;_stk_sp?c+!'1_sp\!]
+:pop_sp?['1%_sp\!_stk_sp?c+?;"stack underflow!"_err]
+:rpush_rp?_stkl<#["r-stack overflow!"_err;_rst_rp?c+!'1_rp\!]
+:rpop_rp?['1%_rp\!_rst_rp?c+?;"r-stack underflow!"_err]
+:add t'10*'3pb?k0-+tt_snext
+:pushn_snext'0tt`ob?_cnum.o##&{_add}t_push_sprev
+:goto ttxx_prog?db?_snext.t(_snext)
+:locat_prog?db?_snext.tbs
+:while_pop[y]k}_locat.d'0<["no }"_err.y]_goto
+:repeat k`_locat.d'0<["no `"_err;_goto]
+:o20
+:o22_snext.oo`ob?dk"=#s##&{_snext}_2s'3p-s_push_push
+:o23_pop#_push
+:o25_pop%_push
+:o26_pop_pop&_push
+:o27_pushn
+:o28_pop.d[_rpush;x_o28x]
+:o28x k)_locat.d'0<["no )"_err.y]_goto
+:o29_rpop.\-d#[x;_rpush_o29x]
+:o29x k(_locat.d'0<["no ("_err;_goto]
+:o2a_pop_pop*_push
+:o2b_pop_pop+_push
+:o2d_pop_pop.s-_push
+:o2f_pop_pop.s/s_push_push
+:o3c_pop_pop>_push
+:o3d_pop_pop=_push
+:o3e_pop_pop<_push
+:o5b_pop#[_o5bx]
+:semi k;
+:o5bmsg"no ; or ]"
+:o5bx_semi_locat.d'0<[_o5bx2;_goto]
+:o5bx2 k]_locat.d'0<[_o5bmsg_err;_goto]
+:o5d
+:o5e_pop_pop^_push
+:o60
+:opd_pop.d_push_push
+:opi_rpop.d_rpush_push
+:opj_rpop_rpop.d_push_rpush_rpush
+:opk_snext.ob?_push
+:opo_pop_pop.dtt_push_push_push
+:opp_pop.d_sp?>["stack overflow"_err;_oppx]
+:oppx_stk_sp?t-c+?_push
+:ops_pop_pop.s_push_push
+:opt_pop_pop_pop.tt_push_push_push
+:opu u_push
+:opx_pop.x
+:opz'0_sp
+:o7b_while
+:o7c_pop_pop|_push
+:o7d_repeat
+:o7e_pop~_push
+:000"bad op"_err
+'voptbl_tbl
+ @o20 , @000 , @o22 , @o23 , @000 , @o25 , @o26 , @o27 ,  '( )
+ @o28 , @o29 , @o2a , @o2b , @000 , @o2d , @o20 , @o2f ,  '[(]
+ @000 , @000 , @000 , @000 , @000 , @000 , @000 , @000 ,  '(0)
+ @000 , @000 , @000 , @000 , @o3c , @o3d , @o3e , @000 ,  '(8)
+ @000 , @000 , @000 , @000 , @000 , @000 , @000 , @000 ,  '(@)
+ @000 , @000 , @000 , @000 , @000 , @000 , @000 , @000 ,  '(H)
+ @000 , @000 , @000 , @000 , @000 , @000 , @000 , @000 ,  '(P)
+ @000 , @000 , @000 , @o5b , @000 , @o5d , @o5e , @000 ,  '(X)
+ @o60 , @000 , @000 , @000 , @opd , @000 , @000 , @000 ,  '(`)
+ @000 , @opi , @opj , @opk , @000 , @000 , @000 , @000 ,  '(h)
+ @opp , @000 , @000 , @ops , @opt , @opu , @000 , @000 ,  '(p)
+ @opx , @000 , @opz , @o7b , @o7c , @o7d , @o7e ,         '(x)
+:xop dk k~_in[k -c_optbl+?e;_000]
+:savprg_ssave.o\-_prog!
+:int htt_savprg'0_sp!`d{ob?_xop_snext}xxh-a
+:print_sp?dr>(_bl_stk.ji-c+?f,)rx_nl
+:calc_int_pop_useval.h_itos.t_repl.x_useprg
+:recalc_useprg'0`d_t??<{d_idn?o_dat.db?_snext_calc.d_len?+}x
+'[ ----- syntax highlighter ----- ]
+'vbp 'vbk          '( hlite buffer, length )
+'vbc               '( current hlite char )
+'vsb_tbl'65a 'vsk  '( symbol name, buffer, len )
+'1vsynhl           '( syntax highlighting flag )
+"prog/rwp.u"l
+:f_bk?'0<#
+:g_f[_bp?_bc?+b?'1_bc\!'1%_bk\!;'0]
+:mono wo#
+:e_mono[knwa;'7'0wc]
+:kcb_mono[;'3'1wc]
+:kdb_mono[krwa;'2'0wc]
+:keb_mono[;'7'1wc]
+:kfb_mono[;'5'0wc]
+:klb_mono[kbwa;'3'0wc]
+:krb_mono[krwa;'7'4wc]
+:ksb_mono[;'6'0wc]
+:kmb_mono[krwa;'0'7wc]
+:kxb_mono[kuwa;'4'0wc]
+:strchr k"=#_f&
+:symchr d_calpha.s_cnum|
+:getsym'0_sk!`d_symchr{_sb_sk?+b!'1_sk\!_g}
+:cpstr`d_strchr{w!_g}
+:cpnum`d_cnum{w!_g}
+:cp2ch`_g.oo=#_f&{w!}w!x_g
+:cpcom sw!")]}"x+b?_cp2ch
+:cpsym_getsym_sb_sk?ww
+:prtsym_getsym_sb_sk?_rwp[_kfb;_ksb]_sb_sk?ww_e
+:number d_cnum[_klb_cpnum_e]
+:pcomment_kcb.d"([{"tbs.d'1%=#[_cpcom;x_number]_e
+:gcomment_kcb.dw!_cp2ch_e
+:oper w!_g
+:wrong d_cnum[_kxb_cpnum_e;_oper]
+:string dk"=[w!_g_klb_cpstr_e.w!_g;_wrong]
+:char dkk=[w!_g_klb.w!_e_g;_string]
+:symbol d"_@"tbs'1%=#[w!_g_prtsym;_char]
+:escape d"\rfbw"tbs'1%=#[_keb.w!_g.w!_g_e;_symbol]
+:ctrl d"`([{;}])"tbs'1%=#[_krb.w!_g_e;_escape]
+:defn d":vn"tbs'1%=#[w!_g_kdb_cpsym_e;_ctrl]
+:commnt2 dkg=[w!_g_gcomment;_defn]
+:comment dk'=[w!_g_pcomment;_commnt2]
+:hlite_synhl?#[wwy]_e_bk!_bp!'0_bc!_g`_f{_comment}x
+'[ ----- line editor ----- ]
+g| usage: buf len max x y_prompt -- buf len <01>         |
+'vpx  'vpy  'vpk   '( prompt x/y, max. length )
+'vpb  'vpn  'vpi   '( prompt buffer, length, index )
+'vpd               '( prompt default flag )
+:prcd wo#[kbwa;'3'0wc]'1_pd!
+:prcn wo#[knwa;'7'0wc]'0_pd!
+:prclear_prcn'0d_pn!_pi!_px?_py?wmwl
+:prcldfl_pd?[_prclear]
+:prline_px?_py?wm_pb?_pn?_hlite.k w!
+:prins_pn?_pk?<[_prcldfl_prins2;xwb]
+:prins2_pb?_pi?+d\+_pk?_pi?\+-bm _pb?_pi?+b! '1_pi\!'1_pn\!
+:prbs_pi?'0>['1%_pi\!_prbs2;wb]
+:prbs2_pb?_pi?+d\+s_pk?_pi?\+-bm k _pb?_pn?+b! '1%_pn\!
+:prdelc_pi?_pn?<[_prright_prbs]
+:prleft_pi?['1%_pi\!]
+:prright_pi?_pn?<['1_pi\!]
+:prclr d'21=[x_prclear;_prins]
+:preol d'5=[x_pn?_pi!;_prclr]
+:prdel d'4=[x_prdelc;_preol]
+:prbol d'1=[x'0_pi!;_prdel]
+:prcri d_wkri[x_prright;_prbol]
+:prcle d_wkle[x_prleft;_prcri]
+:prcmd d_wkbs[x_prbs;_prcle]_prcn
+:prxkey d'13=o'7=|s_wkbs_pn?#&|
+:prretn_pb?_pn?t'13=
+:predit`_prline_px?_pi?+_py?wmw?d_prxkey#{_prcmd}_prretn
+:prompt_py!_px!_pk!d_pi!_pn!_pb!_prcd_predit
+'[ ----- user interface  ----- ]
+'0vtop               '( top cell in display )
+'0vrow               '( current row )
+'0vleft              '( leftmost cell in display )
+'0vcol               '( current column )
+'vxpad_tbl'6a        '( pad for row display )
+'vcs_tbl'27ca        '( column size table )
+  '27('8_cs.i\-c+!)
+'vfile_tbl'65a       '( file name buffer )
+'0vnf                '( file name length )
+:cid'26*+
+:wid c_cs+?
+:cframe wo['1'3wc;krwa]
+:cframh wo['4'3wc;krwa]
+:ccells wo['7'1wc;knwa]
+:cerror wo['7'4wc;knwa]
+:ccurs wo['1'7wc;krwa]
+:nrows wgsx'2-
+:clrpad_xpad'6k bf
+:wspc(k w!)
+:prrow_clrpad'0owm_top?+\-d_xpad'2+s'10<[\+]_itos.xx_xpad'6ww
+:rows_nrows(i_prrow)
+:ccols'0'0wmwgx_wspc
+:cols_ccols'6'0wm'0'6`dwgx<{d'0wmokA+_left?+w!s\+so_wid+}xx
+:frame_cframe_rows_cols
+:extract d['2c+db?_snext.h_scopy;xh'0]
+:program_cid_pfind_extract
+:value_cid_vfind_extract
+:vrow_top?-\+
+:vcol r>'6_left?`di<{d_wid.t+s\+}xrx
+:sync s_vcol.s_vrow.wm
+:prcell oo<#[sxww;o-ttww_wspc]
+:cell oo_sync.os_value.t_wid\-_prcell.k w!
+:cells_top?_nrows(d_ccells_cellrow\+)x
+:cellrow_left?s`od'26<s\+_vcol.wgx<&{oo_cell.s\+s}x_cfill
+:cfill_cframe_vcol.wgxs-_wspc
+:cursor_col?_row?_cell_col?_row?_sync
+:cson_ccurs_cursor
+:csoff_ccells_cursor
+:draw_frame_cells
+:key w?d_wkup[xkk;_key2]
+:key2 d_wkdn[xkj;_key3]
+:key3 d_wkle[xkh;_key4]
+:key4 d_wkri[xkl]
+:mvright_col?'24>[y]'1_col\!_col?\+_vcol.wgx<#['1_left\!_draw]
+:mvleft_col?#[y]'1%_col\!_col?_left?<['1%_left\!_draw]
+:mvdown_row?'98>[y]'1_row\!_row?_top?_nrows+<#['1_top\!_draw]
+:mvup_row?#[y]'1%_row\!_row?_top?<['1%_top\!_draw]
+:edit_col?_row?_program'64'0wgsx\-'1_synhl!_prompt[_update;xx]
+:update_col?_row?_cid_prepl.x_recalc
+:getfile'0wgsx\-wmwwwl_file_nf?'58'6wgsx\-'0_synhl!_prompt
+:savefile"save:"_getfile[d_nf!_tofile;xx]
+:openfile"open:"_getfile[d_nf!_openfil2_draw;xx]
+:openfil2.ooft[_fromfile_recalc;xx"no such file"_err]
+:cmd_cmdh
+:cmdh dkh=[x_mvleft;_cmdj]
+:cmdj dkj=[x_mvdown;_cmdk]
+:cmdk dkk=[x_mvup;_cmdl]
+:cmdl dkl=[x_mvright;_cmdo]
+:cmdo dko=[x_openfile;_cmdq]
+:cmdq dkq=[xweq;_cmdr]
+:cmdr dkr=[xws_draw;_cmds]
+:cmds dks=[x_savefile;_cmdcr]
+:cmdcr d'13=[x_edit;_0cmd]
+:0cmd"what?"_err
+:mkpos_col?kA+_xpad'2+b!_row?_xpad'3+_itos.xx
+:shpos'0dwm_cframh_clrpad_mkpos_xpad'6ww
+:statpos'0wgsx\-wmwl
+:shval_statpos_col?_row?_program'1_synhl!_hlite
+:sherr_statpos_cerror"error: "ww_errp?_errk?ww
+:status_errk?[_sherr;_shval]_clrerr
+:main_draw`_shpos_status_cson_key_csoff.d{_cmd}
+'[ ----- main proggy ----- ]
+wi_main.we.q

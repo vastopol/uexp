@@ -1,0 +1,244 @@
+#!/bin/sh
+
+# This file was created by The Configurator, a simple,
+# public-domain configuration script generator that
+# emits simple and mostly human-readable output.
+
+celltype="long"
+cellspec="%ld"
+prefix="/usr/local"
+sandbox="no"
+wops="yes"
+color="yes"
+usleep="yes"
+atexit="yes"
+strdup="yes"
+
+usage() {
+ echo "Usage: configure [-bhqr?] [-d option] [-s opt=val] [-u option] ..."
+}
+
+help() {
+cat <<END-OF-HELP
+
+`usage`
+
+-d option   define option
+-u option   undefine option
+-s opt=val  set option to value
+-b          batch mode
+-q          be quiet (implies -b)
+-r          restore original files
+
+Options:
+
+celltype    C datatype to hold a pointer (cell) [long]
+cellspec    Printf() format specifier for cells [%ld]
+prefix      Where to install the program [/usr/local]
+sandbox     Create a "sandboxed" interpreter? [no]
+wops        Include the "w" (windowing) operator? [yes]
+color       Does curses(3) support color? [yes]
+usleep      Do we have usleep(3)? [yes]
+atexit      Do we have atexit(3)? [yes]
+strdup      Do we have strdup(3)? [yes]
+
+END-OF-HELP
+}
+
+quiet=no
+if [ "x$1" = "x" ]; then
+	interact=yes
+else
+	interact=no
+fi
+
+restore() {
+	for x in $*; do
+		mv -f $x.ORIG $x
+	done
+}
+
+while [ "x$1" != "x" ]; do
+	if [ "x$2" != "x" ]; then
+		case $1 in
+		-d)	eval $2=yes; shift 2;;
+		-u)	eval $2=no; shift 2;;
+		-s)	eval $2; shift 2;;
+		-b)	shift;;
+		-q)	quiet=yes; shift;;
+		-\?|-h)	help; exit;;
+		*)	usage; exit 1;;
+		esac
+	else
+		case $1 in
+		-b)	shift;;
+		-q)	quiet=yes; shift;;
+		-r)	restore Makefile prog/ue.u u.c uc uc1.u ugo; exit;;
+		-\?|-h)	help; exit;;
+		*)	usage; exit 1;;
+		esac
+	fi
+done
+
+getvalue() {
+	prompt=$1
+	default=$2
+	if ! echo "$prompt" | grep -q '?'; then
+		colon=":"
+	else
+		colon=""
+	fi
+	echo -n $prompt$colon" ["$default"] "
+	read val
+	if [ "x$val" = "x" ]; then
+		val=$default
+	fi
+}
+
+getoption() {
+	while true; do
+		getvalue "$1" $2
+		case "$val" in
+		y|yes|n|no)	return;;
+		*)		echo "Yes or no?";;
+		esac
+	done
+}
+
+patch() {
+	file=$1; shift
+	if [ ! -f $file.ORIG ]; then cp $file $file.ORIG; fi
+	exprs=""
+	for x in $*; do
+		expr=`echo $x | sed -e "s/'/ /g"`
+		exprs="$exprs -e '$expr'"
+	done
+	eval sed $exprs <$file.ORIG >$file
+}
+
+if [ $interact = yes -a $quiet = no ]; then
+	cat <<EOT-intro
+
+For a summary of batch mode options, run $0 -h
+
+EOT-intro
+fi
+
+while true; do
+
+	if [ $interact = yes ]; then
+		getvalue "C datatype to hold a pointer (cell)" long
+		celltype=$val
+		getvalue "Printf() format specifier for cells" %ld
+		cellspec=$val
+		getvalue "Where to install the program" /usr/local
+		prefix=$val
+		getoption "Create a \"sandboxed\" interpreter?" "no"
+		sandbox=$val
+		getoption "Include the \"w\" (windowing) operator?" "yes"
+		wops=$val
+		getoption "Does curses(3) support color?" "yes"
+		color=$val
+		getoption "Do we have usleep(3)?" "yes"
+		usleep=$val
+		getoption "Do we have atexit(3)?" "yes"
+		atexit=$val
+		getoption "Do we have strdup(3)?" "yes"
+		strdup=$val
+	fi
+
+	if [ $quiet = no ]; then
+		cat <<END-OF-SETTINGS
+
+    celltype = $celltype
+    cellspec = $cellspec
+      prefix = $prefix
+     sandbox = $sandbox
+        wops = $wops
+       color = $color
+      usleep = $usleep
+      atexit = $atexit
+      strdup = $strdup
+
+END-OF-SETTINGS
+	fi
+
+	if [ $interact = yes ]; then
+		getoption "Looks reasonable?" yes
+		echo
+		if [ x$val = xyes -o x$val = xy ]; then
+			break
+		fi
+	else
+		break
+	fi
+done
+
+defopt() {
+	name=`echo $1 | dd conv=ucase 2>/dev/null`
+	case "$2" in
+	y|yes)	echo "-D$name";;
+	*)	echo "-U$name";;
+	esac
+}
+
+expand() {
+	echo $1 | sed \
+		-e "s|\$celltype|$celltype|g" \
+		-e "s|\${celltype}|$celltype|g" \
+		-e "s|\$cellspec|$cellspec|g" \
+		-e "s|\${cellspec}|$cellspec|g" \
+		-e "s|\$prefix|$prefix|g" \
+		-e "s|\${prefix}|$prefix|g" \
+		-e "s|\$sandbox|$sandbox|g" \
+		-e "s|\${sandbox}|$sandbox|g" \
+		-e "s|\$wops|$wops|g" \
+		-e "s|\${wops}|$wops|g" \
+		-e "s|\$color|$color|g" \
+		-e "s|\${color}|$color|g" \
+		-e "s|\$usleep|$usleep|g" \
+		-e "s|\${usleep}|$usleep|g" \
+		-e "s|\$atexit|$atexit|g" \
+		-e "s|\${atexit}|$atexit|g" \
+		-e "s|\$strdup|$strdup|g" \
+		-e "s|\${strdup}|$strdup|g" \
+		-e "s|\$options|$options|g" \
+		-e "s|\${options}|$options|g" \
+		-e 's|\\t|	|g'
+}
+
+options="`defopt sandbox $sandbox` `defopt wops $wops` `defopt color $color` `defopt usleep $usleep` `defopt atexit $atexit` `defopt strdup $strdup`"
+
+if [ ! -f "Makefile.ORIG" ]; then cp "Makefile" "Makefile.ORIG"; fi
+sed <Makefile.ORIG >Makefile \
+	-e "s|^OPTS=.*|`expand 'OPTS=\\t$options'`|" \
+	-e "s|^PREFIX=.*|`expand 'PREFIX=$prefix'`|" \
+	-e ""
+if [ ! -f "prog/ue.u.ORIG" ]; then cp "prog/ue.u" "prog/ue.u.ORIG"; fi
+sed <prog/ue.u.ORIG >prog/ue.u \
+	-e "s|\"/u/bin/|`expand '"$prefix/bin/'`|" \
+	-e ""
+if [ ! -f "u.c.ORIG" ]; then cp "u.c" "u.c.ORIG"; fi
+sed <u.c.ORIG >u.c \
+	-e "s|\"%ld\"|`expand '\"$cellspec\"'`|" \
+	-e "s|\"/u/bin/|`expand '\"$prefix/bin/'`|" \
+	-e "s|cell long|`expand 'cell $celltype'`|" \
+	-e ""
+if [ ! -f "uc.ORIG" ]; then cp "uc" "uc.ORIG"; fi
+sed <uc.ORIG >uc \
+	-e "s|^OPTS=.*|`expand 'OPTS=\"$options\"'`|" \
+	-e ""
+if [ ! -f "uc1.u.ORIG" ]; then cp "uc1.u" "uc1.u.ORIG"; fi
+sed <uc1.u.ORIG >uc1.u \
+	-e "s|\"%ld\"|`expand '\"$cellspec\"'`|" \
+	-e "s|\"/u/bin/|`expand '"$prefix/bin/'`|" \
+	-e ""
+if [ ! -f "ugo.ORIG" ]; then cp "ugo" "ugo.ORIG"; fi
+sed <ugo.ORIG >ugo \
+	-e "s|^OPTS=.*|`expand 'OPTS=\"$options\"'`|" \
+	-e ""
+
+if [ $interact = yes ]; then
+	echo "Cool, now run 'make'!"
+	echo
+fi

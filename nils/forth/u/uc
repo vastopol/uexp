@@ -1,0 +1,83 @@
+#!/bin/sh
+
+# useless->C compiler driver; NMH 2011; in the PD
+
+OPTS="-DCOLOR -DUSLEEP -DATEXIT -DSTRDUP"
+
+trap '
+	rm -f $out $tmp
+' 1 2 3
+
+winlib="/u/bin/ucwlib"
+
+keeptmp=no
+verbose=no
+winops=""
+options=""
+usage=no
+
+while [ "$x" != "x" ]; do
+	case "$1" in
+	-k)	keeptmp=yes; shift;;
+	-v)	verbose=yes; shift;;
+	-w)	winops=-w; shift;;
+	-n*)	options="$options -`echo $1 | sed -e 's/^-n//'`"; shift;;
+	-*)	usage=yes; break;;
+	*)	break;;
+	esac
+done
+
+if [ "$1" = "" ]; then usage=yes; fi
+
+if [ $usage = yes ]; then
+	echo "Usage: uc [-k] [-nopt] [-v] [-w] file.u"
+	echo "-k     keep intermediate files"
+	echo "-nopt  pass -opt to C compiler"
+	echo "-v     verbose operation"
+	echo "-w     enable w operator"
+	exit 1
+fi
+
+tmp=uc.$$.c
+out=`basename $1 .u`
+
+deltmp="if [ $keeptmp != yes ]; then rm -f $tmp; fi"
+
+if [ x$winops != "x" ]; then
+	libs=-lcurses
+else
+	libs=
+fi
+
+if [ "$out" = "$1" ]; then
+	echo "uc: file has no .u suffix" 1>&2
+	exit 1
+fi
+
+if [ $verbose = yes ]; then
+	echo "uc1 $winops <$1 >$tmp"
+fi
+
+uc1 $winops <$1 >$tmp
+
+if tail -1 $tmp | grep '^}$' >/dev/null 2>&1; then
+	true
+else
+	echo "error in compilation, stop" 1>&2
+	eval $deltmp
+	exit 1
+fi
+
+if [ $verbose = yes ]; then
+	echo "cc $options -o $out $tmp $libs"
+fi
+
+if cc $OPTS $options -o $out $tmp $libs; then
+	true
+else
+	echo "error in compilation, stop" 1>&2
+	eval $deltmp
+	exit 1
+fi
+
+eval $deltmp
