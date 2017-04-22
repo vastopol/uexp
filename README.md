@@ -13,10 +13,11 @@ For interesting stuff see:
 * FurryPaws (http://www.call-with-current-continuation.org/fp/)
 
 ### Lisp  
+  * Lispkit_lisp (http://www.softwarepreservation.org/projects/LISP/lispkit/)
   * XLisp                   
   (http://files.mpoli.fi/unpacked/software/programm/general/lisp1.zip/)                 
   (http://www.xlisp.org/)
-  * Lispkit_lisp (http://www.softwarepreservation.org/projects/LISP/lispkit/)
+  * zenlisp (t3x.org/files/zenlisp.zip)
 
 ### Prolog
 * SWI Prolog stuff, now defunct && unfinished
