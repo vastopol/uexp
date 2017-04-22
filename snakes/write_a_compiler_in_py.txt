@@ -7,6 +7,20 @@ http://legacy.python.org/workshops/1998-11/proceedings/papers/aycock-little/ayco
 spark - Scanning, Parsing, and Rewriting Kit
 http://web.archive.org/web/20010424165224/http://www.csr.uvic.ca:80/~aycock/python/
 
+http://pages.cpsc.ucalgary.ca/~aycock/spark/
+
+
+spark_parser 1.0.1
+An Early-Algorithm LR Parser
+https://pypi.python.org/pypi/spark_parser/1.0.1
+
+
+spark_parser 1.6.0
+An Earley-Algorithm Context-free grammar Parser Toolkit
+https://pypi.python.org/pypi/spark_parser
+
+
+
 ----------------------------
 
 Ruslan Spivak
