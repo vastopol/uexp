@@ -1,4 +1,0 @@
-	a = 1
-	b = 'hello world'
-	&DUMP = 1
-END

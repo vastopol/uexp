@@ -1,3 +1,0 @@
-* spitbol folds typenames when &case set!!
-	output = convert(3,"real")
-end

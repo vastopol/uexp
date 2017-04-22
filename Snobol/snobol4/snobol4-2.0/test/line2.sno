@@ -1,3 +1,0 @@
-	output = &lastfile ':' &lastline ' (last)'
-	output = &file ':' &line ' (line2)'
-*

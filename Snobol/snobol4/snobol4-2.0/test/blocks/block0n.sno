@@ -1,6 +1,0 @@
--PLUSOPS 0
--NOBLOCKS
-        OPSYN('#','+',2)
-# 1 10
-        OUTPUT = 1 5 # 5
-END

@@ -1,4 +1,0 @@
-	X = "Hello World!"
-LOOP	X 'o' = 'x'		:S(LOOP)
-	OUTPUT = X
-END

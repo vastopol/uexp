@@ -1,5 +1,0 @@
-# config generated Thu Nov 17 23:13:23 UTC 2016
-	MAN3DIR = '/usr/local/share/man/man3'
-	SLEEP_C = 'posix/sleep.c'
-	NDBM_LDFLAGS = '-lgdbm -lgdbm_compat'
-	READLINE_LDFLAGS = '-lreadline'

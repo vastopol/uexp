@@ -1,7 +1,7 @@
 # uexp
 !C
 
-intended for small experiments with non C style languages
+Intended for small experiments with non C style languages. Mostly will serve as a holding space for source files of old/obscure programming languages. Source files are stored as any of: .zip, .tar.gz, etc...
 
 For interesting stuff see:
 * The Software Preservation Group (http://www.softwarepreservation.org/)
@@ -20,7 +20,7 @@ For interesting stuff see:
   * zenlisp (t3x.org/files/zenlisp.zip)
 
 ### Prolog
-* SWI Prolog stuff, now defunct && unfinished
+* SWI Prolog stuff, now defunct && unfinished (some notes/programs I made...)
 
 ### Setl 
 * Setl 0.1.2 binary x86 64bit   (http://setl.org/setl/bin/Linux-x86-64bit/)

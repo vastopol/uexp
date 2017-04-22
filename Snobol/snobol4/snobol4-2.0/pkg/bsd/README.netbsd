@@ -1,2 +1,0 @@
-copy contents of this directory to /usr/src/pkgsrc/lang/snobol4/
-rename Makefile.netbsd to Makefile

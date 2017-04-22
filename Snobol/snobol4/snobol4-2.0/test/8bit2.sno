@@ -1,7 +1,0 @@
-	Étude = 'français'
-	français = "Bonjour Monde"			:(Étude)
-	output = 'quel domage'				:(end)
-
-Étude
-	output = $Étude
-end

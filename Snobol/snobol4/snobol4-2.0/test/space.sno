@@ -1,3 +1,0 @@
-	output = convert(" ", .integer)
-	output = convert(" ", .real)
-end

@@ -1,4 +1,0 @@
-	X = "Hello World?"
-LOOP	X '?' = '!'
-	OUTPUT = X
-END
