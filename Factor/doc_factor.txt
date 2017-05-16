@@ -1,0 +1,11 @@
+Factor Language
+;----------------------------------------------------
+http://factorcode.org/
+
+Factor binary package for linux-x86-64
+
+Requirements:
+* Ubuntu Linux 9.04 (other distributions may also work)
+* Download factor-linux-x86-64-0.97.tar.gz
+
+This release was built from GIT ID: eb3ca179740e6cfba696b55a999caa13369e6182
