@@ -1,0 +1,32 @@
+PLaSM - functional language for computing with geometry
+;--------------------------------------------------------------
+
+Plasm clasic 5.1
+
+The PLaSM versions 5.x are based on the new progressive geometric kernel provided by the XGE (eXtreme Geometric Environment) library by Giorgio Scorzelli, and rely on extensive use of progressive BSPs and complete topology representation by multidimensional Hasse diagrams
+;--------------------------------------------------------------
+
+Main page: http://www.plasm.net/
+
+Tools: http://www.plasm.net/tools/
+
+Major PLaSM changes were released every about four years. Let we compare the main differences between the main releases.
+
+PLaSM 4 was completely rewritten with Scheme and C/C++ (2002), by adding a functional Class system, basic support for Booleans, XML save/restore of memory objects, basic SVG and Flash support, and a good implementation of animated VRML, fully integrated with other language features. Actually, the geometric kernel suffered with memory management and with a fast but buggy implementation of Cartesian product and skeleton extraction. Several tools where added in later years, including he Gt-based Xplode and Visual PLaSM IDEs, the Eclipse plugin, and the LaTeX support.
+
+In PLaSM 3  we dropped the previous basic support for Booleans because so slow to be unusable (about 1994), and added: a quite sophisticated multidimensional color system,  VRML 1.0, VRML 2.0 and animation support based on OpenInventor (1998). The version 3, as the previous ones, was based on Common Lisp, and as editor and IDE we used a specialized Emacs.
+
+The specialized PLaSM editor Xplode will provide for syntax coloring, tab completion, menus of available libraries and functions, quick documentation and direct evaluation of every sub-expression. A standard version is already integrated in the interpreter package.
+
+;----------------------------------------------------------------
+
+PLaSM is available for: Linux,  MacOSX, and Windows. The typical user may like to get the binary excutables for the preferred computational environment.
+
+Conversely, the advanced user might prefer to download the sources and to recompile and build the interpreter. An integrated language editor is not strictly required, since a standard text editor would be sufficient, but it may be very useful.
+
+Mac platform: download the package, extract the plasm folder and move to the Applications folder.
+
+Windows platform: download the package and launch the installer.
+
+Sources: expand the archive and read the INSTALL file
+
