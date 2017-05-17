@@ -1,0 +1,34 @@
+CMU Artificial Intelligence Repository
+Home  INFO  Search  FAQs  Repository Root
+FP: A C implementation of John Backus' "FP" language.
+
+lang/prolog/impl/fp_lp/fp/
+This directory contains a C implementation of John Backus' "FP"
+functional programming language.  Includes examples of bubble sort,
+discrete Fourier transform, prime number generation, and regression
+testing. 
+Version:      5-JAN-1990
+
+Requires:     C
+
+Ports:        HP-UX on RISC and 68K machines.
+
+Copying:      Public domain.
+
+CD-ROM:       Prime Time Freeware for AI, Issue 1-1
+
+Author(s):    Andy Valencia  or 
+
+Keywords:
+
+   Authors!Valencia, FP, 
+   Programming Languages!Functional Programming, 
+   Programming Languages!Logic Programming, 
+   Prolog!Implementations, Public Domain
+
+References:   ?
+
+Last Web update on Mon Feb 13 10:34:35 1995 
+AI.Repository@cs.cmu.edu
+
+http://www.cs.cmu.edu/afs/cs/project/ai-repository/ai/lang/prolog/impl/fp_lp/fp/
