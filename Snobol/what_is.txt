@@ -1,0 +1,17 @@
+* extras
+  * algorithms in snobol4
+* snobol3
+  * java sno
+  * unix v6 sno
+* snobol4
+  * C Macro Snobol4
+* snocone
+  * Snobol preprocessor
+* spitbol
+  * spitbol x64 compiler
+
+where from:
+http://snobol4.com/
+http://www.snobol4.org/
+ftp://ftp.snobol4.com/
+http://minnie.tuhs.org/cgi-bin/utree.pl?file=V6

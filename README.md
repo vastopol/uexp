@@ -1,7 +1,11 @@
 # uexp
 !C
 
-Intended for small experiments with non C style languages. A collection of compilers, interpreters, and code for very high level languages. Mostly will serve as a holding space for source files of old/obscure programming languages. Source files are stored as any of: .zip, .tar.gz, etc...
+Intended for small experiments with non C style languages. A collection of compilers, interpreters, and source code. 
+Mostly will serve as a holding space for old/obscure programming languages. 
+Source files are stored as any of: .zip, .tar.gz, etc...
+
+Currently Actively Studying/Using: FP && Snobol
 
 For interesting stuff see:
 * The Software Preservation Group (http://www.softwarepreservation.org/)
@@ -15,6 +19,7 @@ For interesting stuff see:
 
 ### Forth
 * pforth - (http://www.softsynth.com/pforth) developed by phil burk
+* gforth
 
 ### FP
 * FurryPaws (http://www.call-with-current-continuation.org/fp/)
@@ -40,4 +45,6 @@ For interesting stuff see:
 ### Snobol
 * Snobol4 - C snobol4 2.0       (ftp://ftp.snobol4.org/snobol/snobol4-2.0.tar.gz)
 * Spitbol - x64 implementation  (https://github.com/spitbol/x64.git)
-
+* snobol3
+* snocone
+* extras

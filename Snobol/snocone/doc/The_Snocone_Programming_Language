@@ -1,0 +1,1880 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>
+&lt;PRE&gt;
+&lt;/PRE&gt;
+The Snocone Programming Language
+</title> </head> <body>
+<h1>
+The Snocone Programming Language
+</h1>
+<p>
+<i>
+by
+Andrew Koenig
+</i>
+</p>
+<p>
+at
+</p>
+<h3>
+Abstract
+</h3>
+<p>
+</p>
+<p>
+SNOBOL4 is a well-known programming language with convenient
+semantics and clumsy syntax.
+Following the pattern of Ratfor and EFL,
+we have added "syntactic sugar" to
+SNOBOL4, with an eye toward making it easier to use.
+We call the result
+<i>Snocone.</i>
+</p>
+<p>
+We describe the Snocone language in enough
+detail that people not familiar with SNOBOL4 can
+learn to use it, although previous familiarity
+with SNOBOL4 will help.
+</p>
+<p>
+This paper originally appeared in the proceedings of
+the USENIX conference in Portland, Oregon
+in June 1985.
+</p>
+<h3>
+Introduction
+</h3>
+<p>
+The semantics of the SNOBOL4 programming language[1]
+include such unusual and useful
+features as
+dynamic typing,
+a general-purpose garbage collector,
+excellent character string facilities,
+associative arrays,
+and strong run-time diagnostics.
+Griswold,[2]
+Gimpel,[3]
+and others have documented many ways of
+doing things in SNOBOL4 that can only be accomplished
+with much more difficulty in other languages.
+</p>
+<p>
+Unfortunately, the control structures of
+SNOBOL4 are archaic, and the fact that
+blank is an operator tends to encourage certain types
+of errors that are hard to detect.
+Other aspects of the language make it a nuisance
+to construct large programs out of small parts.
+</p>
+<p>
+To ameliorate some of these problems,
+we have designed and implemented a new language
+that provides some syntactic sugar for SNOBOL4.
+The obvious name for such a language is
+<i>Snocone</i>.
+</p>
+<p>
+The design of the Snocone language was inspired by
+Ratfor[4]
+and EFL.[5]
+Like EFL, and unlike Ratfor, Snocone is a self-contained
+programming language, rather than a proper superset of
+SNOBOL4.
+Like Ratfor, and unlike EFL, the Snocone translator
+makes no attempt to produce SNOBOL4 output that is
+easy for humans to understand.
+</p>
+<p>
+Hanson[6]
+has written a similar, but simpler preprocessor
+for SNOBOL4.
+His preprocessor is like Ratfor
+in that it does not change the statements in
+the basic language but rather adds new syntax.
+</p>
+<p>
+Griswold[7]
+has written a preprocessor for a language
+similar to Snocone,
+the syntax of which is based on Icon[8]
+rather than on C or EFL.
+His preprocessor is written in C,
+and uses Yacc for its parsing.
+</p>
+<p>
+In contrast, Snocone has a syntax roughly
+based on C and is written in Snocone.
+</p>
+<h3>
+What's nice about SNOBOL4
+</h3>
+<p>
+Variables in SNOBOL4 are dynamically typed:
+the type of any variable is the type of the
+value most recently assigned to it.
+Thus, declarations are unnecessary, and, in fact,
+SNOBOL4 has no declarations as such
+(except that procedures can have local variables).
+</p>
+<p>
+All operators and built-in functions check
+their argument types;
+each argument is converted automatically
+to an appropriate type.
+A run-time diagnostic message results
+if a conversion is impossible.
+For instance, if an addend
+is a string, SNOBOL4 will try
+to convert it to an integer or real number,
+depending on the form of its value.
+If the value is inappropriate to convert to
+a numeric type, the program will halt.
+</p>
+<p>
+Like Lisp, and unlike most other languages,
+SNOBOL4 does not have any explicit mechanism for
+returning memory to the system.
+Rather, the implementation must detect
+when memory is no
+longer needed and make that memory available
+for re-use.
+This makes the language harder to implement,
+but easier to use.
+One nice by-product of this sort of memory
+allocator is that SNOBOL4 programs tend
+to be free of arbitrary size limitations.
+</p>
+<p>
+One SNOBOL4 datatype is the
+<i>pattern</i>,
+which describes an (arbitrarily complex)
+set of character strings.
+Briefly, the language incorporates a general
+top-down backtracking parser.
+This parser is so easy to use that it
+is the usual way of dealing with strings
+in SNOBOL4.
+</p>
+<p>
+Another useful datatype is the
+<i>table</i>.
+A table is like a one-dimensional array, except that
+its subscripts are not limited to being integers.
+For instance, a compiler symbol table might be maintained
+as a SNOBOL4 table, with the subscript being the identifier
+and the value being some structure which holds the desired
+information about that identifier.
+</p>
+<p>
+An interesting and unusual semantic idea in SNOBOL4 is
+that of
+<i>statement failure</i>.
+Many operations can easily encounter conditions that
+preclude their execution.
+For example, an attempt may be made to access a non-existent
+array element, read beyond the last record of a file,
+search a string for a pattern that it does not contain,
+or even make a comparison that gives an unexpected result.
+When this happens, the operation
+<i>fails</i>.
+Usually, the failure of an operation implies the failure
+of the statement of which it is a part.
+While statement failure is not an error condition,
+it can be tested.
+In fact, conditional transfer on the success or
+failure of a statement is virtually the only
+kind of control structure in SNOBOL4.
+</p>
+<p>
+A good implementation of SNOBOL4 is
+Macrospitbol, by Dewar and McCann.[9]
+This is a portable threaded-code interpreter, which
+is fast and robust enough to be used for "production"
+purposes.
+For example, on a VAX-11/780 it translates about 150
+statements per second and executes about 5,000.
+</p>
+<p>
+SNOBOL4 implementations in general have excellent
+run-time diagnostic facilities.
+The language definition includes ways of tracing
+programs for debugging, and of trapping almost any
+kind of run-time error.
+</p>
+<h3>
+What's not nice about SNOBOL4
+</h3>
+<p>
+Here is a simple SNOBOL4 program to add the
+integers between 1 and 1000:
+</p>
+<pre>                sum = 0
+                term = 1
+loop            sum = sum + term
+                term = term + 1
+                LE(term,1000)           :s(loop)
+                OUTPUT = "The sum is " sum
+END
+</pre>
+<p>
+The first two lines of this program assign values to
+variables.
+The name
+<i>loop</i>
+in the third line is a label; it is recognized as such
+because it begins the line without any white space
+ahead of it.
+</p>
+<p>
+The fifth line calls a built-in function to compare the
+value of the variable
+<i>term</i>
+to 1000.
+SNOBOL4 has no comparison operators: all comparisons are
+done by
+<i>predicate</i>
+functions that either return the null string if the condition
+being tested is true or fail if the condition is false.
+The :s(loop) at the end of the line
+is a conditional
+<b>go to</b>:
+it causes control to transfer to the label
+<i>loop</i>
+if the statement succeeds, and to the following
+statement if it fails.
+</p>
+<p>
+In contrast, the program looks like this in Snocone:
+</p>
+<pre>sum = 0
+term = 1
+do {
+        sum = sum + term
+        term = term + 1
+} while (term &lt;= 1000)
+OUTPUT = "The sum is " &amp;&amp; sum
+</pre>
+<p>
+In the past fifteen years, the trend in programming
+language design has been overwhelmingly toward
+programming languages with control structures that
+make it reasonable to write programs with at most
+a very few
+<b>go to</b>
+statements.
+SNOBOL4 exhibits almost the exact opposite of this trend:
+essentially the only control structure in SNOBOL4 is
+a form of conditional
+<b>go to</b>
+statement.
+There is no block structure, and all labels are global.
+Thus, writing a SNOBOL4 program requires a constant effort
+to invent new label names, and to choose names that have
+at least some chance of telling the reader whether their
+use is local or global.
+</p>
+<p>
+The programmer's job is not made any easier by the peculiar way
+SNOBOL4 handles subroutines.
+SNOBOL4 subroutines are defined at run time by a built-in
+function called DEFINE.
+Its argument is a
+<i>prototype</i>
+of the subroutine to be defined -
+a character string that describes how the
+subroutine is to be used.
+The subroutine's entry point is the label with the same name.
+Because the statement bearing this label is not special
+in any other way, it must be placed where it will not
+be executed in the ordinary course of events.
+The call to DEFINE, on the other hand, must
+be executed before the subroutine it defines can be used.
+</p>
+<p>
+This leads SNOBOL4 programmers into contortions.
+To keep the DEFINE call near the subroutine body,
+one must invent yet another label:
+</p>
+<pre>        DEFINE("square(x)")             :(square.end)
+square  square = x * x                  :(RETURN)
+square.end
+</pre>
+Alternatively, one can put all the DEFINE calls in one place, at
+the cost of moving the body of each subroutine arbitrarily far
+from where its prototype appears.
+<p>
+The Snocone programmer has an easier job:
+</p>
+<pre>procedure square (x) {
+        return x * x
+}
+</pre>
+<h3>
+Motivation
+</h3>
+<p>
+Snocone's purpose, then, is to make it easy for a
+programmer used to a block-structured language like C
+to write programs that have the freedom and semantic flexibility
+of SNOBOL4.
+To this end, we have changed the SNOBOL4 language in several ways.
+</p>
+<p>
+First, we introduced an explicit concatenation operator.
+SNOBOL4 uses blank for concatenation, so
+</p>
+<pre>y = f(x)
+</pre>
+is a function call, but
+<pre>y = f (x)
+</pre>
+assigns to y the concatenation of the values of the variables f
+and x.  We chose &amp;&amp; to represent concatenation because SNO-
+BOL4 programs often use concatenation for the same purpose that C
+programs use &amp;&amp;.
+<p>
+Second, we allow much the same freedom with spaces that
+C does, with one exception:  newline ends a statement.
+Statements may be continued onto multiple lines in much the
+same way as in EFL programs: a line is continued
+if it ends with an
+operator or some kind of open bracket.
+</p>
+<p>
+Third, we have added procedure and structure declarations.
+These things are accomplished in SNOBOL4 by calling built-in
+subroutines, and the context of the calls is often obscure.
+</p>
+<p>
+Finally, we have introduced control structures similar to
+those in C and other block-structured languages: the
+if, while, for, and do statements.
+</p>
+<h3>
+LANGUAGE DESCRIPTION
+</h3>
+<h3>
+Lexical Conventions
+</h3>
+<p>
+Blanks (spaces and tabs, but not newlines) may not appear within a
+token, but may freely separate tokens.
+Comments begin with a #
+character and end at the end of the line.
+</p>
+<p>
+Constants may be integers, reals, or strings.
+There are no signed
+numeric constants.
+Integers range from 0 to231-1.
+Real constants
+are short-precision only, and must contain either a decimal point or an
+E (or e).
+String constants may be delimited by single or double quotes
+with the same meaning.
+Characters in quotes receive no special
+interpretation.
+A single quote may appear in strings delimited by
+double quotes, and vice versa.
+</p><pre></pre>
+<p></p>
+<p>
+Identifiers may be of any length.
+All characters in an identifier are
+significant, but their case is presently not significant.
+Case may
+become significant in the future.
+An identifier is a non-empty
+sequence of letters and digits, beginning with a letter.
+Underscore
+(_) is a letter.
+The same identifier may be used independently to
+represent a procedure, label, or variable.
+</p>
+<h3>
+Statement Separation
+</h3>
+<p>
+Snocone delimits statements much like the Shell[10]
+(the command interpreter in the
+UNIX
+operating system)[11]
+or EFL.
+A statement is
+ended either by a semicolon or newline, except that if the last token
+on a line is an operator or open parenthesis or bracket, the next line
+is automatically considered as part of the current statement.
+Newlines
+may also separate clauses of compound statements, so
+</p>
+<pre>if (a &lt; 0)
+        a = 0
+</pre>
+is acceptable and means the same as
+<pre>if (a &lt; 0) a = 0
+</pre>
+or, spreading things as much as possible:
+<pre>if (
+a &lt;
+0)
+a =
+0
+</pre>
+<h3>
+File Inclusion
+</h3>
+<p>
+The contents of an arbitrary file can be incorporated into
+the program by writing an
+<i>include line</i>
+in one of the following four forms:
+</p>
+<pre>#include "file"
+#include 'file'
+#include &lt;file&gt;
+#include {file}
+</pre>
+Spaces may appear between # and include.  The contents of the
+named file are substituted for the include line.
+<p>
+The exact behavior of an include line depends
+on the delimiters surrounding the file name.
+If quotes are used (single or double), the file is
+sought in the current directory.
+If brackets are used (angle brackets or curly braces),
+the file is sought in an installation-dependent
+system library
+(/usr/lib/snocone on our systems).
+If double quotes or angle brackets are used, the
+file is included unconditionally, even if the same
+file is included several times.
+If single quotes or curly braces are used,
+the file will only be included once, even if it
+is named in several include lines.
+</p>
+<p>
+This latter behavior is useful in the following sort of situation.
+Suppose that procedure
+<i>proc1</i>
+is defined in
+file
+<i>proc1.h</i>,
+and procedure
+<i>proc2</i>
+is defined
+in file
+<i>proc2.h</i>.
+A program that calls both
+<i>proc1</i>
+and
+<i>proc2</i>
+might then contain:
+</p>
+<pre>#include "proc1.h"
+#include "proc2.h"
+</pre>
+Now, suppose that <i>proc1</i> is changed to call
+<i>proc2</i>.  If <i>proc1.h</i> is made to con-
+tain
+<pre>#include "proc2.h"
+</pre>
+then our hypothetical sample program will wind up with two copies
+of <i>proc2.h</i> and will therefore run into trouble
+with duplicate procedure definitions.  If, however,
+<i>proc1.h</i> contains:
+<pre>#include 'proc2.h'
+</pre>
+and the main program contains:
+<pre>#include 'proc1.h'
+#include 'proc2.h'
+</pre>
+then <i>proc2</i> will be defined only once.
+<h3>
+Expression Evaluation, Success, and Failure
+</h3>
+<p>
+Evaluating an expression has one of three
+outcomes: a value, failure, or error.
+</p>
+<p>
+Errors normally result in a diagnostic message
+and termination of the program, and arise
+from the usual sorts of things:
+overflow, underflow,
+division by zero, impossible conversions,
+running out of memory, and so on.
+</p>
+<p>
+Failure, on the other hand, is not an error
+condition.
+An expression that fails is merely one that
+does not yield a value.
+Examples of expressions that fail include
+attempts to refer to non-existent array
+elements,
+attempts to read beyond end of file,
+and even comparisons that yield unexpected results.
+For instance, the expression
+</p>
+<pre>a &lt; b
+</pre>
+yields a null string if a is indeed less than b, and fails other-
+wise.
+<p>
+Most operators fail if any of their operands fails.
+The few exceptions will be noted below.
+</p>
+<p>
+An expression that always either yields a null string or fails
+is sometimes called a
+<i>predicate</i>.
+Testing such expressions for success or failure in if,
+while, and do statements is the primary way
+of affecting the flow of control
+in Snocone.
+</p>
+<h3>
+Data Types, Declarations, and Scope
+</h3>
+<p>
+Variables in Snocone are dynamically typed: a variable has the type of
+the value most recently assigned to it.
+Except for a few predefined variables
+(described under
+<i>pattern matching</i>),
+all variables have the null string as their initial values.
+All variables are global, but procedures
+can nominate variables whose
+values will automatically be saved at
+entry and restored at exit.
+The only declarations define
+structures:
+</p>
+<pre>struct cons {car, cdr}
+</pre>
+In effect, this declaration defines three procedures named cons,
+car, and cdr.  The value of cons(a,b) is a newly-created cons ob-
+ject with a and b as the values of its car and cdr fields,
+respectively.  The fields, in turn, are accessed by similarly-
+named functions.  For instance, the cdr field of cons structure x
+is accessed as cdr(x).  Thus this program:
+<pre>struct cons {car, cdr}
+a = cons (3, cons (4, 5))
+OUTPUT = car (cdr (a))
+</pre>
+prints 4.  The procedures corresponding to field names may be
+used as the target of an assignment:
+<pre>car (a) = "Hello"
+</pre>
+Snocone offers other data types than those described above.
+While numeric constants cannot be negative, variables and expres-
+sions suffer from no such restriction.  Strings may be of any
+length up to an implementation-defined upper bound, usually many
+thousands of characters.  All variables have the null string as
+their initial value.
+<p>
+Aggregate values come in two types: arrays and tables.
+Each type
+is created by a built-in procedure with the same name.
+Thus:
+</p>
+<pre>a = ARRAY (20)
+</pre>
+creates a 20-element array, initializes each element to the null
+string, and assigns it to a.  The second argument to the array
+procedure is an initializing value:
+<pre>a = ARRAY (20, -1)
+</pre>
+makes a an array of 20 elements, each with value -1.  To get
+multi-dimensional arrays, express the dimensions as a string:
+<pre>a = ARRAY ('4,5', -1)
+</pre>
+One can also give explicit lower bounds:
+<pre>a = ARRAY ('-10:10')
+</pre>
+The default lower bound is 1.
+<p>
+Array elements are referenced by Algol-like subscripts:
+</p>
+<pre>a[i,j] = a[i,j] + b[i,k] * c[k,j]
+</pre>
+Each array element behaves as a variable, and can therefore have
+a value of any data type, independently of any other element.
+<p>
+A table is like a one-dimensional array whose subscripts are not
+restricted to integers:
+</p>
+<pre>t = TABLE (20)
+</pre>
+The argument to the TABLE procedure is an estimate of the maximum
+number of elements that will actually be stored in the table.  If
+substantially more elements than this are stored, access will be-
+gin to slow down.  On the other hand, giving too large an initial
+value wastes space.  Once a table has been created, any value can
+be used for a subscript.  t[a] and t[b] will refer to the same
+element if and only if a and b are identical.  The precise mean-
+ing of "identical" is given with the description of the :: and
+:!: operators; suffice it to say that 3 and "3" are not identi-
+cal, and that after executing
+<pre>a = b
+</pre>
+a and b are identical regardless of what values they had before.
+<h3>
+Binary Operators
+</h3>
+<p>
+The following operators are grouped in order of decreasing priority.
+Unless otherwise stated, they are left-associative.
+</p>
+<dl>
+<dd>
+<dl>
+<dt>. $</dt>
+<dd>
+Pattern value assignment (see Patterns)
+</dd><dt>^</dt>
+<dd>
+Exponentiation (right-associative).
+The right argument
+must be an integer.
+If both arguments are integers,
+the right argument must be non-negative
+</dd><dt>* / %</dt>
+<dd>
+Multiplication, division, and remainder.
+As in C,
+and as not in SNOBOL4, multiplication and
+division have the same precedence.
+</dd><dt>+ -</dt>
+<dd>
+Addition and subtraction.
+</dd><dt>== != &lt; &gt; &lt;= &gt;= :==: :!=: :&lt;: :&gt;: :&lt;=: :&gt;=: :: :!:</dt>
+<dd>
+Comparison predicates.
+Each of these operators returns
+a null string if the indicated relation holds,
+and fails if not.
+The first six do
+numeric comparisons: an error results if either
+operand cannot be converted to a number.
+The next six do string comparisons: an error results
+if either operand cannot be converted to a string.
+The last two test if the two operands are identical.
+Values of different data types are never identical.
+Strings and numbers are identical if their data types and values match.
+Other values are identical if they refer to the same object.
+</dd><dt>&amp;&amp;</dt>
+<dd>
+Concatenation.
+The left operand is evaluated
+first; if its evaluation fails, the &amp;&amp; operator fails.
+Otherwise, the right operand is
+evaluated, and &amp;&amp; fails if the right operand fails.
+If either operand is the null string, the
+result is the other operand, even if that operand is not a string.
+Otherwise, both operands are
+converted to strings and the result is their concatenation.
+An error results if either
+operand cannot be converted to a string.
+Note that if the operands of &amp;&amp; are predicates,
+&amp;&amp; can be used as a kind of logical conjunction.
+</dd><dt>||</dt>
+<dd>
+Logical disjunction.
+The left operand is evaluated first; if it
+succeeds, its value is the value of ||.
+Otherwise, the value is that of the right operand.
+If both operands fail, || fails.
+</dd><dt>|</dt>
+<dd>
+Pattern alternation.
+See
+<i>pattern matching</i>
+for details.
+</dd><dt>=</dt>
+<dd>
+Assignment.
+This operator is right-associative.
+</dd><dt>?</dt>
+<dd>
+Pattern match operator.
+The left operand is
+converted to a string and searched for the first
+substring that matches the pattern given by the right operand.
+If no such substring is found, the operator fails.
+If the left operand is a variable, ? may be used on the left
+side of an assignment.
+</dd></dl>
+</dd></dl>
+<h3>
+Unary Operators
+</h3>
+<p>
+Unary operators bind more tightly than all binary
+operators.
+</p>
+<dl>
+<dd>
+<dl>
+<dt>+ -</dt>
+<dd>
+Unary plus and minus.
+The result is always
+numeric, so unary plus is sometimes used for type conversion.
+Because unary operators bind so tightly, expressions that look like negative
+constants behave that way for all practical purposes.
+</dd><dt>.</dt>
+<dd>
+Name operator.
+The operand must be a variable;
+the result is essentially a pointer to the variable, similarly
+to the unary &amp; operator in C.
+The result of applying the DATATYPE function
+to the result of the . operator is the string "NAME".
+</dd><dt>$</dt>
+<dd>
+Indirection.
+The operand is converted to a name;
+the result is the object thus named.
+$ always yields an lvalue.
+</dd><dt>?</dt>
+<dd>
+Query.
+If its operand fails, ? fails.
+If its operand succeeds, ? yields a null string.
+Useful for evaluating an expression solely for
+its side effects.
+</dd><dt>~</dt>
+<dd>
+Logical negation.
+If its operand fails, ~ yields a null string.
+If the operand succeeds, ~ fails.
+</dd><dt>&amp;</dt>
+<dd>
+Keyword value.
+The operand must be the name of one of a restricted set of variables.
+The lvalue result is a system variable, whose value affects the
+execution of the program in some way.
+System variables are discussed separately.
+</dd><dt>@</dt>
+<dd>
+Pattern cursor assignment.
+See
+<i>pattern matching</i>
+for details.
+</dd><dt>*</dt>
+<dd>
+Deferred evaluation.
+Returns a value of type EXPRESSION that
+contains all the information necessary to evaluate the operand.
+The operand is not actually evaluated at this time, but can be
+evaluated later,
+either by the EVAL procedure or implicitly during pattern matching.
+</dd></dl>
+</dd></dl>
+<h3>
+Statements
+</h3>
+<p>
+Elements in brackets are optional.
+If the description of a statement
+is split over more than one line, the statement itself may be split
+analogously.
+Snocone does not have a null statement.
+</p>
+<pre>expression
+</pre>
+<dl>
+<dt></dt>
+<dd>
+The expression is evaluated for its side effects.
+The result, if any, is discarded.
+</dd></dl>
+<p>
+</p>
+<pre>if (expression)
+        statement1
+[ else
+        statement2 ]
+</pre>
+<dl>
+<dt></dt>
+<dd>
+The parenthesized
+<i>expression</i>
+is evaluated.
+If it
+succeeds,
+<i>statement1</i>
+is executed, otherwise
+<i>statement2</i>
+is executed.
+</dd></dl>
+<p>
+</p>
+<pre>while (expression)
+        statement
+</pre>
+<dl>
+<dt></dt>
+<dd>
+Behaves similarly to C: the
+<i>expression</i>
+is evaluated,
+and if it succeeds, the
+<i>statement</i>
+is executed and
+control passes back to the beginning of the while
+statement.
+Unlike C, Snocone has no
+<i>break</i>
+or
+<i>continue</i>
+statements.
+</dd></dl>
+<p>
+</p>
+<pre>do
+        statement
+while (expression)
+</pre>
+<dl>
+<dt></dt>
+<dd>
+Behaves similarly to C: the
+<i>statement</i>
+is executed, then the
+<i>expression</i>
+is evaluated, and if the
+<i>expression</i>
+succeeds, control passes back to the beginning of the do
+statement.
+</dd></dl>
+<p>
+</p>
+<pre>for (expression1, expression2, expression3)
+        statement
+</pre>
+<dl>
+<dt></dt>
+<dd>
+Equivalent to:
+</dd></dl>
+<pre>expression1
+while (expression3) {
+        statement
+        expression2
+}
+</pre>
+<p>
+</p>
+<pre>{
+        statement list
+}
+</pre>
+<dl>
+<dt></dt>
+<dd>
+The statements in the list, which may contain zero or
+more statements, are executed in sequence.
+</dd></dl>
+<p>
+</p>
+<pre>label: statement
+</pre>
+<dl>
+<dt></dt>
+<dd>
+All labels are global (because all SNOBOL4
+labels are global), even across procedure boundaries,
+so they must be chosen with care.
+A useful convention is
+to begin a label inside a procedure body with the name
+of the procedure and an underscore.
+</dd></dl>
+<p>
+</p>
+<pre>go to label
+</pre>
+<dl>
+<dt></dt>
+<dd>
+The space between go and to is optional.
+It is wise
+not to jump from a point inside one procedure into another.
+Program
+execution may be terminated by jumping to the reserved
+label END.
+Labels RETURN, FRETURN, NRETURN, ABORT, and
+CONTINUE are also reserved.
+</dd></dl>
+<p>
+</p>
+<pre>return [ expression ]
+</pre>
+<dl>
+<dt></dt>
+<dd>
+The current procedure returns to its caller.
+If the
+<i>expression</i>
+is given, the procedure yields that value.
+If no
+<i>expression</i>
+is given, the value returned is that of
+the variable with the same name as the procedure; if
+that variable was not assigned in the procedure, the
+null string is returned.
+</dd></dl>
+<p>
+</p>
+<pre>freturn
+</pre>
+<dl>
+<dt></dt>
+<dd>
+The current procedure returns and fails.
+</dd></dl>
+<p>
+</p>
+<pre>nreturn [ expression ]
+</pre>
+<dl>
+<dt></dt>
+<dd>
+The current procedure returns $(expression) as an
+lvalue.
+If the
+<i>expression</i>
+is not given, the indirection
+is applied to the variable with the same name as the
+procedure.
+An error results if this variable was not
+given a value inside the procedure.
+</dd></dl>
+<p>
+</p>
+<h3>
+Procedures
+</h3>
+<p>
+Here is an example of a procedure declaration:
+</p>
+<pre>procedure gcd (m, n) {
+        while (m != n) {
+                if (m &gt; n)
+                        m = m % n
+                else
+                        n = n % m
+        }
+        return m
+}
+</pre>
+<p>
+Arguments are passed by value, but note that the value passed for
+an aggregate argument (array, table, or structure) is really a
+pointer to the aggregate itself.
+</p>
+<p>
+If a procedure is called with too few arguments, extra null strings
+are supplied as necessary.
+If called with too many arguments, the extras
+are quietly ignored.
+</p>
+<p>
+Local variables can be nominated for a procedure:
+</p>
+<pre>procedure f(x) y, z {...
+</pre>
+All variables are global, but name scoping is dynamic.  One way
+to look at it is to imagine that when a procedure is entered, all
+the variables defined in that procedure are saved and set to
+null.  Those variables are then restored when the procedure re-
+turns.
+<p>
+Thus, the following example prints 5 and then 1:
+</p>
+<pre>a = 1
+f()
+g()
+procedure f() a {
+        a = 5
+        g()
+}
+procedure g() {
+        OUTPUT = a
+}
+</pre>
+The following example also prints 5 and then 1:
+<pre>a = 1
+b = .a
+f()
+g()
+procedure f() a {
+        a = 5
+        g()
+}
+procedure g() {
+        OUTPUT = $b
+}
+</pre>
+Local variables can only be associated with procedures.  Pro-
+cedures are recursive.
+<h3>
+Input-Output
+</h3>
+<p>
+All I/O is done through "associated variables".
+A variable may be
+input-associated or output-associated (or both).
+Whenever a value is
+assigned to an output-associated variable, that value is automatically
+written in the file associated with that variable.
+Whenever a value
+is requested for an input-associated variable, a line is read from the
+file associated with that variable, and the contents of the line are
+used for the value.
+When the end of an input file is reached,
+any attempts to access variables associated
+with that file will fail.
+</p>
+<p>
+Initially, the variable OUTPUT is output-associated with the standard
+output file, the variable INPUT is input-associated with the standard
+input file, and the variable TERMINAL is both input-
+and output-associated
+with the user's terminal.
+</p>
+<p>
+Thus, the following program copies its standard
+input to its standard output, a line at a time:
+</p>
+<pre>while (OUTPUT = INPUT) {}
+</pre>
+<p>
+New associations are formed by the INPUT
+and OUTPUT procedures:
+</p>
+<pre>INPUT  (name, channel, file)
+OUTPUT (name, channel, file)
+</pre>
+In both cases, <i>name</i> is the name of the variable to
+be associated (the name of the variable <i>x</i> is .x),
+and <i>file</i> is the file to be used.
+<i>Channel</i> is a string that you will use to identify
+subsequent operations on that file.  Internally, there is a one-
+to-one correspondence between channel names and file descriptors.
+<p>
+The file argument must not be given for other than the first call to
+INPUT or OUTPUT on a given channel, as a channel can only be
+connected to a single file.
+</p>
+<p>
+Other procedures dealing with input-output are:
+</p>
+<pre>SET (channel, offset, whence)
+</pre>
+<dl>
+<dt></dt>
+<dd>
+This function repositions the file specified by its
+first argument in a system-dependent manner.
+In implementations running under the
+UNIX
+system, the behavior is similar to the
+<i>lseek</i>
+system call.
+</dd></dl>
+<p>
+</p>
+<pre>REWIND (channel)
+</pre>
+<dl>
+<dt></dt>
+<dd>
+Repositions the named channel to the beginning of the file.
+</dd></dl>
+<p>
+</p>
+<pre>ENDFILE (channel)
+</pre>
+<dl>
+<dt></dt>
+<dd>
+Indicates that you are done using the given channel.
+All variables associated through that channel are
+disassociated, output buffers are flushed (if any),
+and the file is closed.
+</dd></dl>
+<p>
+</p>
+<pre>DETACH (name)
+</pre>
+<dl>
+<dt></dt>
+<dd>
+Disassociates the named variable.
+Does not close
+the file: a later call to INPUT or OUTPUT can reassociate it.
+</dd></dl>
+<p>
+</p>
+<h3>
+Pattern Matching
+</h3>
+<p>
+A
+<i>pattern</i>
+is a data structure that describes a class of strings.
+Patterns
+are used by the ? operator,
+which determines if the string given as its
+left operand contains a substring described by the pattern given as its
+right operand.
+The part of the Snocone system that
+does this is called the
+<i>scanner</i>.
+The input to the scanner is the string to be searched,
+called the
+<i>subject</i>,
+and the pattern sought.
+</p>
+<p>
+The scanner tries to find a substring of the
+subject that is matched by the pattern.
+It first looks at substrings starting at
+the first character of the subject.
+If it doesn't find one, it tries the ones
+starting at the second subject character,
+and so on.
+If the scanner cannot find an appropriate
+substring, the pattern match fails.
+</p>
+<p>
+If the &amp;ANCHOR system variable is
+nonzero, the scanner only looks at substrings
+that start at the first character of the
+subject.
+This is said to be an
+<i>anchored</i>
+pattern match.
+The &amp;ANCHOR variable is zero at the
+start of program execution.
+</p>
+<p>
+The important part of pattern matching is therefore
+determining whether the subject contains a
+substring that starts at a given character
+and matches a given pattern.
+To understand how this is done, we must
+take a closer look at patterns.
+</p>
+<p>
+Every pattern is a concatenation of one or more
+<i>elements</i>,
+each of which has zero or more
+<i>alternatives</i>.
+Each alternative may itself be an arbitrarily complicated pattern.
+Some patterns have alternatives that are determined
+dynamically as they are needed during pattern matching.
+</p>
+<p>
+If a pattern has only one element, the scanner determines
+if it matches at a given point by trying to match each
+of the pattern's alternatives at that point.
+If no alternative matches at that point, the element
+cannot be matched.
+</p>
+<p>
+If the pattern has more than one element,
+matching that pattern at a given point means:
+(a) finding an alternative for the first element
+of the pattern that matches a subject substring
+starting at the given point, and that also (b) allows
+the remaining elements of the pattern to match
+a substring that starts immediately after the
+substring matched in (a).
+</p>
+<p>
+During pattern matching, the scanner keeps its place
+by means of an internal value called the
+<i>cursor</i>,
+which represents the number of characters in the
+subject that precede the current location.
+These characters are counted from the beginning
+of the subject even when the scanner is trying
+to match a substring that starts at some other place
+in the subject.
+</p>
+<p>
+The concatenation of two patterns P1 and P2
+is a pattern whose elements
+are P1 and P2.
+The alternation operator | similarly constructs alternatives.
+When a string is used as a pattern, it matches only itself.
+Thus,
+</p>
+<pre>"a" | "e" | "i" | "o" | "u"
+</pre>
+is a pattern that matches any lower-case vowel.
+<p>
+Consider the following
+statement:
+</p>
+<pre>P1 = ("ab" | "a") &amp;&amp; ("b" | "c")
+</pre>
+This assigns to P a pattern with two elements.  The first one
+matches either ab or a, and the second matches either b or c.
+Look at:
+<pre>"ab" ? P1
+</pre>
+The scanner first tries the first alternative of the first ele-
+ment of P1 by matching ab in the subject with ab in the pattern.
+This alternative matches, so the element ("ab"|"a") matches, and
+the scanner goes on to the second element ("b"|"c").  Here, it
+will be unsuccessful in matching both b and c, because it has al-
+ready exhausted all the characters of the subject.  Thus the
+scanner fails to match the second element of P1, and must back up
+and rematch the first element.  Fortunately, the first element
+has an alternative in a; this matches, and now the scanner can
+try to match the second element ("b"|"c") again.  The first al-
+ternative (b) succeeds, so the ? operator therefore succeeds.  If
+we wanted to examine just how the pattern elements matched, we
+could have written:
+<pre>P1a = ("ab" | "a") . OUTPUT &amp;&amp; ("b" | "c") . OUTPUT
+"ab" ? P1a
+</pre>
+This would print a and b on separate lines, showing that "ab"|"a"
+matched a and "b"|"c" matched b.
+<p>
+When any pattern is first encountered
+during pattern matching, it will match some string, and when the scanner
+backs into it, it may match some other string.
+Because many patterns behave
+differently on their initial match than when rematched, it is useful to
+describe the two cases separately.
+</p>
+<p>
+For instance, when a string is used as a pattern, it initially matches
+itself.
+If the scanner later backs into it, it fails.
+</p>
+<p>
+As another example, consider P1|P2.
+This pattern matches every
+possibility for P1, and when it has exhausted P1,
+then matches every
+possibility for P2 before finally failing.
+</p>
+<p>
+With this in mind, we can describe the various pattern-matching operators,
+procedures, and pre-defined variables:
+</p>
+<dl>
+<dt>P1 &amp;&amp; P2</dt>
+<dd>
+Tries to match P1, fails if it can't.
+Then tries to match P2.
+If P2 fails, tries the next alternative for
+P1, and then tries P2 again.
+Eventually, it either
+runs out of alternatives for P1, in which case P1&amp;&amp;P2
+fails, or it finds alternatives for both P1 and P2 which
+allow them to match.
+</dd><dt>P1 | P2</dt>
+<dd>
+Tries to match P1.
+If successful, P1|P2 matches the
+string that was matched by P1.
+Otherwise, matches whatever
+P2 matches, and fails if P2 fails.
+</dd><dt>P $ V</dt>
+<dd>
+Tries to match P.
+If P matches, a copy of the substring
+matched by P is immediately assigned to the variable V.
+</dd><dt>P . V</dt>
+<dd>
+Tries to match P.
+If the entire pattern match of which
+this element is a part is ultimately successful, a copy
+of the substring matched by P is assigned to V after
+the entire match completes.
+</dd><dt>@N</dt>
+<dd>
+Matches a null string, and immediately assigns
+cursor position to the variable N.
+The cursor position is
+the number of characters that precede this null string
+in the subject of the entire pattern match.
+Thus:
+</dd></dl>
+<pre>"abcde" ? @OUTPUT &amp;&amp; "c"
+</pre>
+prints 0, 1, and 2 on separate lines.
+<dl>
+<dt>ABORT</dt>
+<dd>
+The entire pattern match is aborted.
+</dd><dt>ARB</dt>
+<dd>
+A pre-defined variable that matches anything at all.
+More specifically, it initially matches the null string.
+When backed into, it matches a string one character longer
+than the one it matched last time.
+</dd><dt>BAL</dt>
+<dd>
+A pre-defined variable that matches a non-empty parenthesis-
+balanced string.
+This string is balanced only with respect to parentheses,
+and not any other kinds of brackets.
+</dd><dt>FAIL</dt>
+<dd>
+A pre-defined variable that always fails to match.
+It
+is sometimes useful to force the scanner to try all
+alternatives for a pattern.
+For instance:
+</dd></dl>
+<pre>s ARB $ OUTPUT &amp;&amp; FAIL
+</pre>
+prints all substrings of s.
+<dl>
+<dt>FENCE</dt>
+<dd>
+Initially matches the null string, but if the scanner
+backs into it, the entire pattern match is aborted.
+Identical to to ""|ABORT.
+</dd><dt>REM</dt>
+<dd>
+Matches from the current position to the end of the
+subject.
+Identical to RTAB(0).
+</dd><dt>SUCCEED</dt>
+<dd>
+Identical to ARBNO("")
+</dd><dt>ANY(s)</dt>
+<dd>
+Matches any single character in s.
+</dd><dt>ARBNO(p)</dt>
+<dd>
+A pre-defined procedure that yields a pattern that matches
+zero or more copies of the pattern p.
+Initially matches
+the null string.
+Each time the scanner backs into it,
+it tries to extend the substring already matched by
+matching one more instance of p.
+</dd><dt>BREAK(s)</dt>
+<dd>
+Matches a string starting at the current position up to
+but not including the next character in the subject
+that is also found somewhere in s.
+Failure
+if no such character is found.
+No alternatives.
+</dd><dt>BREAKX(s)</dt>
+<dd>
+Like BREAK, but if backed into, it matches up to the
+next subject character also found in s, and so on.
+</dd><dt>LEN(n)</dt>
+<dd>
+Matches exactly n characters.
+</dd><dt>NOTANY(s)</dt>
+<dd>
+Matches any single character not in s.
+</dd><dt>POS(n)</dt>
+<dd>
+If exactly n subject characters precede the current
+position, POS matches the null string.
+Otherwise it
+fails.
+</dd><dt>RPOS(n)</dt>
+<dd>
+If exactly n subject characters remain to be matched,
+RPOS matches the null string.
+Otherwise it fails.
+</dd><dt>RTAB(n)</dt>
+<dd>
+If at least n subject characters remain in the subject,
+RTAB matches characters until exactly n remain.
+Otherwise
+it fails.
+</dd><dt>SPAN(s)</dt>
+<dd>
+Starting at the current position, matches as many characters
+as possible taken from s.
+</dd><dt>TAB(n)</dt>
+<dd>
+TAB matches from the current position forward up to
+and including the nth character of the subject.
+If more than n characters have already been matched
+in the subject string, TAB fails.
+</dd></dl>
+<p>
+All pattern-valued procedures can take an unevaluated expression as argument.
+The expression will be evaluated when the pattern element is matched.
+</p>
+<h3>
+System Variables
+</h3>
+<p>
+The &amp; operator looks at the name of its operand,
+not its value.
+For each of a small set of names, &amp; yields a
+<i>system variable</i>,
+whose value affects the operation of the system in some way.
+For instance, we have already seen &amp;ANCHOR, which
+controls whether or not the scanner is restricted to examining
+initial substrings of the subject.
+The complete list of system variables is:
+</p>
+<dl>
+<dt>&amp;ABORT</dt>
+<dd>
+The same value as the pre-defined variable ABORT.
+</dd><dt>&amp;ALPHABET</dt>
+<dd>
+A string that contains all the characters of the machine's
+collating sequence, in order.
+</dd><dt>&amp;ANCHOR</dt>
+<dd>
+If zero, all pattern matches are unanchored,
+otherwise they are anchored.
+</dd><dt>&amp;ARB</dt>
+<dd>
+The same value as the pre-defined variable ARB.
+</dd><dt>&amp;BAL</dt>
+<dd>
+The same value as the pre-defined variable BAL.
+</dd><dt>&amp;CODE</dt>
+<dd>
+This variable is initially zero.
+Its value is returned to the operating system when the
+program finishes executing.
+</dd><dt>&amp;DUMP</dt>
+<dd>
+This variable is initially zero.
+If it is 1 at the end of execution, the values of
+all variables are printed.
+If it is 2, the values of all array, table, and structure
+elements are also printed.
+</dd><dt>&amp;FAIL</dt>
+<dd>
+The same value as the pre-defined variable FAIL.
+</dd><dt>&amp;FENCE</dt>
+<dd>
+The same value as the pre-defined variable FENCE.
+</dd><dt>&amp;FNCLEVEL</dt>
+<dd>
+The current level of procedure nesting.
+</dd><dt>&amp;INPUT</dt>
+<dd>
+If this variable is set to 0, all
+input association is suspended.
+</dd><dt>&amp;MAXLNGTH</dt>
+<dd>
+The maximum length of a string.
+This value cannot be increased beyond its
+initial value.
+</dd><dt>&amp;OUTPUT</dt>
+<dd>
+If this variable is set to 0, all output is suppressed
+until it is again set nonzero.
+</dd><dt>&amp;REM</dt>
+<dd>
+The same value as the pre-defined variable REM.
+</dd><dt>&amp;STCOUNT</dt>
+<dd>
+A count of how many statements have been executed so far.
+Because this counts SNOBOL4 statements, not
+Snocone statements, it should be considered only approximate.
+</dd><dt>&amp;STLIMIT</dt>
+<dd>
+When &amp;STCOUNT reaches this value,
+execution terminates with an error message.
+It is initially 50000, and may be set freely.
+If it is set to a negative value, statement
+counting is disabled.
+</dd><dt>&amp;SUCCEED</dt>
+<dd>
+The same value as the pre-defined variable SUCCEED.
+</dd></dl>
+<h3>
+Examples
+</h3>
+<h3>
+Hello World
+</h3>
+<p>
+This is the canonical sample program:
+</p>
+<pre>OUTPUT = "Hello world!"
+</pre>
+The present implementation of Snocone is case-insensitive in
+identifiers, but future versions may well become case-sensitive.
+If so, it is likely that pre-defined names, such as INPUT and
+OUTPUT, will have to be written in upper case.  Keywords, such as
+if and while, will be written in lower case.
+<h3>
+Topological Sorting
+</h3>
+<p>
+We now develop
+a topological sorting program based on the algorithm
+described on page 262 of
+<i>Fundamental Algorithms</i>.[12]
+The reader may wish to compare this program with the
+SNOBOL4 program based on the same algorithm
+that appears on pages 221-222 of
+<i>The SNOBOL4 Programming Language</i>.
+</p>
+<p>
+The input is
+a set of pairs of objects,
+where the first object in each pair
+is considered to precede the second.
+The output is a list of objects
+in a sequence that meets all the constraints
+implied by the input.
+In other words, the program generates
+a total ordering that includes a given
+partial ordering.
+</p>
+<p>
+If the input contains a loop, the program
+will detect this fact and complain.
+</p>
+<p>
+For example, given the following input:
+</p>
+<pre>letters alphanum
+numbers alphanum
+blanks optblanks
+numbers real
+numbers integer
+letters variable
+alphanum variable
+binary binaryop
+blanks binaryop
+unqalphabet dliteral
+unqalphabet sliteral
+sliteral literal
+dliteral literal
+integer literal
+real literal
+</pre>
+the program will produce the following output:
+<pre>letters
+numbers
+blanks
+binary
+unqalphabet
+alphanum
+real
+integer
+optblanks
+binaryop
+dliteral
+sliteral
+variable
+literal
+</pre>
+<p>
+The basic strategy of the program is simple:
+for each object, we remember how many immediate predecessors
+it has, and store a list of all its immediate successors.
+When we have finished reading the input,
+we can immediately output the objects that have
+no predecessors.
+Each time we output an object, we remove it from
+the data structure and decrement the predecessor
+count of each of its immediate successors.
+</p>
+<p>
+We will eventually reach a state in which we run
+out of objects without predecessors.
+When that happens, we are done.
+If any objects remain, they form a loop.
+</p>
+<p>
+To reduce the time spent searching for objects
+without predecessors, we keep a queue of such
+objects.
+We must also keep a queue of the successors
+of each object.
+In both cases, we could use a stack instead of
+a queue, but using a queue tends to favor the
+order in which objects appeared in the input,
+which makes the output more intuitively useful.
+</p>
+<p>
+The following structure declarations and subroutines
+manipulate queues.
+A queue consists of a header (of type queue)
+which points to the first and last elements of
+a singly-linked list of queue elements (of type qel).
+</p>
+<pre>struct queue {head, tail}
+struct qel {obj, link}
+procedure enqueue (q, x) y {
+        if (head(q) :: "")
+                head(q) = tail(q) = qel(x)
+        else {
+                y = qel(x)
+                link(tail(q)) = y
+                tail(q) = y
+        }
+}
+procedure dequeue (q) x {
+        if (head(q) :: "")
+                freturn
+        x = head(q)
+        if ((head(q) = link(x)) :: "")
+                tail(q) = ""
+        return obj(x)
+}
+</pre>
+<p>
+By convention, we use the null string to indicate
+the end of a list.
+This is convenient because uninitialized variables
+and structure fields and missing arguments are automatically set to
+the null string.
+Thus, the test
+</p>
+<pre>head(q) :: ""
+</pre>
+is a convenient way of testing whether head(q) has been set or
+not.
+<p>
+We represent each object as a structure containing
+the object's name (so we can print it), the count of
+immediate predecessors, and the queue of successors:
+</p>
+<pre>struct object {name, count, suc}
+</pre>
+<p>
+Since we will be reading the names of objects
+rather than the objects directly, we will need
+to map names to objects.
+This can easily be done with a table and a mapping subroutine
+that creates elements in the table as needed:
+</p>
+<pre>namemap = TABLE()
+objects = queue()
+procedure getobj (name) {
+        if ((getobj = namemap[name]) :: "") {
+                getobj = namemap[name] = object (name, 0, queue())
+                enqueue (objects, getobj)
+                nobj = nobj + 1
+        }
+}
+</pre>
+<p>
+This procedure uses the feature that if no return value
+is explicitly given, the value of the variable with the
+same name as the procedure is used.
+If an appropriate table element already
+exists, the :: operator will fail
+and the value of getobj will be the
+value retrieved from the table.
+As a side effect, we maintain a global queue of
+all known objects in objects and
+count them in nobj.
+</p>
+<p>
+Now that we can map from names to objects, it is
+an easy matter to enter a new relation into
+our data structure.
+Procedure enter takes the
+names of two objects:
+</p>
+<pre>procedure enter (p, q) {
+        p = getobj (p)
+        q = getobj (q)
+        count(q) = count(q) + 1
+        enqueue (suc(p), q)
+}
+</pre>
+<p>
+We first locate the objects to which p
+and q refer, creating them if necessary.
+Since p precedes q, we increment
+the predecessor count of q and append
+q to the successor list of p.
+</p>
+<p>
+Building the data structure is now just a matter of
+scanning the input file:
+</p>
+<pre>while (line = INPUT) {
+        if (line ? FENCE &amp;&amp; BREAK(' ').p &amp;&amp; SPAN(' ') &amp;&amp; rem.q)
+                enter (p, q)
+        else
+                TERMINAL = "bad input line: " &amp;&amp; line
+}
+</pre>
+<p>
+The pattern match assumes that everything up to the first
+blank in the input line is the first object in a
+relation, and everything after the first blank is
+the second object.
+If the match fails, the program complains.
+</p>
+<p>
+Once all the input has been read, we must initialize
+the queue of minimal objects (objects without predecessors).
+This was the reason for keeping a queue of all objects,
+which is now destroyed to build the queue of minimal objects.
+It is not necessary to destroy the queue, but it is more
+convenient because it is then possible to use dequeue:
+</p>
+<pre>zeroes = queue()
+while (x = dequeue (objects))
+        if (count (x) == 0)
+                enqueue (zeroes, x)
+</pre>
+<p>
+As long as there is a minimal object,
+we can print its name, delete it, and
+decrement the predecessor count of each
+of its successors.
+If we decrement a predecessor count to
+zero, that object is now minimal.
+</p>
+<pre>while (x = dequeue (zeroes)) {
+        nobj = nobj - 1
+        OUTPUT = name(x)
+        while (y = dequeue (suc (x))) {
+                if ((count(y) = count(y) - 1) == 0)
+                        enqueue (zeroes, y)
+        }
+}
+</pre>
+<p>
+This loop runs until there are no more minimal objects.
+If there are still elements remaining (nobj is nonzero),
+then those elements form a loop.
+</p>
+<pre>if (nobj != 0)
+        TERMINAL = "The ordering contains a loop."
+</pre>
+<h3>
+References
+</h3>
+<p>
+</p>
+<h3>
+References
+</h3>
+<p>
+</p>
+<dl>
+<dt>1. </dt>
+<dd>
+R. E. Griswold, J. F. Poage, and I. P. Polonsky, The SNOBOL4 Programming Language (second edition),
+Prentice-Hall, Englewood Cliffs, New Jersey (1971).
+</dd></dl>
+<dl>
+<dt>2. </dt>
+<dd>
+R. E. Griswold, String and List Processing in SNOBOL4; Techniques and Applications,
+Prentice-Hall, Englewood Cliffs, New Jersey (1975).
+</dd></dl>
+<dl>
+<dt>3. </dt>
+<dd>
+J. F. Gimpel, Algorithms in SNOBOL4,
+John Wiley and Sons, New York, New York (1976).
+</dd></dl>
+<dl>
+<dt>4. </dt>
+<dd>
+B. W. Kernighan,
+"RATFOR -- A Preprocessor for a Rational Fortran,"
+Software Practice &amp; Experience,
+Vol.
+5,
+(4) pp.
+395-406
+(October, 1975).
+</dd></dl>
+<dl>
+<dt>5. </dt>
+<dd>
+Stuart I. Feldman, "The Programming Language EFL,"
+Comp. Sci. Tech. Rep. No. 78,  Bell Laboratories,  Murray Hill, NJ (June 1979).
+</dd></dl>
+<dl>
+<dt>6. </dt>
+<dd>
+David R. Hanson,
+"RATSNO - An Experiment in Software Adaptability,"
+Software - Practice and Experience,
+Vol.
+7,
+ pp.
+625-630
+(1977).
+</dd></dl>
+<dl>
+<dt>7. </dt>
+<dd>
+R. E. Griswold, "Rebus - a SNOBOL4/Icon Hybrid,"
+Technical report TR 84-9,  Department of Computer Science,  Tucson, Arizona ().
+</dd></dl>
+<dl>
+<dt>8. </dt>
+<dd>
+R. E. Griswold, The Icon Programming Language,
+Prentice-Hall, Englewood Cliffs, New Jersey (1983).
+</dd></dl>
+<dl>
+<dt>9. </dt>
+<dd>
+Robert B. K. Dewar and A. P. McCann,
+"Macro Spitbol - a SNOBOL4 Compiler,"
+Software - Practice and Experience,
+Vol.
+7,
+ pp.
+95-113
+(1977).
+</dd></dl>
+<dl>
+<dt>10. </dt>
+<dd>
+S. R. Bourne,
+"UNIX Time-Sharing System: The UNIX Shell,"
+Bell Sys. Tech. J.,
+Vol.
+57,
+(6) pp.
+1971-1990
+(1978).
+</dd></dl>
+<dl>
+<dt>11. </dt>
+<dd>
+D. M. Ritchie and K. Thompson,
+"The UNIX Time-Sharing System,"
+Bell Sys. Tech. J.,
+Vol.
+57,
+(6) pp.
+1905-1929
+(1978).
+Also in Comm. ACM, 17, pp. 365-375 (1974).
+</dd></dl>
+<dl>
+<dt>12. </dt>
+<dd>
+Donald E. Knuth, Fundamental Algorithms,
+Addison-Wesley (1973).
+Volume 1 of The Art of Computer Programming
+</dd></dl>
+
+</body></html>

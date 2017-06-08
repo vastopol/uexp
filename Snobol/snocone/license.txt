@@ -1,0 +1,83 @@
+                    ***  IMPORTANT NOTICE  ***
+
+Snocone is licensed, not sold, by Catspaw, Inc., and protected by United
+States copyright law (and international treaties).
+
+By using this software, you signify that you have accepted this Agreement's
+terms.  Complete details about your rights and obligations and those of
+Catspaw, Inc., are in the Agreement which we ask that you read now.
+
+The specific limitations on your remedies and Catspaw, Inc.'s warranties
+and liability are in the Agreement below.
+
+Catspaw, Inc., hopes that you will accept the License and Warranty Agreement
+so that you can use, enjoy and benefit from Snocone.
+
+
+      *** SNOCONE LICENSE AND LIMITED WARRANTY AGREEMENT ***
+
+This license applies to a compiler and associated documentation for the
+Snocone programming language ("SOFTWARE").  The SOFTWARE is never sold. It
+is licensed by Catspaw, Inc., ("CATSPAW") to the original customer for use
+only on the terms set forth below.
+
+The SOFTWARE is and shall remain the property of AT&T Bell Laboratories.
+
+BY USING THE SOFTWARE, WHETHER YOU DOWNLOADED IT OR YOUR RECEIVED IT ON
+A COMPUTER STORAGE MEDIA, YOU ARE ACCEPTING THE TERMS OF THIS AGREEMENT.
+Any questions concerning this Agreement should be referred in writing to
+Catspaw, Inc., P.O. Box 1123, Salida, CO 81201-1123.
+
+I. LICENSE
+
+A. YOU MAY:
+
+1. Install and use this software on any computers under your immediate
+   control.
+
+2. Terminate this license by destroying the original and all copies of the
+   software in any form.
+
+B. YOU MAY NOT:
+
+1. Reproduce the SOFTWARE, or disclose the SOFTWARE to unlicensed parties.
+
+2. Transmit directly or indirectly (in writing, orally, or otherwise)
+
+   a. the SOFTWARE, or
+   b. any immediate product produced by the SOFTWARE
+
+   to (1) Iraq, Afghanistan, the People's Republic of China, or any Group
+   Q, S, W, Y, or Z country specified in Supplement No. 1 to Part 770 of
+   the Export Administration Regulations issued by the U.S. Department of
+   Commerce or (2) any citizen or resident of any of the aforementioned
+   countries.
+
+3. Loan, rent, lease, give, sub-license disclose, or otherwise transfer the
+   SOFTWARE (or any copy), in whole or in part, to unlicensed parties.
+
+This license will terminate automatically if you fail to comply with the
+terms and conditions set forth above.  You agree that all obligations under=
+taken herein shall survive and continue after any termination of this
+Agreement.
+
+II. LIMITED WARRANTY
+
+CATSPAW makes no warranties, express or implied, with regard to software or
+other information provided under this Agreement.  In particular, but without
+limitation, CATSPAW makes no warranty of fitness for a particular use, no
+warranty of freedom from infringement of any trademark, patent, or copyright,
+nor any warranty as to accuracy.  Accordingly, CATSPAW assumes no obligation
+to furnish assistance of any kind whatsoever or to furnish additional infor-
+mation or documentation.
+
+III. APPLICABLE LAW
+
+This Agreement shall be treated as though made and performed entirely in
+Chaffee County, Colorado.. Any action under it shall be governed by the
+laws of the State of Colorado and the United States. This Agreement
+constitutes the entire agreement between you and CATSPAW independent of
+any previous statements or writings by anyone.  Should any of this
+Agreement's provisions be held void or ineffective, all others will remain
+in effect.
+
