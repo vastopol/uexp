@@ -1,0 +1,188 @@
+.TH BOOL 1
+.SH NAME
+bool \- boolean function array evaluator
+.SH SYNOPSIS
+.B bool
+[
+.B -noprint -DEBUG
+] file.b [file2.b ...]
+.SH DESCRIPTION
+This program reads boolean expressions from a file and produces output
+indicating the results of every possible input to the expression.  Its
+theoretical input limit is unlimited, although the actual limit
+depends on the amount of resources your machine will allow.  Multiple
+outputs may be done by use of one equation per output.  An infinite
+number of outputs may be done (well, limited by your machine again) by
+placing one boolean expression after another.  They will be evaluated
+in the order they are read.  Expressions may be broken between lines.
+Spaces, tabs, returns, and newlines are ignored.
+
+Expression format accepted by
+.I bool:
+.nf
+
+  <equation> = <token> = <expr>;
+  <expr>     = <expr> <opr> <expr> | (<expr>) | <not> <expr> |
+               <expr> | <token> | <constant>
+  <not>      = '!' | '~' | '/'
+  <constant> = '1' | '0'
+  <token>    = <alpha>[<alphanum>[<alphanum>...]]
+  <alpha>    = 'a' .. 'z' | 'A' .. 'Z'
+  <alphanum> = <alpha> | '0' .. '9'
+  <opr>      = '|' | '+' | '*' | '&' | '^'
+
+  Operator Operation
+  -------- ---------
+     '+'      OR
+     '|'      OR
+     '*'      AND
+     '&'      AND
+     '/'      NOT
+     '!'      NOT
+     '~'      NOT
+     '^'      XOR
+.fi
+.PP
+The following are two examples of valid equations:
+.nf
+
+  o1= /i5 * (i4 * (i3 + /i3 * i2)) + i5;
+  o2= !i5 & (i4 & (i3 | !i3 & i2)) | i5;
+.fi
+.PP
+These expressions are identical.
+.SH PRECEDENCE OF OPERATORS
+.PP
+Operators have higher precedence as you move left in the equation.
+Precedence may be forced by using parentheses.  Expressions within
+parentheses are evaluated before those outside of parentheses.  For
+example:
+.nf
+
+  e1= x + y * z = (x + y) * z; [output of x OR y AND'ed with z]
+  e2= x + (y * z) = y * z + x; [output of y AND z OR'ed with x]
+.fi
+.SH TOKENS
+.PP
+Tokens are either inputs to an equation or equation identifiers.
+Tokens must start with an alphabetic character or an underscore.
+Subsequent characters may include numerics.  Tokens may be any length
+but only the first thirty-one characters or so are significant.
+.PP
+Equation identifiers are handled independently of inputs, so you may
+have an equation identifier of the same name as an input.
+.SH COMMENTS
+.PP
+Comments may be
+included in the file; they are any characters surrounded by '[' and
+']' or '{' and '}'.
+.SH ERRORS
+.PP
+Errors in source files will be reported when they are discovered and
+.B bool
+will stop evaluating the file.  Usually a relevant error message
+will be printed.
+.SH FLAGS
+.PP
+-DEBUG causes
+.B bool
+to print out additional information on how an
+equation was parsed.  This includes all parentheses (including
+implicit parentheses) and errors if there were any.
+.PP
+-noprint suppresses the printing of the source file while it's being
+read.
+.PP
+All files passed to
+.B bool
+should end in .b or they will be rejected by
+.B bool.
+This was done to make it harder to pass garbage to
+.B bool.
+.SH PROBLEMS
+.PP
+Any problems you have with
+.B bool
+should be sent to madd@bucsf.bu.edu.
+.B Bool
+has built in problem checking -- if it discovers an
+inconsistency, it will print out a big irritating message to let you
+know.  While debugging
+.B bool
+this message never once appeared, so I
+don't expect that it will.  If it does, report it to me immediately
+and include the source file that caused the error.
+.SH WHO NEEDS IT?
+.PP
+In case you may be wondering what a boolean equation array evaluator
+is useful for, here's why I made it.  A friend of mine, who works for
+a relatively large company that produces a lot of electronic
+equipment, needed some way to determine every possible output from a
+series of inputs to a PAL chip.  With 20 inputs and outputs, this is a
+pain to do by hand.  So he inquired if I could make an evaluator and
+here it is.
+.SH CHANGES
+.PP
+If you make changes to the source code, please follow the instructions
+in the copyright.  I'd be interested in any improvements or bug fixes
+you might make.
+.SH AUTHOR
+.nf
+jim frost
+madd@bucsb.bu.edu
+.fi
+.SH NOTICE
+.nf
+(c) copyright 1987 jim frost
+all rights reserved
+
+.fi
+this program is copyrighted material.  the author gives permission
+to duplicate and redistribute this program provided the following
+conditions are met:
+.nf
+  - this copyright notice is not removed.
+  - all duplicate copies or distributions contain full source
+    and documentation, including copyright notices.
+  - duplicate copies or distributions outside a single site are
+    original distributions without modifications.  (this is to keep
+    bastardized versions from showing up all over thie place.)
+.fi
+.PP
+this program source may be modified provided the following
+conditions are met:
+.nf
+  - modified source is not distributed to other sites.
+  - modifications (including, but not limited to, bug fixes) are
+    sent to the author if the modifications are to be distributed.
+    no modified source is to be distributed unless done so by the
+    author.
+.fi
+.PP
+no warranty, either express or implied, is given for this program.
+the author makes no guarantees of fitness for any use of this
+program.  the author is not responsible for damages resulting from
+the use of this program for any purpose.
+.nf
+
+\'site\' refers to one or more computers under a single management.
+\'author\' refers to the copyright holder, jim frost.
+\'source\' refers to all files related to this program.
+'documentation' refers to non-compilable files in the distribution.
+.fi
+.PP
+basically this notice is to keep me out of trouble should anything
+go wrong (i really *do* test these things though) and to make sure
+that the distribution of code is centralized.  makes bug fixes and
+enhancements much easier.
+.PP
+thank you for your attention to this copyright notice.  if everyone
+ollows this, you may find this a useful tool that is pretty well
+supported.
+.SH FILES
+.nf
+sample?.b - sample source files
+.fi
+.SH BUGS
+.PP
+None so far.
