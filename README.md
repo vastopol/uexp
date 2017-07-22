@@ -2,8 +2,11 @@
 !C
 
 Intended for small experiments with non C style languages. A collection of compilers, interpreters, and source code. 
-Mostly will serve as a holding space for old/obscure programming languages. 
-Source files are stored as any of: .zip, .tar.gz, etc...
+Mostly will serve as a holding space for old/obscure programming languages.
+Main focus being functional languages, and stack machines. 
+
+Source files probably stored as any of: .zip, .tar.gz, etc...
+Intend to have executable binaries for each with the sources.
 
 Currently Actively Studying/Using: FP && Snobol
 
@@ -25,6 +28,10 @@ For interesting stuff see:
 * FurryPaws (http://www.call-with-current-continuation.org/fp/)
 * bsd 4.2 sources from volumes: 10, 13, 20
 * IFP
+
+### Joy
+* Joy language version 1 sources
+
 
 ### Lisp  
   * Lispkit_lisp (http://www.softwarepreservation.org/projects/LISP/lispkit/)
