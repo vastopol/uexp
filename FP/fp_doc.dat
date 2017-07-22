@@ -1,0 +1,19 @@
+FP - Functional Programming. Backus. Combinator based. 
+"Can Programming be Liberated From the von Neumann Style? A Functional Style and Its Algebra of Programs", John Backus, 1977 Turing Award Lecture, CACM 21(8):165-180 (Aug 1978). (See FFP, FL, IFP). 
+
+volume10, volume13, volume20 came from:
+comp.sources.unix -> collection of sources distributed with the BSD 4.2 packages
+
+;-----------------------------------------------------------
+
+* volume10 : IFP - FP implementation from University of Illinois
+
+* volume13 : C implementation of FP by Andy Valencia (also contains alternate source from CMU)
+
+* Volume20 : fpc - translates FP programs to C. 
+
+* FurryPaws : independent implementation by Felix L. Winkelmann
+
+;------------------------------------------------------------
+
+note: volume13 has not been properly compiled yet, throws errors with lex/yacc
