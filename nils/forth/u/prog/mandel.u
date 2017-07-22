@@ -1,0 +1,83 @@
+'( useless example program: ASCII Mandelbrot explorer )
+
+"vt100.u"l
+'240vrmax           '( max. x resolution )
+'79vw '47vh         '( width, height )
+'20%vcx             '( x offset )
+'0vcy               '( y offset )
+'10000nS _S'2*n2S   '( zoom, numerator )
+_S'500/xvdn         '( zoom, denominator )
+'vbuf_tbl_rmax?\+a  '( line buffer )
+'vcmd_tbl'80a       '( command buffer )
+g! printing chars: lower, empty, full, upper !
+'vcset_tbl         kmb,   k b,   kMb,  k"b,
+'vx 'vy    '( current coordinates )
+'vcr 'vci  '( c real, imag )
+'vzr 'vzi  '( z real, imag )
+'vir       '( intermediate )
+'100vd     '( iteration depth )
+'1ve       '( even line flag )
+'vdraw     '( draw flag )
+:init_y!_x! '0_zr!'0_zi! _x?_S_dn?/x*_cr! _y?_S_dn?/x*_ci!
+g! z(n+1) = z(n) * z(n) + c !
+:calcir_zr?d*_S/x _zi?d*_S/x- _ir!
+:calczi_zr?_zi?*_S/x _zi?_zr?*_S/x+ _ci?+ _zi!
+:calczr_cr?_ir?+_zr!
+g! |z| > 2+2i !
+:test_zi?_2S>._zr?_2S>|_zi?_2S%<|_zr?_2S%<|
+:iter_calcir_calczi_calczr
+:f_init_d?(_iter_test[rx'0y])'1
+:print_w?(_buf_w?\+i-+b?_cset+b?f!)_nl
+:orow_w?(di_w?'2/x-_cx?+s_f#_buf.i+b!)x
+:erow_w?(di_w?'2/x-_cx?+s_f_buf.i+b?'1\<|_buf.i+b!)x_print
+:row_e?[_orow;_erow]_e?#_e!
+:cpos _vtclreol"g "fw_cx?f,_bl_cy?f,_bl_dn?f,_bl_d?f,_cpos2
+:cpos2_bl_w?f,_bl_h?f,
+:mandel'1_e!_h?(_h?d'2/x-.i-_cy?+_row)
+:getcmd'13f!_vtclreol"> "fwff_cmd'79_getl_cmd.s
+:get1a_snext_sskipw.oo_stoi
+:get2a_get1a.tt'32_sskipto_sskipw.oo_stoi.r>tr<
+:nxt1a'32_sskipto_get1a
+:nxt2a'32_sskipto_get2a
+:non0 o#o#&#
+:cgo_get2a_cy!_cx!_nxt1a.d'0=#[_dn!;xy]_cgo2
+:cgo2_nxt1a.d'0=#[_d!;xy]_nxt2a_non0[_h!_w!_vtclr;xx]
+:csize_get2a_h!_w!_vtclr
+:cdepth_get1a_d!
+:zin'5*'4/x
+:zout'4*'5/x
+:czin _cx?_zin_cx! _cy?_zin_cy! _dn?_zin_dn!
+:czout _dn?_zout.d'5<[xy]_dn! _cx?_zout_cx! _cy?_zout_cy!
+:cpanx_get1a_w?'4/x*_cx\!
+:cpany_get1a_h?'4/x*_cy\!
+:csave_snext_sskipw.oofo_cpos_nl_mandel""fo'0_draw!_vtup
+:chelp"io        zoom in/out"fw_nl_chp1
+:chp1 "x n       pan right (n) or left (-n)"fw_nl_chp3
+:chp3 "y n       pan down (n) or up (-n)"fw_nl_chp4
+:chp4 "s f       save canvas to file f"fw_nl_chp5
+:chp5 "r         redraw"fw_nl_chp6
+:chp6 "c wh      set canvas size to width w, height h"fw_nl_chp7
+:chp7 "d n       set iteration depth"fw_nl_chp8
+:chp8 "g xyzwhd  go to position x/y, zoom z,"fw_chp9
+:chp9 " screen size w*h,"fw_nl_chpa
+:chpa "          depth d (z,w,h,d may be omitted)"fw_nl_chpb
+:chpb "q         quit"fw_nl_chpc
+:chpc _vtso"Press ENTER"fw_vtse_cmd'79_getl
+:err_vtclreol_vtso"Type 'h' for help"fw_vtse_vtup'0_draw!
+:cmi ob?ki=[_czin;_err]
+:cmy ob?ky=[_cpany;_cmi]
+:cmx ob?kx=[_cpanx;_cmy]
+:cms ob?ks=[_csave;_cmx]
+:cmr ob?kr=[_vtclr;_cms]
+:cmq ob?kq=[_vtup_quit;_cmr]
+:cmo ob?ko=[_czout;_cmq]
+:cmg ob?kg=[_cgo;_cmo]
+:cme ob?kd=[_cdepth;_cmg]
+:cmc ob?kc=[_csize;_cme]
+:cmh ob?dkh=sk?=|[_chelp;_cmc]
+:cm0 d[_cmh]
+:quit_nl_vtclreol.q
+:redraw_mandel_nl_cpos_vtup
+:eval_sskipw '1_draw! f@[_cm0.xx;_quit] _draw?[_vthome_redraw]
+:repl_vtclr_redraw`'1{_getcmd_eval}
+_repl.q

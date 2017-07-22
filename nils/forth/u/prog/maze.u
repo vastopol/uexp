@@ -1,0 +1,50 @@
+g| Generate random mazes                                |
+g| Usage: maze [[no] [width height]]                    |
+g|                                                      |
+g| Based on a C program that I have once found in a     |
+g| USENET news signature. Thanks to the unknown hacker! |
+
+'10000nnmaze              '( max mazes )
+'8192nk                   '( max. maze size )
+'va_tbl_k.ca _a_k.c'0bf   '( maze array )
+'79vw '23vh               '( maze width, height )
+_w?_h?*vz                 '( actual array length )
+'11nlen                   '( max len. of a corridor / 2 )
+'1vd                      '( direction )
+_nmaze_rnd.vr             '( seed )
+_r?vno                    '( maze no )
+'( maze generator )
+:up   _w?'2*>       [_w?%;'0 ]
+:down _z?_w?'2*-<   [_w? ;'0 ]
+:right_w?/sx._w?'2-=['0  ;'1 ]
+:left _w?/sx.'1=    ['0  ;'1%]
+'vdirs_tbl@up,@down,@right,@left,
+:rand_r?'57*\+_r! _r?'7/x'3&
+:setdir d_dirs_rand.c+?e_d!
+:move1_d?+ _d?.oc_a+!
+:dest_d?'2*+c_a+
+:move_d?##.o_dest?#&[_move1_move1]
+:backup dc_a+?'2*-
+:corr_len(_setdir_move)
+:genmaze_w?\+`d_w?\+=#._d?##|{_corr_backup}x
+:pos0_a_w?c+'1c+
+:posn_a_z?c+_w?c-'2c-
+:solvable_pos0?##_posn?##&
+:reset_a_k.c'0bf _w?_h?*_z! '1_d!
+:seed_nmaze_rnd.d_r!_no!
+:maze`_genmaze_solvable#{_reset_seed}
+'( maze printer )
+:next\-_w?/sx#[_nl]
+:print_no?f,_nl_z?dr>(_a.ji-c+?[k ;k#]f!i_next)rx
+'( command line options )
+:setup_reset_z?_k>["too big!"fw_nl.q]
+:adjust d'2/sx#[\-]d'0<[%]d'5<[x'5]
+:narg'0`dmsx{\+}
+:getno m_ston.d_r!_no!
+:getgeom dm_ston_adjust_w!\+m_ston_adjust_h!
+:opt0_narg'0=[;_opt1]
+:opt1_narg'1=['0_getno;_opt2]
+:opt2_narg'2=['0_getgeom;_opt3]
+:opt3_narg'3=['0_getno'1_getgeom;_usage]
+:usage fe"Usage: maze [[no] [width height]]"fw_nl.q
+_opt0_setup_maze_print.q

@@ -1,0 +1,12 @@
+'( useless example program: 99 bottles of beer )
+
+:nbottles f," bottles of beer on the wall"fw_nl
+:nbeers f," bottles of beer"fw_nl
+:1bottle x"one bottle of beer on the wall"fw_nl
+:1beer x"one bottle of beer"fw_nl
+:bottles d'1=[_1bottle;_nbottles]
+:beers d'1=[_1beer;_nbeers]
+:take"take one down and pass it around"fw_nl
+:verse d_bottles.d_beers_take\-_bottles_nl
+:sing(i_verse)
+'99_sing.q

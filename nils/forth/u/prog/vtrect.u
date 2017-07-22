@@ -1,0 +1,15 @@
+g| useless example:                          |
+g| draw random rectangles on a vt100 screen  |
+g| yep, looks cooler on a real 9600-baud tty |
+
+:esc'27f!
+:move_esc.k[f!\+\+f,k;f!\+\+f,kHf!
+'vc 'vx 'vy
+:line(_c?f!ff)  '[ remove ff for extra speed ]
+:rect2(_x?_y?_move d_line'1_y\!)x
+:rect_c!t_y!t_x!_rect2.ff
+:xupair '79_rnd d'79s-_rnd
+:yupair '23_rnd d'23s-_rnd
+:urect_xupair_yupair r>sr<
+:uchar '95_rnd'32+
+_esc"[2J"fw `'1{_urect_uchar_rect}

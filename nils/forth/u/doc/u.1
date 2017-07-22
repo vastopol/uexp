@@ -1,0 +1,882 @@
+.nf
+.ec $
+
+A__ __  ____  ____  __    ____  ____  ____
+|  |  |/  __)|  __)|  |  |  __)/  __)/  __)
+|     |\__  \|  _) |  |_ |  _) \__  \\__  \
+`\___/'(____/|____)|____)|____)(____/(____/
+LANGUAGE REFERENCE                NMH, 2011
+
+INTRODUCTION
+
+USELESS is a two-stack language similar to FORTH, but simpler.
+Operands are expected on the stack and results are placed on
+the stack. All operators are one or two-character sequences.
+For example, the program
+
+        '123 d* '129% + _s
+
+will compute 123 squared plus -129 and print its result. ("'"
+introduces a numeric literal, "d" duplicates the top stack entry,
+"*" is the multiply operator, "%" negates the top of the stack,
+and "+" pushes the sum of the top two stack elements. "_s" calls
+the "s" routine, which prints the entire stack.)
+
+Blanks (and "."s) are null ops, so you would omit them unless
+they improve the readability of a program. The above example
+would typically be written as
+
+        '123d*'129%+_s
+
+Definition commands are hard-coded into the language and cannot
+be defined in USELESS itself. "n" defines "names" (constants),
+"v" variables, and ":" routines (programs). Definitions may be
+static or dynamic, so
+
+        '0nx    '(define x=0)
+        :foo_x  '(define foo to return x)
+        '1nx    '(define x=1)
+        _foo.f, '(run foo and print result)
+
+may print either 1 or 0. '(...) is a comment.
+
+Each USELESS routine must be contained in a single line of no
+more than 64 characters. Routines are defined with a leading
+colon as in FORTH. Here is the "hello" routine which prints
+"hello, world!":
+
+        :hello"hello, world!"fw_nl
+
+Each routine extends to the end of the line in which it started.
+Routine definitions may not nest, but routines may be recursive
+or even mutually recursive:
+
+        :even d'0=['1;\-_odd]
+        :odd  d'0=['0;\-_even]
+
+Variables are defined by a leading "v" command and constants
+("names") by a leading "n". Both commands take the initial value
+of the object from the stack.
+
+        '123vfoo  '(define variable "foo" with value 123)
+        '123nbar  '(define name "bar" and bind to value 123)
+
+In fact a variable is just a name bound to the address of a
+pre-allocated storage cell, so
+
+        '123va _a.nb
+
+creates a variable "b" that is an alias of "a". The use of "v" and
+"n" inside of ":" is undefined.
+
+Data literals include numeric values (introduced with an apostrophe),
+character literals (prefixed by the letter "k"), and string literals
+(surrounded by double quotes):
+
+        '123    '(the number 123)
+        '123%   '(the number 123, negated)
+        kX      '(the upper case letter "X")
+        "foo"   '(a string containing the word "foo")
+
+Numbers and characters are just numbers on the stack. Strings are
+represented by two numbers, their addresses and their lengths, so
+
+        "foo"
+
+results in
+
+        <a> 3
+
+on the stack (where <a> is the address of the string in memory).
+
+There are four control operators: the counting loop (()), the
+conditional loop (`{}), the conditional statement ([;]), and
+recursion. The following three programs all implement the
+factorial function (1*2*...*n):
+
+        :fac d'0=[x'1;d\-_fac*]
+        :fac'1s`d'0=#{so*s\-}x
+        :fac'1s(i*)
+
+TERMINOLOGY
+
+S       stack
+S1      top element of the stack
+Sn      n'th element of the stack
+<>      no (empty or unknown) result
+<01>    zero (failure) or one (success) result
+
+<id>    identifier         (a-z,A-Z,0-9)+ !up to 8 chars
+<#>     decimal digit      0-9
+<c>     ASCII character    NUL-DEL
+<n>     number             0-9+
+<a>     address            = <n>
+<b>     byte               (0-255)
+<s>     string             "<c>..." = <a><n>
+<f>     function/routine
+<x>     any object
+<xn>    n'th x
+<x>...  zero or more <x>s
+a | b   a or b
+
+a R -- s       Routine R has argument(s) "a" and result(s) "s"
+a R -- s ; r   Like above, plus return stack result(s) "r"
+
+DEFINITIONS
+
+'<#>...  --  <n>
+        Parse the unsigned number consisting of the decimal digits
+        <#>... and push it on the stack, e.g.:
+                '0 '123 '99999
+        "'" alone will push 0. Use the "%" operator to create negative
+        numbers, e.g. '1% will push -1.
+
+k<c>  --  <c>
+        Push the ASCII code of the character <c>.
+
+"<c>..."  --  <a> <n>
+        Push the string consisting of the characters <c>... on the
+        stack. A string is represented on the stack by its address in
+        S2 and its length in S1. E.g., when the characters of the
+        string
+                "Hello!"
+        reside in the bytes 1000 and up, the resulting stack entries
+        will be S2=1000 and S1=6.
+
+h  --  <a>
+        Return the address of the first free storage location on the
+        heap.
+
+<s> l  --  <>
+        Load the program in the file named in the string <s>.
+
+:<id> <command>...  --  <>
+        Define routine <id> with a body of the given <command>s. When
+        <id> is called the <command>s will be run in sequence.
+
+<n> v<id>  --  <>
+        Define variable <id> and initialize it with <n>. Calling a
+        variable will produce its address. 'VvN is short for
+                _align.hnN'V,
+        (which places 'V at the next cell boundary and assigns its
+         address to N).
+
+<n> n<id>  --  <>
+        Define a new name and associate it with <n>. Calling <id> will
+        produce its associated value, so "n" may be used to implement
+        constants:
+                '2ntwo
+        Another possible use would be to create structures:
+                'vpoint', @point'nx @point'1c+ny
+
+<n> a --  <>
+        Allocate bytes in storage. For example, the following code
+        would create an array of 100 cells:
+                'varray'99ca
+        Note that <n> may be negative, which is useful for creating
+        tables of byte values:
+                'varray'1%ca '1b,'2b,'3b,'4b,
+
+<n> ,  --  <>
+        Add <n> to storage. The following code creates a table of
+        five prime numbers:
+                '2vprimes'3,'5,'7,'11,
+        Note that , always stores <n> at a cell boundary, so it may
+        allocate more bytes than contained in a machine word.
+
+<b> b,  --  <>
+        Add <b> to storage. The following code compiles the word
+        "abc", although in a rather cumbersome way:
+                'vabc'1c%a kab,kbb,kcb,
+
+ROUTINE CALLS AND ADDRESSES
+
+_<id>  --  <>
+        Call <id>. When <id> is associated with a routine, run the
+        commands contained in its body. The result depends on the
+        commands in <id>'s body. When <id> is a variable, push its
+        associated address on the stack. When it is a name, push
+        its value.
+
+@<id>  --  <a>
+        Push the address associated with <id> on the stack. Note
+        that routines have negative addresses and variables have
+        positive addresses. When <id> is a routine, @<id>e is
+        equal to _<id>.
+
+<n> e  --  e
+        Execute the routine located at <n>; see also: "_".
+
+y  --  <>
+        Return from current routine. Use
+                rxy
+        inside of ()-loops.
+
+STACK OPERATIONS
+
+z  --  empty
+        Clear stack.
+
+\s  --  <n>
+        Push the current stack size, e.g.:
+                z'1'2'3\s -- 1 2 3 3
+
+rs  --  <n>
+        Push the current return stack size.
+
+<n> d  --  <n> <n>
+        Duplicate S1, e.g.:
+                '1'2'3d -- 1 2 3 3
+
+<n> x  --  ;
+        Remove S1, e.g.:
+                z'1'2'3x -- 1 2
+        
+<n1> <n2> s  --  <n2> <n1>
+        Swap S1 and S2, e.g.:
+                z'1'2'3s -- 1 3 2
+
+<n1> <n2> o  --  <n1> <n2> <n1>
+        Copy S2 to top ("over"):
+                z'1'2'3o -- 1 2 3 2
+
+<n1> <n2> <n2> t  -- <n2> <n3> <n1>
+        Rotate S3 to top:
+                z'1'2'3t -- 2 3 1
+        Use "tt" to rotate the top to S3.
+
+<n> p
+        Pick a specific stack element (S1 is element 1, etc), e.g.:
+                z'1'2'3'2p -- 1 2 3 2
+        The following program will print the entire stack:
+                \s(_bl.ipf,)
+
+<n1> <n2> +  --  <n1>+<n2>
+<n1> <n2> -  --  <n1>-<n2>
+<n1> <n2> *  --  <n1>*<n2>
+        The usual math operations: sum, difference, product.
+
+<n1> <n2> /  --  <n1>div</n2> <n1>mod</n2>
+        Division and remainder: ab/x gives a/b and ab/sx gives the
+        remainder of a/b.
+
+<n1> <n2> &   --  <n1>and<n2>
+<n1> <n2> |   --  <n1>or<n2>
+<n1> <n2> ^   --  <n1>xor<n2>
+<n1> <n2> \<  --  <n1>shl<n2>
+<n1> <n2> \>  --  <n1>shr<n2>
+        C-style bit operations. Shl/shr = shift left/right.
+
+<n> ~   --  <n>xor-1
+<n> %   --  -<n>
+<n> c   --  <n>*cellsize
+<n> \+  --  <n>+1
+<n> \-  --  <n>-1
+        Misc. unary operators. Xor-1 denotes an xor with all bits set,
+        i.e. bitwise negation. Cellsize is the size of a cell (<n>) in
+        bytes. E.g., on a 32-bit machine,
+                '5c  --  20
+
+<n> #  --  not<n>
+        Negation. S1=0 -- S1=1 and S1=/=0 -- S1=0.
+
+<n1> <n2> <  --  <01>
+<n1> <n2> =  --  <01>
+<n1> <n2> >  --  <01>
+        The usual comparison operators. "<=", ">=", and "=/=" are
+        expressed using ">#", "<#", and "=#".
+
+<a> ?   --  <n>
+<a> b?  --  <n>
+        Extract the value (or, in case of "b?", the byte value) stored
+        at <a>. "?" and "b?" typically follow a variable, except when
+        accessing arrays:
+                _array'9c+?
+        would access the 10th element of "array" (first member is '0).
+        NOTE: objects accessed by "?" must be word-aligned!
+
+<n> <a> !   --  <>
+<b> <a> b!  --  <>
+        Store <n> (or, in case of "b!", the byte <b>) in <a>. "!" and
+        "b!" typically follow variables, except when accessing arrays:
+                _string'9+b!
+        would store a byte in the 10th character of "string" (the first
+        member is '0).
+        NOTE: objects accessed by "!" must be word-aligned!
+
+<n> <a> \!  --  <>
+        Increment value at <a> by <n>.
+                X'v\!
+        is short for
+                X'v?+v!
+
+u  --  <n>
+        Push the pseudo-random number <n>.
+
+<n> r>  --  <> ; <n>
+        Move <n> from the stack to the return stack.
+
+r<  --  <n> ; <>
+        Move <n> from the return stack to the stack.
+
+rx  --  <> ; <>
+        Remove the topmost element from the return stack.
+
+i  --  <n> ; <n>
+        Copy <n> from the return stack to the stack. This command
+        is also useful for getting the current index value of "(".
+        Hence its name.
+
+j  --  <n2> ; <n2> <n1>
+        Copy <n2> from the return stack to the stack.
+
+CONTROL OPERATIONS
+
+q  --  <> ; empty
+        Clear return stack and terminate program execution.
+
+\q  --  undefined
+        Terminate the USELESS process.
+
+\z  --  empty ; empty
+        Clear stacks and program memory, terminate execution.
+
+g<c>  --  <>
+        Transfer control to the character after the next <c>, i.e.
+        "go to" the label <c>. Used for comments; use "[" for
+        conditinal execution instead; [g<c>]...<c> is undefined.
+
+<n> [ <command>... ]  --  <>
+        "If/then" construct: run the given <command>s only if <n> is
+        non-zero. Otherwise skip to "]".
+
+<n> [ <command1>... ; <command2>... ]  --  <>
+        "If/then/else" construct: Run <command1>... if <n> is non-zero
+        and <command2>... if <n> is zero. When execution of <command1>...
+        reaches ";", skip to "]".
+
+` <n> { <command>... }  --  <>
+        "While" loop: when <n> is non-zero, run <command>... and then
+        jump back to "`". When <n> is zero, skip to to "}".
+
+<n> ( <command>... )  --  <>
+        "For/next" loop: Run <command>... <n> times. "(" places its
+        counter on the return stack, so "i" can be used to copy the
+        number of the current iteration to the stack. Note that "("
+        counts _down_, so
+                z'3(i)  --  3 2 1
+
+Notes on Control Operators
+
+        There may only be one control operator of each type in a
+        given routine, so
+                '10`d{\-}x'10()
+        terminates, but
+                '10`d{\-}x'10`d{\-}x
+        does not. Exception: multiple "[]"s may occur in the same
+        routine as long as they do not nest *and* do not contain any
+        ";" commands.
+
+        On the other hand, different control constructs may be nested
+        and they may even _overlap_, so
+                '9(i'2/sx[if,])
+        works (and prints 97531). So does
+                '9(i'4>[if,)]rx
+        (and prints 98765).
+
+        A control operator may not occur in the same routine as a
+        string or character literal containing characters used in
+        that operator, e.g.
+                "(q" '10("x"fw)
+        will have an undefined result, but
+                "(q" '10`d{"x"fw\-}x
+        will work fine.
+
+BLOCK OPERATIONS
+
+<a1> <a2> <n> bm  --  <>
+        Move (copy, in fact) <n> bytes from <a1> to <a2>. Regions
+        may overlap.
+
+<a1> <a2> <n> bc  --  <n>
+        Compare the memory regions <a1>...<a1>+n-1 and <a2>...<a2>+n-1.
+        When the regions are equal, return 0, else return the difference
+        of the first differing values.
+
+<a> <n> <b> bf  --  <>
+        Fill the memory region <a>..<a>+<n>-1 with <b>.
+
+<a> <n> <b> bs  --  <n>
+        Search the memory region from <a> to <a>+<n>-1 for the byte
+        <b>. When the byte is contained in the region, return its
+        offset. Otherwise return -1.
+
+INPUT/OUTPUT OPERATIONS
+
+<n> m  --  <s>
+        Return the <n>'th command line argument in a transient,
+        read-only area. When there is no <n>'th argument, return
+        <a> 0 where <a> is undefined.
+
+<c> f!  --  <>
+        Write <c> to current output channel. No error checking.
+
+<c> f%  --  <>
+        Put <c> back to the input channel. (So a subsequent "fr", "f,",
+        or "f?" will re-read it).
+
+f'  --  <n>
+        Read a number from the current input channel. No error checking.
+        When input is not a number, the value of <n> is undefined.
+
+<n> f,  --  <>
+        Write the number <n> to the current output channel. No error
+        checking.
+
+<a> f<  --  <>
+        Resume input from a previously saved input channel (f>).
+
+f>  --  <a>
+        Save input. Store the current input channel on the stack.
+
+f?  --  <c>
+        Push next char from current input channel. No error checking.
+
+f@  --  <01>
+        Check whether there are more characters in the input channel.
+        (A negative EOF check.)
+
+<s> fa  --  <>
+        Open the file <s> for output. When the file exists, append
+        output to the file, otherwise create it. All output will be
+        directed to the file. Fail when the file cannot be created.
+                ""fo
+        closes the file and restores the default output channel.
+
+fe  --  <>
+        Redirect output to stderr. End with ""fo.
+
+ff  --  <>
+        Write any pending characters to the output stream (flush).
+
+<s> fi  --  <>
+        Open the file <s> for input. The file must exist or the
+        operation will fail. All input will be directed to the
+        file.
+                ""fi
+        closes the file and restores the default input channel.
+        "fi" may not be nested; see "fo".
+
+<s> fo  --  <>
+        Open the file <s> for output. An existing file with the same
+        name will be truncated. All output will be directed to the
+        file. Fail when the file cannot be created.
+                ""fo
+        closes the file and restores the default output channel.
+        "fo" may not be nested:
+                "foo"fo "bar"fo ""fo "hello"fw
+        will _not_ result in sending "hello" to "foo".
+
+<a> <n> fr  --  <n>
+        Read up to <n> bytes from the current input channel and return
+        the number of bytes read. May fail if the current input is not
+        readable.
+
+<s> ft  --  <01>
+        Push 1 if file <s> exists and is readable, else push 0.
+
+<a> <n> fw  --  <>
+        Write <n> bytes to the current output channel. Fail if less
+        than <n> bytes could be written.
+
+<s> fx  --  <>
+        Remove file <s>. Fail when the file cannot be removed.
+
+WINDOWING OPERATORS
+
+(These are optional!)
+
+w?  --  <c>
+        Read single key press, return the ASCII code of the typed
+        character. When in nodelay mode (see "wd"), return -1 when
+        no key was pressed.
+
+<c> w!  --  <>
+        Write single char to logical screen.
+
+w+  --  <>
+        Switch to cbreak mode.
+
+w-  --  <>
+        Switch to raw mode.
+
+<c> wa  --  <>
+        Set screen attribute for subsequent w! and ww operations.
+        kn = normal, kr = reverse, kb = bold, ku = underline.
+
+wb  --  <>
+        Ring the terminal bell.
+
+<n1> <n2> wc  --  <>
+        Select foreground color <n1> and background color <n2> for
+        subsequent w! and ww operations. The following colors
+        exist: 0=black, 1=blue, 2=green, 3=cyan, 4=red, 5=magenta,
+        6=brown, 7=light gray.
+
+<n> wd  --  <>
+        When <n>=1, turn on nodelay mode, else turn off nodelay
+        mode. In nodelay mode, "w?" does not block.
+
+we  --  <>
+        Shut down the windowing interface.
+
+wg  --  <n1> <n2>
+        Retrieve screen geometry: <n1> = columns, <n2> = lines.
+
+wi  --  <>
+        Initialize the windowing interface and switch to cbreak
+        mode.
+
+wl  --  <>
+        Clear to end of current line on logical screen.
+
+<n1> <n2> wm   --  <>
+        Move logical cursor to column <n1>, line <n2>.
+
+wo  --  <01>
+        Return 1 if the terminal supports color.
+
+wq  --  <n>
+        Return -1 if no characters are pending in the TTY queue.
+        Otherwise return the first pending char and remove it from
+        the queue.
+
+wr  --  <>
+        Refresh physical screen by synchronizing it with the
+        logical screen.
+
+ws  --  <>
+        Clear logical screen.
+
+<n> wu  --  <>
+        Suspend program execution for <n> milliseconds (usleep*1000).
+
+<s> ww  --  <>
+        Write string to logical screen.
+
+PROGRAM STYLE
+
+        Use " " (blank; no operation) to separate logically distinct
+        blocks, i.e.
+                'vname'10a '10(i'64+_name.i+b!) _name'10fw
+        Use "." to separate two tokens in a logically connected
+        block, like above or in:
+                :3x.xxx
+
+        A comment may have the following forms:
+                '( comment )
+                '{ comment }
+                '[ comment ]
+                g| comment |
+        No semicolons are allowed in '[...] comments. The "|" in "g"
+        comments may be any character not appearing in the comment
+        itself.
+
+        While '(...) is short for '0(...), only the former is a valid
+        comment, so the text
+
+                '0(mumpitz)
+
+        is not a valid USELESS program. The same applies to '0[...]
+        and '0{...}.
+
+IDIOMS
+
+'v  --  <>
+        Create a variable without specific initial value.
+
+<n1> <n2> /x  --  <n1>/<n2>
+        Quotient.
+
+<n1> <n2> /sx  --  <n1> mod <n2>
+        Division remainder.
+
+<a> h-a  --  <>
+        Remove all items after <a> from the heap.
+
+<x1> <x2> oo  --  <x1> <x2> <x1> <x2>
+        Duplicate top two elements.
+
+rxy  --  <>
+        Return from within a ()-loop.
+
+<x1> <x2> <x3> tt  --  <x3> <x1> <x2>
+        Rotate topmost element down.
+
+LIBRARY FUNCTIONS
+
+DEFINITIONS
+
+_align  --  <>
+        Move the free heap marker (h) to the next cell boundary.
+        When "h" already is at a cell boundary, this is a null op.
+
+_tbl  --  <>
+        Create a table, e.g.:
+                'vT_tbl'1,'2,'3,
+        creates a table T with elements 1,2,3.
+
+STACK OPS
+
+<x1> <x2> <x3> <x4> _2o  --  <x1> <x2> <x3> <x4> <x1> <x2>
+        Copy second tuple.
+
+<x1> <x2> <x3> <x4> _2s  --  <x3> <x4> <x1> <x2>
+        Swap tuples.
+
+<x1> ... <xn> <n> _copy  --  <x1> ... <xn> <x1> ... <xn>
+        Copy top <n> objects on the stack.
+
+ARITHMETICS
+
+<n1> <n2> <n3> <n4> _2eq  --  <n1>=<n3> and <n2>=<n4>
+        Compare tuples.
+
+<n> _abs  --  |<n>|
+        Compute magnitude.
+
+<n> _fac -- <n>!
+        Factorial.
+
+<n1> <n2> <n3> _in  --  <n2> < <n1> < <n3>
+        Range check.
+
+<n1> <n2> _max  --  <n1> if <n1> > <n2> else <n2>
+        Maximum of two numbers.
+
+<n1> <n2> _min  --  <n1> if <n1> < <n2> else <n2>
+        Minimum of two numbers.
+
+<n1> <n2> _pow  --  <n1>^<n2>
+        Power.
+
+<n1> _rnd  --  <n2> in 0..<n1>-1
+        Pseudo-random number generator.
+
+<n1> _sqrt -- <n2>
+        <N2> is the largest integer number whose square is not greater
+        than <n1>, i.e.
+                '121_sqrt -- 11
+                '120_sqrt -- 10
+
+CHARS
+
+<c> _calnum  --  <01>
+        Check whether <c> is alpha-numeric (i.e. in {0-9,a-z,A-Z}).
+
+<c> _calpha  --  <01>
+        Check whether <c> is alphabetic (i.e. in {a-z,A-Z}).
+
+<c1> _clowc  --  <c2>
+        Convert <c1> to lower case if it is upper case (else leave
+        it alone).
+
+<c> clower  --  <01>
+        Check whether <c> is lower case (i.e. in {a-z}).
+
+<c> _cnum  --  <01>
+        Check whether <c> is numeric (i.e. in {0-9}).
+
+<c1> _cupc  --  <c2>
+        Convert <c1> to upper case if it is lower case (else leave
+        it alone).
+
+<c> _cupper  --  <01>
+        Check whether <c> is upper case (i.e. in {A-Z}).
+
+<s> <c> _rbs  --  <n> | <-1>
+        Reverse BS (block scan): find rightmost occurrence of <c> in
+        <s>. Return its position or -1 if <c> is not contained in <s>.
+
+STRINGS
+
+<n> <a> _itos  --  <s>
+        Convert integer to string. See also "ntos".
+
+<n> <a> _ntos  --  <s>
+        Convert natural number to string (<n> must be positive). <a>
+        must provide sufficient space for the representation of <n>.
+
+<s1> <s2> _sappnd  --  <s3>
+        Append <s2> to <s1>. <S1> must provide enough space for both
+        strings. <S3> is the concatenation of <s1> and <s2>.
+
+<a1> <n> <a2> _scopy  --  <a2> <n>
+        Copy string <a1> <n> to <a2>, return the destination string.
+        <A2> must provide space for <n> bytes.
+
+<s1> <s2> _seql  --  <01>
+        Check whether <s1> and <s2> are equal (same length and same
+        characters).
+
+<s1> <s2> _srfind  --  <s3> 1 | 0
+        Like "sfind", but locates the rightmost occurrence of <s2>.
+
+<s1> <s2> _sfind  --  <s3> 1 | 0
+        Find the first occurrence of the string <s2> inside of <s1>.
+        Return the located substring and 1, or 0 if the string could
+        not be found.
+
+<s> <f> _smap  --  <s>
+        Map <f> over the characters of <s>. Replace characters of
+        <s> in situ.
+
+<a> <n> _snext  --  <a>+1 <n>-1 | <a> <n>
+        Advance to next char in string. Stop at end of string.
+
+<a> <n> _sprev  --  <a>-1 <n>+1
+        Back up to previous char in string.
+
+<s> _srev  --  <s>
+        Reverse characters in a string.
+
+<a1> <n> _ssave  --  <a2> <n>
+        Save a string on the heap and return its address. Also store
+        <n>+1 at <a2>-1; this can be used to implement lists of strings.
+
+<a> <n> <c> _sskipto  --  <a>+x <n>-x
+        Skip to the next <c> character in a string. When <c> is not
+        in <s>, return <a>+<n> 0.
+
+<a> <n> _sskipw  --  <a>+x <n>-x
+        Skip over blanks in a string.
+
+<s> _stoi  --  <n>
+        Convert string to integer.
+
+<s> _ston  --  <n>
+        Convert string to natural number (<s> may not contain a
+        leading "-" sign).
+
+<s> _suntrail  --  <a> <n>-x
+        Remove trailing blanks from a string.
+
+<s> <c1> <c2> _sxlate  --  <s>
+        Replace each occurrence of <c1> in <s> with <c2>.
+
+INPUT/OUTPUT
+
+_bl  --  <>
+        Print blank.
+
+<n> _bls  --  <>
+        Print <n> blanks
+
+<a> <n1> _getl  --  <n2>
+        Get line. Read at most <n1> characters to buffer at <a>.
+        Stop after reading a linefeed character. Return the number
+        of characters read. Linefeed characters will not be stored
+        in <a>.
+
+_nl  --  <>
+        Print newline.
+
+<n1> <n2> _pfn  --  <>
+        Print formatted number: print <n1> inside of a field of <n2>
+        characters. Adjust to the right and pad with blanks.
+
+<s> <n2> _pfs  --  <>
+        Print formatted string: print <s> inside of a field of <n2>
+        characters. Adjust to the left and pad with blanks.
+
+<n> _pr16  --  <>
+        Print 16-bit hex value.
+
+<n> _pr32  --  <>
+        Print 32-bit hex value (works only on >=32-bit systems).
+
+<n> _pr64  --  <>
+        Print 64-bit hex value (works only on >=64-bit systems).
+
+<b> _pr8  --  <>
+        Print 8-bit hex value.
+
+<n> _wkup   --  <01>
+<n> _wkdn   --  <01>
+<n> _wkle   --  <01>
+<n> _wkri   --  <01>
+<n> _wkpp   --  <01>
+<n> _wknp   --  <01>
+<n> _wkbs   --  <01>
+<n> _wkesc  --  <01>
+        Check whether <n> is a given special key code:
+        up = up arrow, dn = down arrow, le = left arrow,
+        ri = right arrow, pp = previous page, np = next page,
+        bs = backspace, esc = escape.
+
+UTILITIES
+
+_s  --  <>
+        Print stack elements.
+
+<a> <n> _dump  --  <>
+        Write hex dump of <n> bytes at address <a>.
+
+DESIGN CONSIDERATIONS
+
+The USELESS language uses one character per operation, so there
+is basically no difference between source code and object code.
+Interpretation is very simple and straight-forward. The complete
+USELESS reference implementation fits in less than 10KB of
+portable ANSI C (C89).
+
+The limit of 64 characters per program segment ("routine") serves
+both the ease of implementation and readability. When a routine
+becomes longer than 64 characters, it has to be refactored or
+chained. The requirement for refactoring is also called for by
+the limitation of one control operator of each type per routine.
+
+There are four "extended operation" prefixes, which introduce
+two-character instructions: "\" introduces general extended
+operations, "b" block operations, "f" operations on files, and
+"r" operations on the return stack.
+
+White space is typically used scarcely in USELESS programs. It
+is sometimes used to group logically connected blocks visually.
+
+The USELESS language is powerful enough to implement a USELESS-to-C
+compiler in less than 300 lines of USELESS code.
+
+QUICK REFERENCE
+
+   nop            | / div and mod    | b byte/block ops | q quit
+ ! store cell     | : define routine | c cells          | r rstack ops
+ " string literal | ; else (of [)    | d dup            | s swap
+ # logical not    | < less than      | e exec           | t rotate
+   -              | = equal          | f file ops       | u random number
+ % negate         | > greater than   | g goto           | v variable
+ & bitwise and    | ? fetch cell     | h free memory    | w windowing ops
+ ' number literal | @ find name      | i index          | x drop
+ ( for-next loop  | [ if construct   | j local variable | y return
+ ) end f/n loop   | \ extended ops   | k char literal   | z clear stack
+ * multiply       | ] end of if      | l load program   | { body of while
+ + add            | ^ bitwise xor    | m argument       | | bitwise or
+ , comp. number   | _ call routine   | n new name       | } end of while
+ - subtract       | ` while loop     | o over           | ~ bitwise not
+ . nop            | a allocate       | p pick           |
+ 
+ \! add to        | b, comp. byte    | f, put number    | fo open output
+ \+ increment     | b? fetch byte    | f< resume input  | fr read block 
+ \- decrement     | bc block compare | f> save input    | ft test file
+ \< shift left    | bf block fill    | f? get char      | fw write block
+ \> shift right   | bm block move    | f@ more input?   | fx delete file
+ \q quit          | bs block scan    | fa append output | r< from rstack
+ \s stack size    | f! put char      | fe error output  | r> to rstack  
+ \z clear stacks  | f% unget char    | ff flush         | rs rstack size
+ b! store byte    | f' get number    | fi open input    | rx drop index 
+ 
+ w! put char      | wb tty bell      | wi init curses   | wu update      
+ w+ cbreak mode   | wc set color     | wl clear line    | ws clear screen
+ w- raw mode      | wd key delay     | wm move          | wu usleep      
+ w? get char      | we end curses    | wo has colors    | ww write str   
+ wa set attrib    | wg geometry      | wq tty queue     |

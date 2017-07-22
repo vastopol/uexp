@@ -1,0 +1,5 @@
+'( useless example program: rot13 )
+
+:rot13u dkAkZ_in[kA-'13+'26/sxkA+]
+:rot13  dkakz_in[ka-'13+'26/sxka+;_rot13u]
+'0`dmd{'3p[_bl]_ssave@rot13_smap.fw\+}xx[_nl].q

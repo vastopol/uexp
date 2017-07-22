@@ -1,0 +1,94 @@
+g| useless syntax highlighter; By NMH; in the PD |
+g| Usage: hlitew [-ew] [file] >outfile.html      |
+g|        -e = embeddable HTML                   |
+g|        -w = include meta commends (req. file) |
+
+g| This version of the syntax highlighter embeds |
+g| meta information from a shadow file (if any)  |
+g| as CSS pop-ups.                               |
+
+"rwp.u"l
+'vsb_tbl'64a     '( symbol buffer )
+'vsk             '( sb length )
+'vsname_tbl'64a  '( source name )
+'vsnk            '( sname length )
+'vmbuf_tbl'64a   '( meta buffer )
+'vmk             '( mbuf length )
+'0vometa         '( option: include meta comments )
+'0voembed        '( option: generate embeddable HTML )
+:ss_ssave.xx
+'vprelude_tbl
+ "<HTML>"_ss
+ "<HEAD>"_ss
+ "<STYLE>"_ss
+ "PRE.u  {color: #c0c0c0; background: #000000; }"_ss
+ "SPAN.c {color: #00a0a0; background: #0000a0; }"_ss
+ "SPAN.l {color: #00c0ff; background: #000000; }"_ss
+ "SPAN.s {color: #c0c000; background: #000000; }"_ss
+ "SPAN.d {color: #40ff40; background: #000000; }"_ss
+ "SPAN.r {color: #c0c0c0; background: #a00000; }"_ss
+ "SPAN.e {color: #c0c0c0; background: #0000a0; }"_ss
+ "SPAN.f {color: #ff40ff; background: #000000; }"_ss
+ "PRE.u SPAN.d A SPAN.m {"_ss
+ "  color: #000000; background: #c0c0c0; display: none; }"_ss
+ "PRE.u SPAN.d A:hover SPAN.m {"_ss
+ "  display: block; position: absolute; left: 2em; }"_ss
+ "</STYLE>"_ss
+ "</HEAD>"_ss
+ "<BODY>"_ss
+ '0,
+:bpre"<PRE class=u>"fw_nl
+:prlst`db?{ddb?_snext.fw_nl.db?+}x
+:head_oembed?#[_prelude_prlst]_bpre
+:tail"</PRE>"fw_nl_tl2
+:tl2_oembed?#["</BODY>"fw_nl"</HTML>"fw_nl]
+:ba"<A>"fw
+:ea"</A>"fw
+:b"<SPAN class="fwf!">"fw
+:e"</SPAN>"fw
+:semi k;f!
+:h4 d'1%=[x;f!]
+:h3 dk&=["&amp"fwx_semi;_h4]
+:h2 dk>=["&gt"fwx_semi;_h3]
+:h  dk<=["&lt"fwx_semi;_h2]
+:strchr k"=#f@&
+:symchr d_calpha.s_cnum|
+:cpstr`d_strchr{_h.f?}
+:cpnum`d_cnum{_h.f?}
+:cp2ch`f?oo=#f@&{_h}_h.xf?
+:cpcom s_h")]}"x+b?_cp2ch
+:cpsym_getsym_sb_sk?fw
+:getsym'0_sk!`d_symchr{_sb_sk?+b!'1_sk\!f?}
+:prtsym_getsym_sb_sk?_rwp[kf;ks]_b_sb_sk?fw_e
+:pcomment kc_b d"([{"tbs.d'1%=#[_cpcom;x]_e
+:gcomment kc_b d_h_cp2ch_e
+:oper_h.f?
+:number d_cnum[kl_b_cpnum_e;_oper]
+:string dk"=[_h.f?kl_b_cpstr_e_h.f?;_number]
+:char dkk=[_h.f?kl_b.f!_e.f?;_string]
+:symbol d"_@"tbs'1%=#[_h.f?_prtsym;_char]
+:escape d"\rfbw"tbs'1%=#[ke_b_h.f?_h.f?_e;_symbol]
+:ctrl d"`([{;}])"tbs'1%=#[kr_b_h.f?_e;_escape]
+:defn d"vn"tbs'1%=#[_h.f?kd_b_cpsym_e;_ctrl]
+'( ----- shadow file reader )
+:shfile_sname_snk?
+:cmpdef_sb_sk?_mbuf_mk?_snext.xo_seql_sk?_mbuf+\+b?k'=&
+:srchmeta fi`_mbuf'64_getl.f@{_mk!_cmpdef['1y]}x'0d_mk!""fi
+'( ----- )
+:fwhtml d(oo+i-b?_h)xx
+:prtmeta[km_b_mbuf_sk?+\+_mk?_sk?-\-_fwhtml_e]
+:addmeta_shfile.ooft[f>r>_srchmeta_prtmeta.r<f<;xx]
+:defr dk:=[_routine;_defn]
+:routine_ometa?[_incmeta;_skipmeta]
+:skipmeta_h.f?kd_b_cpsym_e
+:incmeta_h.f?kd_b_ba_cpsym_addmeta_ea_e
+:commnt2 dkg=[_h.f?_gcomment;_defr]
+:comment dk'=[_h.f?_pcomment;_commnt2]
+:open oofi_sname_scopy.d_snk!"w"_sappnd_snk!x
+:setopt  dke=[x'1_oembed!;_setopt2]
+:setopt2 dkw=[x'1_ometa!;_usage]
+:usage xfe"Usage: hlitew [-ew] [file ...]"fw_nl\q
+:scanopts`_snext.d{ob?_setopt}xx
+:getopts'0`dmd{ob?k-=[_scanopts;xxy]\+}xx
+:hlite_head.f?`f@{_comment}._tail.q
+_getopts.dmsx#[x_hlite;`dmd{_open_hlite""fi}xx]

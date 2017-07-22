@@ -1,0 +1,82 @@
+'( useless example program: ASCII Mandelbrot explorer )
+
+wiwg  \-nh  '2/xnw  '( width, height )
+'10%vcx             '( x offset )
+'0vcy               '( y offset )
+'10000nS _S'2*n2S   '( zoom, numerator )
+_S'1000/xvdn        '( zoom, denominator )
+'vbuf_tbl'50a       '( buffer )
+'vx 'vy    '( current coordinates )
+'vcr 'vci  '( c real, imag )
+'vzr 'vzi  '( z real, imag )
+'vir       '( intermediate )
+'100vd     '( iteration depth )
+'1ve       '( even line flag )
+'0vcpal    '( color palette )
+'0vcseed   '( color seed )
+:start_y!_x! '0_zr!'0_zi! _x?_S_dn?/x*_cr! _y?_S_dn?/x*_ci!
+g! z(n+1) = z(n) * z(n) + c !
+:calcir_zr?d*_S/x _zi?d*_S/x- _ir!
+:calczi_zr?_zi?*_S/x _zi?_zr?*_S/x+ _ci?+ _zi!
+:calczr_cr?_ir?+_zr!
+g! |z| > 2+2i !
+:test_zi?_2S>._zr?_2S>|_zi?_2S%<|_zr?_2S%<|
+:iter_calcir_calczi_calczr
+:f_start_d?(_iter_test[r<y])'0
+:pal d[_cseed?+'3/sx\+_cpal?+]dwc
+:color'0s_d?`d{oo>[xx_pal.y]'29*'30/xt\+tt}xxx'0_pal
+:row_w(d_w'2/xi-_cx?+s_f_color.k dw!w!wr)x
+:mandel'1_e!_h('0i_h-%wm _h.d'2/x-.i-_cy?+_row)wr
+:zin'5*'4/x
+:zout'4*'5/x
+:czin_cx?_zin_cx! _cy?_zin_cy! _dn?_zin_dn!
+:czout_dn?_zout.d'5<[xy]_dn! _cx?_zout_cx! _cy?_zout_cy!
+:cpanx_w'4/x*_cx\!
+:cpany_h'4/x*_cy\!
+:cple'1%_cpanx
+:cpre'1._cpanx
+:cpup'1%_cpany
+:cpdn'1._cpany
+:cpfle'4%_cpanx
+:cpfre'4._cpanx
+:cpfup'4%_cpany
+:cpfdn'4._cpany
+:cdepth_d\!
+'vhpos
+:ch'0_hpos?wmww'1_hpos\!
+:chp1"hjkl     pan left/down/up/right |"_ch_chp2
+:chp2"HJKL     pan faster             |"_ch_chp3
+:chp3"io       zoom in/out            |"_ch_chp4
+:chp4"<>       depth-100 / depth+100  |"_ch_chp5
+:chp5",.       depth-10  / depth+10   |"_ch_chp6
+:chp6"c        rotate colors          |"_ch_chp7
+:chp7"p        rotate color palette   |"_ch_chp8
+:chp8"r        redisplay              |"_ch_chp9
+:chp9"q        quit                   |"_ch_chpa
+:chpa"-----------------[Press ENTER]--+"_ch
+:chelp'0_hpos!_chp1 w?x
+:csrot_cseed?\+'3/sx_cseed!
+:cprot_cpal?\+'5/sx_cpal!
+:cquit we.q
+:cmi dki=[x_czin;x_chelp]
+:cmuk dkK=[x_cpfup;_cmi]
+:cmuj dkJ=[x_cpfdn;_cmuk]
+:cmuh dkH=[x_cpfle;_cmuj]
+:cmul dkL=[x_cpfre;_cmuh]
+:cmk dkk=[x_cpup;_cmul]
+:cmj dkj=[x_cpdn;_cmk]
+:cmh dkh=[x_cple;_cmj]
+:cml dkl=[x_cpre;_cmh]
+:cmr dkr=[xws;_cml]
+:cmq dkq=[x_cquit;_cmr]
+:cmo dko=[x_czout;_cmq]
+:cmc dkc=[x_csrot;_cmo]
+:cmp dkp=[x_cprot;_cmc]
+:cm4 dk.=[x'10_cdepth;_cmp]
+:cm3 dk,=[x'10%_cdepth;_cm4]
+:cm2 dk>=[x'100_cdepth;_cm3]
+:cm1 dk<=[x'100%_cdepth;_cm2]
+:pr ttww_buf_itos.ww
+:info knwa'0_h.wm"Pos: "_cx?_pr"/"_cy?_pr"  Zoom: "_dn?_pr_in2
+:in2  "  Depth: "_d?_pr"  Color: "_cpal?_pr"/"_cseed?_pr.wl
+`'1{_mandel_info.w?_cm1}

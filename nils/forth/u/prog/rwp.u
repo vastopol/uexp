@@ -1,0 +1,66 @@
+'( useless library: reserved word predicate; NMH; in the PD )
+
+:ss_ssave.xx
+'vrw_tbl              '( reserved words table )
+  "2eq"_ss
+  "2o"_ss
+  "2s"_ss
+  "abs"_ss
+  "align"_ss
+  "bl"_ss
+  "bls"_ss
+  "calnum"_ss
+  "calpha"_ss
+  "clowc"_ss
+  "clower"_ss
+  "cnum"_ss
+  "copy"_ss
+  "cupc"_ss
+  "cupper"_ss
+  "dump"_ss
+  "fac"_ss
+  "getl"_ss
+  "in"_ss
+  "itos"_ss
+  "max"_ss
+  "min"_ss
+  "nl"_ss
+  "ntos"_ss
+  "pad"_ss
+  "pfn"_ss
+  "pfs"_ss
+  "pow"_ss
+  "pr16"_ss
+  "pr32"_ss
+  "pr64"_ss
+  "pr8"_ss
+  "rbs"_ss
+  "rnd"_ss
+  "s"_ss
+  "sappnd"_ss
+  "scopy"_ss
+  "seql"_ss
+  "sfind"_ss
+  "smap"_ss
+  "smem"_ss
+  "snext"_ss
+  "sprev"_ss
+  "srev"_ss
+  "srfind"_ss
+  "ssave"_ss
+  "sskipto"_ss
+  "sskipw"_ss
+  "stoi"_ss
+  "ston"_ss
+  "suntrail"_ss
+  "sxlate"_ss
+  "tbl"_ss
+  "wkbs"_ss
+  "wkdn"_ss
+  "wkle"_ss
+  "wknp"_ss
+  "wkpp"_ss
+  "wkri"_ss
+  "wkup"_ss
+  '0b,
+:rwp_rw`db?{db?os_snext'5p'5p_seql[xxx'1y]db?+}xxx'0

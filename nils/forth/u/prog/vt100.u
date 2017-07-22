@@ -1,0 +1,10 @@
+g| useless VT100 control routines |
+
+:vtesc'27f!k[f!
+:vtclr_vtesc"H"fw_vtesc"J"fw
+:vtclreol_vtesc"K"fw
+:vthome_vtesc"H"fw
+:vtmove_vtesc.f,k;f!f,"H"fw
+:vtse_vtesc"m"fw
+:vtso_vtesc"7m"fw
+:vtup_vtesc"A"fw

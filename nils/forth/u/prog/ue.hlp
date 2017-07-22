@@ -1,0 +1,21 @@
+-- MOVE CURSOR ---------------______   -- INSERT ---     -- MISC -----
+%h% %j% %k% %l% left/down/up/right       %A% __  app at EOL    %^G%  info
+%w%______       next word                %I% __  ins at BOL    %^L%  refresh
+%^B% %^F%____   prev/next page           %J% __  join lines    %ZZ%  save+exit
+%0% %^% %$%__   BOL/1st/EOL              %O% __  open above    %=%   syntax hl
+%#G% %G%____    line#/bottom             %a% __  append        %v%   view meta
+%H% %L%____     top/bot of scr           %i% __  insert        %V%   edit meta
+-- MARK ----------------------  ________ %o% __  open below    %zCR% zero line
+%mm%  set mark/cmark (mk/cmk)   ______   %r% __  repl char
+%'m%  goto mk (line)            ______   %R% __  repl chars
+%`m%  goto cmk (line/col)       ______   %<% %>% out/indent 
+-- DELETE, YANK, PASTE --------------------------  -- SEARCH ---
+%X%  backspace    %dd%  del line    %yy%   yank line     %/% search
+%x%  del char     %dw%  del word    %yw%   yank word     %?% search bw
+%D%  del to EOL   %d'm% del to mk   %y'm%  yank to mk    %N% search prev
+%Y%  yank to EOL  %d`m% del to cmk  %y`m%  yank to cmk   %n% search next
+%p%  paste after  %P%   paste bfr.  %d/y0% del/ynk to 0
+-- COLON COMMANDS ----------------------------------------------
+%:e file%  edit file     %:r file%   read file      %:q%  quit
+%:n name%  rename file   %:wCR%      save file      %:h%  help (this)
+%:s o n%   find + repl   %:wr file%  write region   %^G% = cancel

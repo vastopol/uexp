@@ -1,0 +1,9 @@
+'( useless example program: 80's space toy sounds )
+
+'vlow_tbl'100a
+'vhigh_tbl'100a
+:setvol d_low'100t'127+bf _high'100t'127s-bf
+:tick _high.ofw_low.sfw
+'30_setvol
+:beep"/dev/dsp"fo'50(i'5/x_tick)""fo
+'10(i'25*_setvol_beep).q

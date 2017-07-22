@@ -24,7 +24,7 @@ u:	u.c w.c uclib ucwlib
 uc1:	u uc1.u
 	./u uc1.u <uc1.u >uc1.c
 	$(CC) -o uc1 uc1.c
-	rm -f uc1.c
+	# rm -f uc1.c
 
 u.1:	u.txt
 	echo '.nf' >u.1

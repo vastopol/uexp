@@ -13,3 +13,5 @@ racket-doc
 racket-common
 
 python
+
+curses.h -> libncurses5-dev

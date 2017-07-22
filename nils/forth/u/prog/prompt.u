@@ -1,0 +1,30 @@
+g| useless library: line editor (prompt); NMH; in the PD |
+g| usage: buf len max x y_prompt -- buf len <01>         |
+g| "false" result flag indicates aborted input           |
+
+'vpx  'vpy  'vpk   '( prompt x/y, max. length )
+'vpb  'vpn  'vpi   '( prompt buffer, length, index )
+'vpd               '( prompt default flag )
+:prcd wo#[kbwa;'3'0wc]'1_pd!
+:prcn wo#[knwa;'7'0wc]'0_pd!
+:prclear_prcn'0d_pn!_pi!_px?_py?wmwl
+:prcldfl_pd?[_prclear]
+:prline_px?_py?wm_pb?_pn?ww.k w!
+:prins_pn?_pk?<[_prcldfl_prins2;xwb]
+:prins2_pb?_pi?+d\+_pk?_pi?\+-bm _pb?_pi?+b! '1_pi\!'1_pn\!
+:prbs_pi?'0>['1%_pi\!_prbs2;wb]
+:prbs2_pb?_pi?+d\+s_pk?_pi?\+-bm k _pb?_pn?+b! '1%_pn\!
+:prdelc_pi?_pn?<[_prright_prbs]
+:prleft_pi?['1%_pi\!]
+:prright_pi?_pn?<['1_pi\!]
+:prclr d'21=[x_prclear;_prins]
+:preol d'5=[x_pn?_pi!;_prclr]
+:prdel d'4=[x_prdelc;_preol]
+:prbol d'1=[x'0_pi!;_prdel]
+:prcri d_wkri[x_prright;_prbol]
+:prcle d_wkle[x_prleft;_prcri]
+:prcmd d_wkbs[x_prbs;_prcle]_prcn
+:prxkey d'13=o'7=|s_wkbs_pn?#&|
+:prretn_pb?_pn?t'13=
+:predit`_prline_px?_pi?+_py?wmw?d_prxkey#{_prcmd}_prretn
+:prompt_py!_px!_pk!d_pi!_pn!_pb!_prcd_predit

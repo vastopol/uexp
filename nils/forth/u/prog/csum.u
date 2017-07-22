@@ -1,0 +1,21 @@
+g| useless example program: Unix sum(1); by NMH; in the PD |
+
+g! Usage: ls files | csum >sumfile                         !
+g!        csum -u <sumfile >newfile                        !
+
+'1'15\<nhb        '( high bit )
+'32767'1\<'1|nab  '( all bits )
+'vbytes 'vblks    '( byte/block counters )
+'vbuf_tbl'128a    '( line buffer )
+'vbk              '( buffer length )
+:sum d'1&[_hb;'0]s'1\>|+_ab&
+:size0'0d_bytes!_blks!
+:count'1_bytes\!_bytes?'1023>['0_bytes!'1_blks\!]
+:filesum_size0'0`f?f@{s_sum_count}x_blks?_bytes?[\+]
+:print sf," "fwf," "fw_buf_bk?fw_nl
+:make`_buf'128_getl.f@{_bk!_buf_bk?fi_filesum""fi_print}x
+:testfile ooft[_testfil2;fefw": not found"fw_nl""fo]
+:testfil2 f>ttfi_filesum""fitf<_compare
+:compare oo_print_2eq#[fe_buf_bk?fw": wrong sum"fw_nl""fo]
+:test`f'f'f?x_buf'128_getl.f@{_bk!_buf_bk?_testfile}xxx
+'0m"-u"_seql[_test;_make]q
