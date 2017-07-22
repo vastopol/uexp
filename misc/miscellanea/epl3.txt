@@ -1,0 +1,236 @@
+/*  EPL3  -  Extended Propositional Logic  -  written in itself
+ *  uses reflection to implement "delay branching" optimisation
+ *  (c) Manfred von Thun, La Trobe University, Melbourne, Australia
+ */
+
+:- op(8, fx,[rule]).
+:- op(7,xfx,[-----]).
+:- op(5,xfx,[imp,iff]).
+:- op(4,xfy,[or]).
+:- op(3,xfy,[and,then,else]).
+:- op(2, fx,[not]).
+:- op(2, fx,[when]).
+:- op(1, fx,[primitive]).
+:- op(1,xfx,['/=','/==']).
+
+/*
+ * BEGIN  -  EPL3 in EPL3
+ */
+
+/* optional - a tracing facility:
+tracing(yes) and write(' : ') and write(M/=F) and nl and fail
+-----
+M /= F.
+ */
+
+/* the delaying mechanism:
+ * if there is a rule for handling F later, then delay now
+ */
+(rule   PREM
+	-----
+	M1 /= (true and (F and D1))  )  and
+/* optional - tracing for delay:
+write(' - delaying: ') and write(F) and nl and
+ */
+M /= (C and (F and D))
+-----
+M /= ((F and C) and D).
+
+/*
+ * immediate action for non-branching:
+ */
+                                                        /* and */
+M /= ((F and (G and C)) and D)
+-----
+M /= (((F and G) and  C) and D).
+                                                        /* not or */
+M /= ((not F and (not G and C)) and D)
+-----
+M /= ((not(F or G) and C) and D).
+                                                        /* not imp */
+M /= ((F and (not G and C)) and D)
+-----
+M /= ((not(F imp G) and C) and D).
+                                                        /* not not */
+M /= ((F and C) and D)
+-----
+M /= ((not not F and C) and D).
+
+/*
+ * all branching cases have been delayed, treat now:
+ */
+                                                        /* or */
+M /= ((F and true) and D)   or
+M /= ((G and true) and D)
+-----
+M /= (true  and  ((F or G) and D)).
+                                                        /* not and */
+M /= ((not F and true) and D)    or
+M /= ((not G and true) and D)
+-----
+M /= (true  and  (not(F and G) and D)).
+                                                        /* imp */
+M /= ((not F and true) and D)    or
+M /= ((G and true) and D)
+-----
+M /= (true  and  ((F imp G) and D)).
+                                                        /* iff */
+M /= ((F and (G and true))  and  D)    or
+M /= ((not F and (not G and true))  and  D)
+-----
+M /= (true  and  ((F iff G) and D)).
+                                                        /* not iff */
+M /= ((F and (not G and true)) and D)    or
+M /= ((not F and (G and true)) and D)
+-----
+M /= (true and (not(F iff G) and D)).
+                                                        /* if-then */
+M /= ((F and (G and true)) and D)   or
+M /= ((not F and (H and true)) and D)
+-----
+M /= (true  and  ((when F then G else H) and D)).
+						      /* not if-then */
+M /= ((F and (not G and true)) and D)   or
+M /= ((not F and (not H and true)) and D)
+-----
+M /= (true  and  (not(when F then G else H) and D)).
+
+/*
+ * truthfunctionally simple formulas
+ */
+                                                        /* true */
+M /= (C and D)
+-----
+M /= ((true and C)  and  D).
+						       /* not false */
+M /= (C and D)
+-----
+M /= ((not false and C)  and  D).
+						       /* primitive */
+primitive F  and  M /= (C and D)
+-----
+M /= ((primitive F and C)  and  D).
+						   /* not primitive */
+not primitive F  and  M /= (C and D)
+-----
+M /= ((not primitive F and C)  and  D).
+                                                        /*   /=   */
+N /= ((F and true)  and not false)
+and M /= (C and D)
+-----
+M /= ((N /= F  and C)  and  D).
+						      /*  not /=   */
+not N /= ((F and true) and not false)
+and  M /= (C and D)
+-----
+M /= ((not N /= F  and C)  and D).
+                                                        /*  -----  */
+not ([],[]) /= (((PREMISE and not CONCLUSION) and true) and not false)
+and M /= (C and D)
+-----
+M /= (( (PREMISE
+	 -----
+	 CONCLUSION)  and C )  and  D ).
+						    /*  not -----  */
+([],[]) /= (((PREMISE and not CONCLUSION) and true) and not false)
+and M /= (C and D)
+-----
+M /= (( not (PREMISE
+	     -----
+	     CONCLUSION)  and C ) and D ).
+                                                        /* rule */
+(rule PREMISE
+      -----
+      CONCLUSION)
+and M /= (C and D)
+-----
+M /= ((( rule PREMISE
+	      -----
+	      CONCLUSION) and C ) and D ).
+                                                        /* not rule */
+not (rule PREMISE
+	  -----
+	  CONCLUSION)
+and M /= (C and D)
+-----
+M /= (( not(rule PREMISE
+	         -----
+	         CONCLUSION) and C ) and D ).
+                                                        /* atom */
+primitive A   and   not ([],F) /== (not A)  and
+when (T,[]) /== A  then (   T ,F) /= (C and D)
+		   else ([A|T],F) /= (C and D)
+-----
+(T,F) /= ((A and C) and D).
+                                                        /* not atom */
+primitive A   and   not  (T,[]) /== A   and
+when ([],F) /== (not A) then (T,   F ) /= (C and D)
+		        else (T,[A|F]) /= (C and D)
+-----
+(T,F) /= ((not A and C) and D).
+
+/*
+ * rules for /==
+ */
+true
+-----
+([A|T],[]) /== A.
+
+true
+-----
+([],[A|F]) /== (not A).
+
+(T,[]) /== A
+-----
+([T1|T],[]) /== A.
+
+([],F) /== (not A)
+-----
+([],[F1|F]) /== (not A).
+
+true
+-----
+(T,F) /= (true and not false).
+
+                                                        /* sentinel */
+true
+-----
+(T,F) /= (true and true).
+
+/*
+ *  END  -  EPL3 in EPL3
+ *
+ *  BEGIN translator from EPL3 to PROLOG
+ */
+
+t((A1 or B1),(A2;B2))  :-  !, t(A1,A2), t(B1,B2).
+t((A1 and B1),(A2,B2))  :-  !, t(A1,A2), t(B1,B2).
+t((not A1),(not A2))  :-  !, t(A1,A2).
+t((when A1 then A2 else A3),((B1,!,B2);B3)) :- !, t(A1,B1),t(A2,B2),t(A3,B3).
+t((M/=F),model(F,M)) :- !.
+t((M/==F),model1(F,M)) :- !.
+t((primitive A),(atom(A),A\==true,A\==false))  :-  !.
+t((rule P ----- C), clause(P ----- C, _)) :- !.
+t(A,A).
+
+:-  repeat,
+    clause( PREMISE ----- CONCLUSION ,_),  t(CONCLUSION,HEAD),
+    (  CONCLUSION = M/=(true and true), PREMISE = true,
+       assert((HEAD :- write('('),write(M),write(')'),nl,fail))
+    ;  t(PREMISE,BODY),  assert((HEAD:-BODY)),  fail  ).
+
+/*
+ *  END translator from EPL3 to PROLOG
+ *
+ *  READ-EVAL-PRINT loop :
+ */
+
+tracing(no).
+
+run :-
+    repeat,
+	nl, write('> '), read(F),
+	(  F == stop
+	;  model((F and true) and true,([],[])), fail  ).
+
+:- nl, nl, write('to run epl3, type:    run.'), nl.

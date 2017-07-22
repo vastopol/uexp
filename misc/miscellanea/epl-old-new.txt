@@ -1,0 +1,50 @@
+/* truth trees written in PROLOG, using OLD and NEW */
+    (c) Manfred von Thun, La Trobe University, Melbourne, Australia
+ */
+/*
+This system uses two ternary relations, r and ar, which essentially
+take a formula and an "old" model to produce a "new" model,
+where the "new" model may have additional atoms made true or false.
+This treats formulas in a way as commands. It is an interesting
+alternative to the EPL method in the paper.
+ */
+
+:- op(7,xfx,[-----]).
+:- op(5,xfx,[imp,iff]).
+:- op(4,xfy,[or]).
+:- op(3,xfy,[and]).
+:- op(2, fx,[not]).
+:- op(1, fx,[primitive]).
+:- op(1,xfx,['/=']).
+
+printmodel((T,F)) :- write('('),pri(T),write(','),pri(F),write(')'),nl.
+pri(X) :- write('['),p(X),write(']').
+p([]).
+p([X]) :- write(X).
+p([X1,X2|X]) :- p([X2|X]),write(','),write(X1).
+
+/* a conventional PROLOG implementation of truth trees */
+
+find(F,M)  :-  r(F, ([],[]), M).
+
+r(A and B, M, O)  :-  !, r(A, M, N), r(B, N, O).
+r(not (A and B), M, N)  :-  !, ( r(not A, M, N); r(not B, M, N) ).
+r(A or B, M, N)  :-  !, ( r(A, M, N); r(B, M, N) ).
+r(not (A or B), M, O)  :-  !, r(not A, M, N), r(not B, N, O).
+r(not not A, M, N)  :-  !, r(A, M, N).
+r(not A, (T,F), N)  :-  !, not member(A,T), ar(not A, (T,F), N).
+r(A, (T,F), N)  :-  not member(A,F), ar(A, (T,F), N).
+
+ar(not A, (T,F), (T,F) )  :-  member(A,F), !.
+ar(not A, (T,F), (T,[A|F]) )  :- !.
+ar(A, (T,F), (T,F) )  :-  member(A,T), !.
+ar(A, (T,F), ([A|T],F) ).
+
+member(A,[A|L])  :-  !.
+member(A,[L1|L])  :-  member(A,L).
+
+cpl :-
+    repeat,
+	nl, write('> '), read(F),
+	(  F == stop
+	;  r(F,([],[]),M), printmodel(M), fail  ).

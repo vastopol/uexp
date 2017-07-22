@@ -1,0 +1,1574 @@
+<HTML>
+<HEAD>
+<TITLE>Extended Propositional Logic Written In Itself</TITLE>
+
+</HEAD>
+<BODY>
+<P>By Manfred von Thun
+<P>
+<B>Abstract</B>:
+Propositonal logic is not adequate to express its own semantics.
+This paper explores additional operators which
+enable an extended propositonal logic to express its own semantics.
+In order to be able to write an interpreter
+of classical propositional logic in its own language,
+it is necessary to add a few operators
+which are not truthfunctional.
+The meaning of the old and the new
+operators has to be explained in terms of themselves.
+Several related solutions to the required extensions
+are offered in this paper,
+and PROLOG implementations are given.
+All the extensions are based on the method
+of semantic trees.
+In one of the extensions a reflective method -
+making the program inspect itself -
+is used to implement an optimisation
+which delays branching and hence keeps the trees smaller.
+<P>
+<B>Keywords</B>:
+Propositional logic, semantic tableaux, truth trees,
+semantics, interpreters, languages as their own metalanguage,
+reflective systems.
+<P>
+<B>Contents</B>
+<UL>
+<LI><A HREF=#TOC-1>1. Introduction - languages their own metalanguage</A>
+<LI><A HREF=#TOC-2>2. Semantic trees or tableaux for propositional logic</A>
+<LI><A HREF=#TOC-3>3. MPL - a metalanguage for propositional logic</A>
+<LI><A HREF=#TOC-4>4. Semantic rules for MPL</A>
+<LI><A HREF=#TOC-5>5. Design of an implementation</A>
+<LI><A HREF=#TOC-6>6. A Prolog program</A>
+<LI><A HREF=#TOC-7>7. EPL written in EPL</A>
+<LI><A HREF=#TOC-8>8. A reflective implementation of an optimisation</A>
+</UL>
+
+<A NAME=TOC-1><H2><B>1. Introduction - languages as their own metalanguage</B></H2></A>
+<P>
+Formalisation of grammar is as old as the Sanskrit grammarians,
+a syntactic formalisation of a small branch of logic
+is as old as Aristotle.
+Formalisation of the semantics of logic has its roots in the last
+Century, but was put on a firm footing only in the Thirties.
+Formalisation of the semantics of programming languages
+is now pretty much routine,
+it is an essential preliminary step before a processor
+for such a language can be built or written.
+The formalisation is the standard against which
+the correctness of the implementation
+can be judged.
+Below are two examples as they might occur
+in the formalisation of the semantics of an arithmetic language,
+a list processing language and a logical language:<BR>
+<PRE>
+              value(a + b)   =   value(a) + value(b)
+            eval(cons(e,l))  =  cons(eval(e), cons(eval(l))
+        'p and q' is true   iff   'p' is true and 'q' is true
+</PRE>
+For each of the above it is important to distinguish
+the object language being talked about,
+and the metalanguage in which the talking is done.
+In the examples,
+the '+', the 'cons' and the 'and' on the left belong to the object language,
+and the '+', the 'cons' and the 'and' on the right belong to the metalanguage.
+On both sides 'value', 'eval' and 'is true' belong to the metalanguage,
+they may or may not have counterparts in the object language.
+In general, for simple object languages the metalanguage has to be
+more complex than the object language.
+The object language can be enriched,
+most interestingly by adding features of the metalanguage,
+and this may or may not require further enrichment
+of the metalanguage.
+If it does not,
+then the two languages have the same expressive power,
+in some sense they are the same language.
+This point was reached by Goedel for syntax and proof theory,
+and by Tarski for semantics.
+
+<P>
+When processors for computer languages are written in themselves,
+they are serving as their own metalanguage.
+It is now a routine matter to write compilers for a language
+in the very same languge which they compile.
+The advantage of this approach lies in various
+bootstrapping procedures,
+for a comprehensive survey see Lecarme and Pellissier Grant (1986).
+But compilers tend to be formidable,
+whereas interpreters can be quite tiny,
+especially when the language has itself as one of its own
+data structures, as in LISP and PROLOG.
+Lisp interpreters written in Lisp may be found in
+Winston (1977, pp 367 - 370),
+Allen (1978, pp 114 - 119),
+Henderson (1980, pp 110 - 122),
+Wise (1982),
+Glaser, Hankin and Till (1984, pp 76 - 79),
+Abelson and Sussman (1985, pp 296 - 311),
+Sethi (1989, pp 414 - 420).
+Prolog interpreters written in Prolog may be found in
+Pereira, Pereira and Warren (1978, p 58)
+and in
+Amble (1987, pp 125 - 125).
+Prolog interpreters for variants of Prolog may be found in
+Venken, 1985, p 349),
+Bruffaerts and Henin (1988, pp 346 - 347),
+Coscia and others (1987, p 360),
+and  Prolog interpreters for a whole sequence of related variants
+may be found in
+Sterling and Lakhotia (1987).
+An interpreter for concurrent Prolog, written in itself,
+may be found in
+Shapiro (1986, pp 55 - 57).
+Further LISP and PROLOG interpreters written in themselves
+- more or less - may be found in a collection edited by
+Maes and Nardi (1988).
+
+<P>
+This paper aims to do for propositional logic
+what the interpreters mentioned above do for LISP and for PROLOG.
+More precisely,
+the paper attempts to answer the following questions:
+What are the minimal concepts needed for
+a metalanguage such that the semantics
+of propositional logic as the object language
+can be written in that metalanguage?
+How can the object language and the metalanguage be merged into one,
+so that the semantics of this extended language can be written
+in itself?
+It is well known that propositional logic can be based
+on just one binary operator:
+either negated conjunction, 'nand',
+or negated disjunction, 'nor', will do.
+However, formulas in such minimal systems are virtually unintelligible,
+and implementations based on them would be hideously slow.
+By a minimal solution to the problem as posed,
+a reasonable set of connectives is still assumed to be available.
+The more interesting concepts of course are those
+which the object language inherits from the merger
+with the metalanguage.
+
+<P>
+The remainder of this paper is organised as follows:
+The next section contains a brief exposition
+of the semantic tree method.
+Then comes the design of a minimal metalanguage
+suitable for expressing the tree method,
+and then a collection of semantic rules
+in that metalanguage.
+The following two sections describe the choice
+of an implementation language - PROLOG -
+and the actual program.
+Then the metalanguage and the object language are merged
+into one: extended propositional logic,  EPL.
+A minor inelegance is removed in the section after that.
+The last two sections describe
+a version which uses "reflection" -
+making a program base some of its decisions
+on inspecting itself -
+to implement a well-known optimisation
+of the tree method.
+
+<A NAME=TOC-2><H2><B>2. Semantic trees or tableaux for propositional logic</B></H2></A>
+<P>
+The language of propositional logic consists of atomic formulas
+together with a small number of truthfunctional operators
+that are used for building larger formulas.
+An interpretation assigns truth value to the atomic formulas,
+and for larger formulas the truth values in a given interpretation
+are given by familiar rules,
+one for each of the operators.
+An interpretation which makes a formula true is said to be
+a model of the formula.
+A formula is a tautology if it is true in all intrepretations,
+a formula is consistent if it is true in some interpretations,
+i.e. if it has some models.
+Truth tables are a convenient way of displaying all interpretations
+and the values of formulas and their subformulas;
+each line in the table represents an interpretation.
+Truth tables are a bottom up method,
+they first <B>generate</B> all the interpretations
+and then <B>test</B> whether the given formula is true in all
+or some of them.
+An efficient top down alternative to truth tables
+is the method of <B>truth trees</B>,
+which combine the generating and testing into one
+goal directed <B>construction</B> operation.
+The method produces zero or one or more models
+of a formula, and hence can be used for determining
+consistency.
+It appears that the method of truth trees is less widely known
+outside logic circles than the method of truth tables is,
+so a short exposition is appropriate.
+
+<P>
+To determine whether a formula is consistent one starts off
+with the formula at the root of a tree.
+The tree is made to grow either linearly or to branch
+in a way that is determined by the formulas in the path
+from the root to a given branch.
+Any particular formula is either a conjunction
+or disjunction etc. or a negated conjunction, negated disjunction etc.,
+or a double negation or an unnegated or negated atom.
+For each such possible outermost structure there is a tree rule,
+derived essentially from the definitions of the operators.
+Each rule spells out what has to be true
+if the given formula is to be true - if it can be true at all.
+Thus, for a conjunction to be true,
+both conjuncts have to be true.
+So the two conjuncts are used to linearly extend
+every branch below the conjunction,
+and the conjunction itself need not be considered any further.
+By contrast,
+for a disjunction to be true,
+one of the disjuncts has to be true.
+So the two disjuncts are used to branch at every branch below
+the disjunction,
+and the disjunction itself need not be considered any further.
+Similar rules exist for each of the other possibilities.
+It is possible to minimise branching by using a certain
+optimisation, this will be discussed further in section ?.
+Eventually atoms or negated atoms will be reached,
+and then a check is made whether
+the same atom occurs in both unnegated and negated form in the same path.
+If it does, then the particular attempt to
+find a model for the original formula has failed for this path,
+and this path is not considered any further.
+On the other hand, if no atom occurs in both
+unnegated and negated form,
+then processing continues until all compound formulas
+in the path have been processed.
+Each remaining path will contain atoms and negated atoms
+which constitute a specification of one or more lines
+in the truth table in which the originally given formula is true.
+If a particular atom does not occur in a particular path,
+then those lines in which it is true and those lines in which
+it is false are included -
+for the original formula to be true it does not matter
+what truth value the atom has,
+provided the other atoms are as specified in the path.
+For a given formula the method thus
+uses the formula as a kind of program
+to construct zero or one or more paths
+each representing a non-empty class of models of the
+given formula.
+
+<P>
+Expositions of the truth tree method are to be found in
+Jeffrey (1967, pp 63 - 79),
+Gustason and Ulrich (1973, pp 251 - 262),
+Richards (1978, pp 174 - 189),
+Halpin and  Girle  (1981, pp 153 - 180),
+Mendelson (1987, pp 110 - 115).
+
+
+<P>
+The aim of this paper is to extend the language of propositional
+logic in such a way that it becomes possible
+to write a version of the tree method in its own language.
+In this way it will be equivalent to LISP and PROLOG
+interpreters written in their own language.
+A secondary aim is to make such an interpreter
+actually run on a computer.
+The method of truth trees is taylored for manual execution
+by minimising what has to be written down on paper.
+On the other hand there is a fair amount
+of repeated visual inspection involved.
+Since the human eye is so much slower than the human eye,
+this tradeoff is indeed appropriate.
+But on a computer a storing operation is
+as fast as a fetching operation,
+so writing is as fast as reading.
+Hence any computer optimisation should not copy
+the manual method too literally.
+
+<P>
+The truth tree method can be simulated by a non-deterministic
+special purpose automaton.
+It contains a set S of formulas to be made true,
+and a pair of sets, T and F,
+of atomic formulas that have been made true or false.
+Its operation may be described as follows:<BR>
+<PRE>
+ 1.     set S to empty
+ 2.     set T and F to empty
+ 3.     add the formula to be analysed to S
+ 4.     repeat
+ 5.         remove an arbitrary formula from S
+ 6.         case that formula of -
+ 7.             a conjunction:
+ 8.                 add both conjuncts to S
+ 9.             a disjunction:
+10.                 add one disjunct to S, OR
+11.                 add the other disjunct to S
+                ...
+12.             an atom:
+13.                 if the atom is in F then FAIL
+14.                 if the atom is not in T then add it to T
+                ...
+15.         until S is empty
+</PRE>
+It is possible to replace the set S by a stack S,
+to replace the adds in lines 3, 8, 10, 11 by pushes,
+and to replace the non-deterministic removal in line 5 by pops.
+But the automaton is still non-deterministic
+because of the OR in line 10 and the FAIL in line 12.
+Officially an OR-selection never makes the wrong choice,
+and officially FAIL is never executed.
+In deterministic implementations,
+OR-selections are made to take the first choice
+and to save the second choice on an additional stack.
+FAIL is executed by restoring the entire state
+to what it was when the most recent OR-selection was made,
+and to resume with the second choice.
+It is also possible to replace the pair of atom sets T and F
+by a pair of atom lists T and F,
+but this does not alter the nature of the automaton.
+
+<P>
+The two versions of the automaton,
+with a set S or with a stack S,
+are low level machine-like implementations of the tree method.
+It would appear that they are not suitable candidates
+for the task at hand:
+of extending propositional logic
+so that an interpreter of it can be written in its own language.
+Actually this turns out not to be the case.
+In particular,
+the stack version is attractive because a stack of formulas
+to be made true can be simulated by a single conjunction
+of formulas.
+The stack operation of pushing a formula is simulated by
+adding a conjunct on the left,
+the operation of popping is simulated by
+removing the leftmost conjunct.
+An implementation based on this idea thus avoids the need
+of the explicit notion of a stack.
+
+<P>
+However, the locutions 'adding a conjunct',
+'removing a conjunct',
+and also 'adding an atom to T'
+imply a change of state,
+they appear procedural and hence not purely logical.
+It is desirable to keep the system as natural as possible,
+relying only on conventional notions.
+Any notion of real or apparent change
+is to be captured in other ways.
+
+<A NAME=TOC-3><H2><B>3. MPL - a metalanguage for proposiional logic</B></H2></A>
+<P>
+The semantics of an extended form of propositional logic
+is eventually to be written in itself.
+As a first step, this section contains the design of a
+minimal metalanguage for propositional logic.
+This metalanguage will be just sufficient to express the truth tree method
+for propositional logic as an unadorned object language.
+The object language and the metalanguage will be merged,
+but not until both have been developed independently.
+In the object language the atoms are primitive formulas,
+in the metalanguage the atoms are about formulas of the object language.
+The atoms of the metalanguage are built from predicates
+that are unique to the metalanguage,
+together with expressions denoting formulas of the
+object language and other expressions denoting classes
+of interpretations of the object language.
+As an absolute minimum the metalanguage needs only two predicates:
+one a unary predicate to express that a formula of the object language
+is primitive,
+the other a binary predicate to express that a certain
+semantic relation holds between
+a class of interpretations and a formula.
+The exact notation does not concern us yet.
+
+<P>
+At this point there is no need to specify the object language in any
+concrete detail.
+For all we care,
+the formulas of the object language are to be whistled,
+and it does not matter whether they are whistled in
+prefix, infix, postfix or any-other-fix notation.
+All that is needed is that the object language has certain primitive
+atomic formulas,
+that for each formula there is another which is its negation,
+and that for any two formulas there are further ones
+which are their conjunction,
+their disjunction,
+their material implication and their material equivalence.
+
+<P>
+The metalanguage does not have any primitive atomic formulas at all.
+Instead its atomic formulas are the constant 'true',
+or they built using one unary predicate
+or one binary predicate.
+The unary predicate is 'primitive',
+it is written in prefix,
+and its parameter is a formula of the object language.
+The binary predicate is '/=',
+it is written in infix,
+its left parameter is a class of interpretations
+of the object language,
+and its right parameter is a formula of the object language.
+So in the metalanguage a notation is needed
+for classes of interpretations of the object language
+and for formulas of the object language.
+We shall take it that for each primitive formula of the object
+language there is a name in the metalanguage,
+and we shall use symbols of one or more lower case letters
+as names of primitives: 'p', 'q', 'raining' and so on.
+For compound formulas of the metalanguage
+and for names of compound formulas of the object language
+we shall use almost identical rules:<BR>
+<PRE>
+FORMULAS OF M:                      NAMES OF FORMULAS OF O:
+If F and G are formulas             If F and G are names of formulas
+then so are -                       then so are -
+      not F                               not F
+      (F and G)                           (F and G)
+      (F or G)                            (F or G)
+      (F imp G)                           (F imp G)
+      (F iff G)                           (F iff )
+</PRE>
+To minimise the need for parentheses, we assign precedences
+to the prefix and infix predicates:
+'not' has highest precedence,
+followed by 'and', followed by 'or', followed by 'imp' and 'iff'.
+The binary operators 'and', 'or' and 'imp' are right-associative,
+but 'iff' is non-associative.
+Atomic formulas of the metalanguage are defined thus:<BR>
+<PRE>
+If F is the name of a formula of the object language, and
+G1, G2 .. H1, H2 .. are names of primitives of the object language,
+then the following are atomic formulas of the metalanguage:
+        primitive F
+        ([G1, G2 .. ], [H1, H2 .. ])  /=  F
+</PRE>
+The number of Gs or the number of Hs may be zero.
+The metalanguage does not have any propositional primitives
+that can take on different values in different interpretations.
+So whether a formula is true will depend only on how
+the two predicates are interpreted.
+We shall only consider <B>normal</B>,
+i.e. intended interpretations I
+of the two predicates.
+Metalanguage atoms of the form 'primitive <B>F</B>'
+are true in I just in case the object language formula
+<B>F</B> is indeed primitive.
+Metalanguage atoms of the form 'M /= <B>F</B>'
+are true in I just in case
+a certain semantic relation hold betweenthe class of models M
+and the object language formula <B>F</B>.
+The precise nature of that relation is derived
+in the following section.
+Essentially there is only one normal interpretation I,
+hence reference to it may be dropped henceforth.
+
+<P>
+Obviously the new predicates are not truthfunctional:
+replacing the name of a formula F1 by
+the name of another formula F2
+which has the same truthvalue will not necessarily
+preserve the truthvalue of a larger formula of which F1 is a part.
+But if F1 is logically equivalent to F2,
+then they will have the same models,
+and therefore the larger formula
+will have the same models after the substitution.
+So for the semantic predicate logical equivalence
+licences substitutions.
+But the operator for primitiveness is not even like that.
+Although a particular primitive is logically equivalent
+to its disjunction with itself,
+the disjunction is not primitive.
+Thus being primitive is a purely syntactic notion.
+
+<P>
+Given a formula F,
+truth trees find classes of models of F.
+Depending on the outermost structure of F,
+there will be a rule to deal with the case.
+If F is truthfunctionally compound,
+in order to find a class M of models of F,
+the rules tell us to
+find a class N of models of a related formula G -
+or something to this effect.
+The point to note is that if the search for N succeeds,
+then so does the search for M.
+In other words,
+the rules are conditionals
+'If N /= G .. then M /= F',
+or equivalently rules of inference of the form
+'from the premise N /= G .. infer the conclusion M /= F'.
+So the tree method really uses backward chaining - goal directed
+theorem proving.
+The manual proof method is highly informal,
+making many concessions to the human user.
+But it is a method of proving
+in the metalanguage what happen to be semantic theorems
+about the object language.
+The rules have to be expressed as conditionals
+in the metalanguage,
+or as rules of inference with premises and conclusions in the
+object language.
+Rules of inference are often easier to read,
+so we shall use this style, in the format:<BR>
+<PRE>
+        PREMISE
+        -----
+        CONCLUSION
+</PRE>
+This is to be read as:
+'the argument from PREMISE to CONCLUSION is valid',
+and it means, as always,
+that all models of PREMISE are models of CONCLUSION.
+Conclusions will always be atoms or negated atoms of the form
+'M /= F', and premises will always be truthfunctional compounds
+of atomic formulas of the forms 'M /= F', 'primitive F',
+and 'true'.
+They are of course special purpose rules of inference,
+dealing with very specialised conclusions,
+and they should be thought of as additional
+to other conventional rules of inference
+for the truthfunctional part of propositional logic.
+It so happens that the only such rule that will be needed
+is the rule of Addition:
+that a disjunction may be inferred from either of its disjuncts.
+<A NAME=TOC-4><H2><B>4. Semantic rules for MPL</B></H2></A>
+
+<P>
+This section contains the details of a natural deduction
+style system of the truth tree semantics of PL written in MPL.
+The object language is PL,
+the metalanguage is MPL,
+and the rules for MPL are written in a fragment of English
+serving as meta-MPL
+and hence as meta-meta-PL.
+The three languages will be collapsed into one in section ?.
+
+<P>
+What in the non-deterministic automaton is the stack
+has to be represented in the conclusion of rules as a conjunction.
+What in the automaton is the top of the stack
+has to be represented as the leftmost conjunct.
+Hence the tree rules for the connectives will give rise
+to natural deduction rules of the form
+<PRE>
+        PREMISE
+        -----
+        M /= (F and C).
+</PRE>
+where F is the formula under consideration,
+and C is another formula which also has to be made to hold in M.
+The truthfunctional structure of F determines what the premise
+has to be.
+In procedural languages C would be a continuation procedure,
+perhaps to be executed later.
+The initial continuation formula is the constant 'true',
+so when the system is being asked to find model classes of a formula F,
+the initial goal is to find each M for which
+<PRE>
+        M /= (F and true)
+</PRE>
+holds.
+It may help to think of 'true'
+as a bottom-of-stack marker;
+when processing of the initially given formula
+has reached the marker,
+the two atom lists have to be written out by the system.
+But just as with LISP and PROLOG interpreters written in themselves,
+the fact that the system answers by writing a response
+is not made explicit in the EPL interpreter written in itself.
+
+<P>
+Some of the rules are difficult to read at first,
+and some help will be most welcome.
+We shall distinguish metalanguage and object language
+occurrences by writing the object language in
+a different way, say <B>bold</B>.
+
+<P>
+One of the easiest rules to understand is the rule for conjunction.
+An interpretation will be a model of a conjunction
+if it is a model of both conjuncts.
+In the manual tree method,
+we tick off a conjunction and write the two conjuncts,
+the sets of true and false primitives remains unchanged.
+In the automaton,
+if the topmost formula is a conjunction,
+it has to be replaced by the two conjuncts.
+In the EPL rules,
+if the leftmost formula is a conjunction,
+it has to be replaced by its two conjuncts.
+In other words, in order to prove that M /= (P and C)
+where P is a conjunction (F and G),
+we have to prove that M /= (F and (G and C)).
+This is what the first rule says:<BR>
+<PRE>
+        M /= <B>(F and (G and C))</B>
+        -----
+        M /= <B>((F and G) and  C)</B>.
+</PRE>
+
+<P>
+The rule for disjunctions is slightly different.
+An interpretation will be a model of a disjunction
+if it is a model of one disjunct or it is a model of the other disjunct.
+In the manual tree method
+we branch with the two disjuncts,
+in the automaton an OR-selection is made.
+For EPL,
+in order to prove that M /= (P and C)
+where P is a disjunction (F or G),
+we have to prove that M /= (F and C) or that M /= (G and C).
+In the rule below,
+note that the 'or' in the premise is plain type
+and that the 'or' in the conclusion is in bold.
+<PRE>
+        M /= <B>(F and C)</B>    or   M /= <B>(G and C)</B>
+        -----
+        M /= <B>((F or G) and C)</B>.
+</PRE>
+
+<P>
+The rules for negated conjunctions, for negated disjunctions
+and for double negation
+are entirely analogous.
+This is the rule for negated conjunctions:<BR>
+<PRE>
+        M /= <B>(not F and C)</B>    or   M /= <B>(not G and C)</B>
+        -----
+        M /= <B>(not(F and G) and C)</B>.
+</PRE>
+This is the rule for negated disjunctions:<BR>
+<PRE>
+        M /= <B>(not F and (not G and C))</B>
+        -----
+        M /= <B>(not(F or G) and C)</B>.
+</PRE>
+This is the rule for double negations:<BR>
+<PRE>
+        M /= <B>(F and C)</B>
+        -----
+        M /= <B>(not not F and C)</B>.
+</PRE>
+The rules for implication,
+negated implication,
+equivalence and negated equivalence
+as the first conjunct of the formula in the conclusion
+should be obvious and need not be given here.
+Suffice it to say that in the premises
+only 'and', 'or' and 'not' need occur.
+
+<P>
+In backward chaining,
+the effect of the above rules for the truthfunctional connectives
+is to simplify
+the formula (P and C) to the right of the turnstyle
+to the point where P is a primitive or the negation of a primitive.
+Here then are the rules for primitives and negated primitives.
+Do note that these are the first rules in which the conclusion
+specifies the class of interpretations not just as a variable M
+but as a pair of lists (T,F),
+because the premise needs access to one or the other of
+the two lists.
+The first rule, for unnegated primitive formula A,
+may be paraphrased:
+"To show that the conjunction of an atomic formula and
+a continuation C hold in a mdel,
+it has to be shown that
+1) A is primitive, and that
+2) A is not already false in the model - to maintain consistency -
+and 3) if A is already true in the model
+then it has to be shown that the continuation C holds in the model,
+whereas if A is not already true in the model then A
+has to be added to the true primitive atoms of the model
+and then it has to be shown that the continuation C
+holds in the augmented model."
+<PRE>
+        primitive <B>A</B>  and   not ([],F) /= <B>(not A)</B>  and
+        (       (T,[]) /= <B>A</B>  and  (   T ,F) /= <B>C</B>
+        or  not (T,[]) /= <B>A</B>  and  ([A|T],F) /= <B>C</B> )
+        -----
+        (T,F) /= <B>(A and C)</B>.
+</PRE>
+The rule for a negated primitive is analogous:<BR>
+<PRE>
+        primitive <B>A</B>   and   not  (T,[]) /= <B>A</B>   and
+        (       ([],F) /= <B>(not A)</B>  and (T,   F ) /= <B>C</B>
+        or  not ([],F) /= <B>(not A)</B>  and (T,[A|F]) /= <B>C</B> )
+        -----
+        (T,F) /= <B>(not A and C)</B>.
+</PRE>
+
+<P>
+In backward chaining,
+the effect of the above rules is to whittle down
+the formula to the right of the turnstyle
+until it is no longer a conjunction.
+It can only be a primitve or a negated primitive
+or 'true'.
+For the primitives four rules are needed;
+the first two deal with the case where the primitive
+is the first in its appropriate list:<BR>
+<PRE>
+        primitive <B>A</B>                       primitive <B>A</B>
+        -----                           -----
+        ([A|T],[]) /= <B>A</B>.          ([],[A|F]) /= <B>(not A)</B>.
+</PRE>
+The next rules deal with a primitive formula
+deeper inside the model.
+Like all other rules, they are entirely trivial.
+The rule on the left just says that
+If a primitive formula <B>A</B> is true in a model,
+i.e. if the formula is in the set <B>T</B> of true atoms,
+then it is also true in a model in which the set of true
+atoms has an extra member <B>T1</B>.
+The two rules are needed to enable searching for
+atomic formulas in the true or false sets of a model.
+<BR>
+<PRE>
+        primitive <B>A</B> and                   primitive <B>A</B> and
+        (T,[]) /= <B>A</B>                       ([],F) /= <B>(not A)</B>
+        -----                             -----
+        ([T1|T],[]) /= <B>A</B>.                 ([],[F1|F]) /= <B>(not A)</B>.
+</PRE>
+
+<P>
+The very last rule is needed for the situation
+when the stack has become empty, or the bottom of stack marker
+has been reached:<BR>
+<PRE>
+        true
+        -----
+        (T,F) /= <B>true</B>.
+</PRE>
+This is the final rule.
+When reduction has reached this point,
+T will contain the primitives that need to be true
+and F will contain the primitives that need to be false
+to make the original formula true.
+In the implementation that is described
+in the next two sections,
+the last rule acts as a sentinel -
+a signal that processing of the curent open path is complete
+and that the two lists of primitives are to be written out
+by the system.
+
+<A NAME=TOC-5><H2><B>5. Design of an implementation</B></H2></A>
+<P>
+This section describes aspects of various possible implementations
+of EPL.
+Details of a translator from EPL to PROLOG are given in the next section.
+
+<P>
+Most features of most programming languages
+can be implemented either by interpretation or by compilation.
+An interpreter of a language L1 is a program written in some language L2
+which already runs on a computer.
+The interpreter reads a program in L1 and executes it.
+A compiler of a language L1 is a program
+which reads programs in L1 and translates it into some language L2
+which already runs on a computer.
+The compiler is written in some language L3
+which already runs on a computer,
+not necessarily the same as the one on which the
+translated program will run.
+
+<P>
+Interpreters have to examine parts of programs in L1
+everytime those parts have to be executed;
+by contrast compilers only examine each part once.
+Consequently compilers tend to be one or two orders of magnitude
+faster than interpreters.
+In our case L1 is EPL,
+so for efficiency we should strive to
+compile EPL into some existing computer language.
+Since EPL is so small, we could even do the translation by hand,
+using a program in some intuitive language L3
+to run on our brain as hardware.
+So the first important issue is what the target language L2
+should be.
+
+<P>
+Any universal language can be used as a target language L2
+for translation from a source L1.
+However, the ease with which this can be done
+depends very much on
+the similarities between L1 and L2.
+In the present case the source language EPL,
+understood procedurally,
+uses backtracking to produce all solutions,
+so we should look at a target language L2 which already
+has backtracking.
+Two languages which have inbuilt backtracking are
+SNOBOL (Griswold, Poage and Polonski 1968) and
+ICON (Griswold and Hanson 1979).
+However, EPL also uses pattern matching,
+whereas neither SNOBOL nor ICON offers that.
+Some experimental versions of LISP,
+the Russian functional language REFAL (Turchin 1986),
+and the newer statically typed functional language
+MIRANDA (Turner 1987)
+offer pattern matching,
+but since they are functional and not relational,
+they do not offer inbuilt backtracking.
+
+<P>
+One older theoretical language which has both
+backtracking and pattern matching
+is the language of Elementary Formal Systems (EFS) due to Smullyan (1961).
+The following three argument forms in EPL
+<PRE>
+        P and Q and R           (P and Q) or (R and S)          true
+        -----                   -----                           -----
+        S                       T                               P
+</PRE>
+would be given in EFS as:<BR>
+<PRE>
+        P -> Q -> R -> S        P -> Q -> T                     P
+                                R -> S -> T
+</PRE>
+The right arrow is read as ".. implies .." or "if .. then ..".
+But there are three good reasons for not using
+EFS as a target language:
+1) It uses strings as basic data structure,
+whereas EPL uses formulas,
+2) it does not have negation which EPL needs, and
+3), most compelling for the present purposes,
+it does not appear to be implemented.
+
+<P>
+PROLOG is another language which offers backtracking and
+pattern matching.
+It is remarkably similar to EFS in its underlying structure,
+but was developed independently about 20 years later
+inspired by the idea of turning logic into a programming language
+and by ideas on parsing in accordance with a grammar.
+For a discussion on the relation between EFS and PROLOG,
+see Fitting (1987, pp 27 - 28),
+for a good introduction to PROLOG see Clocksin and Mellish (1981).
+In PROLOG the three arguments above would be rendered in the forms:<BR>
+<PRE>
+        S  :-  P, Q, R.         T  :-  P, Q.                    P.
+                                T  :-  R, S.
+</PRE>
+The ":-" is read as "if",
+and the comma is read as "and".
+'PROLOG' is short for 'PROgramming in LOGic',
+but it makes so many concessions to efficiency
+that it comes nowhere near classical logic.
+In the propositional fragment of PROLOG
+one cannot even show that F1 below is a tautology
+and that F2 is not:<BR>
+<PRE>
+F1:     (p or q) and (p imp r) and (q imp s)  imp  (r or s).
+F2:     (p or q) and (p imp r) and (q imp s)  imp  (r and s).
+</PRE>
+This remains true even if the implications, say (p imp r),
+are recast as disjunctions, say (not p or r).
+It also remains true if the two formulas are replaced
+by their corresponding arguments;
+the counterpart of F1 is the valid Complex Constructive Dilemma,
+that of F2 is an invalid variant.
+The reason why PROLOG cannot handle the difference
+is that it does not have two truth values.
+Really it does not have any truth values at all,
+it is not a semantic language, not even internally.
+Just like EFS, it is merely a syntactic apparatus
+for making inferences.
+Even syntactically it is deficient,
+one cannot assert disjunctions such as (p or q)
+as they occur in F1 and F2,
+nor can one make disjunctive queries
+such as (r or s) as in F1
+when the disjunction follows but neither disjunct does.
+
+<P>
+Nevertheless,
+PROLOG is an excellent target language
+for translation from MPL
+because it has backtracking,
+pattern matching,
+trees (or terms or, for MPL, formulas) as data structure,
+it has a form of negation which is just sufficiently
+adequate for the purpose,
+and implementations are widely available.
+
+<P>
+It is easy enough to write efficient PROLOG programs
+to emulate non-deterministic automata
+with or without a stack, with or without
+an additional internal state
+ - in our case a pair of lists of primitives.
+As analysis proceeds, the lists are used to test for
+consistency,
+and they are augmented as required.
+The important notion is that there is a change of state:
+a formula changes the old pair to a new pair.
+Such a change can be represented in a purely logical manner
+as a ternary relation
+between a formula F and two pairs OLD and NEW.
+When given a procedural reading,
+this says that F transforms the state OLD to the state NEW.
+When given a declarative reading,
+the change relation holds between the formula F
+and the two pairs OLD and NEW if an only if
+OLD is a non-empty class of interpretations
+and F is true in some of its members
+and NEW is a non-empty subclass of OLD
+and F is true in all of its members.
+For the first call of the ternary relation,
+F has to be the formula to be investigated,
+OLD has to be ([],[]), the class of all interpretations,
+and NEW has to be a variable.
+For each successful binding to NEW,
+the PROLOG system would write the value.
+Readers interested in pursuing this idea might want to consult
+a rudimentary version in the file
+<A HREF="misc/epl-old-new.txt">epl-old-new.txt</A>.
+(The ".txt" extension in this file name and in others below
+stops the server from sending this file to the perl interpreter ...)
+<P>
+However, such a PROLOG program would bear little resemblance
+to the MPL interpreter written in the previous section.
+In particular the MPL interpreter only uses one class of interpretations
+(to the left of the turnstyle),
+whereas the automaton needs two: OLD and NEW.
+<A NAME=TOC-6><H2><B>6. A Prolog program</B></H2></A>
+
+<P>
+This section describes the PROLOG implementation
+of the minimal MPL system.
+Knowledge of PROLOG is assumed.
+We shall translate the MPL interpreter into PROLOG.
+Since the interpreter is so small,
+we could easily do the translation by hand.
+On the other hand, since MPL is so regular,
+it is even easier to write a program to do the translation.
+Any language could be used to do the translation,
+but it so happens that PROLOG itself is particularly well suited
+for the task.
+So this section describes an MPL to PROLOG compiler written in PROLOG.
+The resulting PROLOG program is of interest in itself
+independently of the fact that its source was written in MPL.
+This is because it does not use the usual technique
+of writing variable bindings when calls return
+but when the bindings are completed.
+
+<P>
+To enable PROLOG to read the MPL rules,
+it is necessary to define the syntactic properties
+of the MPL operators and of the '-----'
+which separates premise and conclusion of rules.
+<PRE>
+:- op(7,xfx,-----).
+:- op(5,xfx,iff).
+:- op(5,xfy,imp).
+:- op(4,xfy,or).
+:- op(3,xfy,and).
+:- op(2, fx,not).
+:- op(1, fx,primitive).
+:- op(1,xfx,'/=').
+</PRE>
+After these declarations have been executed,
+PROLOG will accept MPL syntax.
+At this point the PROLOG file contains the semantic MPL rules
+exactly as given in section 4.
+When the rules have been read,
+they are known to PROLOG as facts concerning
+a relation '-----'.
+Note that there are no  PROLOG rules for this relation.
+
+<P>
+The MPL rules, written in MPL,
+now have to be translated into PROLOG.
+The following PROLOG clauses define the translation;
+note that the formula operand of /= is not translated.
+<PRE>
+t((A1 or B1),(A2;B2))  :-  !, t(A1,A2), t(B1,B2).
+t((A1 and B1),(A2,B2))  :-  !, t(A1,A2), t(B1,B2).
+t((not A1),(not A2))  :-  !, t(A1,A2).
+t((M/=F),model(F,M)) :- !.
+t((primitive A),(atom(A),A_\==true,A_\==false))  :-  !.
+t(A,A).
+</PRE>
+The following is the actual translator,
+it looks up all clauses which are MPL rules
+and asserts their translation:<BR>
+<PRE>
+:-  repeat,
+        clause( PREMISE ----- M/=F ,__),  t((M/=F),HEAD),
+        (  F == true,  assert((HEAD :- printmodel(M),fail))
+        ;  t(PREMISE,BODY),  assert((HEAD:-BODY)),  fail  ).
+</PRE>
+
+<P>
+For the human user, the most natural way to read models is
+to have the primitives in the two  sets of the model
+in the order in which they first occurred in the formula.
+However, the rules work by prepending later primitives,
+and hence the lists are constructed in the reverse of the natural order.
+To write the models with the primitives in the natural order,
+the following will write the primitives
+in the reverse of the order in which they had been accumulated.
+<PRE>
+printmodel((T,F)) :-
+        write('('),pri(T),write(','),pri(F),write(')'),nl.
+pri(X) :- write('['),p(X),write(']').
+p([]).
+p([X]) :- write(X).
+p([X1,X2|X]) :- p([X2|X]),write(','),write(X1).
+</PRE>
+
+<P>
+We could use the PROLOG version of the MPL interpreter
+in several ways.
+The simplest is to give PROLOG queries:
+to find models of an actual formula F, we write
+<PRE>
+        model(F and true,([],[]).
+</PRE>
+Note that the actual call does not contain any PROLOG variables
+to be instantiated and written out by PROLOG when the call returns.
+Instead the classes of interpretations
+that have been found (if any)
+will be written out by the translation of the sentinel rule.
+More convenient than a call to the model predicate
+is a read-evaluate-print loop
+similar to the top-level loops of LISP or of PROLOG.
+Note again that the printing is actually done
+by the model predicate.
+In PROLOG such a loop is best implemented as a repeat-fail:<BR>
+<PRE>
+run :-
+    repeat,
+        nl, write('> '), read(F),
+        (  F == stop
+        ;  model(F and true,([],[])), fail  ).
+</PRE>
+
+<P>
+To summarise, the interpreter file consists of
+1) the operator precedence declarations from the beginning of this section,
+2) the MPL rules given in section 4,
+and then from this section:
+3) the translation clauses
+and the call to the translation loop,
+4) the clauses for printing models, and
+5) the definition of the run loop.
+To use the system,
+you enter PROLOG and consult the PROLOG file of MPL.
+The reading and translation into PROLOG occurs invisibly.
+The MPL  run loop is then activated by a call.
+On a VAX under VMS, using MUPROLOG,
+a session might look like
+the left column below;
+the comments on the right have been added.
+<PRE>
+$ RUN PROLOG                            ; VMS prompt, calling PROLOG
+1?- consult('epl1.pl').                 ; PROLOG prompt, read program
+yes
+2?- run.                                ; PROLOG prompt, enter loop
+                                        ; keep entering formulas
+> raining and windy and not cold.       ; user prompt - formula
+                                        ; find model(s) for this formula
+([raining, windy], [cold])              ; only one solution
+                                        ; raining and windy must be true
+                                        ; cold must be false
+> p and q or not r and not s.           ; user prompt -  formula
+                                        ; there are two models found:
+([p,q],[])                              ; first solution:
+                                        ; p,q true; r,s don't care
+([],[r,s])                              ; second solution:
+                                        ; r,s false; p,q don't care
+> p and q and r and not p.              ; a contradiction!
+                                        ; no solutions here!
+> not (                                 ; negation of tautology
+    (p or q) and (p imp r) and (q imp s)  imp  (r or s) ).
+                                        ; no solution it's a contradiction
+> not (                                 ; contingent formula:
+    (p or q) and (p imp r) and (q imp s)  imp  (r and s) ).
+                                        ; two solutions:
+([p,r],[q,s])                           ; first solution
+([q,s],[p,r])                           ; second solution
+                                        ; what next ?
+> stop.                                 ; had enough
+3?- ..                                  ; back to PROLOG
+</PRE>
+
+<P>
+It is of some interest to see a  PROLOG interpreter of MPL.
+It is almost identical to the conventional PROLOG in PROLOG
+interpreter, except that for the two predicates of MPL,
+"primitive" and "/=",
+what gets executed is what the translator would have produced.
+<PRE>
+/* an EPL interpreter, works by looking up clauses as needed */
+
+/*
+exe(F) :- write(' : '), write(F), nl, fail.
+*/
+exe(true).
+exe(F and G) :- exe(F), exe(G).
+exe(F or G) :- exe(F); exe(G).
+exe(not F) :- not exe(F).
+exe((primitive A)) :- atom(A), A_\==true, A_\==false.
+exe((M /= F)) :- clause(PREMISE ----- M /= F, _),
+        (  F == true, !, printmodel(M), fail
+        ;  exe(PREMISE) ).
+
+runi :-
+    repeat,
+        nl, write('> '), read(F),
+        ( F == stop
+        ;  exe(([],[]) /= (F and true)), fail ).
+</PRE>
+
+<P>
+The MPL interpreter described above is in the first program file
+associated with this paper:
+<A HREF="misc/epl1.txt">epl1.txt</A>.
+The file also contains the extensions described in the next section.
+(If you copy this file, remember to change the extension from
+".txt" to ".pl" or whatever convention you use.)
+
+
+<A NAME=TOC-7><H2><B>7. EPL written in EPL</B></H2></A>
+<P>
+The semantics of EPL, extended propositional logic,
+is now to be written in itself.
+Hence it will become necessary to introduce
+metalinguistic notions
+into the objectlanguage.
+So apart from the usual atomic formulas
+of propositional logic there will be new ones
+inherited from the metalanguage.
+These new atomic formulas
+contain a binary symbol,
+a notation for a class of interpretations,
+and a formula.
+The exact notation does not concern us yet.
+
+<P>
+These new atoms are different from the usual primitive
+atoms of propositional logic.
+In particular,
+if such a new atom is true in some interpretation,
+then it is true in all interpretations.
+So these new atoms are logically determinate,
+and should play no role in the construction of classes of interpretations.
+Only the usual primitive atoms should be entered into the
+sets of true or false atoms.
+The sets or lists, therefore, will actually be sets or lists
+of primitive atoms.
+In order to be able to test whether
+a given formula is primitive,
+the language needs a predicate to this effect.
+
+<P>
+An EPL interpreter written in itself will have to be able
+to determine whether a formula is primitive.
+Hence there will be another kind of non-primitive atomic formula.
+These formulas will consist of a unary symbol and a formula;
+they will be logically determinate.
+Again the exact notation does not concern us yet.
+
+<P>
+As long as we remain in the metalanguage,
+the two new symbols will be predicates,
+and they cannot be nested.
+This is acceptable in case the user only wants the system
+to do truth trees for just propositional logic
+without the extension.
+But if the user is to be given full use of the extended system
+with the new symbols, the situation is different.
+The new symbols can then
+be nested to an arbitrary depth just like the
+familiar truthfunctional operators.
+So the new symbols in the object language are operators, too.
+
+<P>
+The abstract syntax of extended propositional logic
+can now be specified:
+Formulas are built from constant atoms for truth and falsity
+and from primitive atoms
+by means of familiar operators in the usual manner,
+and by two new operators.
+In detail,
+there is a unary operator (for negation),
+there are binary operators (for conjunction and disjunction).
+For convenience, it is useful
+to add binary operators (for material implication
+and material equivalence).
+Of the new operators,
+one is unary and it takes a formula as a parameter,
+just like negation.
+The other operator is binary,
+one of its parameters is a formula,
+the other is a pair of sets of primitive formulas.
+
+<P>
+This completes the abstract syntax of the merger of the object language
+and the metalanguage.
+In order to incorporate the relational predicate '-----'
+from the meta-metalanguage,
+a further binary operator has to be introduced into the object language.
+
+<P>
+For the concrete syntax it is best to make everything as
+conventional as possible,
+allowing at most minor concessions to ease of implementability.
+We shall write primitive atoms as one or more lower case letters,
+for example 'p', 'q', 'raining', 'windy' and so on.
+We use 'true' and 'false'
+as the two non-primitive constants (for truth and falsity),
+'not' as a prefix predicate (for negation),
+'and', 'or', 'imp' and 'iff'
+as infix predicates (for
+conjunction, disjunction, material implication and material equivalence).
+To minimise the need for parentheses, we assign precedences
+to the prefix and infix predicates:
+'not' has highest precedence,
+followed by 'and', followed by 'or', followed by 'imp' and 'iff'.
+The binary operators 'and', 'or' and 'imp' are right-associative,
+but 'iff' is non-associative.
+A new unary operator 'primitive' is written in prefix,
+its (right) operand is a formula,
+a binary operator '-----' is written in infix,
+its (left and right) operands are formulas,
+and another binary operator '/=' is written in infix,
+with a pair of lists of primitives on the left
+and a formula on the right.
+Lists elements are separated by commas,
+an entire list is enclosed in square brackets '[' and ']',
+and a pair of lists is written enclosed in round parentheses '(' and ')',
+with a comma separating the two members of the pair.
+The two new operators have precedence even higher than that of 'not'.
+To override precedences, round parentheses may be used.
+Also, for clarity it is often useful
+to write parentheses that are not strictly necessary.
+
+<P>
+The semantics for the truthfunctional fragment of EPL
+is just the semantics of conventional propositional logic:
+primitives are variables taking on different
+truth values in different interpretations,
+the two constants take their own value in all interpretations,
+and the values of truthfunctionally compound formulas
+is determined in accordance with the usual rules for the operators.
+The semantics for the additional operators is trivial in the
+technical sense:
+Irrespective of what an interpretation I is,
+atoms of the form 'primitive F' are true in I just in case
+F is primitive,
+atoms of the form 'P ----- C'
+are true in I just in case
+there is no interpretation in which P is true and C is false,
+and atoms of the form 'M /= F'
+are true as given by the rules.
+
+<P>
+But now these are rules for just one language.
+Nevertheless, it will help the human eye
+if formulas in operand position are written in bold.
+
+<P>
+Firstly, the rules for the two constants 'true' and 'false'.
+Now, 'true' is an identity formula for conjunction,
+and this gives the rule on the left.
+Similarly, 'not false' is logically equivalent to 'true',
+and this gives the rule on the right.
+<PRE>
+        M /= <B>C</B>                            M /= <B>C</B>
+        -----                             -----
+        M /= <B>(true and C)</B>.                M /= <B>(not false and C)</B>.
+</PRE>
+
+<P>
+Secondly, rules for atoms or negated atoms of the form 'primitive F'.
+Whether a formula is primitive or not depends entirely
+on the formula itself and has nothing to do with truth values
+that have been assigned to primitive formulas, not even itself.
+So, if the atom in question is of the form 'primitive F',
+its primitiveness can be tested independently of M:<BR>
+<PRE>
+        primitive <B>F</B> and M /= <B>C</B>          not primitive <B>F</B> and M /= <B>C</B>
+        -----                           -----
+        M /= <B>(primitive F and C)</B>.       M /= <B>(not primitive F and C)</B>.
+</PRE>
+
+<P>
+Thirdly, rules for atoms and negated atoms of the form 'N /= F':
+Whether such an atom is true or false depends entirely
+on N and F,
+and has nothing to do with truth values
+that have been assigned to primitive formulas.
+So, these atoms can be tested independently of M.
+But since some of the rules expect a continuation formula,
+what has to be tested is the conjunction of F with
+a continuation.
+Note that the initial continuation formula
+given is not 'true', but 'not false';
+the reason is explained below.
+This is the rule for unnegated atoms of the form 'N /= F':<BR>
+<PRE>
+        N /= <B>(F and not false)</B>  and  M /= <B>C</B>
+        -----
+        M /= <B>(N /= F and C)</B>.
+</PRE>
+This is the rule for negated atoms for the form 'M /= F':<BR>
+<PRE>
+        not N /= <B>(F and not false)</B>  and  M /= <B>C</B>
+        -----
+        M /= <B>(not N /= F  and C)</B>.
+</PRE>
+
+<P>
+Fourthly, the rules for the operator '-----':<BR>
+<PRE>
+        not ([],[]) /= ((PREMISE and not CONCLUSION) and not false)
+        and M /= C
+        -----
+        M /= ( (PREMISE
+                -----
+                CONCLUSION) and C ).
+  
+        ([],[]) /= ((PREMISE and not CONCLUSION) and not false)
+        and M /= C
+        -----
+        M /= ( not (PREMISE
+                    -----
+                    CONCLUSION) and C ).
+</PRE>
+
+<P>
+The rules for '/=' and '-----'
+use 'not false' as the continuation formula,
+and it is on purpose different from the initial
+continuation formula 'true' that is used by the initial call.
+Both of course serve as bottom of stack markers,
+but the difference is this:
+when the initial call reaches the bottom of the stack,
+the models that have been found, if any,
+are to be written out by the system,
+whereas when the bottom of the stack is reached
+from applications of the rules for '/='
+and '-----'
+nothing should be written out.
+A rule is needed to catch the new bottom of stack:<BR>
+<PRE>
+        true
+        -----
+        (T,F) /= not false.
+</PRE>
+<P>
+The additions described in this section are already contained in the
+program file
+<A HREF="misc/epl1.txt">epl1.txt</A>
+that was mentioned earlier.
+Some minor programming inelegancies are removed in the
+otherwise very similar program file associated with this paper
+<A HREF="misc/epl2.txt">epl2.txt</A>
+
+
+<A NAME=TOC-8><H2><B>8. A reflective implementation of an optimisation</B></H2></A>
+<P>
+The papers in the collection edited by Maes and Nardi (1988)
+are devoted to certain introspective
+systems which make active use of being written in themselves.
+The editors (Preface, p vii),
+define "reflective" to mean that
+'(i) the system has an internal representation of itself, and
+(ii) the system sometimes shifts its "normal" computation
+about the external domain to "reflective" computation about itself'.
+
+<P>
+Textbooks describing the tree method invariably recommend
+a certain optimisation which can result in less bushy
+and hence smaller trees.
+Consider a case in which two formulas F1 and F2 remain
+to be processed in a path,
+and where F1 leads to branching an F2 does not.
+If F1 is selected first, then F2 has to be processed twice:
+once in each of the two branches created by processing F1.
+It would have been better to process F2 first, and only once,
+and thus to delay the branching required by F1.
+This is the essence of the optimisation:
+"Delay branching!", i.e.
+select conjunctions, negated disjunctions, double negations etc.
+before disjunctions, negated conjunctions etc.
+At the expense of some visual pre-processing
+a lot of writing can be eliminated.
+For small formulas the optimisation pays off only when reading
+is faster than writing,
+as indeed it is in the manual execution.
+However, for formulas which result in many early subformulas that branch
+and many later ones which do not,
+impressive exponential savings can be made by
+delaying the processing of formulas that branch.
+On the other hand, the cost of the pre-processing
+is not insignificant,
+and it is a constant overhead irrespective
+of whether an optimisation actually will be achieved.
+So, whether the optimisation really saves anything
+depends very much on the relative speeds
+of reading an writing,
+and on the actual mix of formulas that will be encountered.
+
+<P>
+To implement the "Delay branching!" optimisation,
+an automaton  similar to the one sketched in section ?
+can be designed which uses two stacks or sets S1 and S2
+of formulas.
+In line 1 both are set to empty,
+in line 3 the formulas is added to  S1.
+In line 5 a formula is removed from S1 if there is one,
+otherwise it is taken from S2,
+if it leads to branching it is put into S2 in case S1 contains others.
+In lines 8, 10, 11
+the formulas are added to S1.
+In line 15 the loop terminates when both S1 and S2 are empty.
+Again it is straightforward
+to implement in PROLOG,
+but again, because of the essential change from OLD to NEW,
+the topic will not be pursued any further.
+
+<P>
+One way to implement the two stacks is to adapt the method
+used to implement one stack: the two stacks become a single
+conjunction with so-to-speak two bottom-of-stack markers.
+The delaying then works like this:
+Consider a disjunction to be made true.
+Instead of branching straight away, the branching has to be delayed
+and some other formula from the first stack is dealt with.
+The branching disjunction is placed onto the second stack.
+This obvious method would require two rules for disjunctions
+to be made true, one for the occasion when it is first
+encountered and is to be delayed, and another rule when it
+has to be dealt with after having been delayed.
+The relective optimisation avoids the need for a delaying
+rule for each of the branching cases by a simple expedient.
+There is a predicate 'rule' which determines by introspection
+whether there is a rule for handling the case after delaying.
+If such a rule is found, delaying takes place,
+otherwise an immediate action rule is taken.
+One might express this principle by the slogan:
+"I am so lazy. Could I possibly do this task later?
+If the rules tell me I can, then I won't do it now,
+I'll do something else instead. But if the rules don't
+tell me that I can do it later, only then will I do it now."
+<P>
+Since the delaying mixes up the order of execution
+and hence the order of accumulation of primitives
+in models,
+there is no point in writing them in the order
+in which they were accumulated.
+The program simply writes the models
+with primitives in the reverse order in which they were accumulated.
+<P>
+The EPL interpreter described above is in the third program file
+associated with this paper:
+<A HREF="misc/epl3.txt">epl3.txt</A>
+
+<P>
+References:<BR>
+<DL>
+<DT>Abelson, H. and Sussman, G.J. with Sussman, J., 1985,
+<DD>	<EM>Structure and Interpretation of Computer Programs</EM>,
+	MIT Press, McGraw-Hill.
+<DT>Allen, J., 1978,
+<DD>	<EM>The Anatomy of LISP</EM>,
+	McGraw-Hill.
+<DT>Amble, T., 1987,
+<DD>	<EM>Logic Programming and Knowledge Engineering</EM>,
+	Addison Wesley.
+<DT>Bruffaerts, A. and Henin, E., 1987,
+<DD>	"Proof Trees for Negation as Failure",
+	in Kowalski and  Bowen (1987 pp 343 - 358).
+<DT>Clocksin,  W.F. and Mellish, C.S, 1981,
+<DD>	<EM>Programming in Prolog</EM>,
+	Springer.
+<DT>Coscia, P., Franceschi, P., Levi, G., Sardu, G. and Torre, L., 1987,
+<DD>	"Meta-level Definition and Compilation of Inference Engines
+	in the Epsilon Logic Programming Environment",
+	in Kowalski and Bowen (1987, pp 359 - 373).
+<DT>Fitting, M., 1987,
+<DD>	<EM>Computability Theory, Semantics and Logic Programming</EM>,
+	Oxford University Press.
+<DT>Glaser, H., Hankin, C. and Till, D., 1984,
+<DD>	<EM>Principles of Functional Programming</EM>,
+	Prentice Hall International.
+<DT>Griswold, R.E. and Hanson, D.R., 1979,
+<DD>	<EM>Reference Manual for the Icon Programming Language</EM>,
+	Department of Computer Science, University of Arizona.
+<DT>Griswold, R.E., Poage, J.F, and Polonski, I.P, 1968,
+<DD>	<EM>The SNOBOL4 Programming Language</EM>,
+	Prentice Hall.
+<DT>Gustason, W. and Ulrich, D.E., 1973,
+<DD>	<EM>Elementary Symbolic Logic</EM>,
+	Holt, Rinehart and Winston.
+<DT>Halpin, T.A. and Girle, R.A., 1981,
+<DD>	<EM>Deductive Logic</EM>,
+	Logiqpress, Brisbane, Queensland, Australia.
+<DT>Henderson, P., 1980,
+<DD>	<EM>Functional Programming, Application and Implementation</EM>,
+	Prentice Hall.
+<DT>Jeffrey, R.G., 1967,
+<DD>	<EM>Formal Logic, its Scope and Limits</EM>,
+	McGraw-Hill.
+<DT>Kowalski, R.A. and Bowen, K.A., (eds), 1987,
+<DD>	<EM>Logic Programming</EM>, Proceedings of the
+	   Fifth International Conference and Symposium,
+	MIT Press.
+<DT>Lecarme, O. and Pellisier Grant, M., 1986,
+<DD>	<EM>Software Portability</EM>,
+	McGraw-Hill.
+<DT>Maes, P. and Nardi, D., (eds), 1988,
+<DD>	<EM>Meta-level Architectures and Reflection</EM>,
+	North-Holland.
+<DT>Mendelson, E., 1987,
+<DD>	<EM>Introduction to Mathematical Logic</EM>, (3rd edition),
+	Wadsworth and Brooks / Cole.
+<DT>Pereira, L.M., Pereira, F.C.N. and Warren, D.H.D., 1978,
+<DD>	<EM>User's Guide to DECsystem-10</EM>,
+	Department of Aritifical Intelligence,
+	University of Edinburgh.
+<DT>Richards, T.J., 1978,
+<DD>	<EM>The Language of Reason</EM>,
+	Pergamon Press.
+<DT>Sethi, R., 1989,
+<DD>	<EM>Programming Languages - Concepts and Constructs</EM>,
+	Addison Wesley.
+<DT>Shapiro, E., 1986,
+<DD>	"Systems Programming in Concurrent Prolog",
+	in van Caneghem, M. and Warren, D.H.D., (eds), 1986,
+	    <EM>Logic Programming and its Applications</EM>,
+	    Ablex Publishing, Norwood, New Jersey, pp 50 - 74.
+<DT>Smullyan, R.M., 1961,
+<DD>	<EM>Theory of Formal Systems</EM>,
+	Annals of Mathematical Studies, Princeton University Press.
+<DT>Sterling, L., and Lakhotia, A., 1987,
+<DD>	"Composing Prolog Meta-interpreters",
+	in Kowalski and Bowen (1987, pp 386 - 403).
+<DT>Turchin, V., 1986,
+<DD>	"The Concept of a Supercompiler",
+	<EM>ACM Transactions on Programming Languages and Systems</EM>,
+	Vol 8., pp 292 - 325.
+<DT>Turner, D.A., 1987,
+<DD>	"An Introduction to Miranda",
+	in Peyton Jones, S.L., 1987,
+	   <EM>The Implementation of Functional Programming Languages</EM>,
+	   Prentice Hall, pp 431 - 438.
+<DT>Venken, R., 1985,
+<DD>	"A Prolog Meta-interpreter for Partial Evaluation and Its
+	 Application to Source to Source Transformation and
+	 Query-Optimisation",
+	in O'Shea, T., (ed), 1985,
+	    <EM>Advances In Artificial Inteligence</EM>,
+	    North-Holland, pp 347 - 356.
+<DT>Winston, P.H., 1977,
+<DD>	<EM>Artififial Intelligence</EM>,
+	Addison Wesley.
+<DT>Wise, D.S., 1982,
+<DD>	"Interpreters For Functional Languages",
+	in Darlington, J., Henderson, P. and Turner, D.A., 1982,
+	  <EM>Functional Programming and its Applications</EM>,
+	  Cambridge University Press, pp 253 - 278.
