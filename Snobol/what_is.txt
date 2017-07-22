@@ -1,12 +1,16 @@
 * extras
-  * algorithms in snobol4
+  * algorithms in snobol4 by James F. Gimpel (gimpel.zip)
+
 * snobol3
   * java sno
   * unix v6 sno
+
 * snobol4
   * C Macro Snobol4
+
 * snocone
   * Snobol preprocessor
+  
 * spitbol
   * spitbol x64 compiler
 
