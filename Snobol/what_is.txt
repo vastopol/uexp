@@ -14,8 +14,16 @@
 * spitbol
   * spitbol x64 compiler
 
+//------------------------------
+
+
 where from:
+
+Snobol4:
 http://snobol4.com/
 http://www.snobol4.org/
 ftp://ftp.snobol4.com/
-http://minnie.tuhs.org/cgi-bin/utree.pl?file=V6
+
+Snobol3:
+http://minnie.tuhs.org/cgi-bin/utree.pl?file=V6/usr/source/sno
+http://minnie.tuhs.org/cgi-bin/utree.pl?file=Mini-Unix/usr/source/sno

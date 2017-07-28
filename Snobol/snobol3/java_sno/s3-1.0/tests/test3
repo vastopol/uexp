@@ -1,0 +1,5 @@
+       define('add(a,b)','label1','xx','yy') /(label2)
+label1 add = a + b /(return)
+label2 stdout = add('19','17')
+
+

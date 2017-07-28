@@ -1,0 +1,11 @@
+       define('add(a,b)','l1','xx','yy') /(l2)
+l1 add = a + b /(return)
+l2 x = ('add(' squote '19' squote ',' squote '17' squote ')')
+   stdout = add('19','17')
+   y = CALL(x)
+   stdout = y
+
+
+
+
+

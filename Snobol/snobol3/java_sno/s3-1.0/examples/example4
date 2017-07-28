@@ -1,0 +1,5 @@
+        define('fact(n)','fact') /(main)
+fact        fact = '1'
+fact2	    fact = .gt(n) fact * n /f(return)
+	    n = n - '1' /(fact2)
+main    stdout = fact('4')

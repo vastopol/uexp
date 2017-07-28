@@ -1,0 +1,7 @@
+        define('gcd(m,n)','gcd') /(main)
+gcd         gcd = .ne(m) m /f(return)
+            m = .remdr(n,m)
+            n = gcd /(gcd)
+main    stdout = gcd('12','18')
+
+

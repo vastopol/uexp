@@ -1,0 +1,26 @@
+class S3Parser extends Parser;
+
+program: PROGRAM (statement)*;
+statement: STATEMENT LINENO (LABEL)? subj=(primary)? (pattern)? repl=(concat)? (branch)?;
+concat: expr | CONCAT (expr)+;
+expr: term | ADD term term | SUBSTRACT term term;
+term: primary | MULT primary primary | DIV primary primary;
+var: NAME String | reference;
+reference: REFERENCE primary;
+primary: unary | atom ;
+unary: concat | NEGATE concat;
+atom: STRING | var | fcncall;
+fcncall: FCNCALL String arglist;
+arglist: ARGLIST (concat)*;
+pattern: PATTERN (pattest)*;
+pattest: patmatch | expr;
+patmatch: BALANCE (var)? | LEN (var)? primary | PATFCN (var)? fcncall | ARB (var)?;
+branch: BRANCH dest dest dest;
+dest: label | reference;
+fcndel: DEFINITION String namelist;
+namelist: NAMELIST (NAME)*;
+LABEL: [String];
+NAME: [String] ;
+FCNCALL: [String];
+STRING: [String];
+LINENO: [Integer];

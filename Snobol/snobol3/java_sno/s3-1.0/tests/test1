@@ -1,0 +1,11 @@
+       t1t2t3at3bt4 = 'hello () goodbye'
+label2 define('fcn(a,b)','label1','xx','yy') /(label3)
+label1 $('t1' ('t2' ('t3a' 't3b')) 't4') *y/'2'* *(x)* 'goodbye' = x /s(return)f(freturn)
+label3
+       fcn('hello') /f($('label5'))
+label5 stdout = 't1t2t3at3bt4=' t1t2t3at3bt4 
+
+
+
+
+

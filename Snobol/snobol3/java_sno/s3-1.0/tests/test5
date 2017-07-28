@@ -1,0 +1,11 @@
+       define('add(a,b)','label1','xx','yy') /(label2)
+label1 add = a + b /(return)
+label2 x = ('add(' squote '19' squote ',' squote '17' squote ')')
+       stdout = x
+       y = CALL(x)
+       stdout = y
+
+
+
+
+

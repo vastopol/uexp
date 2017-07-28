@@ -1,0 +1,9 @@
+   str = 'testing'
+   str 'e' *x* 'in' *y/'1'* = 'hello'
+   stdout = str
+
+
+
+
+
+
