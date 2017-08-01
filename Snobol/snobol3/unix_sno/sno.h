@@ -1,3 +1,13 @@
+/*
+ *   Snobol III
+ */
+
+/* c libraries ?? */
+ #include <stdlib.h>
+
+ /* #include <stdio.h>  */
+ /* #include <string.h> */ 
+
 struct	node {
 	struct node *p1;
 	struct node *p2;

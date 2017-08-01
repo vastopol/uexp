@@ -1,7 +1,4 @@
 #include "sno.h"
-/*
- * sno4
- */
 
 
 and(ptr)
@@ -111,7 +108,7 @@ l1:
 		op->p2 = a3->p2;
 	f4:
 		a4 = a3->p1;
-		free(a3);
+		_free(a3);
 		a3 = a4;
 		a1 = a1->p2;
 		if (a1 == 0)
@@ -156,7 +153,7 @@ doop(op, arg1, arg2)
 	switch (op) {
 
 	case 11:
-		return(div(a1, a2));
+		return(_div(a1, a2));
 	case 10:
 		return(mult(a1, a2));
 	case 8:
@@ -190,7 +187,7 @@ struct node *e;
 		delete(b);
 		if (c == 0)
 			goto xfail;
-		free(c);
+		_free(c);
 		goto xsuc;
 	case 2: /*  r a g */
 		ca = r->p1;
@@ -208,21 +205,21 @@ struct node *e;
 			goto xfail;
 		c = eval(ca->p2, 1);
 		if (d->p1 == 0) {
-			free(d);
+			_free(d);
 			assign(b, cat(c, b->p2));
 			delete(c);
 			goto xsuc;
 		}
 		if (d->p2 == b->p2->p2) {
 			assign(b, c);
-			free(d);
+			_free(d);
 			goto xsuc;
 		}
 		(r=alloc())->p1 = d->p2->p1;
 		r->p2 = b->p2->p2;
 		assign(b, cat(c, r));
-		free(d);
-		free(r);
+		_free(d);
+		_free(r);
 		delete(c);
 		goto xsuc;
 	}

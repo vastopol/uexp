@@ -1,9 +1,5 @@
 #include "sno.h"
 
-/*
- * sno3
- */
-
 
 bextend(str, last)
 struct node *str, *last;
@@ -242,9 +238,9 @@ fail:
 	list = base;
 	goto f1;
 fadv:
-	free(back);
+	_free(back);
 	b = list->p1;
-	free(list);
+	_free(list);
 	if (b == 0)
 		return(a);
 	list = b;
@@ -259,14 +255,14 @@ f1:
 	etc = var->p2;
 	if (a != 0 & etc->p1 != 0) {
 		if (str->p2 == 0) {
-			free(str);
+			_free(str);
 			str = 0;
 		}
 		assign(etc->p1, copy(str));
 	}
 	if (str)
-		free(str);
-	free(etc);
-	free(var);
+		_free(str);
+	_free(etc);
+	_free(var);
 	goto fadv;
 }

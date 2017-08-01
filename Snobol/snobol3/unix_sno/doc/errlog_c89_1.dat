@@ -1,0 +1,689 @@
+sno1.c:5:24: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘&’ token
+ struct node *freespace &end;
+                        ^
+sno1.c:6:23: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before numeric constant
+ struct node *freelist 0;
+                       ^
+sno1.c:7:12: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘-’ token
+ int *fault -1;
+            ^
+sno1.c: In function ‘mes’:
+sno1.c:10:9: warning: incompatible implicit declaration of built-in function ‘strstr’
+  sysput(strstr(s));
+         ^
+sno1.c:10:16: warning: passing argument 1 of ‘strstr’ makes pointer from integer without a cast
+  sysput(strstr(s));
+                ^
+sno1.c:10:16: note: expected ‘const char *’ but argument is of type ‘int’
+sno1.c:10:9: error: too few arguments to function ‘strstr’
+  sysput(strstr(s));
+         ^
+sno1.c: In function ‘init’:
+sno1.c:16:6: warning: incompatible implicit declaration of built-in function ‘strstr’
+  a = strstr(s);
+      ^
+sno1.c:16:13: warning: passing argument 1 of ‘strstr’ makes pointer from integer without a cast
+  a = strstr(s);
+             ^
+sno1.c:16:13: note: expected ‘const char *’ but argument is of type ‘int’
+sno1.c:16:6: error: too few arguments to function ‘strstr’
+  a = strstr(s);
+      ^
+sno1.c:17:4: warning: assignment makes pointer from integer without a cast
+  b = look(a);
+    ^
+sno1.c:20:2: warning: return makes integer from pointer without a cast
+  return(b);
+  ^
+sno1.c: In function ‘main’:
+sno1.c:33:4: warning: incompatible implicit declaration of built-in function ‘exit’
+    exit();
+    ^
+sno1.c:33:4: error: too few arguments to function ‘exit’
+sno1.c:37:8: warning: assignment makes pointer from integer without a cast
+  lookf = init("f", 0);
+        ^
+sno1.c:38:8: warning: assignment makes pointer from integer without a cast
+  looks = init("s", 0);
+        ^
+sno1.c:39:10: warning: assignment makes pointer from integer without a cast
+  lookend = init("end", 0);
+          ^
+sno1.c:40:12: warning: assignment makes pointer from integer without a cast
+  lookstart = init("start", 0);
+            ^
+sno1.c:41:10: warning: assignment makes pointer from integer without a cast
+  lookdef = init("define", 0);
+          ^
+sno1.c:42:10: warning: assignment makes pointer from integer without a cast
+  lookret = init("return", 0);
+          ^
+sno1.c:43:11: warning: assignment makes pointer from integer without a cast
+  lookfret = init("freturn", 0);
+           ^
+sno1.c:46:8: warning: assignment makes pointer from integer without a cast
+  a = c = compile();
+        ^
+sno1.c:48:13: warning: assignment makes pointer from integer without a cast
+   a->p1 = b = compile();
+             ^
+sno1.c:55:10: warning: assignment makes pointer from integer without a cast
+  while (c=execute(c));
+          ^
+sno1.c: In function ‘syspit’:
+sno1.c:66:8: warning: assignment makes pointer from integer without a cast
+  b = c = alloc();
+        ^
+sno1.c:68:13: warning: assignment makes pointer from integer without a cast
+   c->p1 = d = alloc();
+             ^
+sno1.c:89:2: warning: return makes integer from pointer without a cast
+  return(b);
+  ^
+sno1.c: At top level:
+sno1.c:109:1: warning: conflicting types for built-in function ‘strstr’
+ strstr(s)
+ ^
+sno1.c: In function ‘strstr’:
+sno1.c:115:8: warning: assignment makes pointer from integer without a cast
+  d = f = alloc();
+        ^
+sno1.c:117:5: warning: assignment makes pointer from integer without a cast
+   (e=alloc())->ch = c;
+     ^
+sno1.c:122:2: warning: return makes integer from pointer without a cast
+  return(d);
+  ^
+sno1.c: In function ‘alloc’:
+sno1.c:154:5: warning: incompatible implicit declaration of built-in function ‘exit’
+     exit();
+     ^
+sno1.c:154:5: error: too few arguments to function ‘exit’
+sno1.c:158:10: error: ‘freespace’ undeclared (first use in this function)
+   return(freespace++);
+          ^
+sno1.c:158:10: note: each undeclared identifier is reported only once for each function it appears in
+sno1.c:162:2: warning: return makes integer from pointer without a cast
+  return(f);
+  ^
+sno1.c: At top level:
+sno1.c:165:1: warning: conflicting types for built-in function ‘free’
+ free(pointer)
+ ^
+sno1.c: In function ‘look’:
+sno1.c:196:4: warning: return makes integer from pointer without a cast
+    return(j);
+    ^
+sno1.c:199:4: warning: assignment makes pointer from integer without a cast
+  i = alloc();
+    ^
+sno1.c:205:4: warning: assignment makes pointer from integer without a cast
+  j = alloc();
+    ^
+sno1.c:207:8: warning: assignment makes pointer from integer without a cast
+  j->p1 = copy(string);
+        ^
+sno1.c:210:2: warning: return makes integer from pointer without a cast
+  return(j);
+  ^
+sno1.c: In function ‘copy’:
+sno1.c:221:8: warning: assignment makes pointer from integer without a cast
+  i = l = alloc();
+        ^
+sno1.c:225:5: warning: assignment makes pointer from integer without a cast
+   m = alloc();
+     ^
+sno1.c:231:2: warning: return makes integer from pointer without a cast
+  return(i);
+  ^
+sno1.c: In function ‘binstr’:
+sno1.c:304:4: warning: assignment makes pointer from integer without a cast
+  p = alloc();
+    ^
+sno1.c:305:4: warning: assignment makes pointer from integer without a cast
+  q = alloc();
+    ^
+sno1.c:317:6: warning: assignment makes pointer from integer without a cast
+    m = alloc();
+      ^
+sno1.c:323:3: warning: return makes integer from pointer without a cast
+   return(p);
+   ^
+sno1.c:325:4: warning: assignment makes pointer from integer without a cast
+  m = alloc();
+    ^
+sno1.c: In function ‘cat’:
+sno1.c:356:4: warning: assignment makes pointer from integer without a cast
+  a = copy(string1);
+    ^
+sno1.c:357:4: warning: assignment makes pointer from integer without a cast
+  b = copy(string2);
+    ^
+sno1.c:361:2: warning: return makes integer from pointer without a cast
+  return(a);
+  ^
+sno1.c: In function ‘dcat’:
+sno1.c:369:4: warning: assignment makes pointer from integer without a cast
+  c = cat(a,b);
+    ^
+sno1.c:372:2: warning: return makes integer from pointer without a cast
+  return(c);
+  ^
+sno1.c: In function ‘dump1’:
+sno1.c:410:5: warning: assignment makes pointer from integer without a cast
+   c = binstr(b->typ);
+     ^
+sno1.c:411:5: warning: assignment makes pointer from integer without a cast
+   d = strstr("  ");
+     ^
+sno1.c:412:5: warning: assignment makes pointer from integer without a cast
+   e = dcat(c, d);
+     ^
+sno1.c:416:6: warning: assignment makes pointer from integer without a cast
+    c = strstr("   ");
+      ^
+sno1.c: In function ‘writes’:
+sno1.c:431:3: warning: incompatible implicit declaration of built-in function ‘exit’
+   exit();
+   ^
+sno1.c:431:3: error: too few arguments to function ‘exit’
+sno1.c:436:2: warning: incompatible implicit declaration of built-in function ‘exit’
+  exit();
+  ^
+sno1.c:436:2: error: too few arguments to function ‘exit’
+sno1.c: In function ‘getc’:
+sno1.c:445:8: warning: assignment makes pointer from integer without a cast
+   line = syspit();
+        ^
+sno1.c:463:2: warning: return makes integer from pointer without a cast
+  return(a);
+  ^
+sno2.c: In function ‘compon’:
+sno2.c:10:9: warning: assignment makes pointer from integer without a cast
+   schar = getc(); else
+         ^
+sno2.c:13:5: warning: assignment makes pointer from integer without a cast
+   (a=alloc())->typ = 0;
+     ^
+sno2.c:14:3: warning: return makes integer from pointer without a cast
+   return(a);
+   ^
+sno2.c:20:3: warning: return makes integer from pointer without a cast
+   return(schar);
+   ^
+sno2.c:24:3: warning: return makes integer from pointer without a cast
+   return(schar);
+   ^
+sno2.c:29:10: warning: assignment makes pointer from integer without a cast
+    schar = getc();
+          ^
+sno2.c:32:5: warning: return makes integer from pointer without a cast
+     return(a);
+     ^
+sno2.c:36:4: warning: incompatible implicit declaration of built-in function ‘free’
+    free(schar);
+    ^
+sno2.c:40:3: warning: return makes integer from pointer without a cast
+   return(a);
+   ^
+sno2.c:44:3: warning: return makes integer from pointer without a cast
+   return(schar);
+   ^
+sno2.c:48:3: warning: return makes integer from pointer without a cast
+   return(schar);
+   ^
+sno2.c:52:9: warning: assignment makes pointer from integer without a cast
+   schar = getc();
+         ^
+sno2.c:57:3: warning: return makes integer from pointer without a cast
+   return(a);
+   ^
+sno2.c:61:9: warning: assignment makes pointer from integer without a cast
+   schar = getc();
+         ^
+sno2.c:66:3: warning: return makes integer from pointer without a cast
+   return(a);
+   ^
+sno2.c:70:3: warning: return makes integer from pointer without a cast
+   return(schar);
+   ^
+sno2.c:74:5: warning: assignment makes pointer from integer without a cast
+   a = getc();
+     ^
+sno2.c:79:4: warning: incompatible implicit declaration of built-in function ‘free’
+    free(schar);
+    ^
+sno2.c:82:4: warning: return makes integer from pointer without a cast
+    return(a);
+    ^
+sno2.c:86:10: warning: assignment makes pointer from integer without a cast
+    schar = getc();
+          ^
+sno2.c:98:3: warning: return makes integer from pointer without a cast
+   return(schar);
+   ^
+sno2.c:102:3: warning: return makes integer from pointer without a cast
+   return(schar);
+   ^
+sno2.c:106:3: warning: return makes integer from pointer without a cast
+   return(schar);
+   ^
+sno2.c:109:4: warning: assignment makes pointer from integer without a cast
+  b = alloc();
+    ^
+sno2.c:111:8: warning: assignment makes pointer from integer without a cast
+  schar = getc();
+        ^
+sno2.c:115:9: warning: assignment makes pointer from integer without a cast
+   schar = getc();
+         ^
+sno2.c:119:4: warning: assignment makes pointer from integer without a cast
+  a = look(b);
+    ^
+sno2.c:121:4: warning: assignment makes pointer from integer without a cast
+  b = alloc();
+    ^
+sno2.c:124:2: warning: return makes integer from pointer without a cast
+  return(b);
+  ^
+sno2.c: In function ‘nscomp’:
+sno2.c:131:10: warning: assignment makes pointer from integer without a cast
+  while((c=compon())->typ == 7)
+          ^
+sno2.c:132:3: warning: incompatible implicit declaration of built-in function ‘free’
+   free(c);
+   ^
+sno2.c:133:2: warning: return makes integer from pointer without a cast
+  return(c);
+  ^
+sno2.c: In function ‘push’:
+sno2.c:139:4: warning: assignment makes pointer from integer without a cast
+  (a=alloc())->p2 = stack;
+    ^
+sno2.c:139:18: warning: assignment makes pointer from integer without a cast
+  (a=alloc())->p2 = stack;
+                  ^
+sno2.c:140:2: warning: return makes integer from pointer without a cast
+  return(a);
+  ^
+sno2.c: In function ‘pop’:
+sno2.c:152:2: warning: incompatible implicit declaration of built-in function ‘free’
+  free(s);
+  ^
+sno2.c:153:2: warning: return makes integer from pointer without a cast
+  return(a);
+  ^
+sno2.c: In function ‘expr’:
+sno2.c:164:7: warning: assignment makes pointer from integer without a cast
+  list = alloc();
+       ^
+sno2.c:166:8: warning: assignment makes pointer from integer without a cast
+  stack = push(0);
+        ^
+sno2.c:172:8: warning: assignment makes pointer from integer without a cast
+   comp = space;
+        ^
+sno2.c:175:8: warning: assignment makes pointer from integer without a cast
+   comp = compon();
+        ^
+sno2.c:183:3: warning: incompatible implicit declaration of built-in function ‘free’
+   free(comp);
+   ^
+sno2.c:184:8: warning: assignment makes pointer from integer without a cast
+   comp = compon();
+        ^
+sno2.c:229:5: warning: assignment makes pointer from integer without a cast
+   b = compon();
+     ^
+sno2.c:235:16: warning: assignment makes pointer from integer without a cast
+   comp->p1 = a = alloc();
+                ^
+sno2.c:236:5: warning: assignment makes pointer from integer without a cast
+   b = expr(b, 6, a);
+     ^
+sno2.c:240:6: warning: assignment makes pointer from integer without a cast
+    b = expr(0, 6, a);
+      ^
+sno2.c:250:9: warning: assignment makes integer from pointer without a cast
+   space = comp;
+         ^
+sno2.c:262:9: warning: assignment makes pointer from integer without a cast
+   stack = push(stack);
+         ^
+sno2.c:270:8: warning: assignment makes pointer from integer without a cast
+  stack = pop(stack);
+        ^
+sno2.c:273:3: warning: return makes integer from pointer without a cast
+   return(comp);
+   ^
+sno2.c:281:5: warning: assignment makes pointer from integer without a cast
+   c = alloc();
+     ^
+sno2.c: In function ‘match’:
+sno2.c:296:7: warning: assignment makes pointer from integer without a cast
+  term = bal = 0;
+       ^
+sno2.c:297:7: warning: assignment makes pointer from integer without a cast
+  list = alloc();
+       ^
+sno2.c:299:7: warning: assignment makes pointer from integer without a cast
+  comp = start;
+       ^
+sno2.c:301:8: warning: assignment makes pointer from integer without a cast
+   comp = compon();
+        ^
+sno2.c:305:15: warning: assignment makes pointer from integer without a cast
+  list->p1 = a = alloc();
+               ^
+sno2.c:310:3: warning: incompatible implicit declaration of built-in function ‘free’
+   free(comp);
+   ^
+sno2.c:311:8: warning: assignment makes pointer from integer without a cast
+   comp = compon();
+        ^
+sno2.c:319:8: warning: assignment makes pointer from integer without a cast
+   comp = expr(comp, 6, list);
+        ^
+sno2.c:325:8: warning: assignment makes pointer from integer without a cast
+   comp = compon();
+        ^
+sno2.c:330:9: warning: assignment makes pointer from integer without a cast
+    comp = compon();
+         ^
+sno2.c:332:5: warning: assignment makes pointer from integer without a cast
+   a = alloc();
+     ^
+sno2.c:336:9: warning: assignment makes pointer from integer without a cast
+    comp = expr(comp, 11, a);
+         ^
+sno2.c:343:9: warning: assignment makes pointer from integer without a cast
+    comp = expr(0, 6, a);
+         ^
+sno2.c:349:9: warning: assignment makes pointer from integer without a cast
+    comp = compon();
+         ^
+sno2.c:358:8: warning: assignment makes pointer from integer without a cast
+   comp = compon();
+        ^
+sno2.c:367:2: warning: return makes integer from pointer without a cast
+  return(comp);
+  ^
+sno2.c: In function ‘compile’:
+sno2.c:379:23: warning: assignment makes pointer from integer without a cast
+  m = l = as = xs = xf = t = 0;
+                       ^
+sno2.c:379:13: warning: assignment makes integer from pointer without a cast
+  m = l = as = xs = xf = t = 0;
+             ^
+sno2.c:379:8: warning: assignment makes pointer from integer without a cast
+  m = l = as = xs = xf = t = 0;
+        ^
+sno2.c:379:4: warning: assignment makes integer from pointer without a cast
+  m = l = as = xs = xf = t = 0;
+    ^
+sno2.c:380:7: warning: assignment makes pointer from integer without a cast
+  comp = compon();
+       ^
+sno2.c:384:3: warning: incompatible implicit declaration of built-in function ‘free’
+   free(comp);
+   ^
+sno2.c:385:8: warning: assignment makes pointer from integer without a cast
+   comp = compon();
+        ^
+sno2.c:390:2: warning: incompatible implicit declaration of built-in function ‘free’
+  free(comp);
+  ^
+sno2.c:393:22: warning: assignment makes pointer from integer without a cast
+  comp = expr(0, 11, r=alloc());
+                      ^
+sno2.c:393:7: warning: assignment makes pointer from integer without a cast
+  comp = expr(0, 11, r=alloc());
+       ^
+sno2.c:402:7: warning: assignment makes pointer from integer without a cast
+  comp = match(comp, m);
+       ^
+sno2.c:414:7: warning: assignment makes pointer from integer without a cast
+  comp = expr(0, 6, as=alloc());
+       ^
+sno2.c:424:7: warning: assignment makes pointer from integer without a cast
+  comp = compon();
+       ^
+sno2.c:447:5: warning: assignment makes pointer from integer without a cast
+  xs = alloc();
+     ^
+sno2.c:448:5: warning: assignment makes pointer from integer without a cast
+  xf = alloc();
+     ^
+sno2.c:449:7: warning: assignment makes pointer from integer without a cast
+  comp = expr(0, 6, xs);
+       ^
+sno2.c:453:7: warning: assignment makes pointer from integer without a cast
+  comp = compon();
+       ^
+sno2.c:461:7: warning: assignment makes pointer from integer without a cast
+  comp = compon();
+       ^
+sno2.c:464:22: warning: assignment makes pointer from integer without a cast
+  comp = expr(0, 6, xs=alloc());
+                      ^
+sno2.c:464:7: warning: assignment makes pointer from integer without a cast
+  comp = expr(0, 6, xs=alloc());
+       ^
+sno2.c:472:7: warning: assignment makes pointer from integer without a cast
+  comp = compon();
+       ^
+sno2.c:475:22: warning: assignment makes pointer from integer without a cast
+  comp = expr(0, 6, xf=alloc());
+                      ^
+sno2.c:475:7: warning: assignment makes pointer from integer without a cast
+  comp = expr(0, 6, xf=alloc());
+       ^
+sno2.c:490:9: warning: assignment makes pointer from integer without a cast
+   r->p1 = m;
+         ^
+sno2.c:491:5: warning: assignment makes pointer from integer without a cast
+   r = m;
+     ^
+sno2.c:495:9: warning: assignment makes pointer from integer without a cast
+   r->p1 = as;
+         ^
+sno2.c:496:5: warning: assignment makes pointer from integer without a cast
+   r = as;
+     ^
+sno2.c:498:4: warning: assignment makes pointer from integer without a cast
+  (g=alloc())->p1 = 0;
+    ^
+sno2.c:511:2: warning: return makes integer from pointer without a cast
+  return(comp);
+  ^
+sno2.c:514:4: warning: assignment makes pointer from integer without a cast
+  r = nscomp();
+    ^
+sno2.c:521:4: warning: assignment makes integer from pointer without a cast
+  a = r;
+    ^
+sno2.c:522:8: warning: assignment makes pointer from integer without a cast
+  l->p2 = a;
+        ^
+sno2.c:523:4: warning: assignment makes pointer from integer without a cast
+  r = nscomp();
+    ^
+sno2.c:525:3: error: invalid type argument of ‘->’ (have ‘int’)
+  a->p1 = l;
+   ^
+sno2.c:532:4: warning: assignment makes pointer from integer without a cast
+  r = nscomp();
+    ^
+sno2.c:535:3: error: invalid type argument of ‘->’ (have ‘int’)
+  a->p2 = r;
+   ^
+sno2.c:537:4: warning: assignment makes integer from pointer without a cast
+  a = r;
+    ^
+sno2.c:538:4: warning: assignment makes pointer from integer without a cast
+  r = nscomp();
+    ^
+sno2.c:546:8: warning: assignment makes pointer from integer without a cast
+  if ((r=compon())->typ != 0)
+        ^
+sno2.c:551:4: warning: assignment makes pointer from integer without a cast
+  r = compile();
+    ^
+sno2.c:552:3: error: invalid type argument of ‘->’ (have ‘int’)
+  a->p2 = 0;
+   ^
+sno2.c:555:2: warning: return makes integer from pointer without a cast
+  return(r);
+  ^
+sno3.c: In function ‘bextend’:
+sno3.c:12:9: warning: assignment makes integer from pointer without a cast
+  if ((c = s->p1) == 0)
+         ^
+sno3.c:17:5: warning: assignment makes pointer from integer without a cast
+   a = c;
+     ^
+sno3.c: In function ‘search’:
+sno3.c:78:14: warning: assignment makes pointer from integer without a cast
+  list = base = alloc();
+              ^
+sno3.c:97:4: warning: assignment makes pointer from integer without a cast
+  b = alloc();
+    ^
+sno3.c:101:18: warning: assignment makes pointer from integer without a cast
+  list->p2 = back = alloc();
+                  ^
+sno3.c:107:12: warning: assignment makes pointer from integer without a cast
+   back->p2 = eval(b, 1);
+            ^
+sno3.c:111:6: warning: assignment makes pointer from integer without a cast
+  str = alloc();
+      ^
+sno3.c:112:6: warning: assignment makes pointer from integer without a cast
+  etc = alloc();
+      ^
+sno3.c:113:17: warning: assignment makes pointer from integer without a cast
+  back->p2 = var = alloc();
+                 ^
+sno3.c:120:11: warning: assignment makes pointer from integer without a cast
+   etc->p1 = eval(e, 0);
+           ^
+sno3.c:124:5: warning: assignment makes pointer from integer without a cast
+   e = eval(e, 1);
+     ^
+sno3.c:125:11: warning: assignment makes pointer from integer without a cast
+   etc->p2 = strbin(e);
+           ^
+sno3.c:159:5: warning: assignment makes pointer from integer without a cast
+   a = alloc();
+     ^
+sno3.c:207:4: warning: assignment makes integer from pointer without a cast
+  c = etc->p2;
+    ^
+sno3.c:241:2: warning: incompatible implicit declaration of built-in function ‘free’
+  free(back);
+  ^
+sno3.c:245:3: warning: return makes integer from pointer without a cast
+   return(a);
+   ^
+sno4.c: In function ‘and’:
+sno4.c:30:5: warning: assignment makes pointer from integer without a cast
+   a = copy(a->p2);
+     ^
+sno4.c:32:2: warning: return makes integer from pointer without a cast
+  return(a);
+  ^
+sno4.c: In function ‘eval’:
+sno4.c:49:5: warning: assignment makes pointer from integer without a cast
+  op = list->typ;
+     ^
+sno4.c:50:10: error: switch quantity not an integer
+  switch (op) {
+          ^
+sno4.c:54:7: warning: assignment makes pointer from integer without a cast
+    a1 = and(stack);
+       ^
+sno4.c:61:9: warning: assignment makes pointer from integer without a cast
+   stack = pop(stack);
+         ^
+sno4.c:64:3: warning: return makes integer from pointer without a cast
+   return(a1);
+   ^
+sno4.c:66:6: warning: assignment makes pointer from integer without a cast
+   a1 = and(stack);
+      ^
+sno4.c:67:13: warning: assignment makes pointer from integer without a cast
+   stack->p1 = look(a1);
+             ^
+sno4.c:79:15: warning: assignment makes pointer from integer without a cast
+   a3base = a3 = alloc();
+               ^
+sno4.c:92:15: warning: assignment makes pointer from integer without a cast
+   a3->p1 = a4 = alloc();
+               ^
+sno4.c:94:10: warning: assignment makes pointer from integer without a cast
+   a3->p2 = and(a1);
+          ^
+sno4.c:100:6: warning: assignment makes pointer from integer without a cast
+   op = execute(op); /* recursive */
+      ^
+sno4.c:111:3: warning: incompatible implicit declaration of built-in function ‘free’
+   free(a3);
+   ^
+sno4.c:123:6: warning: assignment makes pointer from integer without a cast
+   a1 = and(stack);
+      ^
+sno4.c:124:9: warning: assignment makes pointer from integer without a cast
+   stack = pop(stack);
+         ^
+sno4.c:125:6: warning: assignment makes pointer from integer without a cast
+   a2 = and(stack);
+      ^
+sno4.c:126:6: warning: assignment makes pointer from integer without a cast
+   a3 = doop(op, a2, a1);
+      ^
+sno4.c:133:6: warning: assignment makes pointer from integer without a cast
+   a1 = copy(list->p2);
+      ^
+sno4.c:134:6: warning: assignment makes pointer from integer without a cast
+   a2 = 1;
+      ^
+sno4.c:140:9: warning: assignment makes pointer from integer without a cast
+   stack = push(stack);
+         ^
+sno4.c:142:14: warning: assignment makes integer from pointer without a cast
+   stack->typ = a2;
+              ^
+sno4.c: In function ‘execute’:
+sno4.c:185:5: warning: assignment makes pointer from integer without a cast
+   b = eval(r->p2, 1);
+     ^
+sno4.c:186:5: warning: assignment makes pointer from integer without a cast
+   c = search(m, b);
+     ^
+sno4.c:190:3: warning: incompatible implicit declaration of built-in function ‘free’
+   free(c);
+   ^
+sno4.c:195:5: warning: assignment makes pointer from integer without a cast
+   b = eval(r->p2, 0);
+     ^
+sno4.c:202:5: warning: assignment makes pointer from integer without a cast
+   b = eval(r->p2, 0);
+     ^
+sno4.c:203:5: warning: assignment makes pointer from integer without a cast
+   d = search(m, b->p2);
+     ^
+sno4.c:206:5: warning: assignment makes pointer from integer without a cast
+   c = eval(ca->p2, 1);
+     ^
+sno4.c:218:5: warning: assignment makes pointer from integer without a cast
+   (r=alloc())->p1 = d->p2->p1;
+     ^
+sno4.c:236:3: warning: return makes integer from pointer without a cast
+   return(e->p1);
+   ^
+sno4.c:238:4: warning: assignment makes pointer from integer without a cast
+  b = eval(b, 0);
+    ^
+sno4.c:247:2: warning: return makes integer from pointer without a cast
+  return(b->p2);
+  ^

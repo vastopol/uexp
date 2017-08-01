@@ -1,0 +1,1110 @@
+sno1.c:5:24: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘&’ token
+ struct node *freespace &end;
+                        ^
+sno1.c:6:23: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before numeric constant
+ struct node *freelist 0;
+                       ^
+sno1.c:7:12: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘-’ token
+ int *fault -1;
+            ^
+sno1.c:9:1: warning: return type defaults to ‘int’
+ mes(s) {
+ ^
+sno1.c: In function ‘mes’:
+sno1.c:9:1: warning: type of ‘s’ defaults to ‘int’
+sno1.c:10:2: warning: implicit declaration of function ‘sysput’ [-Wimplicit-function-declaration]
+  sysput(strstr(s));
+  ^
+sno1.c:10:2: warning: implicit declaration of function ‘strstr’ [-Wimplicit-function-declaration]
+sno1.c:10:9: warning: incompatible implicit declaration of built-in function ‘strstr’
+  sysput(strstr(s));
+         ^
+sno1.c:10:16: warning: passing argument 1 of ‘strstr’ makes pointer from integer without a cast
+  sysput(strstr(s));
+                ^
+sno1.c:10:16: note: expected ‘const char *’ but argument is of type ‘int’
+sno1.c:10:9: error: too few arguments to function ‘strstr’
+  sysput(strstr(s));
+         ^
+sno1.c: At top level:
+sno1.c:13:1: warning: return type defaults to ‘int’
+ init(s, t) {
+ ^
+sno1.c: In function ‘init’:
+sno1.c:13:1: warning: type of ‘s’ defaults to ‘int’
+sno1.c:13:1: warning: type of ‘t’ defaults to ‘int’
+sno1.c:16:6: warning: incompatible implicit declaration of built-in function ‘strstr’
+  a = strstr(s);
+      ^
+sno1.c:16:13: warning: passing argument 1 of ‘strstr’ makes pointer from integer without a cast
+  a = strstr(s);
+             ^
+sno1.c:16:13: note: expected ‘const char *’ but argument is of type ‘int’
+sno1.c:16:6: error: too few arguments to function ‘strstr’
+  a = strstr(s);
+      ^
+sno1.c:17:2: warning: implicit declaration of function ‘look’ [-Wimplicit-function-declaration]
+  b = look(a);
+  ^
+sno1.c:17:4: warning: assignment makes pointer from integer without a cast
+  b = look(a);
+    ^
+sno1.c:18:2: warning: implicit declaration of function ‘delete’ [-Wimplicit-function-declaration]
+  delete(a);
+  ^
+sno1.c:20:2: warning: return makes integer from pointer without a cast
+  return(b);
+  ^
+sno1.c: At top level:
+sno1.c:23:1: warning: return type defaults to ‘int’
+ main(argc, argv)
+ ^
+sno1.c: In function ‘main’:
+sno1.c:23:1: warning: type of ‘argc’ defaults to ‘int’
+sno1.c:26:9: warning: type defaults to ‘int’ in declaration of ‘fin’
+  extern fin, fout;
+         ^
+sno1.c:26:14: warning: type defaults to ‘int’ in declaration of ‘fout’
+  extern fin, fout;
+              ^
+sno1.c:30:3: warning: implicit declaration of function ‘open’ [-Wimplicit-function-declaration]
+   fin = open(argv[1], 0);
+   ^
+sno1.c:33:4: error: too few arguments to function ‘exit’
+    exit();
+    ^
+sno1.c:36:2: warning: implicit declaration of function ‘dup’ [-Wimplicit-function-declaration]
+  fout = dup(1);
+  ^
+sno1.c:37:8: warning: assignment makes pointer from integer without a cast
+  lookf = init("f", 0);
+        ^
+sno1.c:38:8: warning: assignment makes pointer from integer without a cast
+  looks = init("s", 0);
+        ^
+sno1.c:39:10: warning: assignment makes pointer from integer without a cast
+  lookend = init("end", 0);
+          ^
+sno1.c:40:12: warning: assignment makes pointer from integer without a cast
+  lookstart = init("start", 0);
+            ^
+sno1.c:41:10: warning: assignment makes pointer from integer without a cast
+  lookdef = init("define", 0);
+          ^
+sno1.c:42:10: warning: assignment makes pointer from integer without a cast
+  lookret = init("return", 0);
+          ^
+sno1.c:43:11: warning: assignment makes pointer from integer without a cast
+  lookfret = init("freturn", 0);
+           ^
+sno1.c:46:2: warning: implicit declaration of function ‘compile’ [-Wimplicit-function-declaration]
+  a = c = compile();
+  ^
+sno1.c:46:8: warning: assignment makes pointer from integer without a cast
+  a = c = compile();
+        ^
+sno1.c:48:13: warning: assignment makes pointer from integer without a cast
+   a->p1 = b = compile();
+             ^
+sno1.c:55:2: warning: implicit declaration of function ‘execute’ [-Wimplicit-function-declaration]
+  while (c=execute(c));
+  ^
+sno1.c:55:10: warning: assignment makes pointer from integer without a cast
+  while (c=execute(c));
+          ^
+sno1.c:56:2: warning: implicit declaration of function ‘flush’ [-Wimplicit-function-declaration]
+  flush();
+  ^
+sno1.c: At top level:
+sno1.c:59:1: warning: return type defaults to ‘int’
+ syspit() {
+ ^
+sno1.c: In function ‘syspit’:
+sno1.c:60:9: warning: type defaults to ‘int’ in declaration of ‘fin’
+  extern fin;
+         ^
+sno1.c:66:2: warning: implicit declaration of function ‘alloc’ [-Wimplicit-function-declaration]
+  b = c = alloc();
+  ^
+sno1.c:66:8: warning: assignment makes pointer from integer without a cast
+  b = c = alloc();
+        ^
+sno1.c:68:13: warning: assignment makes pointer from integer without a cast
+   c->p1 = d = alloc();
+             ^
+sno1.c:74:5: warning: implicit declaration of function ‘close’ [-Wimplicit-function-declaration]
+     close(fin);
+     ^
+sno1.c:89:2: warning: return makes integer from pointer without a cast
+  return(b);
+  ^
+sno1.c: At top level:
+sno1.c:92:1: warning: return type defaults to ‘int’
+ syspot(string)
+ ^
+sno1.c:109:1: warning: return type defaults to ‘int’
+ strstr(s)
+ ^
+sno1.c:109:1: warning: conflicting types for built-in function ‘strstr’
+sno1.c: In function ‘strstr’:
+sno1.c:115:8: warning: assignment makes pointer from integer without a cast
+  d = f = alloc();
+        ^
+sno1.c:117:5: warning: assignment makes pointer from integer without a cast
+   (e=alloc())->ch = c;
+     ^
+sno1.c:122:2: warning: return makes integer from pointer without a cast
+  return(d);
+  ^
+sno1.c: At top level:
+sno1.c:125:1: warning: return type defaults to ‘int’
+ class(c) {
+ ^
+sno1.c: In function ‘class’:
+sno1.c:125:1: warning: type of ‘c’ defaults to ‘int’
+sno1.c: At top level:
+sno1.c:144:1: warning: return type defaults to ‘int’
+ alloc() {
+ ^
+sno1.c: In function ‘alloc’:
+sno1.c:147:9: warning: type defaults to ‘int’ in declaration of ‘fout’
+  extern fout;
+         ^
+sno1.c:151:4: warning: implicit declaration of function ‘sbrk’ [-Wimplicit-function-declaration]
+    if ((i=sbrk(1200)) == -1) {
+    ^
+sno1.c:153:5: warning: implicit declaration of function ‘write’ [-Wimplicit-function-declaration]
+     write (fout, "Out of free space\n", 18);
+     ^
+sno1.c:154:5: error: too few arguments to function ‘exit’
+     exit();
+     ^
+sno1.c:158:10: error: ‘freespace’ undeclared (first use in this function)
+   return(freespace++);
+          ^
+sno1.c:158:10: note: each undeclared identifier is reported only once for each function it appears in
+sno1.c:162:2: warning: return makes integer from pointer without a cast
+  return(f);
+  ^
+sno1.c: At top level:
+sno1.c:165:1: warning: return type defaults to ‘int’
+ free(pointer)
+ ^
+sno1.c:165:1: warning: conflicting types for ‘free’
+In file included from sno.h:6:0,
+                 from sno1.c:1:
+/usr/include/stdlib.h:483:13: note: previous declaration of ‘free’ was here
+ extern void free (void *__ptr) __THROW;
+             ^
+sno1.c:172:1: warning: return type defaults to ‘int’
+ nfree()
+ ^
+sno1.c:186:1: warning: return type defaults to ‘int’
+ look(string)
+ ^
+sno1.c: In function ‘look’:
+sno1.c:195:3: warning: implicit declaration of function ‘equal’ [-Wimplicit-function-declaration]
+   if (equal(j->p1, string) == 0)
+   ^
+sno1.c:196:4: warning: return makes integer from pointer without a cast
+    return(j);
+    ^
+sno1.c:199:4: warning: assignment makes pointer from integer without a cast
+  i = alloc();
+    ^
+sno1.c:205:4: warning: assignment makes pointer from integer without a cast
+  j = alloc();
+    ^
+sno1.c:207:2: warning: implicit declaration of function ‘copy’ [-Wimplicit-function-declaration]
+  j->p1 = copy(string);
+  ^
+sno1.c:207:8: warning: assignment makes pointer from integer without a cast
+  j->p1 = copy(string);
+        ^
+sno1.c:210:2: warning: return makes integer from pointer without a cast
+  return(j);
+  ^
+sno1.c: At top level:
+sno1.c:213:1: warning: return type defaults to ‘int’
+ copy(string)
+ ^
+sno1.c: In function ‘copy’:
+sno1.c:221:8: warning: assignment makes pointer from integer without a cast
+  i = l = alloc();
+        ^
+sno1.c:225:5: warning: assignment makes pointer from integer without a cast
+   m = alloc();
+     ^
+sno1.c:231:2: warning: return makes integer from pointer without a cast
+  return(i);
+  ^
+sno1.c: At top level:
+sno1.c:234:1: warning: return type defaults to ‘int’
+ equal(string1, string2)
+ ^
+sno1.c:269:1: warning: return type defaults to ‘int’
+ strbin(string)
+ ^
+sno1.c: In function ‘strbin’:
+sno1.c:291:3: warning: implicit declaration of function ‘writes’ [-Wimplicit-function-declaration]
+   writes("bad integer string");
+   ^
+sno1.c: At top level:
+sno1.c:299:1: warning: return type defaults to ‘int’
+ binstr(binary) {
+ ^
+sno1.c: In function ‘binstr’:
+sno1.c:299:1: warning: type of ‘binary’ defaults to ‘int’
+sno1.c:304:4: warning: assignment makes pointer from integer without a cast
+  p = alloc();
+    ^
+sno1.c:305:4: warning: assignment makes pointer from integer without a cast
+  q = alloc();
+    ^
+sno1.c:317:6: warning: assignment makes pointer from integer without a cast
+    m = alloc();
+      ^
+sno1.c:323:3: warning: return makes integer from pointer without a cast
+   return(p);
+   ^
+sno1.c:325:4: warning: assignment makes pointer from integer without a cast
+  m = alloc();
+    ^
+sno1.c: At top level:
+sno1.c:331:1: warning: return type defaults to ‘int’
+ add(string1, string2) {
+ ^
+sno1.c: In function ‘add’:
+sno1.c:331:1: warning: type of ‘string1’ defaults to ‘int’
+sno1.c:331:1: warning: type of ‘string2’ defaults to ‘int’
+sno1.c: At top level:
+sno1.c:335:1: warning: return type defaults to ‘int’
+ sub(string1, string2) {
+ ^
+sno1.c: In function ‘sub’:
+sno1.c:335:1: warning: type of ‘string1’ defaults to ‘int’
+sno1.c:335:1: warning: type of ‘string2’ defaults to ‘int’
+sno1.c: At top level:
+sno1.c:339:1: warning: return type defaults to ‘int’
+ mult(string1, string2) {
+ ^
+sno1.c: In function ‘mult’:
+sno1.c:339:1: warning: type of ‘string1’ defaults to ‘int’
+sno1.c:339:1: warning: type of ‘string2’ defaults to ‘int’
+sno1.c: At top level:
+sno1.c:343:1: warning: return type defaults to ‘int’
+ div(string1, string2) {
+ ^
+sno1.c:343:1: error: conflicting types for ‘div’
+In file included from sno.h:6:0,
+                 from sno1.c:1:
+/usr/include/stdlib.h:789:14: note: previous declaration of ‘div’ was here
+ extern div_t div (int __numer, int __denom)
+              ^
+sno1.c: In function ‘div’:
+sno1.c:343:1: warning: type of ‘string1’ defaults to ‘int’
+ div(string1, string2) {
+ ^
+sno1.c:343:1: warning: type of ‘string2’ defaults to ‘int’
+sno1.c: At top level:
+sno1.c:347:1: warning: return type defaults to ‘int’
+ cat(string1, string2) 
+ ^
+sno1.c: In function ‘cat’:
+sno1.c:356:4: warning: assignment makes pointer from integer without a cast
+  a = copy(string1);
+    ^
+sno1.c:357:4: warning: assignment makes pointer from integer without a cast
+  b = copy(string2);
+    ^
+sno1.c:361:2: warning: return makes integer from pointer without a cast
+  return(a);
+  ^
+sno1.c: At top level:
+sno1.c:364:1: warning: return type defaults to ‘int’
+ dcat(a,b)
+ ^
+sno1.c: In function ‘dcat’:
+sno1.c:369:4: warning: assignment makes pointer from integer without a cast
+  c = cat(a,b);
+    ^
+sno1.c:372:2: warning: return makes integer from pointer without a cast
+  return(c);
+  ^
+sno1.c: At top level:
+sno1.c:375:1: warning: return type defaults to ‘int’
+ delete(string)
+ ^
+sno1.c: In function ‘delete’:
+sno1.c:381:3: warning: ‘return’ with no value, in function returning non-void
+   return;
+   ^
+sno1.c: At top level:
+sno1.c:392:1: warning: return type defaults to ‘int’
+ sysput(string) {
+ ^
+sno1.c: In function ‘sysput’:
+sno1.c:392:1: warning: type of ‘string’ defaults to ‘int’
+sno1.c: At top level:
+sno1.c:397:1: warning: return type defaults to ‘int’
+ dump()
+ ^
+sno1.c: In function ‘dump’:
+sno1.c:399:2: warning: implicit declaration of function ‘dump1’ [-Wimplicit-function-declaration]
+  dump1(namelist);
+  ^
+sno1.c: At top level:
+sno1.c:402:1: warning: return type defaults to ‘int’
+ dump1(base)
+ ^
+sno1.c: In function ‘dump1’:
+sno1.c:410:5: warning: assignment makes pointer from integer without a cast
+   c = binstr(b->typ);
+     ^
+sno1.c:411:5: warning: assignment makes pointer from integer without a cast
+   d = strstr("  ");
+     ^
+sno1.c:412:5: warning: assignment makes pointer from integer without a cast
+   e = dcat(c, d);
+     ^
+sno1.c:416:6: warning: assignment makes pointer from integer without a cast
+    c = strstr("   ");
+      ^
+sno1.c: At top level:
+sno1.c:424:1: warning: return type defaults to ‘int’
+ writes(s) {
+ ^
+sno1.c: In function ‘writes’:
+sno1.c:424:1: warning: type of ‘s’ defaults to ‘int’
+sno1.c:431:3: error: too few arguments to function ‘exit’
+   exit();
+   ^
+In file included from sno.h:7:0,
+                 from sno1.c:1:
+sno1.c:433:8: error: too few arguments to function ‘_IO_getc’
+  while(getc());
+        ^
+In file included from /usr/include/stdio.h:74:0,
+                 from sno.h:7,
+                 from sno1.c:1:
+/usr/include/libio.h:434:12: note: declared here
+ extern int _IO_getc (_IO_FILE *__fp);
+            ^
+sno1.c:436:2: error: too few arguments to function ‘exit’
+  exit();
+  ^
+sno1.c: In function ‘_IO_getc’:
+sno1.c:439:1: error: number of arguments doesn’t match prototype
+ getc() {
+ ^
+In file included from /usr/include/stdio.h:74:0,
+                 from sno.h:7,
+                 from sno1.c:1:
+/usr/include/libio.h:434:12: error: prototype declaration
+ extern int _IO_getc (_IO_FILE *__fp);
+            ^
+sno1.c:442:9: warning: type defaults to ‘int’ in declaration of ‘linflg’
+  static linflg;
+         ^
+sno1.c:445:8: warning: assignment makes pointer from integer without a cast
+   line = syspit();
+        ^
+sno1.c:463:2: warning: return makes integer from pointer without a cast
+  return(a);
+  ^
+sno2.c:4:1: warning: return type defaults to ‘int’
+ compon() {
+ ^
+sno2.c: In function ‘compon’:
+sno2.c:7:9: warning: type defaults to ‘int’ in declaration of ‘next’
+  static next;
+         ^
+In file included from sno.h:7:0,
+                 from sno2.c:1:
+sno2.c:10:11: error: too few arguments to function ‘_IO_getc’
+   schar = getc(); else
+           ^
+In file included from /usr/include/stdio.h:74:0,
+                 from sno.h:7,
+                 from sno2.c:1:
+/usr/include/libio.h:434:12: note: declared here
+ extern int _IO_getc (_IO_FILE *__fp);
+            ^
+sno2.c:13:3: warning: implicit declaration of function ‘alloc’ [-Wimplicit-function-declaration]
+   (a=alloc())->typ = 0;
+   ^
+sno2.c:13:5: warning: assignment makes pointer from integer without a cast
+   (a=alloc())->typ = 0;
+     ^
+sno2.c:14:3: warning: return makes integer from pointer without a cast
+   return(a);
+   ^
+sno2.c:16:2: warning: implicit declaration of function ‘class’ [-Wimplicit-function-declaration]
+  switch (class(schar->ch)) {
+  ^
+sno2.c:20:3: warning: return makes integer from pointer without a cast
+   return(schar);
+   ^
+sno2.c:24:3: warning: return makes integer from pointer without a cast
+   return(schar);
+   ^
+In file included from sno.h:7:0,
+                 from sno2.c:1:
+sno2.c:29:12: error: too few arguments to function ‘_IO_getc’
+    schar = getc();
+            ^
+In file included from /usr/include/stdio.h:74:0,
+                 from sno.h:7,
+                 from sno2.c:1:
+/usr/include/libio.h:434:12: note: declared here
+ extern int _IO_getc (_IO_FILE *__fp);
+            ^
+sno2.c:32:5: warning: return makes integer from pointer without a cast
+     return(a);
+     ^
+sno2.c:40:3: warning: return makes integer from pointer without a cast
+   return(a);
+   ^
+sno2.c:44:3: warning: return makes integer from pointer without a cast
+   return(schar);
+   ^
+sno2.c:48:3: warning: return makes integer from pointer without a cast
+   return(schar);
+   ^
+In file included from sno.h:7:0,
+                 from sno2.c:1:
+sno2.c:52:11: error: too few arguments to function ‘_IO_getc’
+   schar = getc();
+           ^
+In file included from /usr/include/stdio.h:74:0,
+                 from sno.h:7,
+                 from sno2.c:1:
+/usr/include/libio.h:434:12: note: declared here
+ extern int _IO_getc (_IO_FILE *__fp);
+            ^
+sno2.c:57:3: warning: return makes integer from pointer without a cast
+   return(a);
+   ^
+In file included from sno.h:7:0,
+                 from sno2.c:1:
+sno2.c:61:11: error: too few arguments to function ‘_IO_getc’
+   schar = getc();
+           ^
+In file included from /usr/include/stdio.h:74:0,
+                 from sno.h:7,
+                 from sno2.c:1:
+/usr/include/libio.h:434:12: note: declared here
+ extern int _IO_getc (_IO_FILE *__fp);
+            ^
+sno2.c:66:3: warning: return makes integer from pointer without a cast
+   return(a);
+   ^
+sno2.c:70:3: warning: return makes integer from pointer without a cast
+   return(schar);
+   ^
+In file included from sno.h:7:0,
+                 from sno2.c:1:
+sno2.c:74:7: error: too few arguments to function ‘_IO_getc’
+   a = getc();
+       ^
+In file included from /usr/include/stdio.h:74:0,
+                 from sno.h:7,
+                 from sno2.c:1:
+/usr/include/libio.h:434:12: note: declared here
+ extern int _IO_getc (_IO_FILE *__fp);
+            ^
+sno2.c:82:4: warning: return makes integer from pointer without a cast
+    return(a);
+    ^
+In file included from sno.h:7:0,
+                 from sno2.c:1:
+sno2.c:86:12: error: too few arguments to function ‘_IO_getc’
+    schar = getc();
+            ^
+In file included from /usr/include/stdio.h:74:0,
+                 from sno.h:7,
+                 from sno2.c:1:
+/usr/include/libio.h:434:12: note: declared here
+ extern int _IO_getc (_IO_FILE *__fp);
+            ^
+sno2.c:89:5: warning: implicit declaration of function ‘writes’ [-Wimplicit-function-declaration]
+     writes("illegal literal string");
+     ^
+sno2.c:98:3: warning: return makes integer from pointer without a cast
+   return(schar);
+   ^
+sno2.c:102:3: warning: return makes integer from pointer without a cast
+   return(schar);
+   ^
+sno2.c:106:3: warning: return makes integer from pointer without a cast
+   return(schar);
+   ^
+sno2.c:109:4: warning: assignment makes pointer from integer without a cast
+  b = alloc();
+    ^
+In file included from sno.h:7:0,
+                 from sno2.c:1:
+sno2.c:111:10: error: too few arguments to function ‘_IO_getc’
+  schar = getc();
+          ^
+In file included from /usr/include/stdio.h:74:0,
+                 from sno.h:7,
+                 from sno2.c:1:
+/usr/include/libio.h:434:12: note: declared here
+ extern int _IO_getc (_IO_FILE *__fp);
+            ^
+In file included from sno.h:7:0,
+                 from sno2.c:1:
+sno2.c:115:11: error: too few arguments to function ‘_IO_getc’
+   schar = getc();
+           ^
+In file included from /usr/include/stdio.h:74:0,
+                 from sno.h:7,
+                 from sno2.c:1:
+/usr/include/libio.h:434:12: note: declared here
+ extern int _IO_getc (_IO_FILE *__fp);
+            ^
+sno2.c:119:2: warning: implicit declaration of function ‘look’ [-Wimplicit-function-declaration]
+  a = look(b);
+  ^
+sno2.c:119:4: warning: assignment makes pointer from integer without a cast
+  a = look(b);
+    ^
+sno2.c:120:2: warning: implicit declaration of function ‘delete’ [-Wimplicit-function-declaration]
+  delete(b);
+  ^
+sno2.c:121:4: warning: assignment makes pointer from integer without a cast
+  b = alloc();
+    ^
+sno2.c:124:2: warning: return makes integer from pointer without a cast
+  return(b);
+  ^
+sno2.c: At top level:
+sno2.c:127:1: warning: return type defaults to ‘int’
+ nscomp()
+ ^
+sno2.c: In function ‘nscomp’:
+sno2.c:131:10: warning: assignment makes pointer from integer without a cast
+  while((c=compon())->typ == 7)
+          ^
+sno2.c:133:2: warning: return makes integer from pointer without a cast
+  return(c);
+  ^
+sno2.c: At top level:
+sno2.c:136:1: warning: return type defaults to ‘int’
+ push(stack) {
+ ^
+sno2.c: In function ‘push’:
+sno2.c:136:1: warning: type of ‘stack’ defaults to ‘int’
+sno2.c:139:4: warning: assignment makes pointer from integer without a cast
+  (a=alloc())->p2 = stack;
+    ^
+sno2.c:139:18: warning: assignment makes pointer from integer without a cast
+  (a=alloc())->p2 = stack;
+                  ^
+sno2.c:140:2: warning: return makes integer from pointer without a cast
+  return(a);
+  ^
+sno2.c: At top level:
+sno2.c:143:1: warning: return type defaults to ‘int’
+ pop(stack)
+ ^
+sno2.c: In function ‘pop’:
+sno2.c:153:2: warning: return makes integer from pointer without a cast
+  return(a);
+  ^
+sno2.c: At top level:
+sno2.c:156:1: warning: return type defaults to ‘int’
+ expr(start, eof, e)
+ ^
+sno2.c: In function ‘expr’:
+sno2.c:156:1: warning: type of ‘start’ defaults to ‘int’
+sno2.c:156:1: warning: type of ‘eof’ defaults to ‘int’
+sno2.c:164:7: warning: assignment makes pointer from integer without a cast
+  list = alloc();
+       ^
+sno2.c:166:8: warning: assignment makes pointer from integer without a cast
+  stack = push(0);
+        ^
+sno2.c:172:8: warning: assignment makes pointer from integer without a cast
+   comp = space;
+        ^
+sno2.c:175:8: warning: assignment makes pointer from integer without a cast
+   comp = compon();
+        ^
+sno2.c:184:8: warning: assignment makes pointer from integer without a cast
+   comp = compon();
+        ^
+sno2.c:229:5: warning: assignment makes pointer from integer without a cast
+   b = compon();
+     ^
+sno2.c:235:16: warning: assignment makes pointer from integer without a cast
+   comp->p1 = a = alloc();
+                ^
+sno2.c:236:5: warning: assignment makes pointer from integer without a cast
+   b = expr(b, 6, a);
+     ^
+sno2.c:240:6: warning: assignment makes pointer from integer without a cast
+    b = expr(0, 6, a);
+      ^
+sno2.c:250:9: warning: assignment makes integer from pointer without a cast
+   space = comp;
+         ^
+sno2.c:262:9: warning: assignment makes pointer from integer without a cast
+   stack = push(stack);
+         ^
+sno2.c:270:8: warning: assignment makes pointer from integer without a cast
+  stack = pop(stack);
+        ^
+sno2.c:273:3: warning: return makes integer from pointer without a cast
+   return(comp);
+   ^
+sno2.c:281:5: warning: assignment makes pointer from integer without a cast
+   c = alloc();
+     ^
+sno2.c: At top level:
+sno2.c:289:1: warning: return type defaults to ‘int’
+ match(start, m)
+ ^
+sno2.c: In function ‘match’:
+sno2.c:289:1: warning: type of ‘start’ defaults to ‘int’
+sno2.c:296:7: warning: assignment makes pointer from integer without a cast
+  term = bal = 0;
+       ^
+sno2.c:297:7: warning: assignment makes pointer from integer without a cast
+  list = alloc();
+       ^
+sno2.c:299:7: warning: assignment makes pointer from integer without a cast
+  comp = start;
+       ^
+sno2.c:301:8: warning: assignment makes pointer from integer without a cast
+   comp = compon();
+        ^
+sno2.c:305:15: warning: assignment makes pointer from integer without a cast
+  list->p1 = a = alloc();
+               ^
+sno2.c:311:8: warning: assignment makes pointer from integer without a cast
+   comp = compon();
+        ^
+sno2.c:319:8: warning: assignment makes pointer from integer without a cast
+   comp = expr(comp, 6, list);
+        ^
+sno2.c:325:8: warning: assignment makes pointer from integer without a cast
+   comp = compon();
+        ^
+sno2.c:330:9: warning: assignment makes pointer from integer without a cast
+    comp = compon();
+         ^
+sno2.c:332:5: warning: assignment makes pointer from integer without a cast
+   a = alloc();
+     ^
+sno2.c:336:9: warning: assignment makes pointer from integer without a cast
+    comp = expr(comp, 11, a);
+         ^
+sno2.c:343:9: warning: assignment makes pointer from integer without a cast
+    comp = expr(0, 6, a);
+         ^
+sno2.c:349:9: warning: assignment makes pointer from integer without a cast
+    comp = compon();
+         ^
+sno2.c:358:8: warning: assignment makes pointer from integer without a cast
+   comp = compon();
+        ^
+sno2.c:367:2: warning: return makes integer from pointer without a cast
+  return(comp);
+  ^
+sno2.c: At top level:
+sno2.c:373:1: warning: return type defaults to ‘int’
+ compile() {
+ ^
+sno2.c: In function ‘compile’:
+sno2.c:379:23: warning: assignment makes pointer from integer without a cast
+  m = l = as = xs = xf = t = 0;
+                       ^
+sno2.c:379:13: warning: assignment makes integer from pointer without a cast
+  m = l = as = xs = xf = t = 0;
+             ^
+sno2.c:379:8: warning: assignment makes pointer from integer without a cast
+  m = l = as = xs = xf = t = 0;
+        ^
+sno2.c:379:4: warning: assignment makes integer from pointer without a cast
+  m = l = as = xs = xf = t = 0;
+    ^
+sno2.c:380:7: warning: assignment makes pointer from integer without a cast
+  comp = compon();
+       ^
+sno2.c:385:8: warning: assignment makes pointer from integer without a cast
+   comp = compon();
+        ^
+sno2.c:393:22: warning: assignment makes pointer from integer without a cast
+  comp = expr(0, 11, r=alloc());
+                      ^
+sno2.c:393:7: warning: assignment makes pointer from integer without a cast
+  comp = expr(0, 11, r=alloc());
+       ^
+sno2.c:402:7: warning: assignment makes pointer from integer without a cast
+  comp = match(comp, m);
+       ^
+sno2.c:414:7: warning: assignment makes pointer from integer without a cast
+  comp = expr(0, 6, as=alloc());
+       ^
+sno2.c:424:7: warning: assignment makes pointer from integer without a cast
+  comp = compon();
+       ^
+sno2.c:447:5: warning: assignment makes pointer from integer without a cast
+  xs = alloc();
+     ^
+sno2.c:448:5: warning: assignment makes pointer from integer without a cast
+  xf = alloc();
+     ^
+sno2.c:449:7: warning: assignment makes pointer from integer without a cast
+  comp = expr(0, 6, xs);
+       ^
+sno2.c:453:7: warning: assignment makes pointer from integer without a cast
+  comp = compon();
+       ^
+sno2.c:461:7: warning: assignment makes pointer from integer without a cast
+  comp = compon();
+       ^
+sno2.c:464:22: warning: assignment makes pointer from integer without a cast
+  comp = expr(0, 6, xs=alloc());
+                      ^
+sno2.c:464:7: warning: assignment makes pointer from integer without a cast
+  comp = expr(0, 6, xs=alloc());
+       ^
+sno2.c:472:7: warning: assignment makes pointer from integer without a cast
+  comp = compon();
+       ^
+sno2.c:475:22: warning: assignment makes pointer from integer without a cast
+  comp = expr(0, 6, xf=alloc());
+                      ^
+sno2.c:475:7: warning: assignment makes pointer from integer without a cast
+  comp = expr(0, 6, xf=alloc());
+       ^
+sno2.c:490:9: warning: assignment makes pointer from integer without a cast
+   r->p1 = m;
+         ^
+sno2.c:491:5: warning: assignment makes pointer from integer without a cast
+   r = m;
+     ^
+sno2.c:495:9: warning: assignment makes pointer from integer without a cast
+   r->p1 = as;
+         ^
+sno2.c:496:5: warning: assignment makes pointer from integer without a cast
+   r = as;
+     ^
+sno2.c:498:4: warning: assignment makes pointer from integer without a cast
+  (g=alloc())->p1 = 0;
+    ^
+sno2.c:511:2: warning: return makes integer from pointer without a cast
+  return(comp);
+  ^
+sno2.c:514:4: warning: assignment makes pointer from integer without a cast
+  r = nscomp();
+    ^
+sno2.c:521:4: warning: assignment makes integer from pointer without a cast
+  a = r;
+    ^
+sno2.c:522:8: warning: assignment makes pointer from integer without a cast
+  l->p2 = a;
+        ^
+sno2.c:523:4: warning: assignment makes pointer from integer without a cast
+  r = nscomp();
+    ^
+sno2.c:525:3: error: invalid type argument of ‘->’ (have ‘int’)
+  a->p1 = l;
+   ^
+sno2.c:532:4: warning: assignment makes pointer from integer without a cast
+  r = nscomp();
+    ^
+sno2.c:535:3: error: invalid type argument of ‘->’ (have ‘int’)
+  a->p2 = r;
+   ^
+sno2.c:537:4: warning: assignment makes integer from pointer without a cast
+  a = r;
+    ^
+sno2.c:538:4: warning: assignment makes pointer from integer without a cast
+  r = nscomp();
+    ^
+sno2.c:546:8: warning: assignment makes pointer from integer without a cast
+  if ((r=compon())->typ != 0)
+        ^
+sno2.c:551:4: warning: assignment makes pointer from integer without a cast
+  r = compile();
+    ^
+sno2.c:552:3: error: invalid type argument of ‘->’ (have ‘int’)
+  a->p2 = 0;
+   ^
+sno2.c:555:2: warning: return makes integer from pointer without a cast
+  return(r);
+  ^
+sno3.c:4:1: warning: return type defaults to ‘int’
+ bextend(str, last)
+ ^
+sno3.c: In function ‘bextend’:
+sno3.c:12:9: warning: assignment makes integer from pointer without a cast
+  if ((c = s->p1) == 0)
+         ^
+sno3.c:17:5: warning: assignment makes pointer from integer without a cast
+   a = c;
+     ^
+sno3.c:26:2: warning: implicit declaration of function ‘class’ [-Wimplicit-function-declaration]
+  c = class(a->ch);
+  ^
+sno3.c: At top level:
+sno3.c:47:1: warning: return type defaults to ‘int’
+ ubextend(str, last)
+ ^
+sno3.c:69:1: warning: return type defaults to ‘int’
+ search(arg, r)
+ ^
+sno3.c: In function ‘search’:
+sno3.c:78:2: warning: implicit declaration of function ‘alloc’ [-Wimplicit-function-declaration]
+  list = base = alloc();
+  ^
+sno3.c:78:14: warning: assignment makes pointer from integer without a cast
+  list = base = alloc();
+              ^
+sno3.c:97:4: warning: assignment makes pointer from integer without a cast
+  b = alloc();
+    ^
+sno3.c:101:18: warning: assignment makes pointer from integer without a cast
+  list->p2 = back = alloc();
+                  ^
+sno3.c:107:3: warning: implicit declaration of function ‘eval’ [-Wimplicit-function-declaration]
+   back->p2 = eval(b, 1);
+   ^
+sno3.c:107:12: warning: assignment makes pointer from integer without a cast
+   back->p2 = eval(b, 1);
+            ^
+sno3.c:111:6: warning: assignment makes pointer from integer without a cast
+  str = alloc();
+      ^
+sno3.c:112:6: warning: assignment makes pointer from integer without a cast
+  etc = alloc();
+      ^
+sno3.c:113:17: warning: assignment makes pointer from integer without a cast
+  back->p2 = var = alloc();
+                 ^
+sno3.c:120:11: warning: assignment makes pointer from integer without a cast
+   etc->p1 = eval(e, 0);
+           ^
+sno3.c:124:5: warning: assignment makes pointer from integer without a cast
+   e = eval(e, 1);
+     ^
+sno3.c:125:3: warning: implicit declaration of function ‘strbin’ [-Wimplicit-function-declaration]
+   etc->p2 = strbin(e);
+   ^
+sno3.c:125:11: warning: assignment makes pointer from integer without a cast
+   etc->p2 = strbin(e);
+           ^
+sno3.c:126:3: warning: implicit declaration of function ‘delete’ [-Wimplicit-function-declaration]
+   delete(e);
+   ^
+sno3.c:159:5: warning: assignment makes pointer from integer without a cast
+   a = alloc();
+     ^
+sno3.c:207:4: warning: assignment makes integer from pointer without a cast
+  c = etc->p2;
+    ^
+sno3.c:245:3: warning: return makes integer from pointer without a cast
+   return(a);
+   ^
+sno3.c:261:3: warning: implicit declaration of function ‘assign’ [-Wimplicit-function-declaration]
+   assign(etc->p1, copy(str));
+   ^
+sno3.c:261:3: warning: implicit declaration of function ‘copy’ [-Wimplicit-function-declaration]
+sno4.c:4:1: warning: return type defaults to ‘int’
+ and(ptr)
+ ^
+sno4.c: In function ‘and’:
+sno4.c:19:4: warning: implicit declaration of function ‘flush’ [-Wimplicit-function-declaration]
+    flush();
+    ^
+sno4.c:20:4: warning: implicit declaration of function ‘syspit’ [-Wimplicit-function-declaration]
+    return(syspit());
+    ^
+sno4.c:25:4: warning: implicit declaration of function ‘binstr’ [-Wimplicit-function-declaration]
+    return(binstr(nfree()));
+    ^
+sno4.c:25:4: warning: implicit declaration of function ‘nfree’ [-Wimplicit-function-declaration]
+sno4.c:27:3: warning: implicit declaration of function ‘writes’ [-Wimplicit-function-declaration]
+   writes("attempt to take an illegal value");
+   ^
+sno4.c:30:3: warning: implicit declaration of function ‘copy’ [-Wimplicit-function-declaration]
+   a = copy(a->p2);
+   ^
+sno4.c:30:5: warning: assignment makes pointer from integer without a cast
+   a = copy(a->p2);
+     ^
+sno4.c:32:2: warning: return makes integer from pointer without a cast
+  return(a);
+  ^
+sno4.c: At top level:
+sno4.c:35:1: warning: return type defaults to ‘int’
+ eval(e, t)
+ ^
+sno4.c: In function ‘eval’:
+sno4.c:35:1: warning: type of ‘t’ defaults to ‘int’
+sno4.c:49:5: warning: assignment makes pointer from integer without a cast
+  op = list->typ;
+     ^
+sno4.c:50:10: error: switch quantity not an integer
+  switch (op) {
+          ^
+sno4.c:54:7: warning: assignment makes pointer from integer without a cast
+    a1 = and(stack);
+       ^
+sno4.c:61:3: warning: implicit declaration of function ‘pop’ [-Wimplicit-function-declaration]
+   stack = pop(stack);
+   ^
+sno4.c:61:9: warning: assignment makes pointer from integer without a cast
+   stack = pop(stack);
+         ^
+sno4.c:64:3: warning: return makes integer from pointer without a cast
+   return(a1);
+   ^
+sno4.c:66:6: warning: assignment makes pointer from integer without a cast
+   a1 = and(stack);
+      ^
+sno4.c:67:3: warning: implicit declaration of function ‘look’ [-Wimplicit-function-declaration]
+   stack->p1 = look(a1);
+   ^
+sno4.c:67:13: warning: assignment makes pointer from integer without a cast
+   stack->p1 = look(a1);
+             ^
+sno4.c:68:3: warning: implicit declaration of function ‘delete’ [-Wimplicit-function-declaration]
+   delete(a1);
+   ^
+sno4.c:79:3: warning: implicit declaration of function ‘alloc’ [-Wimplicit-function-declaration]
+   a3base = a3 = alloc();
+   ^
+sno4.c:79:15: warning: assignment makes pointer from integer without a cast
+   a3base = a3 = alloc();
+               ^
+sno4.c:92:15: warning: assignment makes pointer from integer without a cast
+   a3->p1 = a4 = alloc();
+               ^
+sno4.c:94:10: warning: assignment makes pointer from integer without a cast
+   a3->p2 = and(a1);
+          ^
+sno4.c:95:3: warning: implicit declaration of function ‘assign’ [-Wimplicit-function-declaration]
+   assign(a1->p1, eval(a2->p2, 1));/* recursive */
+   ^
+sno4.c:100:3: warning: implicit declaration of function ‘execute’ [-Wimplicit-function-declaration]
+   op = execute(op); /* recursive */
+   ^
+sno4.c:100:6: warning: assignment makes pointer from integer without a cast
+   op = execute(op); /* recursive */
+      ^
+sno4.c:123:6: warning: assignment makes pointer from integer without a cast
+   a1 = and(stack);
+      ^
+sno4.c:124:9: warning: assignment makes pointer from integer without a cast
+   stack = pop(stack);
+         ^
+sno4.c:125:6: warning: assignment makes pointer from integer without a cast
+   a2 = and(stack);
+      ^
+sno4.c:126:3: warning: implicit declaration of function ‘doop’ [-Wimplicit-function-declaration]
+   a3 = doop(op, a2, a1);
+   ^
+sno4.c:126:6: warning: assignment makes pointer from integer without a cast
+   a3 = doop(op, a2, a1);
+      ^
+sno4.c:133:6: warning: assignment makes pointer from integer without a cast
+   a1 = copy(list->p2);
+      ^
+sno4.c:134:6: warning: assignment makes pointer from integer without a cast
+   a2 = 1;
+      ^
+sno4.c:140:3: warning: implicit declaration of function ‘push’ [-Wimplicit-function-declaration]
+   stack = push(stack);
+   ^
+sno4.c:140:9: warning: assignment makes pointer from integer without a cast
+   stack = push(stack);
+         ^
+sno4.c:142:14: warning: assignment makes integer from pointer without a cast
+   stack->typ = a2;
+              ^
+sno4.c: At top level:
+sno4.c:147:1: warning: return type defaults to ‘int’
+ doop(op, arg1, arg2)
+ ^
+sno4.c: In function ‘doop’:
+sno4.c:147:1: warning: type of ‘op’ defaults to ‘int’
+sno4.c:147:1: warning: type of ‘arg1’ defaults to ‘int’
+sno4.c:147:1: warning: type of ‘arg2’ defaults to ‘int’
+sno4.c:156:3: error: incompatible types when returning type ‘div_t’ but ‘int’ was expected
+   return(div(a1, a2));
+   ^
+sno4.c:158:3: warning: implicit declaration of function ‘mult’ [-Wimplicit-function-declaration]
+   return(mult(a1, a2));
+   ^
+sno4.c:160:3: warning: implicit declaration of function ‘add’ [-Wimplicit-function-declaration]
+   return(add(a1, a2));
+   ^
+sno4.c:162:3: warning: implicit declaration of function ‘sub’ [-Wimplicit-function-declaration]
+   return(sub(a1, a2));
+   ^
+sno4.c:164:3: warning: implicit declaration of function ‘cat’ [-Wimplicit-function-declaration]
+   return(cat(a1, a2));
+   ^
+sno4.c: At top level:
+sno4.c:169:1: warning: return type defaults to ‘int’
+ execute(e)
+ ^
+sno4.c: In function ‘execute’:
+sno4.c:185:5: warning: assignment makes pointer from integer without a cast
+   b = eval(r->p2, 1);
+     ^
+sno4.c:186:3: warning: implicit declaration of function ‘search’ [-Wimplicit-function-declaration]
+   c = search(m, b);
+   ^
+sno4.c:186:5: warning: assignment makes pointer from integer without a cast
+   c = search(m, b);
+     ^
+sno4.c:195:5: warning: assignment makes pointer from integer without a cast
+   b = eval(r->p2, 0);
+     ^
+sno4.c:202:5: warning: assignment makes pointer from integer without a cast
+   b = eval(r->p2, 0);
+     ^
+sno4.c:203:5: warning: assignment makes pointer from integer without a cast
+   d = search(m, b->p2);
+     ^
+sno4.c:206:5: warning: assignment makes pointer from integer without a cast
+   c = eval(ca->p2, 1);
+     ^
+sno4.c:218:5: warning: assignment makes pointer from integer without a cast
+   (r=alloc())->p1 = d->p2->p1;
+     ^
+sno4.c:236:3: warning: return makes integer from pointer without a cast
+   return(e->p1);
+   ^
+sno4.c:238:4: warning: assignment makes pointer from integer without a cast
+  b = eval(b, 0);
+    ^
+sno4.c:247:2: warning: return makes integer from pointer without a cast
+  return(b->p2);
+  ^
+sno4.c: At top level:
+sno4.c:250:1: warning: return type defaults to ‘int’
+ assign(adr, val)
+ ^
+sno4.c: In function ‘assign’:
+sno4.c:259:3: warning: ‘return’ with no value, in function returning non-void
+   return;
+   ^
+sno4.c:269:3: warning: ‘return’ with no value, in function returning non-void
+   return;
+   ^
+sno4.c:271:3: warning: implicit declaration of function ‘sysput’ [-Wimplicit-function-declaration]
+   sysput(value);
+   ^
+sno4.c:272:3: warning: ‘return’ with no value, in function returning non-void
+   return;
+   ^
+sno4.c:277:3: warning: ‘return’ with no value, in function returning non-void
+   return;
+   ^

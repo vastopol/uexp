@@ -1,23 +1,25 @@
 #include "sno.h"
 
-/*
- *   Snobol III
- */
-
-
+/* 
 int	freesize;
 struct node *freespace &end;
 struct node *freelist 0;
 int	*fault -1;
+*/
+
+int	freesize;
+struct node *freespace;
+struct node *freelist = 0;
+int	*fault = 0;
 
 mes(s) {
-	sysput(strstr(s));
+	sysput(_strstr(s));
 }
 
 init(s, t) {
 	register struct node *a, *b;
 
-	a = strstr(s);
+	a = _strstr(s);
 	b = look(a);
 	delete(a);
 	b->typ = t;
@@ -34,7 +36,7 @@ char *argv[];
 		fin = open(argv[1], 0);
 		if(fin < 0) {
 			mes("cannot open input");
-			exit();
+			exit(1);
 		}
 	}
 	fout = dup(1);
@@ -110,7 +112,7 @@ struct node *string;
 	putchar('\n');
 }
 
-strstr(s)
+_strstr(s)
 char s[];
 {
 	int c;
@@ -155,7 +157,7 @@ alloc() {
 			if ((i=sbrk(1200)) == -1) {
 				flush();
 				write (fout, "Out of free space\n", 18);
-				exit();
+				exit(1);
 			}
 			freesize =+ 200;
 		}
@@ -166,7 +168,7 @@ alloc() {
 	return(f);
 }
 
-free(pointer)
+_free(pointer)
 struct node *pointer;
 {
 	pointer->p1 = freelist;
@@ -344,7 +346,7 @@ mult(string1, string2) {
 	return(binstr(strbin(string1) * strbin(string2)));
 }
 
-div(string1, string2) {
+_div(string1, string2) {
 	return(binstr(strbin(string1) / strbin(string2)));
 }
 
@@ -361,7 +363,7 @@ struct node *string1, *string2;
 	b = copy(string2);
 	a->p2->p1 = b->p1;
 	a->p2 = b->p2;
-	free(b);
+	_free(b);
 	return(a);
 }
 
@@ -387,10 +389,10 @@ struct node *string;
 	b = string->p2;
 	while(a != b) {
 		c = a->p1;
-		free(a);
+		_free(a);
 		a = c;
 	}
-	free(a);
+	_free(a);
 }
 
 sysput(string) {
@@ -412,12 +414,12 @@ struct node *base;
 	while (base) {
 		b = base->p1;
 		c = binstr(b->typ);
-		d = strstr("  ");
+		d = _strstr("  ");
 		e = dcat(c, d);
 		sysput(cat(e, b->p1));
 		delete(e);
 		if (b->typ==1) {
-			c = strstr("   ");
+			c = _strstr("   ");
 			sysput(cat(c, b->p2));
 			delete(c);
 		}
@@ -427,20 +429,20 @@ struct node *base;
 
 writes(s) {
 
-	sysput(dcat(binstr(lc),dcat(strstr("\t"),strstr(s))));
+	sysput(dcat(binstr(lc),dcat(_strstr("\t"),_strstr(s))));
 	flush();
 	if (cfail) {
 		dump();
 		flush();
-		exit();
+		exit(1);
 	}
-	while(getc());
+	while(_getc());
 	while (compile());
 	flush();
-	exit();
+	exit(1);
 }
 
-getc() {
+_getc() {
 	register struct node *a;
 	static struct node *line;
 	static linflg;
@@ -460,7 +462,7 @@ getc() {
 	}
 	a = line->p1;
 	if (a==line->p2) {
-		free(line);
+		_free(line);
 		linflg++;
 	} else
 		line->p1 = a->p1;

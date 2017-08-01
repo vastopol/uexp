@@ -7,7 +7,7 @@ compon() {
 	static next;
 
 	if (next == 0)
-		schar = getc(); else
+		schar = _getc(); else
 		next = 0;
 	if (schar == 0) {
 		(a=alloc())->typ = 0;
@@ -26,14 +26,14 @@ compon() {
 	case 3:
 		a = schar;
 		for(;;) {
-			schar = getc();
+			schar = _getc();
 			if (schar == 0) {
 				a->typ = 0;
 				return(a);
 			}
 			if (class(schar->ch) != 3)
 				break;
-			free(schar);
+			_free(schar);
 		}
 		next = 1;
 		a->typ = 7;
@@ -49,7 +49,7 @@ compon() {
 
 	case 6:
 		a = schar;
-		schar = getc();
+		schar = _getc();
 		if (class(schar->ch) == 3)
 			a->typ = 10; else
 			a->typ = 1;
@@ -58,7 +58,7 @@ compon() {
 
 	case 7:
 		a = schar;
-		schar = getc();
+		schar = _getc();
 		if (class(schar->ch) == 3)
 			a->typ = 11; else
 			a->typ = 2;
@@ -71,19 +71,19 @@ compon() {
 
 	case 9:
 		c = schar->ch;
-		a = getc();
+		a = _getc();
 		if(a == 0)
 			goto lerr;
 		b = schar;
 		if(a->ch == c) {
-			free(schar);
+			_free(schar);
 			a->typ = 15;
 			a->p1 = 0;
 			return(a);
 		}
 		b->p1 = a;
 		for(;;) {
-			schar = getc();
+			schar = _getc();
 			if (schar == 0)
 			lerr:
 				writes("illegal literal string");
@@ -108,11 +108,11 @@ compon() {
 	}
 	b = alloc();
 	b->p1 = a = schar;
-	schar = getc();
+	schar = _getc();
 	while(schar!=0 & !class(schar->ch)) {
 		a->p1 = schar;
 		a = schar;
-		schar = getc();
+		schar = _getc();
 	}
 	b->p2 = a;
 	next = 1;
@@ -129,7 +129,7 @@ nscomp()
 	register struct node *c;
 
 	while((c=compon())->typ == 7)
-		free(c);
+		_free(c);
 	return(c);
 }
 
@@ -149,7 +149,7 @@ struct node *stack;
 	if (s == 0)
 		writes("pop");
 	a = s->p2;
-	free(s);
+	_free(s);
 	return(a);
 }
 
@@ -180,7 +180,7 @@ l3:
 
 	case 7:
 		space = 1;
-		free(comp);
+		_free(comp);
 		comp = compon();
 		goto l3;
 
@@ -243,7 +243,7 @@ l3:
 			writes("error in function");
 		a->p1 = 0;
 	l10:
-		free(b);
+		_free(b);
 		goto l6;
 
 	l4:
@@ -307,7 +307,7 @@ l3:
 l2:
 	switch (comp->typ) {
 	case 7:
-		free(comp);
+		_free(comp);
 		comp = compon();
 		goto l2;
 
@@ -321,12 +321,12 @@ l2:
 		goto l3;
 
 	case 1:
-		free(comp);
+		_free(comp);
 		comp = compon();
 		bal = 0;
 		if (comp->typ == 16) {
 			bal = 1;
-			free(comp);
+			_free(comp);
 			comp = compon();
 		}
 		a = alloc();
@@ -339,13 +339,13 @@ l2:
 		if (comp->typ != 2) {
 			a->p2 = 0;
 		} else {
-			free(comp);
+			_free(comp);
 			comp = expr(0, 6, a);
 		}
 		if (bal) {
 			if (comp->typ != 5)
 				goto merr;
-			free(comp);
+			_free(comp);
 			comp = compon();
 		}
 		b = comp->typ;
@@ -354,7 +354,7 @@ l2:
 		list->p2 = a;
 		list->typ = 2;
 		a->typ = bal;
-		free(comp);
+		_free(comp);
 		comp = compon();
 		if(bal)
 			term = 0; else
@@ -381,13 +381,13 @@ compile() {
 	a = comp->typ;
 	if (a == 14) {
 		l = comp->p1;
-		free(comp);
+		_free(comp);
 		comp = compon();
 		a = comp->typ;
 	}
 	if (a != 7)
 		writes("no space beginning statement");
-	free(comp);
+	_free(comp);
 	if (l == lookdef)
 		goto def;
 	comp = expr(0, 11, r=alloc());
@@ -410,7 +410,7 @@ compile() {
 	writes("unrecognized component in match");
 
 assig:
-	free(comp);
+	_free(comp);
 	comp = expr(0, 6, as=alloc());
 	a = comp->typ;
 	if (a == 0)
@@ -420,7 +420,7 @@ assig:
 	writes("unrecognized component in assignment");
 
 xfer:
-	free(comp);
+	_free(comp);
 	comp = compon();
 	a = comp->typ;
 	if (a == 16)
@@ -433,7 +433,7 @@ xfer:
 	if (a != 14)
 		goto xerr;
 	b = comp->p1;
-	free(comp);
+	_free(comp);
 	if (b == looks)
 		goto xsuc;
 	if (b == lookf)
@@ -443,7 +443,7 @@ xerr:
 	writes("unrecognized component in goto");
 
 xboth:
-	free(comp);
+	_free(comp);
 	xs = alloc();
 	xf = alloc();
 	comp = expr(0, 6, xs);
@@ -498,12 +498,12 @@ asmble:
 	(g=alloc())->p1 = 0;
 	if (xs) {
 		g->p1 = xs->p2;
-		free(xs);
+		_free(xs);
 	}
 	g->p2 = 0;
 	if (xf) {
 		g->p2 = xf->p2;
-		free(xf);
+		_free(xf);
 	}
 	r->p1 = g;
 	comp->typ = t;
@@ -537,15 +537,15 @@ d2:
 	a = r;
 	r = nscomp();
 	if (r->typ == 4) {
-		free(r);
+		_free(r);
 		goto d2;
 	}
 	if (r->typ != 5)
 		goto derr;
-	free(r);
+	_free(r);
 	if ((r=compon())->typ != 0)
 		goto derr;
-	free(r);
+	_free(r);
 
 d4:
 	r = compile();

@@ -1,0 +1,1182 @@
+sno1.c:5:23: error: expected ';' after top level declarator
+struct node *freespace &end;
+                      ^
+                      ;
+sno1.c:6:22: error: expected ';' after top level declarator
+struct node *freelist 0;
+                     ^
+                     ;
+sno1.c:7:11: error: expected ';' after top level declarator
+int     *fault -1;
+              ^
+              ;
+sno1.c:9:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+mes(s) {
+^~~
+sno1.c:10:2: warning: implicit declaration of function 'sysput' is invalid in C99 [-Wimplicit-function-declaration]
+        sysput(strstr(s));
+        ^
+sno1.c:10:9: warning: implicitly declaring library function 'strstr' with type 'char *(const char *, const char *)'
+        sysput(strstr(s));
+               ^
+sno1.c:10:9: note: include the header <string.h> or explicitly provide a declaration for 'strstr'
+sno1.c:10:17: error: too few arguments to function call, expected 2, have 1
+        sysput(strstr(s));
+               ~~~~~~  ^
+sno1.c:13:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+init(s, t) {
+^~~~
+sno1.c:16:14: error: too few arguments to function call, expected 2, have 1
+        a = strstr(s);
+            ~~~~~~  ^
+sno1.c:17:6: warning: implicit declaration of function 'look' is invalid in C99 [-Wimplicit-function-declaration]
+        b = look(a);
+            ^
+sno1.c:17:4: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        b = look(a);
+          ^ ~~~~~~~
+sno1.c:18:2: warning: implicit declaration of function 'delete' is invalid in C99 [-Wimplicit-function-declaration]
+        delete(a);
+        ^
+sno1.c:20:8: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+        return(b);
+              ^~~
+sno1.c:23:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+main(argc, argv)
+^~~~
+sno1.c:26:9: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+        extern fin, fout;
+        ~~~~~~ ^
+sno1.c:26:14: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+        extern fin, fout;
+        ~~~~~~      ^
+sno1.c:30:9: warning: implicit declaration of function 'open' is invalid in C99 [-Wimplicit-function-declaration]
+                fin = open(argv[1], 0);
+                      ^
+sno1.c:32:8: warning: incompatible pointer to integer conversion passing 'char [18]' to parameter of type 'int' [-Wint-conversion]
+                        mes("cannot open input");
+                            ^~~~~~~~~~~~~~~~~~~
+sno1.c:33:9: error: too few arguments to function call, single argument '__status' was not specified
+                        exit();
+                        ~~~~ ^
+sno1.c:36:9: warning: implicit declaration of function 'dup' is invalid in C99 [-Wimplicit-function-declaration]
+        fout = dup(1);
+               ^
+sno1.c:37:15: warning: incompatible pointer to integer conversion passing 'char [2]' to parameter of type 'int' [-Wint-conversion]
+        lookf = init("f", 0);
+                     ^~~
+sno1.c:37:8: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        lookf = init("f", 0);
+              ^ ~~~~~~~~~~~~
+sno1.c:38:15: warning: incompatible pointer to integer conversion passing 'char [2]' to parameter of type 'int' [-Wint-conversion]
+        looks = init("s", 0);
+                     ^~~
+sno1.c:38:8: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        looks = init("s", 0);
+              ^ ~~~~~~~~~~~~
+sno1.c:39:17: warning: incompatible pointer to integer conversion passing 'char [4]' to parameter of type 'int' [-Wint-conversion]
+        lookend = init("end", 0);
+                       ^~~~~
+sno1.c:39:10: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        lookend = init("end", 0);
+                ^ ~~~~~~~~~~~~~~
+sno1.c:40:19: warning: incompatible pointer to integer conversion passing 'char [6]' to parameter of type 'int' [-Wint-conversion]
+        lookstart = init("start", 0);
+                         ^~~~~~~
+sno1.c:40:12: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        lookstart = init("start", 0);
+                  ^ ~~~~~~~~~~~~~~~~
+sno1.c:41:17: warning: incompatible pointer to integer conversion passing 'char [7]' to parameter of type 'int' [-Wint-conversion]
+        lookdef = init("define", 0);
+                       ^~~~~~~~
+sno1.c:41:10: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        lookdef = init("define", 0);
+                ^ ~~~~~~~~~~~~~~~~~
+sno1.c:42:17: warning: incompatible pointer to integer conversion passing 'char [7]' to parameter of type 'int' [-Wint-conversion]
+        lookret = init("return", 0);
+                       ^~~~~~~~
+sno1.c:42:10: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        lookret = init("return", 0);
+                ^ ~~~~~~~~~~~~~~~~~
+sno1.c:43:18: warning: incompatible pointer to integer conversion passing 'char [8]' to parameter of type 'int' [-Wint-conversion]
+        lookfret = init("freturn", 0);
+                        ^~~~~~~~~
+sno1.c:43:11: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        lookfret = init("freturn", 0);
+                 ^ ~~~~~~~~~~~~~~~~~~
+sno1.c:44:7: warning: incompatible pointer to integer conversion passing 'char [7]' to parameter of type 'int' [-Wint-conversion]
+        init("syspit", 3);
+             ^~~~~~~~
+sno1.c:45:7: warning: incompatible pointer to integer conversion passing 'char [7]' to parameter of type 'int' [-Wint-conversion]
+        init("syspot", 4);
+             ^~~~~~~~
+sno1.c:46:10: warning: implicit declaration of function 'compile' is invalid in C99 [-Wimplicit-function-declaration]
+        a = c = compile();
+                ^
+sno1.c:46:8: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        a = c = compile();
+              ^ ~~~~~~~~~
+sno1.c:48:13: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                a->p1 = b = compile();
+                          ^ ~~~~~~~~~
+sno1.c:55:11: warning: implicit declaration of function 'execute' is invalid in C99 [-Wimplicit-function-declaration]
+        while (c=execute(c));
+                 ^
+sno1.c:55:10: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        while (c=execute(c));
+                ^~~~~~~~~~~
+sno1.c:55:10: warning: using the result of an assignment as a condition without parentheses [-Wparentheses]
+        while (c=execute(c));
+               ~^~~~~~~~~~~
+sno1.c:55:10: note: place parentheses around the assignment to silence this warning
+        while (c=execute(c));
+                ^
+               (           )
+sno1.c:55:10: note: use '==' to turn this assignment into an equality comparison
+        while (c=execute(c));
+                ^
+                ==
+sno1.c:56:2: warning: implicit declaration of function 'flush' is invalid in C99 [-Wimplicit-function-declaration]
+        flush();
+        ^
+sno1.c:59:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+syspit() {
+^~~~~~
+sno1.c:60:9: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+        extern fin;
+        ~~~~~~ ^
+sno1.c:66:10: warning: implicit declaration of function 'alloc' is invalid in C99 [-Wimplicit-function-declaration]
+        b = c = alloc();
+                ^
+sno1.c:66:8: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        b = c = alloc();
+              ^ ~~~~~~~
+sno1.c:68:13: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                c->p1 = d = alloc();
+                          ^ ~~~~~~~
+sno1.c:74:5: warning: implicit declaration of function 'close' is invalid in C99 [-Wimplicit-function-declaration]
+                                close(fin);
+                                ^
+sno1.c:89:8: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+        return(b);
+              ^~~
+sno1.c:92:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+syspot(string)
+^~~~~~
+sno1.c:109:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+strstr(s)
+^~~~~~
+sno1.c:109:1: warning: incompatible redeclaration of library function 'strstr' [-Wincompatible-library-redeclaration]
+sno1.c:10:9: note: 'strstr' is a builtin with type 'char *(const char *, const char *)'
+        sysput(strstr(s));
+               ^
+sno1.c:115:8: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        d = f = alloc();
+              ^ ~~~~~~~
+sno1.c:117:5: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                (e=alloc())->ch = c;
+                  ^~~~~~~~
+sno1.c:122:8: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+        return(d);
+              ^~~
+sno1.c:125:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+class(c) {
+^~~~~
+sno1.c:144:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+alloc() {
+^~~~~
+sno1.c:147:9: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+        extern fout;
+        ~~~~~~ ^
+sno1.c:151:11: warning: implicit declaration of function 'sbrk' is invalid in C99 [-Wimplicit-function-declaration]
+                        if ((i=sbrk(1200)) == -1) {
+                               ^
+sno1.c:153:5: warning: implicit declaration of function 'write' is invalid in C99 [-Wimplicit-function-declaration]
+                                write (fout, "Out of free space\n", 18);
+                                ^
+sno1.c:154:10: error: too few arguments to function call, single argument '__status' was not specified
+                                exit();
+                                ~~~~ ^
+sno1.c:156:13: warning: use of unary operator that may be intended as compound assignment (+=)
+                        freesize =+ 200;
+                                 ^~
+sno1.c:158:9: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+                return(freespace++);
+                      ^~~~~~~~~~~~~
+sno1.c:162:8: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+        return(f);
+              ^~~
+sno1.c:165:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+free(pointer)
+^~~~
+sno1.c:165:1: error: conflicting types for 'free'
+/usr/include/stdlib.h:483:13: note: previous declaration is here
+extern void free (void *__ptr) __THROW;
+            ^
+sno1.c:172:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+nfree()
+^~~~~
+sno1.c:186:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+look(string)
+^~~~
+sno1.c:195:7: warning: implicit declaration of function 'equal' is invalid in C99 [-Wimplicit-function-declaration]
+                if (equal(j->p1, string) == 0)
+                    ^
+sno1.c:196:10: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+                        return(j);
+                              ^~~
+sno1.c:199:4: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        i = alloc();
+          ^ ~~~~~~~
+sno1.c:205:4: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        j = alloc();
+          ^ ~~~~~~~
+sno1.c:207:10: warning: implicit declaration of function 'copy' is invalid in C99 [-Wimplicit-function-declaration]
+        j->p1 = copy(string);
+                ^
+sno1.c:207:8: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        j->p1 = copy(string);
+              ^ ~~~~~~~~~~~~
+sno1.c:210:8: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+        return(j);
+              ^~~
+sno1.c:213:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+copy(string)
+^~~~
+sno1.c:221:8: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        i = l = alloc();
+              ^ ~~~~~~~
+sno1.c:225:5: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                m = alloc();
+                  ^ ~~~~~~~
+sno1.c:231:8: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+        return(i);
+              ^~~
+sno1.c:234:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+equal(string1, string2)
+^~~~~
+sno1.c:269:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+strbin(string)
+^~~~~~
+sno1.c:291:3: warning: implicit declaration of function 'writes' is invalid in C99 [-Wimplicit-function-declaration]
+                writes("bad integer string");
+                ^
+sno1.c:299:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+binstr(binary) {
+^~~~~~
+sno1.c:304:4: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        p = alloc();
+          ^ ~~~~~~~
+sno1.c:305:4: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        q = alloc();
+          ^ ~~~~~~~
+sno1.c:317:6: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                        m = alloc();
+                          ^ ~~~~~~~
+sno1.c:323:9: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+                return(p);
+                      ^~~
+sno1.c:325:4: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        m = alloc();
+          ^ ~~~~~~~
+sno1.c:331:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+add(string1, string2) {
+^~~
+sno1.c:332:23: warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'struct node *'
+      [-Wint-conversion]
+        return(binstr(strbin(string1) + strbin(string2)));
+                             ^~~~~~~
+sno1.c:332:41: warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'struct node *'
+      [-Wint-conversion]
+        return(binstr(strbin(string1) + strbin(string2)));
+                                               ^~~~~~~
+sno1.c:335:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+sub(string1, string2) {
+^~~
+sno1.c:336:23: warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'struct node *'
+      [-Wint-conversion]
+        return(binstr(strbin(string1) - strbin(string2)));
+                             ^~~~~~~
+sno1.c:336:41: warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'struct node *'
+      [-Wint-conversion]
+        return(binstr(strbin(string1) - strbin(string2)));
+                                               ^~~~~~~
+sno1.c:339:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+mult(string1, string2) {
+^~~~
+sno1.c:340:23: warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'struct node *'
+      [-Wint-conversion]
+        return(binstr(strbin(string1) * strbin(string2)));
+                             ^~~~~~~
+sno1.c:340:41: warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'struct node *'
+      [-Wint-conversion]
+        return(binstr(strbin(string1) * strbin(string2)));
+                                               ^~~~~~~
+sno1.c:343:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+div(string1, string2) {
+^~~
+sno1.c:343:1: error: conflicting types for 'div'
+/usr/include/stdlib.h:789:14: note: previous declaration is here
+extern div_t div (int __numer, int __denom)
+             ^
+sno1.c:344:23: warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'struct node *'
+      [-Wint-conversion]
+        return(binstr(strbin(string1) / strbin(string2)));
+                             ^~~~~~~
+sno1.c:344:41: warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'struct node *'
+      [-Wint-conversion]
+        return(binstr(strbin(string1) / strbin(string2)));
+                                               ^~~~~~~
+sno1.c:347:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+cat(string1, string2) 
+^~~
+sno1.c:356:4: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        a = copy(string1);
+          ^ ~~~~~~~~~~~~~
+sno1.c:357:4: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        b = copy(string2);
+          ^ ~~~~~~~~~~~~~
+sno1.c:361:8: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+        return(a);
+              ^~~
+sno1.c:364:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+dcat(a,b)
+^~~~
+sno1.c:369:4: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        c = cat(a,b);
+          ^ ~~~~~~~~
+sno1.c:372:8: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+        return(c);
+              ^~~
+sno1.c:375:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+delete(string)
+^~~~~~
+sno1.c:381:3: error: non-void function 'delete' should return a value [-Wreturn-type]
+                return;
+                ^
+sno1.c:392:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+sysput(string) {
+^~~~~~
+sno1.c:393:9: warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'struct node *'
+      [-Wint-conversion]
+        syspot(string);
+               ^~~~~~
+sno1.c:394:9: warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'struct node *'
+      [-Wint-conversion]
+        delete(string);
+               ^~~~~~
+sno1.c:397:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+dump()
+^~~~
+sno1.c:399:2: warning: implicit declaration of function 'dump1' is invalid in C99 [-Wimplicit-function-declaration]
+        dump1(namelist);
+        ^
+sno1.c:402:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+dump1(base)
+^~~~~
+sno1.c:410:5: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                c = binstr(b->typ);
+                  ^ ~~~~~~~~~~~~~~
+sno1.c:411:5: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                d = strstr("  ");
+                  ^ ~~~~~~~~~~~~
+sno1.c:412:5: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                e = dcat(c, d);
+                  ^ ~~~~~~~~~~
+sno1.c:416:6: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                        c = strstr("   ");
+                          ^ ~~~~~~~~~~~~~
+sno1.c:424:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+writes(s) {
+^~~~~~
+sno1.c:426:50: warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'char *' [-Wint-conversion]
+        sysput(dcat(binstr(lc),dcat(strstr("\t"),strstr(s))));
+                                                        ^
+sno1.c:426:30: warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'struct node *'
+      [-Wint-conversion]
+        sysput(dcat(binstr(lc),dcat(strstr("\t"),strstr(s))));
+                                    ^~~~~~~~~~~~
+sno1.c:426:43: warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'struct node *'
+      [-Wint-conversion]
+        sysput(dcat(binstr(lc),dcat(strstr("\t"),strstr(s))));
+                                                 ^~~~~~~~~
+sno1.c:426:14: warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'struct node *'
+      [-Wint-conversion]
+        sysput(dcat(binstr(lc),dcat(strstr("\t"),strstr(s))));
+                    ^~~~~~~~~~
+sno1.c:426:25: warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'struct node *'
+      [-Wint-conversion]
+        sysput(dcat(binstr(lc),dcat(strstr("\t"),strstr(s))));
+                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+sno1.c:431:8: error: too few arguments to function call, single argument '__status' was not specified
+                exit();
+                ~~~~ ^
+sno1.c:433:8: error: too few arguments to function call, single argument '__fp' was not specified
+        while(getc());
+              ^~~~~~
+/usr/include/stdio.h:543:32: note: expanded from macro 'getc'
+#define getc(_fp) _IO_getc (_fp)
+                  ~~~~~~~~     ^
+/usr/include/libio.h:434:1: note: '_IO_getc' declared here
+extern int _IO_getc (_IO_FILE *__fp);
+^
+sno1.c:436:7: error: too few arguments to function call, single argument '__status' was not specified
+        exit();
+        ~~~~ ^
+sno1.c:439:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+getc() {
+^~~~~~
+/usr/include/stdio.h:543:19: note: expanded from macro 'getc'
+#define getc(_fp) _IO_getc (_fp)
+                  ^~~~~~~~
+sno1.c:442:9: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+        static linflg;
+        ~~~~~~ ^
+sno1.c:445:8: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                line = syspit();
+                     ^ ~~~~~~~~
+sno1.c:448:11: warning: incompatible pointer to integer conversion passing 'char [13]' to parameter of type 'int' [-Wint-conversion]
+                        writes("eof on input");
+                               ^~~~~~~~~~~~~~
+sno1.c:463:8: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+        return(a);
+              ^~~
+122 warnings and 13 errors generated.
+sno2.c:4:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+compon() {
+^~~~~~
+sno2.c:7:9: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+        static next;
+        ~~~~~~ ^
+sno2.c:10:11: error: too few arguments to function call, single argument '__fp' was not specified
+                schar = getc(); else
+                        ^~~~~~
+/usr/include/stdio.h:543:32: note: expanded from macro 'getc'
+#define getc(_fp) _IO_getc (_fp)
+                  ~~~~~~~~     ^
+/usr/include/libio.h:434:1: note: '_IO_getc' declared here
+extern int _IO_getc (_IO_FILE *__fp);
+^
+sno2.c:13:6: warning: implicit declaration of function 'alloc' is invalid in C99 [-Wimplicit-function-declaration]
+                (a=alloc())->typ = 0;
+                   ^
+sno2.c:13:5: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                (a=alloc())->typ = 0;
+                  ^~~~~~~~
+sno2.c:14:9: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+                return(a);
+                      ^~~
+sno2.c:16:10: warning: implicit declaration of function 'class' is invalid in C99 [-Wimplicit-function-declaration]
+        switch (class(schar->ch)) {
+                ^
+sno2.c:20:9: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+                return(schar);
+                      ^~~~~~~
+sno2.c:24:9: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+                return(schar);
+                      ^~~~~~~
+sno2.c:29:12: error: too few arguments to function call, single argument '__fp' was not specified
+                        schar = getc();
+                                ^~~~~~
+/usr/include/stdio.h:543:32: note: expanded from macro 'getc'
+#define getc(_fp) _IO_getc (_fp)
+                  ~~~~~~~~     ^
+/usr/include/libio.h:434:1: note: '_IO_getc' declared here
+extern int _IO_getc (_IO_FILE *__fp);
+^
+sno2.c:32:11: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+                                return(a);
+                                      ^~~
+sno2.c:40:9: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+                return(a);
+                      ^~~
+sno2.c:44:9: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+                return(schar);
+                      ^~~~~~~
+sno2.c:48:9: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+                return(schar);
+                      ^~~~~~~
+sno2.c:52:11: error: too few arguments to function call, single argument '__fp' was not specified
+                schar = getc();
+                        ^~~~~~
+/usr/include/stdio.h:543:32: note: expanded from macro 'getc'
+#define getc(_fp) _IO_getc (_fp)
+                  ~~~~~~~~     ^
+/usr/include/libio.h:434:1: note: '_IO_getc' declared here
+extern int _IO_getc (_IO_FILE *__fp);
+^
+sno2.c:57:9: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+                return(a);
+                      ^~~
+sno2.c:61:11: error: too few arguments to function call, single argument '__fp' was not specified
+                schar = getc();
+                        ^~~~~~
+/usr/include/stdio.h:543:32: note: expanded from macro 'getc'
+#define getc(_fp) _IO_getc (_fp)
+                  ~~~~~~~~     ^
+/usr/include/libio.h:434:1: note: '_IO_getc' declared here
+extern int _IO_getc (_IO_FILE *__fp);
+^
+sno2.c:66:9: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+                return(a);
+                      ^~~
+sno2.c:70:9: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+                return(schar);
+                      ^~~~~~~
+sno2.c:74:7: error: too few arguments to function call, single argument '__fp' was not specified
+                a = getc();
+                    ^~~~~~
+/usr/include/stdio.h:543:32: note: expanded from macro 'getc'
+#define getc(_fp) _IO_getc (_fp)
+                  ~~~~~~~~     ^
+/usr/include/libio.h:434:1: note: '_IO_getc' declared here
+extern int _IO_getc (_IO_FILE *__fp);
+^
+sno2.c:82:10: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+                        return(a);
+                              ^~~
+sno2.c:86:12: error: too few arguments to function call, single argument '__fp' was not specified
+                        schar = getc();
+                                ^~~~~~
+/usr/include/stdio.h:543:32: note: expanded from macro 'getc'
+#define getc(_fp) _IO_getc (_fp)
+                  ~~~~~~~~     ^
+/usr/include/libio.h:434:1: note: '_IO_getc' declared here
+extern int _IO_getc (_IO_FILE *__fp);
+^
+sno2.c:89:5: warning: implicit declaration of function 'writes' is invalid in C99 [-Wimplicit-function-declaration]
+                                writes("illegal literal string");
+                                ^
+sno2.c:98:9: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+                return(schar);
+                      ^~~~~~~
+sno2.c:102:9: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+                return(schar);
+                      ^~~~~~~
+sno2.c:106:9: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+                return(schar);
+                      ^~~~~~~
+sno2.c:109:4: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        b = alloc();
+          ^ ~~~~~~~
+sno2.c:111:10: error: too few arguments to function call, single argument '__fp' was not specified
+        schar = getc();
+                ^~~~~~
+/usr/include/stdio.h:543:32: note: expanded from macro 'getc'
+#define getc(_fp) _IO_getc (_fp)
+                  ~~~~~~~~     ^
+/usr/include/libio.h:434:1: note: '_IO_getc' declared here
+extern int _IO_getc (_IO_FILE *__fp);
+^
+sno2.c:112:17: warning: & has lower precedence than !=; != will be evaluated first [-Wparentheses]
+        while(schar!=0 & !class(schar->ch)) {
+              ~~~~~~~~~^
+sno2.c:112:17: note: place parentheses around the '!=' expression to silence this warning
+        while(schar!=0 & !class(schar->ch)) {
+                       ^
+              (       )
+sno2.c:112:17: note: place parentheses around the & expression to evaluate it first
+        while(schar!=0 & !class(schar->ch)) {
+                       ^
+                     (                    )
+sno2.c:115:11: error: too few arguments to function call, single argument '__fp' was not specified
+                schar = getc();
+                        ^~~~~~
+/usr/include/stdio.h:543:32: note: expanded from macro 'getc'
+#define getc(_fp) _IO_getc (_fp)
+                  ~~~~~~~~     ^
+/usr/include/libio.h:434:1: note: '_IO_getc' declared here
+extern int _IO_getc (_IO_FILE *__fp);
+^
+sno2.c:119:6: warning: implicit declaration of function 'look' is invalid in C99 [-Wimplicit-function-declaration]
+        a = look(b);
+            ^
+sno2.c:119:4: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        a = look(b);
+          ^ ~~~~~~~
+sno2.c:120:2: warning: implicit declaration of function 'delete' is invalid in C99 [-Wimplicit-function-declaration]
+        delete(b);
+        ^
+sno2.c:121:4: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        b = alloc();
+          ^ ~~~~~~~
+sno2.c:124:8: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+        return(b);
+              ^~~
+sno2.c:127:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+nscomp()
+^~~~~~
+sno2.c:131:10: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        while((c=compon())->typ == 7)
+                ^~~~~~~~~
+sno2.c:133:8: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+        return(c);
+              ^~~
+sno2.c:136:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+push(stack) {
+^~~~
+sno2.c:139:4: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        (a=alloc())->p2 = stack;
+          ^~~~~~~~
+sno2.c:139:18: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        (a=alloc())->p2 = stack;
+                        ^ ~~~~~
+sno2.c:140:8: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+        return(a);
+              ^~~
+sno2.c:143:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+pop(stack)
+^~~
+sno2.c:153:8: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+        return(a);
+              ^~~
+sno2.c:156:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+expr(start, eof, e)
+^~~~
+sno2.c:164:7: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        list = alloc();
+             ^ ~~~~~~~
+sno2.c:166:8: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        stack = push(0);
+              ^ ~~~~~~~
+sno2.c:172:8: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                comp = space;
+                     ^ ~~~~~
+sno2.c:175:8: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                comp = compon();
+                     ^ ~~~~~~~~
+sno2.c:184:8: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                comp = compon();
+                     ^ ~~~~~~~~
+sno2.c:229:5: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                b = compon();
+                  ^ ~~~~~~~~
+sno2.c:235:16: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                comp->p1 = a = alloc();
+                             ^ ~~~~~~~
+sno2.c:236:12: warning: incompatible pointer to integer conversion passing 'struct node *' to parameter of type 'int'
+      [-Wint-conversion]
+                b = expr(b, 6, a);
+                         ^
+sno2.c:236:5: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                b = expr(b, 6, a);
+                  ^ ~~~~~~~~~~~~~
+sno2.c:240:6: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                        b = expr(0, 6, a);
+                          ^ ~~~~~~~~~~~~~
+sno2.c:250:9: warning: incompatible pointer to integer conversion assigning to 'int' from 'struct node *' [-Wint-conversion]
+                space = comp;
+                      ^ ~~~~
+sno2.c:262:16: warning: incompatible pointer to integer conversion passing 'struct node *' to parameter of type 'int'
+      [-Wint-conversion]
+                stack = push(stack);
+                             ^~~~~
+sno2.c:262:9: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                stack = push(stack);
+                      ^ ~~~~~~~~~~~
+sno2.c:270:8: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        stack = pop(stack);
+              ^ ~~~~~~~~~~
+sno2.c:273:9: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+                return(comp);
+                      ^~~~~~
+sno2.c:281:5: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                c = alloc();
+                  ^ ~~~~~~~
+sno2.c:289:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+match(start, m)
+^~~~~
+sno2.c:296:7: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        term = bal = 0;
+             ^ ~~~~~~~
+sno2.c:297:7: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        list = alloc();
+             ^ ~~~~~~~
+sno2.c:299:7: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        comp = start;
+             ^ ~~~~~
+sno2.c:301:8: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                comp = compon();
+                     ^ ~~~~~~~~
+sno2.c:305:15: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        list->p1 = a = alloc();
+                     ^ ~~~~~~~
+sno2.c:311:8: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                comp = compon();
+                     ^ ~~~~~~~~
+sno2.c:319:15: warning: incompatible pointer to integer conversion passing 'struct node *' to parameter of type 'int'
+      [-Wint-conversion]
+                comp = expr(comp, 6, list);
+                            ^~~~
+sno2.c:319:8: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                comp = expr(comp, 6, list);
+                     ^ ~~~~~~~~~~~~~~~~~~~
+sno2.c:325:8: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                comp = compon();
+                     ^ ~~~~~~~~
+sno2.c:330:9: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                        comp = compon();
+                             ^ ~~~~~~~~
+sno2.c:332:5: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                a = alloc();
+                  ^ ~~~~~~~
+sno2.c:336:16: warning: incompatible pointer to integer conversion passing 'struct node *' to parameter of type 'int'
+      [-Wint-conversion]
+                        comp = expr(comp, 11, a);
+                                    ^~~~
+sno2.c:336:9: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                        comp = expr(comp, 11, a);
+                             ^ ~~~~~~~~~~~~~~~~~
+sno2.c:343:9: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                        comp = expr(0, 6, a);
+                             ^ ~~~~~~~~~~~~~
+sno2.c:349:9: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                        comp = compon();
+                             ^ ~~~~~~~~
+sno2.c:358:8: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                comp = compon();
+                     ^ ~~~~~~~~
+sno2.c:367:8: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+        return(comp);
+              ^~~~~~
+sno2.c:373:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+compile() {
+^~~~~~~
+sno2.c:379:23: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        m = l = as = xs = xf = t = 0;
+                             ^ ~~~~~
+sno2.c:379:13: warning: incompatible pointer to integer conversion assigning to 'int' from 'struct node *' [-Wint-conversion]
+        m = l = as = xs = xf = t = 0;
+                   ^ ~~~~~~~~~~~~~~~
+sno2.c:379:8: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        m = l = as = xs = xf = t = 0;
+              ^ ~~~~~~~~~~~~~~~~~~~~
+sno2.c:379:4: warning: incompatible pointer to integer conversion assigning to 'int' from 'struct node *' [-Wint-conversion]
+        m = l = as = xs = xf = t = 0;
+          ^ ~~~~~~~~~~~~~~~~~~~~~~~~
+sno2.c:380:7: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        comp = compon();
+             ^ ~~~~~~~~
+sno2.c:385:8: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                comp = compon();
+                     ^ ~~~~~~~~
+sno2.c:393:22: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        comp = expr(0, 11, r=alloc());
+                            ^~~~~~~~
+sno2.c:393:7: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        comp = expr(0, 11, r=alloc());
+             ^ ~~~~~~~~~~~~~~~~~~~~~~
+sno2.c:402:15: warning: incompatible pointer to integer conversion passing 'struct node *' to parameter of type 'int'
+      [-Wint-conversion]
+        comp = match(comp, m);
+                     ^~~~
+sno2.c:402:21: warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'struct node *'
+      [-Wint-conversion]
+        comp = match(comp, m);
+                           ^
+sno2.c:402:7: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        comp = match(comp, m);
+             ^ ~~~~~~~~~~~~~~
+sno2.c:414:20: warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'struct node *'
+      [-Wint-conversion]
+        comp = expr(0, 6, as=alloc());
+                          ^~~~~~~~~~
+sno2.c:414:7: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        comp = expr(0, 6, as=alloc());
+             ^ ~~~~~~~~~~~~~~~~~~~~~~
+sno2.c:424:7: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        comp = compon();
+             ^ ~~~~~~~~
+sno2.c:447:5: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        xs = alloc();
+           ^ ~~~~~~~
+sno2.c:448:5: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        xf = alloc();
+           ^ ~~~~~~~
+sno2.c:449:7: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        comp = expr(0, 6, xs);
+             ^ ~~~~~~~~~~~~~~
+sno2.c:453:7: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        comp = compon();
+             ^ ~~~~~~~~
+sno2.c:461:7: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        comp = compon();
+             ^ ~~~~~~~~
+sno2.c:464:22: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        comp = expr(0, 6, xs=alloc());
+                            ^~~~~~~~
+sno2.c:464:7: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        comp = expr(0, 6, xs=alloc());
+             ^ ~~~~~~~~~~~~~~~~~~~~~~
+sno2.c:472:7: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        comp = compon();
+             ^ ~~~~~~~~
+sno2.c:475:22: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        comp = expr(0, 6, xf=alloc());
+                            ^~~~~~~~
+sno2.c:475:7: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        comp = expr(0, 6, xf=alloc());
+             ^ ~~~~~~~~~~~~~~~~~~~~~~
+sno2.c:490:9: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                r->p1 = m;
+                      ^ ~
+sno2.c:491:5: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                r = m;
+                  ^ ~
+sno2.c:494:5: warning: use of unary operator that may be intended as compound assignment (+=)
+                t =+ 2;
+                  ^~
+sno2.c:495:9: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                r->p1 = as;
+                      ^ ~~
+sno2.c:496:5: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                r = as;
+                  ^ ~~
+sno2.c:498:4: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        (g=alloc())->p1 = 0;
+          ^~~~~~~~
+sno2.c:511:8: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+        return(comp);
+              ^~~~~~
+sno2.c:514:4: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        r = nscomp();
+          ^ ~~~~~~~~
+sno2.c:521:4: warning: incompatible pointer to integer conversion assigning to 'int' from 'struct node *' [-Wint-conversion]
+        a = r;
+          ^ ~
+sno2.c:522:8: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        l->p2 = a;
+              ^ ~
+sno2.c:523:4: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        r = nscomp();
+          ^ ~~~~~~~~
+sno2.c:525:5: error: member reference type 'int' is not a pointer
+        a->p1 = l;
+        ~  ^
+sno2.c:532:4: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        r = nscomp();
+          ^ ~~~~~~~~
+sno2.c:535:5: error: member reference type 'int' is not a pointer
+        a->p2 = r;
+        ~  ^
+sno2.c:537:4: warning: incompatible pointer to integer conversion assigning to 'int' from 'struct node *' [-Wint-conversion]
+        a = r;
+          ^ ~
+sno2.c:538:4: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        r = nscomp();
+          ^ ~~~~~~~~
+sno2.c:546:8: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        if ((r=compon())->typ != 0)
+              ^~~~~~~~~
+sno2.c:551:4: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        r = compile();
+          ^ ~~~~~~~~~
+sno2.c:552:5: error: member reference type 'int' is not a pointer
+        a->p2 = 0;
+        ~  ^
+sno2.c:555:8: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+        return(r);
+              ^~~
+113 warnings and 11 errors generated.
+sno3.c:4:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+bextend(str, last)
+^~~~~~~
+sno3.c:12:9: warning: incompatible pointer to integer conversion assigning to 'int' from 'struct node *' [-Wint-conversion]
+        if ((c = s->p1) == 0)
+               ^ ~~~~~
+sno3.c:17:5: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                a = c;
+                  ^ ~
+sno3.c:26:6: warning: implicit declaration of function 'class' is invalid in C99 [-Wimplicit-function-declaration]
+        c = class(a->ch);
+            ^
+sno3.c:47:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+ubextend(str, last)
+^~~~~~~~
+sno3.c:69:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+search(arg, r)
+^~~~~~
+sno3.c:78:16: warning: implicit declaration of function 'alloc' is invalid in C99 [-Wimplicit-function-declaration]
+        list = base = alloc();
+                      ^
+sno3.c:78:14: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        list = base = alloc();
+                    ^ ~~~~~~~
+sno3.c:97:4: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        b = alloc();
+          ^ ~~~~~~~
+sno3.c:101:18: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        list->p2 = back = alloc();
+                        ^ ~~~~~~~
+sno3.c:107:14: warning: implicit declaration of function 'eval' is invalid in C99 [-Wimplicit-function-declaration]
+                back->p2 = eval(b, 1);
+                           ^
+sno3.c:107:12: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                back->p2 = eval(b, 1);
+                         ^ ~~~~~~~~~~
+sno3.c:111:6: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        str = alloc();
+            ^ ~~~~~~~
+sno3.c:112:6: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        etc = alloc();
+            ^ ~~~~~~~
+sno3.c:113:17: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        back->p2 = var = alloc();
+                       ^ ~~~~~~~
+sno3.c:120:11: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                etc->p1 = eval(e, 0);
+                        ^ ~~~~~~~~~~
+sno3.c:124:5: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                e = eval(e, 1);
+                  ^ ~~~~~~~~~~
+sno3.c:125:13: warning: implicit declaration of function 'strbin' is invalid in C99 [-Wimplicit-function-declaration]
+                etc->p2 = strbin(e);
+                          ^
+sno3.c:125:11: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                etc->p2 = strbin(e);
+                        ^ ~~~~~~~~~
+sno3.c:126:3: warning: implicit declaration of function 'delete' is invalid in C99 [-Wimplicit-function-declaration]
+                delete(e);
+                ^
+sno3.c:159:5: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                a = alloc();
+                  ^ ~~~~~~~
+sno3.c:207:4: warning: incompatible pointer to integer conversion assigning to 'int' from 'struct node *' [-Wint-conversion]
+        c = etc->p2;
+          ^ ~~~~~~~
+sno3.c:215:6: warning: use of unary operator that may be intended as compound assignment (-=)
+                        c =- d;
+                          ^~
+sno3.c:245:9: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+                return(a);
+                      ^~~
+sno3.c:261:3: warning: implicit declaration of function 'assign' is invalid in C99 [-Wimplicit-function-declaration]
+                assign(etc->p1, copy(str));
+                ^
+sno3.c:261:19: warning: implicit declaration of function 'copy' is invalid in C99 [-Wimplicit-function-declaration]
+                assign(etc->p1, copy(str));
+                                ^
+26 warnings generated.
+sno4.c:4:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+and(ptr)
+^~~
+sno4.c:19:4: warning: implicit declaration of function 'flush' is invalid in C99 [-Wimplicit-function-declaration]
+                        flush();
+                        ^
+sno4.c:20:11: warning: implicit declaration of function 'syspit' is invalid in C99 [-Wimplicit-function-declaration]
+                        return(syspit());
+                               ^
+sno4.c:25:11: warning: implicit declaration of function 'binstr' is invalid in C99 [-Wimplicit-function-declaration]
+                        return(binstr(nfree()));
+                               ^
+sno4.c:25:18: warning: implicit declaration of function 'nfree' is invalid in C99 [-Wimplicit-function-declaration]
+                        return(binstr(nfree()));
+                                      ^
+sno4.c:27:3: warning: implicit declaration of function 'writes' is invalid in C99 [-Wimplicit-function-declaration]
+                writes("attempt to take an illegal value");
+                ^
+sno4.c:30:7: warning: implicit declaration of function 'copy' is invalid in C99 [-Wimplicit-function-declaration]
+                a = copy(a->p2);
+                    ^
+sno4.c:30:5: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                a = copy(a->p2);
+                  ^ ~~~~~~~~~~~
+sno4.c:32:8: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+        return(a);
+              ^~~
+sno4.c:35:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+eval(e, t)
+^~~~
+sno4.c:49:5: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'char' [-Wint-conversion]
+        op = list->typ;
+           ^ ~~~~~~~~~
+sno4.c:50:2: error: statement requires expression of integer type ('struct node *' invalid)
+        switch (op) {
+        ^       ~~
+sno4.c:54:7: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                        a1 = and(stack);
+                           ^ ~~~~~~~~~~
+sno4.c:61:11: warning: implicit declaration of function 'pop' is invalid in C99 [-Wimplicit-function-declaration]
+                stack = pop(stack);
+                        ^
+sno4.c:61:9: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                stack = pop(stack);
+                      ^ ~~~~~~~~~~
+sno4.c:64:9: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+                return(a1);
+                      ^~~~
+sno4.c:66:6: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                a1 = and(stack);
+                   ^ ~~~~~~~~~~
+sno4.c:67:15: warning: implicit declaration of function 'look' is invalid in C99 [-Wimplicit-function-declaration]
+                stack->p1 = look(a1);
+                            ^
+sno4.c:67:13: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                stack->p1 = look(a1);
+                          ^ ~~~~~~~~
+sno4.c:68:3: warning: implicit declaration of function 'delete' is invalid in C99 [-Wimplicit-function-declaration]
+                delete(a1);
+                ^
+sno4.c:79:17: warning: implicit declaration of function 'alloc' is invalid in C99 [-Wimplicit-function-declaration]
+                a3base = a3 = alloc();
+                              ^
+sno4.c:79:15: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                a3base = a3 = alloc();
+                            ^ ~~~~~~~
+sno4.c:92:15: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                a3->p1 = a4 = alloc();
+                            ^ ~~~~~~~
+sno4.c:94:10: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                a3->p2 = and(a1);
+                       ^ ~~~~~~~
+sno4.c:95:3: warning: implicit declaration of function 'assign' is invalid in C99 [-Wimplicit-function-declaration]
+                assign(a1->p1, eval(a2->p2, 1));/* recursive */
+                ^
+sno4.c:100:8: warning: implicit declaration of function 'execute' is invalid in C99 [-Wimplicit-function-declaration]
+                op = execute(op); /* recursive */
+                     ^
+sno4.c:100:6: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                op = execute(op); /* recursive */
+                   ^ ~~~~~~~~~~~
+sno4.c:123:6: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                a1 = and(stack);
+                   ^ ~~~~~~~~~~
+sno4.c:124:9: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                stack = pop(stack);
+                      ^ ~~~~~~~~~~
+sno4.c:125:6: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                a2 = and(stack);
+                   ^ ~~~~~~~~~~
+sno4.c:126:8: warning: implicit declaration of function 'doop' is invalid in C99 [-Wimplicit-function-declaration]
+                a3 = doop(op, a2, a1);
+                     ^
+sno4.c:126:6: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                a3 = doop(op, a2, a1);
+                   ^ ~~~~~~~~~~~~~~~~
+sno4.c:133:6: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                a1 = copy(list->p2);
+                   ^ ~~~~~~~~~~~~~~
+sno4.c:134:6: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                a2 = 1;
+                   ^ ~
+sno4.c:140:11: warning: implicit declaration of function 'push' is invalid in C99 [-Wimplicit-function-declaration]
+                stack = push(stack);
+                        ^
+sno4.c:140:9: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                stack = push(stack);
+                      ^ ~~~~~~~~~~~
+sno4.c:142:14: warning: incompatible pointer to integer conversion assigning to 'char' from 'struct node *' [-Wint-conversion]
+                stack->typ = a2;
+                           ^ ~~
+sno4.c:147:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+doop(op, arg1, arg2)
+^~~~
+sno4.c:156:9: error: returning 'div_t' from a function with incompatible result type 'int'
+                return(div(a1, a2));
+                      ^~~~~~~~~~~~~
+sno4.c:158:10: warning: implicit declaration of function 'mult' is invalid in C99 [-Wimplicit-function-declaration]
+                return(mult(a1, a2));
+                       ^
+sno4.c:160:10: warning: implicit declaration of function 'add' is invalid in C99 [-Wimplicit-function-declaration]
+                return(add(a1, a2));
+                       ^
+sno4.c:162:10: warning: implicit declaration of function 'sub' is invalid in C99 [-Wimplicit-function-declaration]
+                return(sub(a1, a2));
+                       ^
+sno4.c:164:10: warning: implicit declaration of function 'cat' is invalid in C99 [-Wimplicit-function-declaration]
+                return(cat(a1, a2));
+                       ^
+sno4.c:169:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+execute(e)
+^~~~~~~
+sno4.c:185:5: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                b = eval(r->p2, 1);
+                  ^ ~~~~~~~~~~~~~~
+sno4.c:186:7: warning: implicit declaration of function 'search' is invalid in C99 [-Wimplicit-function-declaration]
+                c = search(m, b);
+                    ^
+sno4.c:186:5: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                c = search(m, b);
+                  ^ ~~~~~~~~~~~~
+sno4.c:195:5: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                b = eval(r->p2, 0);
+                  ^ ~~~~~~~~~~~~~~
+sno4.c:202:5: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                b = eval(r->p2, 0);
+                  ^ ~~~~~~~~~~~~~~
+sno4.c:203:5: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                d = search(m, b->p2);
+                  ^ ~~~~~~~~~~~~~~~~
+sno4.c:206:5: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                c = eval(ca->p2, 1);
+                  ^ ~~~~~~~~~~~~~~~
+sno4.c:218:5: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+                (r=alloc())->p1 = d->p2->p1;
+                  ^~~~~~~~
+sno4.c:236:9: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+                return(e->p1);
+                      ^~~~~~~
+sno4.c:238:4: warning: incompatible integer to pointer conversion assigning to 'struct node *' from 'int' [-Wint-conversion]
+        b = eval(b, 0);
+          ^ ~~~~~~~~~~
+sno4.c:247:8: warning: incompatible pointer to integer conversion returning 'struct node *' from a function with result type 'int'
+      [-Wint-conversion]
+        return(b->p2);
+              ^~~~~~~
+sno4.c:250:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+assign(adr, val)
+^~~~~~
+sno4.c:259:3: error: non-void function 'assign' should return a value [-Wreturn-type]
+                return;
+                ^
+sno4.c:269:3: error: non-void function 'assign' should return a value [-Wreturn-type]
+                return;
+                ^
+sno4.c:271:3: warning: implicit declaration of function 'sysput' is invalid in C99 [-Wimplicit-function-declaration]
+                sysput(value);
+                ^
+sno4.c:272:3: error: non-void function 'assign' should return a value [-Wreturn-type]
+                return;
+                ^
+sno4.c:277:3: error: non-void function 'assign' should return a value [-Wreturn-type]
+                return;
+                ^
+55 warnings and 6 errors generated.

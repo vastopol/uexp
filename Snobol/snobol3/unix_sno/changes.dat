@@ -1,0 +1,29 @@
+changes made to files:
+----------------------
+
+* including of libaries
+  * stdlib.h
+
+* add error code to exit() so now it is exit(1)
+
+* rename strstr() to _strstr() so not conflict with C built-in function
+
+* rename getc() to _getc() so not conflict with C built-in function
+
+* rename free() to _free() so not conflict with C built-in function
+
+* rename div() to _div() so not conflict with C built-in function
+
+* this:
+
+	struct node *freespace &end;
+	struct node *freelist 0;
+	int	*fault -1;
+
+	becomes:
+
+	struct node *freespace;
+	struct node *freelist = 0;
+	int	*fault = 0;
+
+*
