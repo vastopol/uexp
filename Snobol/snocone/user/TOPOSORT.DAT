@@ -1,0 +1,15 @@
+letters alphanum
+numbers alphanum
+blanks optblanks
+numbers real
+numbers integer
+letters variable
+alphanum variable
+binary binaryop
+blanks binaryop
+unqalphabet dliteral
+unqalphabet sliteral
+sliteral literal
+dliteral literal
+integer literal
+real literal

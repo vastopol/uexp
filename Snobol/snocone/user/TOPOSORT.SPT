@@ -1,0 +1,97 @@
+MAIN. CODE('MAIN.')
+-LINE 9 "toposort.sc"
+  :(enqueue.END)
+-LINE 10
+enqueue IDENT(head(q),"") :F(L.1)
+-LINE 11
+ head(q) = tail(q) = qel(x) :(L.2)
+-LINE 13
+L.1 y = qel(x)
+-LINE 14
+ link(tail(q)) = y
+-LINE 15
+ tail(q) = y
+-LINE 17
+L.2  :(RETURN)
+-LINE 20
+dequeue IDENT(head(q),"") :S(FRETURN)F(L.3)
+-LINE 22
+L.3 x = head(q)
+-LINE 23
+ IDENT(head(q) = link(x),"") :F(L.4)
+-LINE 24
+ tail(q) = ""
+-LINE 25
+L.4 dequeue = obj(x) :(RETURN)
+-LINE 30
+enqueue.END namemap = TABLE()
+-LINE 31
+ objects = queue() :(getobj.END)
+-LINE 34
+getobj IDENT(getobj = namemap<name>,"") :F(L.5)
+-LINE 35
+ getobj = namemap<name> = object(name,0,queue())
+-LINE 36
+ enqueue(objects,getobj)
+-LINE 37
+ nobj = nobj + 1
+-LINE 39
+L.5  :(RETURN)
+-LINE 42
+enter p = getobj(p)
+-LINE 43
+ q = getobj(q)
+-LINE 44
+ count(q) = count(q) + 1
+-LINE 45
+ enqueue(suc(p),q) :(RETURN)
+-LINE 50
+getobj.END line = INPUT :F(L.6)
+-LINE 51
+ line ? FENCE BREAK(' ') . p SPAN(' ') REM . q :F(L.7)
+-LINE 52
+ enter(p,q) :(L.8)
+-LINE 54
+L.7 TERMINAL = "bad input line: " line
+-LINE 55
+L.8  :(getobj.END)
+-LINE 57
+L.6 zeroes = queue()
+-LINE 59
+L.9 x = dequeue(objects) :F(L.10)
+-LINE 60
+ EQ(count(x),0) :F(L.11)
+-LINE 61
+ enqueue(zeroes,x)
+-LINE 63
+L.11  :(L.9)
+L.10 x = dequeue(zeroes) :F(L.12)
+-LINE 64
+ nobj = nobj - 1
+-LINE 65
+ OUTPUT = name(x)
+-LINE 66
+L.13 y = dequeue(suc(x)) :F(L.14)
+-LINE 67
+ EQ(count(y) = count(y) - 1,0) :F(L.15)
+-LINE 68
+ enqueue(zeroes,y)
+-LINE 69
+L.15  :(L.13)
+-LINE 70
+L.14  :(L.10)
+-LINE 72
+L.12 NE(nobj,0) :F(L.16)
+-LINE 73
+ TERMINAL = "The ordering contains a loop."
+L.16  :(END)
+START. CODE('START.')
+ DATA('queue(head,tail)')
+ DATA('qel(obj,link)')
+ DEFINE('enqueue(q,x)y')
+ DEFINE('dequeue(q)x')
+ DATA('object(name,count,suc)')
+ DEFINE('getobj(name)')
+ DEFINE('enter(p,q)')
+ EXIT(3,'toposort.exe') :(MAIN.)
+END	START.
