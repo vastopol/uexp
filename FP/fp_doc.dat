@@ -1,8 +1,18 @@
 FP - Functional Programming. Backus. Combinator based. 
 "Can Programming be Liberated From the von Neumann Style? A Functional Style and Its Algebra of Programs", John Backus, 1977 Turing Award Lecture, CACM 21(8):165-180 (Aug 1978). (See FFP, FL, IFP). 
 
-volume10, volume13, volume20 came from:
+;----------------------------------------------------------
+
+volume10, volume13, volume20:
 comp.sources.unix -> collection of sources distributed with the BSD 4.2 packages
+
+FurryPaws:
+http://www.call-with-current-continuation.org/fp/
+
+ucb_fp:
+http://minnie.tuhs.org/cgi-bin/utree.pl?file=4.1cBSD/usr/src/ucb/fp
+http://minnie.tuhs.org/cgi-bin/utree.pl?file=4.2BSD/usr/src/ucb/fp
+http://minnie.tuhs.org/cgi-bin/utree.pl?file=4.3BSD/usr/src/ucb/fp
 
 ;-----------------------------------------------------------
 
@@ -14,6 +24,10 @@ comp.sources.unix -> collection of sources distributed with the BSD 4.2 packages
 
 * FurryPaws : independent implementation by Felix L. Winkelmann
 
+* ucb_fp : fp implementation on BSD 4.1c, 4.2, 4.3 from unix heritage society
+
 ;------------------------------------------------------------
 
 note: volume13 has not been properly compiled yet, throws errors with lex/yacc
+
+note: ucb_fp probably needs franz lisp to run 
