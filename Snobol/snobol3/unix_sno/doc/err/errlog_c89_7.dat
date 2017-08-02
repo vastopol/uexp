@@ -1,0 +1,21 @@
+/tmp/cc7LI735.o: In function `main':
+sno1.c:(.text+0xa1): undefined reference to `fin'
+sno1.c:(.text+0xa7): undefined reference to `fin'
+sno1.c:(.text+0xd4): undefined reference to `fout'
+sno1.c:(.text+0x207): undefined reference to `flush'
+/tmp/cc7LI735.o: In function `syspit':
+sno1.c:(.text+0x273): undefined reference to `fin'
+sno1.c:(.text+0x27d): undefined reference to `fin'
+sno1.c:(.text+0x28f): undefined reference to `fin'
+/tmp/cc7LI735.o: In function `_alloc':
+sno1.c:(.text+0x462): undefined reference to `flush'
+sno1.c:(.text+0x468): undefined reference to `fout'
+/tmp/cc7LI735.o: In function `writes':
+sno1.c:(.text+0xc12): undefined reference to `flush'
+sno1.c:(.text+0xc30): undefined reference to `flush'
+sno1.c:(.text+0xc64): undefined reference to `flush'
+/tmp/cctrAcOY.o: In function `and':
+sno4.c:(.text+0x45): undefined reference to `flush'
+collect2: error: ld returned 1 exit status
+Makefile:7: recipe for target 'all' failed
+make: *** [all] Error 1

@@ -1,0 +1,366 @@
+sno1.c: In function ‘init’:
+sno1.c:22:4: warning: assignment makes pointer from integer without a cast
+  a = _strstr(s);
+    ^
+sno1.c:23:4: warning: assignment makes pointer from integer without a cast
+  b = look(a);
+    ^
+sno1.c: In function ‘main’:
+sno1.c:51:8: warning: assignment makes pointer from integer without a cast
+  a = c = compile();
+        ^
+sno1.c:53:13: warning: assignment makes pointer from integer without a cast
+   a->p1 = b = compile();
+             ^
+sno1.c:60:10: warning: assignment makes pointer from integer without a cast
+  while (c=execute(c));
+          ^
+sno1.c: In function ‘syspit’:
+sno1.c:71:8: warning: assignment makes pointer from integer without a cast
+  b = c = _alloc();
+        ^
+sno1.c:73:13: warning: assignment makes pointer from integer without a cast
+   c->p1 = d = _alloc();
+             ^
+sno1.c: At top level:
+sno1.c:113:14: error: conflicting types for ‘_strstr’
+ struct node* _strstr(char* s)
+              ^
+sno1.c:16:9: note: previous implicit declaration of ‘_strstr’ was here
+  sysput(_strstr(s));
+         ^
+sno1.c: In function ‘_strstr’:
+sno1.c:118:8: warning: assignment makes pointer from integer without a cast
+  d = f = _alloc();
+        ^
+sno1.c:120:5: warning: assignment makes pointer from integer without a cast
+   (e=_alloc())->ch = c;
+     ^
+sno1.c: At top level:
+sno1.c:147:14: error: conflicting types for ‘_alloc’
+ struct node* _alloc() {
+              ^
+sno1.c:71:10: note: previous implicit declaration of ‘_alloc’ was here
+  b = c = _alloc();
+          ^
+sno1.c:188:14: error: conflicting types for ‘look’
+ struct node* look(struct node* string)
+              ^
+sno1.c:23:6: note: previous implicit declaration of ‘look’ was here
+  b = look(a);
+      ^
+sno1.c: In function ‘look’:
+sno1.c:208:8: warning: assignment makes pointer from integer without a cast
+  j->p1 = copy(string);
+        ^
+sno1.c: At top level:
+sno1.c:214:14: error: conflicting types for ‘copy’
+ struct node* copy(struct node* string)
+              ^
+sno1.c:208:10: note: previous implicit declaration of ‘copy’ was here
+  j->p1 = copy(string);
+          ^
+sno1.c:337:41: error: unknown type name ‘string2’
+ struct node* mult(struct node* string1, string2) {
+                                         ^
+sno1.c:371:6: warning: conflicting types for ‘delete’
+ void delete(struct node* string)
+      ^
+sno1.c:24:2: note: previous implicit declaration of ‘delete’ was here
+  delete(a);
+  ^
+sno1.c:387:6: warning: conflicting types for ‘sysput’
+ void sysput(string) {
+      ^
+sno1.c:16:2: note: previous implicit declaration of ‘sysput’ was here
+  sysput(_strstr(s));
+  ^
+sno1.c: In function ‘sysput’:
+sno1.c:388:9: warning: passing argument 1 of ‘syspot’ makes pointer from integer without a cast
+  syspot(string);
+         ^
+sno1.c:97:6: note: expected ‘struct node *’ but argument is of type ‘int’
+ void syspot(struct node* string)
+      ^
+sno1.c:389:9: warning: passing argument 1 of ‘delete’ makes pointer from integer without a cast
+  delete(string);
+         ^
+sno1.c:371:6: note: expected ‘struct node *’ but argument is of type ‘int’
+ void delete(struct node* string)
+      ^
+sno1.c: At top level:
+sno1.c:397:6: warning: conflicting types for ‘dump1’
+ void dump1(struct node* base)
+      ^
+sno1.c:394:2: note: previous implicit declaration of ‘dump1’ was here
+  dump1(namelist);
+  ^
+sno1.c: In function ‘writes’:
+sno1.c:420:52: warning: passing argument 1 of ‘_strstr’ makes pointer from integer without a cast
+  sysput(dcat(binstr(lc),dcat(_strstr("\t"),_strstr(s))));
+                                                    ^
+sno1.c:113:14: note: expected ‘char *’ but argument is of type ‘int’
+ struct node* _strstr(char* s)
+              ^
+sno1.c: At top level:
+sno1.c:433:14: error: conflicting types for ‘_getc’
+ struct node* _getc() {
+              ^
+sno1.c:427:8: note: previous implicit declaration of ‘_getc’ was here
+  while(_getc());
+        ^
+sno2.c: In function ‘compon’:
+sno2.c:10:9: warning: assignment makes pointer from integer without a cast
+   schar = _getc(); else
+         ^
+sno2.c:13:5: warning: assignment makes pointer from integer without a cast
+   (a=_alloc())->typ = 0;
+     ^
+sno2.c:29:10: warning: assignment makes pointer from integer without a cast
+    schar = _getc();
+          ^
+sno2.c:52:9: warning: assignment makes pointer from integer without a cast
+   schar = _getc();
+         ^
+sno2.c:61:9: warning: assignment makes pointer from integer without a cast
+   schar = _getc();
+         ^
+sno2.c:74:5: warning: assignment makes pointer from integer without a cast
+   a = _getc();
+     ^
+sno2.c:86:10: warning: assignment makes pointer from integer without a cast
+    schar = _getc();
+          ^
+sno2.c:109:4: warning: assignment makes pointer from integer without a cast
+  b = _alloc();
+    ^
+sno2.c:111:8: warning: assignment makes pointer from integer without a cast
+  schar = _getc();
+        ^
+sno2.c:115:9: warning: assignment makes pointer from integer without a cast
+   schar = _getc();
+         ^
+sno2.c:119:4: warning: assignment makes pointer from integer without a cast
+  a = look(b);
+    ^
+sno2.c:121:4: warning: assignment makes pointer from integer without a cast
+  b = _alloc();
+    ^
+sno2.c: In function ‘push’:
+sno2.c:139:4: warning: assignment makes pointer from integer without a cast
+  (a=_alloc())->p2 = stack;
+    ^
+sno2.c: At top level:
+sno2.c:155:31: error: expected ‘)’ before ‘struct’
+ struct node* expr(start, eof, struct node* e)
+                               ^
+sno2.c: In function ‘match’:
+sno2.c:293:7: warning: assignment makes pointer from integer without a cast
+  term = bal = 0;
+       ^
+sno2.c:294:7: warning: assignment makes pointer from integer without a cast
+  list = _alloc();
+       ^
+sno2.c:302:15: warning: assignment makes pointer from integer without a cast
+  list->p1 = a = _alloc();
+               ^
+sno2.c:316:8: warning: assignment makes pointer from integer without a cast
+   comp = expr(comp, 6, list);
+        ^
+sno2.c:329:5: warning: assignment makes pointer from integer without a cast
+   a = _alloc();
+     ^
+sno2.c:333:9: warning: assignment makes pointer from integer without a cast
+    comp = expr(comp, 11, a);
+         ^
+sno2.c:340:9: warning: assignment makes pointer from integer without a cast
+    comp = expr(0, 6, a);
+         ^
+sno2.c: In function ‘compile’:
+sno2.c:376:23: warning: assignment makes pointer from integer without a cast
+  m = l = as = xs = xf = t = 0;
+                       ^
+sno2.c:376:13: warning: assignment makes integer from pointer without a cast
+  m = l = as = xs = xf = t = 0;
+             ^
+sno2.c:376:8: warning: assignment makes pointer from integer without a cast
+  m = l = as = xs = xf = t = 0;
+        ^
+sno2.c:376:4: warning: assignment makes integer from pointer without a cast
+  m = l = as = xs = xf = t = 0;
+    ^
+sno2.c:390:22: warning: assignment makes pointer from integer without a cast
+  comp = expr(0, 11, r=_alloc());
+                      ^
+sno2.c:390:7: warning: assignment makes pointer from integer without a cast
+  comp = expr(0, 11, r=_alloc());
+       ^
+sno2.c:399:21: warning: passing argument 2 of ‘match’ makes pointer from integer without a cast
+  comp = match(comp, m);
+                     ^
+sno2.c:287:14: note: expected ‘struct node *’ but argument is of type ‘int’
+ struct node* match(struct node* start, struct node* m)
+              ^
+sno2.c:411:7: warning: assignment makes pointer from integer without a cast
+  comp = expr(0, 6, as=_alloc());
+       ^
+sno2.c:444:5: warning: assignment makes pointer from integer without a cast
+  xs = _alloc();
+     ^
+sno2.c:445:5: warning: assignment makes pointer from integer without a cast
+  xf = _alloc();
+     ^
+sno2.c:446:7: warning: assignment makes pointer from integer without a cast
+  comp = expr(0, 6, xs);
+       ^
+sno2.c:461:22: warning: assignment makes pointer from integer without a cast
+  comp = expr(0, 6, xs=_alloc());
+                      ^
+sno2.c:461:7: warning: assignment makes pointer from integer without a cast
+  comp = expr(0, 6, xs=_alloc());
+       ^
+sno2.c:472:22: warning: assignment makes pointer from integer without a cast
+  comp = expr(0, 6, xf=_alloc());
+                      ^
+sno2.c:472:7: warning: assignment makes pointer from integer without a cast
+  comp = expr(0, 6, xf=_alloc());
+       ^
+sno2.c:487:9: warning: assignment makes pointer from integer without a cast
+   r->p1 = m;
+         ^
+sno2.c:488:5: warning: assignment makes pointer from integer without a cast
+   r = m;
+     ^
+sno2.c:492:9: warning: assignment makes pointer from integer without a cast
+   r->p1 = as;
+         ^
+sno2.c:493:5: warning: assignment makes pointer from integer without a cast
+   r = as;
+     ^
+sno2.c:495:4: warning: assignment makes pointer from integer without a cast
+  (g=_alloc())->p1 = 0;
+    ^
+sno2.c:518:4: warning: assignment makes integer from pointer without a cast
+  a = r;
+    ^
+sno2.c:519:8: warning: assignment makes pointer from integer without a cast
+  l->p2 = a;
+        ^
+sno2.c:522:3: error: invalid type argument of ‘->’ (have ‘int’)
+  a->p1 = l;
+   ^
+sno2.c:532:3: error: invalid type argument of ‘->’ (have ‘int’)
+  a->p2 = r;
+   ^
+sno2.c:534:4: warning: assignment makes integer from pointer without a cast
+  a = r;
+    ^
+sno2.c:549:3: error: invalid type argument of ‘->’ (have ‘int’)
+  a->p2 = 0;
+   ^
+sno3.c: In function ‘bextend’:
+sno3.c:11:9: warning: assignment makes integer from pointer without a cast
+  if ((c = s->p1) == 0)
+         ^
+sno3.c:16:5: warning: assignment makes pointer from integer without a cast
+   a = c;
+     ^
+sno3.c: In function ‘search’:
+sno3.c:75:14: warning: assignment makes pointer from integer without a cast
+  list = base = _alloc();
+              ^
+sno3.c:94:4: warning: assignment makes pointer from integer without a cast
+  b = _alloc();
+    ^
+sno3.c:98:18: warning: assignment makes pointer from integer without a cast
+  list->p2 = back = _alloc();
+                  ^
+sno3.c:104:12: warning: assignment makes pointer from integer without a cast
+   back->p2 = eval(b, 1);
+            ^
+sno3.c:108:6: warning: assignment makes pointer from integer without a cast
+  str = _alloc();
+      ^
+sno3.c:109:6: warning: assignment makes pointer from integer without a cast
+  etc = _alloc();
+      ^
+sno3.c:110:17: warning: assignment makes pointer from integer without a cast
+  back->p2 = var = _alloc();
+                 ^
+sno3.c:117:11: warning: assignment makes pointer from integer without a cast
+   etc->p1 = eval(e, 0);
+           ^
+sno3.c:121:5: warning: assignment makes pointer from integer without a cast
+   e = eval(e, 1);
+     ^
+sno3.c:122:11: warning: assignment makes pointer from integer without a cast
+   etc->p2 = strbin(e);
+           ^
+sno3.c:156:5: warning: assignment makes pointer from integer without a cast
+   a = _alloc();
+     ^
+sno3.c:204:4: warning: assignment makes integer from pointer without a cast
+  c = etc->p2;
+    ^
+sno4.c: In function ‘and’:
+sno4.c:19:4: warning: return makes pointer from integer without a cast
+    return(syspit());
+    ^
+sno4.c:24:4: warning: return makes pointer from integer without a cast
+    return(binstr(nfree()));
+    ^
+sno4.c:29:5: warning: assignment makes pointer from integer without a cast
+   a = copy(a->p2);
+     ^
+sno4.c: At top level:
+sno4.c:34:35: error: unknown type name ‘t’
+ struct node* eval(struct node* e, t)
+                                   ^
+sno4.c: In function ‘doop’:
+sno4.c:154:3: warning: return makes pointer from integer without a cast
+   return(_div(a1, a2));
+   ^
+sno4.c:156:3: warning: return makes pointer from integer without a cast
+   return(mult(a1, a2));
+   ^
+sno4.c:158:3: warning: return makes pointer from integer without a cast
+   return(add(a1, a2));
+   ^
+sno4.c:160:3: warning: return makes pointer from integer without a cast
+   return(sub(a1, a2));
+   ^
+sno4.c:162:3: warning: return makes pointer from integer without a cast
+   return(cat(a1, a2));
+   ^
+sno4.c: In function ‘execute’:
+sno4.c:182:5: warning: assignment makes pointer from integer without a cast
+   b = eval(r->p2, 1);
+     ^
+sno4.c:183:5: warning: assignment makes pointer from integer without a cast
+   c = search(m, b);
+     ^
+sno4.c:192:5: warning: assignment makes pointer from integer without a cast
+   b = eval(r->p2, 0);
+     ^
+sno4.c:199:5: warning: assignment makes pointer from integer without a cast
+   b = eval(r->p2, 0);
+     ^
+sno4.c:200:5: warning: assignment makes pointer from integer without a cast
+   d = search(m, b->p2);
+     ^
+sno4.c:203:5: warning: assignment makes pointer from integer without a cast
+   c = eval(ca->p2, 1);
+     ^
+sno4.c:215:5: warning: assignment makes pointer from integer without a cast
+   (r=_alloc())->p1 = d->p2->p1;
+     ^
+sno4.c:235:4: warning: assignment makes pointer from integer without a cast
+  b = eval(b, 0);
+    ^
+sno4.c: At top level:
+sno4.c:247:6: warning: conflicting types for ‘assign’
+ void assign(struct node* adr, struct node* val)
+      ^
+sno4.c:193:3: note: previous implicit declaration of ‘assign’ was here
+   assign(b, eval(ca->p2, 1));
+   ^

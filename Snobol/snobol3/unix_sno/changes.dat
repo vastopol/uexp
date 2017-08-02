@@ -1,8 +1,11 @@
+compilers tried: gcc, clang, gcc std=c99, gcc std=c11, gcc std=c89
+-------------------------------------------------------------------
+
 changes made to files:
-----------------------
 
 * including of libaries
   * stdlib.h
+  * stdint.h
 
 * add error code to exit() so now it is exit(1)
 
@@ -14,7 +17,9 @@ changes made to files:
 
 * rename div() to _div() so not conflict with C built-in function
 
-* this:
+* rename alloc() to _alloc() so not conflict with C built-in function
+
+* this in sno1.c:
 
 	struct node *freespace &end;
 	struct node *freelist 0;
@@ -26,4 +31,83 @@ changes made to files:
 	struct node *freelist = 0;
 	int	*fault = 0;
 
-*
+* change k&r declarations to c89
+
+* add function declarations to sno.h
+
+* filled in all types (may or may not be correct)
+
+* undoing
+sno2.c:377:23: warning: assignment makes pointer from integer without a cast
+  m = l = as = xs = xf = t = 0;
+
+
+------------------------------
+
+resolve type errors...
+
+in sno2.c: space, start, comp, m, as, a, l, r, 
+in sno3.c: a, c
+in sno4.c: op, a2
+
+------------------------------
+
+adding type casts : (struct node*)(intptr_t) || (int)(intptr_t)
+uses intprt_t from stdint.h
+
+sno2.c:167:8: warning: assignment makes integer from pointer without a cast
+sno2.c:170:8: warning: assignment makes pointer from integer without a cast
+sno2.c:248:9: warning: assignment makes integer from pointer without a cast
+sno2.c:400:4: warning: assignment makes integer from pointer without a cast
+sno2.c:401:21: warning: passing argument 2 of ‘match’ makes pointer from integer without a cast
+sno2.c:413:22: warning: assignment makes integer from pointer without a cast
+sno2.c:413:20: warning: passing argument 3 of ‘expr’ makes pointer from integer without a cast
+sno2.c:489:9: warning: assignment makes pointer from integer without a cast
+sno2.c:490:5: warning: assignment makes pointer from integer without a cast
+sno2.c:494:9: warning: assignment makes pointer from integer without a cast
+sno2.c:495:5: warning: assignment makes pointer from integer without a cast
+sno2.c:520:4: warning: assignment makes integer from pointer without a cast
+sno2.c:521:8: warning: assignment makes pointer from integer without a cast
+sno2.c:536:4: warning: assignment makes integer from pointer without a cast
+sno2.c:524:3: error: invalid type argument of ‘->’ (have ‘int’)
+sno2.c:534:3: error: invalid type argument of ‘->’ (have ‘int’)
+sno2.c:551:3: error: invalid type argument of ‘->’ (have ‘int’)
+
+sno3.c:11:9: warning: assignment makes integer from pointer without a cast
+sno3.c:16:5: warning: assignment makes pointer from integer without a cast
+sno3.c:122:11: warning: assignment makes pointer from integer without a cast
+sno3.c:204:4: warning: assignment makes integer from pointer without a cast
+
+sno4.c:47:5: warning: assignment makes pointer from integer without a cast
+sno4.c:132:6: warning: assignment makes pointer from integer without a cast
+sno4.c:140:14: warning: assignment makes integer from pointer without a cast
+sno4.c:149:5: warning: assignment makes integer from pointer without a cast
+sno4.c:150:5: warning: assignment makes integer from pointer without a cast
+sno4.c:154:15: warning: passing argument 1 of ‘_div’ makes pointer from integer without a cast
+sno4.c:154:19: warning: passing argument 2 of ‘_div’ makes pointer from integer without a cast
+sno4.c:156:15: warning: passing argument 1 of ‘mult’ makes pointer from integer without a cast
+sno4.c:156:19: warning: passing argument 2 of ‘mult’ makes pointer from integer without a cast
+sno4.c:158:14: warning: passing argument 1 of ‘add’ makes pointer from integer without a cast
+sno4.c:158:18: warning: passing argument 2 of ‘add’ makes pointer from integer without a cast
+sno4.c:160:14: warning: passing argument 1 of ‘sub’ makes pointer from integer without a cast
+sno4.c:160:18: warning: passing argument 2 of ‘sub’ makes pointer from integer without a cast
+sno4.c:162:14: warning: passing argument 1 of ‘cat’ makes pointer from integer without a cast
+sno4.c:162:18: warning: passing argument 2 of ‘cat’ makes pointer from integer without a cast
+sno4.c:48:10: error: switch quantity not an integer
+sno4.c:151:10: error: switch quantity not an integer
+
+-----------------------------------------
+
+fin, fout, flush errors in sno1.c && sno4.c
+
+errors such as:
+sno1.c:(.text+0xa7): undefined reference to `fin'
+sno1.c:(.text+0xd4): undefined reference to `fout'
+sno1.c:(.text+0x207): undefined reference to `flush'
+
+change: extern fin, fout -> FILE *fin, *fout;
+
+change: open() -> fopen(), use "r"
+
+change: flush() -> fflush(stdin)
+

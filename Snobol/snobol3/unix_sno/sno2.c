@@ -1,7 +1,7 @@
 #include "sno.h"
 
 
-compon() {
+struct node* compon() {
 	register struct node *a, *b;
 	register int c;
 	static next;
@@ -10,7 +10,7 @@ compon() {
 		schar = _getc(); else
 		next = 0;
 	if (schar == 0) {
-		(a=alloc())->typ = 0;
+		(a=_alloc())->typ = 0;
 		return(a);
 	}
 	switch (class(schar->ch)) {
@@ -106,7 +106,7 @@ compon() {
 		return(schar);
 
 	}
-	b = alloc();
+	b = _alloc();
 	b->p1 = a = schar;
 	schar = _getc();
 	while(schar!=0 & !class(schar->ch)) {
@@ -118,13 +118,13 @@ compon() {
 	next = 1;
 	a = look(b);
 	delete(b);
-	b = alloc();
+	b = _alloc();
 	b->typ = 14;
 	b->p1 = a;
 	return(b);
 }
 
-nscomp()
+struct node* nscomp()
 {
 	register struct node *c;
 
@@ -133,15 +133,14 @@ nscomp()
 	return(c);
 }
 
-push(stack) {
+struct node* push(struct node* stack) {
 	register struct node *a;
 
-	(a=alloc())->p2 = stack;
+	(a=_alloc())->p2 = stack;
 	return(a);
 }
 
-pop(stack)
-struct node *stack;
+struct node* pop(struct node* stack)
 {
 	register struct node *a, *s;
 
@@ -153,23 +152,22 @@ struct node *stack;
 	return(a);
 }
 
-expr(start, eof, e)
-struct node *e;
+struct node* expr(struct node* start, char eof, struct node* e)
 {
 	register struct node *stack, *list, *comp;
 	int operand, op, space, op1;
 	struct node *a, *b, *c;
 	int d;
 
-	list = alloc();
+	list = _alloc();
 	e->p2 = list;
 	stack = push(0);
 	stack->typ = eof;
 	operand = 0;
-	space = start;
+	space = (int)(intptr_t) start;
 l1:
 	if (space) {
-		comp = space;
+		comp = (struct node*)(intptr_t) space;
 		space = 0;
 	} else
 		comp = compon();
@@ -232,7 +230,7 @@ l3:
 			comp->p1 = 0;
 			goto l10;
 		}
-		comp->p1 = a = alloc();
+		comp->p1 = a = _alloc();
 		b = expr(b, 6, a);
 		while((d=b->typ) == 4) {
 			a->p1 = b;
@@ -247,7 +245,7 @@ l3:
 		goto l6;
 
 	l4:
-		space = comp;
+		space = (int)(intptr_t) comp;
 		op = 7;
 		operand = 0;
 		goto l6;
@@ -278,7 +276,7 @@ l6:
 		goto l1;
 	}
 	if (op1 == 7)
-		c = alloc();
+		c = _alloc();
 	list->typ = op1;
 	list->p2 = c->p1;
 	list->p1 = c;
@@ -286,15 +284,15 @@ l6:
 	goto l6;
 }
 
-match(start, m)
-struct node *m;
+struct node* match(struct node* start, struct node* m)
 {
 	register struct node *list, *comp, *term;
 	struct node *a;
 	int b, bal;
 
-	term = bal = 0;
-	list = alloc();
+	term = 0;
+	bal = 0;
+	list = _alloc();
 	m->p2 = list;
 	comp = start;
 	if (!comp)
@@ -302,7 +300,7 @@ struct node *m;
 	goto l2;
 
 l3:
-	list->p1 = a = alloc();
+	list->p1 = a = _alloc();
 	list = a;
 l2:
 	switch (comp->typ) {
@@ -329,7 +327,7 @@ l2:
 			_free(comp);
 			comp = compon();
 		}
-		a = alloc();
+		a = _alloc();
 		b = comp->typ;
 		if (b == 2 | b == 5 | b == 10 | b == 1)
 			a->p1 = 0; else {
@@ -370,13 +368,14 @@ merr:
 	writes("unrecognized component in match");
 }
 
-compile() {
+struct node* compile() {
 	register struct node *b, *comp;
 	struct node *r, *l, *xs, *xf, *g;
 	register int a;
 	int m, t, as;
 
-	m = l = as = xs = xf = t = 0;
+	m = as = t = 0;
+	l = xs = xf = 0;
 	comp = compon();
 	a = comp->typ;
 	if (a == 14) {
@@ -390,7 +389,7 @@ compile() {
 	_free(comp);
 	if (l == lookdef)
 		goto def;
-	comp = expr(0, 11, r=alloc());
+	comp = expr(0, 11, r=_alloc());
 	a = comp->typ;
 	if (a == 0)
 		goto asmble;
@@ -398,8 +397,8 @@ compile() {
 		goto xfer;
 	if (a == 3)
 		goto assig;
-	m = alloc();
-	comp = match(comp, m);
+	m = (int)(intptr_t) _alloc();
+	comp = match(comp, (struct node*)(intptr_t) m);
 	a = comp->typ;
 	if (a == 0)
 		goto asmble;
@@ -411,7 +410,8 @@ compile() {
 
 assig:
 	_free(comp);
-	comp = expr(0, 6, as=alloc());
+	as=(int)(intptr_t) _alloc();
+	comp = expr(0, 6, (struct node*)(intptr_t)as);
 	a = comp->typ;
 	if (a == 0)
 		goto asmble;
@@ -444,8 +444,8 @@ xerr:
 
 xboth:
 	_free(comp);
-	xs = alloc();
-	xf = alloc();
+	xs = _alloc();
+	xf = _alloc();
 	comp = expr(0, 6, xs);
 	if (comp->typ != 5)
 		goto xerr;
@@ -461,7 +461,7 @@ xsuc:
 	comp = compon();
 	if (comp->typ != 16)
 		goto xerr;
-	comp = expr(0, 6, xs=alloc());
+	comp = expr(0, 6, xs=_alloc());
 	if (comp->typ != 5)
 		goto xerr;
 	goto xfer;
@@ -472,7 +472,7 @@ xfail:
 	comp = compon();
 	if (comp->typ != 16)
 		goto xerr;
-	comp = expr(0, 6, xf=alloc());
+	comp = expr(0, 6, xf=_alloc());
 	if (comp->typ != 5)
 		goto xerr;
 	goto xfer;
@@ -487,15 +487,15 @@ asmble:
 	comp->p2 = r;
 	if (m) {
 		t++;
-		r->p1 = m;
-		r = m;
+		r->p1 = (struct node*)(intptr_t) m;
+		r = (struct node*)(intptr_t) m;
 	}
 	if (as) {
 		t =+ 2;
-		r->p1 = as;
-		r = as;
+		r->p1 = (struct node*)(intptr_t) as;
+		r = (struct node*)(intptr_t) as;
 	}
-	(g=alloc())->p1 = 0;
+	(g=_alloc())->p1 = 0;
 	if (xs) {
 		g->p1 = xs->p2;
 		_free(xs);
@@ -518,11 +518,11 @@ def:
 	if (l->typ)
 		writes("name doubly defined");
 	l->typ = 5; /*type function;*/
-	a = r;
-	l->p2 = a;
+	a = (int)(intptr_t) r;
+	l->p2 = (struct node*)(intptr_t)a;
 	r = nscomp();
 	l = r;
-	a->p1 = l;
+	((struct node*)(intptr_t)a)->p1 = l;
 	if (r->typ == 0)
 		goto d4;
 	if (r->typ != 16)
@@ -532,9 +532,9 @@ d2:
 	r = nscomp();
 	if (r->typ != 14)
 		goto derr;
-	a->p2 = r;
+	((struct node*)(intptr_t)a)->p2 = r;
 	r->typ = 0;
-	a = r;
+	a = (int)(intptr_t) r;
 	r = nscomp();
 	if (r->typ == 4) {
 		_free(r);
@@ -549,7 +549,7 @@ d2:
 
 d4:
 	r = compile();
-	a->p2 = 0;
+	((struct node*)(intptr_t)a)->p2 = 0;
 	l->p1 = r;
 	l->p2 = 0;
 	return(r);

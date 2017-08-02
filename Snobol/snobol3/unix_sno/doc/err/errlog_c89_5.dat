@@ -1,0 +1,209 @@
+sno2.c: In function ‘expr’:
+sno2.c:170:8: warning: assignment makes pointer from integer without a cast
+   comp = space;
+        ^
+sno2.c:234:12: warning: passing argument 1 of ‘expr’ makes integer from pointer without a cast
+   b = expr(b, 6, a);
+            ^
+sno2.c:155:14: note: expected ‘int’ but argument is of type ‘struct node *’
+ struct node* expr(int start, char eof, struct node* e)
+              ^
+sno2.c:248:9: warning: assignment makes integer from pointer without a cast
+   space = comp;
+         ^
+sno2.c: In function ‘match’:
+sno2.c:293:7: warning: assignment makes pointer from integer without a cast
+  term = bal = 0;
+       ^
+sno2.c:316:15: warning: passing argument 1 of ‘expr’ makes integer from pointer without a cast
+   comp = expr(comp, 6, list);
+               ^
+sno2.c:155:14: note: expected ‘int’ but argument is of type ‘struct node *’
+ struct node* expr(int start, char eof, struct node* e)
+              ^
+sno2.c:333:16: warning: passing argument 1 of ‘expr’ makes integer from pointer without a cast
+    comp = expr(comp, 11, a);
+                ^
+sno2.c:155:14: note: expected ‘int’ but argument is of type ‘struct node *’
+ struct node* expr(int start, char eof, struct node* e)
+              ^
+sno2.c: In function ‘compile’:
+sno2.c:376:23: warning: assignment makes pointer from integer without a cast
+  m = l = as = xs = xf = t = 0;
+                       ^
+sno2.c:376:13: warning: assignment makes integer from pointer without a cast
+  m = l = as = xs = xf = t = 0;
+             ^
+sno2.c:376:8: warning: assignment makes pointer from integer without a cast
+  m = l = as = xs = xf = t = 0;
+        ^
+sno2.c:376:4: warning: assignment makes integer from pointer without a cast
+  m = l = as = xs = xf = t = 0;
+    ^
+sno2.c:398:4: warning: assignment makes integer from pointer without a cast
+  m = _alloc();
+    ^
+sno2.c:399:21: warning: passing argument 2 of ‘match’ makes pointer from integer without a cast
+  comp = match(comp, m);
+                     ^
+sno2.c:287:14: note: expected ‘struct node *’ but argument is of type ‘int’
+ struct node* match(struct node* start, struct node* m)
+              ^
+sno2.c:411:22: warning: assignment makes integer from pointer without a cast
+  comp = expr(0, 6, as=_alloc());
+                      ^
+sno2.c:411:20: warning: passing argument 3 of ‘expr’ makes pointer from integer without a cast
+  comp = expr(0, 6, as=_alloc());
+                    ^
+sno2.c:155:14: note: expected ‘struct node *’ but argument is of type ‘int’
+ struct node* expr(int start, char eof, struct node* e)
+              ^
+sno2.c:487:9: warning: assignment makes pointer from integer without a cast
+   r->p1 = m;
+         ^
+sno2.c:488:5: warning: assignment makes pointer from integer without a cast
+   r = m;
+     ^
+sno2.c:492:9: warning: assignment makes pointer from integer without a cast
+   r->p1 = as;
+         ^
+sno2.c:493:5: warning: assignment makes pointer from integer without a cast
+   r = as;
+     ^
+sno2.c:518:4: warning: assignment makes integer from pointer without a cast
+  a = r;
+    ^
+sno2.c:519:8: warning: assignment makes pointer from integer without a cast
+  l->p2 = a;
+        ^
+sno2.c:522:3: error: invalid type argument of ‘->’ (have ‘int’)
+  a->p1 = l;
+   ^
+sno2.c:532:3: error: invalid type argument of ‘->’ (have ‘int’)
+  a->p2 = r;
+   ^
+sno2.c:534:4: warning: assignment makes integer from pointer without a cast
+  a = r;
+    ^
+sno2.c:549:3: error: invalid type argument of ‘->’ (have ‘int’)
+  a->p2 = 0;
+   ^
+sno3.c: In function ‘bextend’:
+sno3.c:11:9: warning: assignment makes integer from pointer without a cast
+  if ((c = s->p1) == 0)
+         ^
+sno3.c:16:5: warning: assignment makes pointer from integer without a cast
+   a = c;
+     ^
+sno3.c: In function ‘search’:
+sno3.c:122:11: warning: assignment makes pointer from integer without a cast
+   etc->p2 = strbin(e);
+           ^
+sno3.c:204:4: warning: assignment makes integer from pointer without a cast
+  c = etc->p2;
+    ^
+sno4.c: In function ‘eval’:
+sno4.c:47:5: warning: assignment makes pointer from integer without a cast
+  op = list->typ;
+     ^
+sno4.c:48:10: error: switch quantity not an integer
+  switch (op) {
+          ^
+sno4.c:124:13: warning: passing argument 1 of ‘doop’ makes integer from pointer without a cast
+   a3 = doop(op, a2, a1);
+             ^
+In file included from sno4.c:1:0:
+sno.h:81:14: note: expected ‘int’ but argument is of type ‘struct node *’
+ struct node* doop(int op, int arg1, int arg2);
+              ^
+sno4.c:124:17: warning: passing argument 2 of ‘doop’ makes integer from pointer without a cast
+   a3 = doop(op, a2, a1);
+                 ^
+In file included from sno4.c:1:0:
+sno.h:81:14: note: expected ‘int’ but argument is of type ‘struct node *’
+ struct node* doop(int op, int arg1, int arg2);
+              ^
+sno4.c:124:21: warning: passing argument 3 of ‘doop’ makes integer from pointer without a cast
+   a3 = doop(op, a2, a1);
+                     ^
+In file included from sno4.c:1:0:
+sno.h:81:14: note: expected ‘int’ but argument is of type ‘struct node *’
+ struct node* doop(int op, int arg1, int arg2);
+              ^
+sno4.c:132:6: warning: assignment makes pointer from integer without a cast
+   a2 = 1;
+      ^
+sno4.c:140:14: warning: assignment makes integer from pointer without a cast
+   stack->typ = a2;
+              ^
+sno4.c: In function ‘doop’:
+sno4.c:154:15: warning: passing argument 1 of ‘_div’ makes pointer from integer without a cast
+   return(_div(a1, a2));
+               ^
+In file included from sno4.c:1:0:
+sno.h:54:14: note: expected ‘struct node *’ but argument is of type ‘int’
+ struct node* _div(struct node* string1, struct node* string2);
+              ^
+sno4.c:154:19: warning: passing argument 2 of ‘_div’ makes pointer from integer without a cast
+   return(_div(a1, a2));
+                   ^
+In file included from sno4.c:1:0:
+sno.h:54:14: note: expected ‘struct node *’ but argument is of type ‘int’
+ struct node* _div(struct node* string1, struct node* string2);
+              ^
+sno4.c:156:15: warning: passing argument 1 of ‘mult’ makes pointer from integer without a cast
+   return(mult(a1, a2));
+               ^
+In file included from sno4.c:1:0:
+sno.h:53:14: note: expected ‘struct node *’ but argument is of type ‘int’
+ struct node* mult(struct node* string1, struct node* string2);
+              ^
+sno4.c:156:19: warning: passing argument 2 of ‘mult’ makes pointer from integer without a cast
+   return(mult(a1, a2));
+                   ^
+In file included from sno4.c:1:0:
+sno.h:53:14: note: expected ‘struct node *’ but argument is of type ‘int’
+ struct node* mult(struct node* string1, struct node* string2);
+              ^
+sno4.c:158:14: warning: passing argument 1 of ‘add’ makes pointer from integer without a cast
+   return(add(a1, a2));
+              ^
+In file included from sno4.c:1:0:
+sno.h:51:14: note: expected ‘struct node *’ but argument is of type ‘int’
+ struct node* add(struct node* string1, struct node* string2);
+              ^
+sno4.c:158:18: warning: passing argument 2 of ‘add’ makes pointer from integer without a cast
+   return(add(a1, a2));
+                  ^
+In file included from sno4.c:1:0:
+sno.h:51:14: note: expected ‘struct node *’ but argument is of type ‘int’
+ struct node* add(struct node* string1, struct node* string2);
+              ^
+sno4.c:160:14: warning: passing argument 1 of ‘sub’ makes pointer from integer without a cast
+   return(sub(a1, a2));
+              ^
+In file included from sno4.c:1:0:
+sno.h:52:14: note: expected ‘struct node *’ but argument is of type ‘int’
+ struct node* sub(struct node* string1, struct node* string2);
+              ^
+sno4.c:160:18: warning: passing argument 2 of ‘sub’ makes pointer from integer without a cast
+   return(sub(a1, a2));
+                  ^
+In file included from sno4.c:1:0:
+sno.h:52:14: note: expected ‘struct node *’ but argument is of type ‘int’
+ struct node* sub(struct node* string1, struct node* string2);
+              ^
+sno4.c:162:14: warning: passing argument 1 of ‘cat’ makes pointer from integer without a cast
+   return(cat(a1, a2));
+              ^
+In file included from sno4.c:1:0:
+sno.h:55:14: note: expected ‘struct node *’ but argument is of type ‘int’
+ struct node* cat(struct node* string1, struct node* string2);
+              ^
+sno4.c:162:18: warning: passing argument 2 of ‘cat’ makes pointer from integer without a cast
+   return(cat(a1, a2));
+                  ^
+In file included from sno4.c:1:0:
+sno.h:55:14: note: expected ‘struct node *’ but argument is of type ‘int’
+ struct node* cat(struct node* string1, struct node* string2);
+              ^

@@ -1,20 +1,19 @@
 #include "sno.h"
 
 
-bextend(str, last)
-struct node *str, *last;
+int bextend(struct node* str, struct node* last)
 {
 	register struct node *a, *s;
 	register int b;
 	int c, d;
 
 	s = str;
-	if ((c = s->p1) == 0)
+	if ((c = (int)(intptr_t) s->p1) == 0)
 		goto bad;
 	b = d = 0;
 	a = s->p2;
 	if(a == 0) {
-		a = c;
+		a = (struct node*)(intptr_t) c;
 		goto eb2;
 	}
 eb1:
@@ -44,8 +43,7 @@ bad:
 	return(0);
 }
 
-ubextend(str, last)
-struct node *str, *last;
+int ubextend(struct node* str, struct node* last)
 {
 	register struct node *a, *b, *s;
 
@@ -66,8 +64,7 @@ bad:
 	return(0);
 }
 
-search(arg, r)
-struct node *arg, *r;
+struct node* search(struct node* arg, struct node* r)
 {
 	struct node *list, *back, *str,
 		*etc, *next, *last, *base, *e;
@@ -75,7 +72,7 @@ struct node *arg, *r;
 	int c, d;
 
 	a = arg->p2;
-	list = base = alloc();
+	list = base = _alloc();
 	last = next = 0;
 	goto badv1;
 badvanc:
@@ -94,11 +91,11 @@ badvanc:
 		}
 		goto adv1;
 	}
-	b = alloc();
+	b = _alloc();
 	list->p1 = b;
 	list = b;
 badv1:
-	list->p2 = back = alloc();
+	list->p2 = back = _alloc();
 	back->p1 = last;
 	b = a->p2;
 	c = a->typ;
@@ -108,9 +105,9 @@ badv1:
 		goto badvanc;
 	}
 	last = list;
-	str = alloc();
-	etc = alloc();
-	back->p2 = var = alloc();
+	str = _alloc();
+	etc = _alloc();
+	back->p2 = var = _alloc();
 	var->typ = b->typ;
 	var->p1 = str;
 	var->p2 = etc;
@@ -122,7 +119,7 @@ badv1:
 	if (e == 0)
 		etc->p2 = 0; else {
 		e = eval(e, 1);
-		etc->p2 = strbin(e);
+		etc->p2 = (struct node*)(intptr_t) strbin(e);
 		delete(e);
 	}
 	goto badvanc;
@@ -156,7 +153,7 @@ adv01:
 advanc:
 	a = list->p1;
 	if (a == 0) {
-		a = alloc();
+		a = _alloc();
 		if (r == 0) {
 			a->p1 = a->p2 = 0;
 			goto fail;
@@ -204,7 +201,7 @@ adv1:
 	etc = var->p2;
 	str->p1 = next;
 	str->p2 = 0;
-	c = etc->p2;
+	c = (int)(intptr_t) etc->p2;
 	if (var->typ == 1) {
 		d = bextend(str, last);
 		if (d == 0)

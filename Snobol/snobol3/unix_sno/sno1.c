@@ -1,22 +1,16 @@
 #include "sno.h"
 
-/* 
-int	freesize;
-struct node *freespace &end;
-struct node *freelist 0;
-int	*fault -1;
-*/
 
 int	freesize;
 struct node *freespace;
 struct node *freelist = 0;
 int	*fault = 0;
 
-mes(s) {
+void mes(char* s) {
 	sysput(_strstr(s));
 }
 
-init(s, t) {
+struct node* init(char *s, int t) {
 	register struct node *a, *b;
 
 	a = _strstr(s);
@@ -26,20 +20,23 @@ init(s, t) {
 	return(b);
 }
 
-main(argc, argv)
-char *argv[];
+void main(int argc, char* argv[])
 {
-	extern fin, fout;
+	FILE *fin, *fout;
 	register struct node *a, *b, *c;
 
 	if(argc > 1) {
-		fin = open(argv[1], 0);
+		fin = fopen(argv[1], "r");
 		if(fin < 0) {
 			mes("cannot open input");
 			exit(1);
 		}
 	}
-	fout = dup(1);
+	else{
+		exit(1); /* exit if no input ? */
+	}
+
+	/*fout = fopen((const char*)(intptr_t)dup(1), 0); /* dies here ...*/
 	lookf = init("f", 0);
 	looks = init("s", 0);
 	lookend = init("end", 0);
@@ -59,19 +56,19 @@ char *argv[];
 	if (lookstart->typ == 2)
 		c = lookstart->p2;
 	while (c=execute(c));
-	flush();
+	fflush(stdin);
 }
 
-syspit() {
-	extern fin;
+struct node* syspit() {
+	FILE* fin;
 	register struct node *b, *c, *d;
 	int a;
 
 	if ((a=getchar())=='\n')
 		return(0);
-	b = c = alloc();
+	b = c = _alloc();
 	while(a != '\n') {
-		c->p1 = d = alloc();
+		c->p1 = d = _alloc();
 		c = d;
 	l:
 		c->ch = a;
@@ -95,8 +92,7 @@ syspit() {
 	return(b);
 }
 
-syspot(string)
-struct node *string;
+void syspot(struct node* string)
 {
 	register struct node *a, *b, *s;
 
@@ -112,15 +108,14 @@ struct node *string;
 	putchar('\n');
 }
 
-_strstr(s)
-char s[];
+struct node* _strstr(char* s)
 {
 	int c;
 	register struct node *e, *f, *d;
 
-	d = f = alloc();
+	d = f = _alloc();
 	while ((c = *s++)!='\0') {
-		(e=alloc())->ch = c;
+		(e=_alloc())->ch = c; /* dies here ...*/
 		f->p1 = e;
 		f = e;
 	}
@@ -128,7 +123,7 @@ char s[];
 	return(d);
 }
 
-class(c) {
+int class(int c) {
 	switch (c) {
 		case ')':  return(1);
 		case '(':  return(2);
@@ -147,15 +142,15 @@ class(c) {
 	return(0);
 }
 
-alloc() {
+struct node* _alloc() {
 	register struct node *f;
 	register int i;
-	extern fout;
+	FILE* fout;
 
 	if (freelist==0) {
 		if (--freesize < 20) {
 			if ((i=sbrk(1200)) == -1) {
-				flush();
+				fflush(stdin);
 				write (fout, "Out of free space\n", 18);
 				exit(1);
 			}
@@ -168,14 +163,13 @@ alloc() {
 	return(f);
 }
 
-_free(pointer)
-struct node *pointer;
+void _free(struct node* pointer)
 {
 	pointer->p1 = freelist;
 	freelist = pointer;
 }
 
-nfree()
+int nfree()
 {
 	register int i;
 	register struct node *a;
@@ -189,8 +183,7 @@ nfree()
 	return(i);
 }
 
-look(string)
-struct node *string;
+struct node* look(struct node* string)
 {
 	register struct node *i, *j, *k;
 
@@ -202,13 +195,13 @@ struct node *string;
 			return(j);
 		i = (k=i)->p2;
 	}
-	i = alloc();
+	i = _alloc();
 	i->p2 = 0;
 	if (k)
 		k->p2 = i;
 	else
 		namelist = i;
-	j = alloc();
+	j = _alloc();
 	i->p1 = j;
 	j->p1 = copy(string);
 	j->p2 = 0;
@@ -216,19 +209,18 @@ struct node *string;
 	return(j);
 }
 
-copy(string)
-struct node *string;
+struct node* copy(struct node* string)
 {
 	register struct node *j, *l, *m;
 	struct node *i, *k;
 
 	if (string == 0)
 		return(0);
-	i = l = alloc();
+	i = l = _alloc();
 	j = string;
 	k = string->p2;
 	while(j != k) {
-		m = alloc();
+		m = _alloc();
 		m->ch = (j=j->p1)->ch;
 		l->p1 = m;
 		l = m;
@@ -237,8 +229,7 @@ struct node *string;
 	return(i);
 }
 
-equal(string1, string2)
-struct node *string1, *string2;
+int equal(struct node* string1, struct node* string2)
 {
 	register struct node *i, *j, *k;
 	struct node *l;
@@ -272,8 +263,7 @@ struct node *string1, *string2;
 	}
 }
 
-strbin(string)
-struct node *string;
+int strbin(struct node* string)
 {
 	int n, m, sign;
 	register struct node *p, *q, *s;
@@ -302,13 +292,13 @@ loop:
 	goto loop;
 }
 
-binstr(binary) {
+struct node* binstr(int binary) {
 	int n, sign;
 	register struct node *m, *p, *q;
 
 	n = binary;
-	p = alloc();
-	q = alloc();
+	p = _alloc();
+	q = _alloc();
 	sign = 1;
 	if (binary<0) {
 		sign = -1;
@@ -320,7 +310,7 @@ loop:
 	n = n / 10;
 	if (n==0) {
 		if (sign<0) {
-			m = alloc();
+			m = _alloc();
 			m->p1 = q;
 			q = m;
 			q->ch = '-';
@@ -328,30 +318,29 @@ loop:
 		p->p1 = q;
 		return(p);
 	}
-	m = alloc();
+	m = _alloc();
 	m->p1 = q;
 	q = m;
 	goto loop;
 }
 
-add(string1, string2) {
+struct node* add(struct node* string1, struct node* string2) {
 	return(binstr(strbin(string1) + strbin(string2)));
 }
 
-sub(string1, string2) {
+struct node* sub(struct node* string1, struct node* string2) {
 	return(binstr(strbin(string1) - strbin(string2)));
 }
 
-mult(string1, string2) {
+struct node* mult(struct node* string1, struct node* string2) {
 	return(binstr(strbin(string1) * strbin(string2)));
 }
 
-_div(string1, string2) {
+struct node* _div(struct node* string1, struct node* string2) {
 	return(binstr(strbin(string1) / strbin(string2)));
 }
 
-cat(string1, string2) 
-struct node *string1, *string2;
+struct node* cat(struct node* string1, struct node* string2) 
 {
 	register struct node *a, *b;
 
@@ -367,8 +356,7 @@ struct node *string1, *string2;
 	return(a);
 }
 
-dcat(a,b)
-struct node *a, *b;
+struct node* dcat(struct node* a, struct node* b)
 {
 	register struct node *c;
 
@@ -378,8 +366,7 @@ struct node *a, *b;
 	return(c);
 }
 
-delete(string)
-struct node *string;
+void delete(struct node* string)
 {
 	register struct node *a, *b, *c;
 
@@ -395,18 +382,17 @@ struct node *string;
 	_free(a);
 }
 
-sysput(string) {
+void sysput(struct node* string) {
 	syspot(string);
 	delete(string);
 }
 
-dump()
+void dump()
 {
 	dump1(namelist);
 }
 
-dump1(base)
-struct node *base;
+void dump1(struct node* base)
 {
 	register struct node *b, *c, *e;
 	struct node *d;
@@ -427,22 +413,22 @@ struct node *base;
 	}
 }
 
-writes(s) {
+void writes(char* s) {
 
 	sysput(dcat(binstr(lc),dcat(_strstr("\t"),_strstr(s))));
-	flush();
+	fflush(stdin);
 	if (cfail) {
 		dump();
-		flush();
+		fflush(stdin);
 		exit(1);
 	}
 	while(_getc());
 	while (compile());
-	flush();
+	fflush(stdin);
 	exit(1);
 }
 
-_getc() {
+struct node* _getc() {
 	register struct node *a;
 	static struct node *line;
 	static linflg;

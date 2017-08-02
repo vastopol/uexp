@@ -1,0 +1,19 @@
+Unix v6 utility "sno"
+
+original source locations:
+
+http://minnie.tuhs.org/cgi-bin/utree.pl?file=V6/usr/source/sno
+http://minnie.tuhs.org/cgi-bin/utree.pl?file=V6/usr/man/man6/sno.6
+
+http://minnie.tuhs.org/cgi-bin/utree.pl?file=Mini-Unix/usr/source/sno
+http://minnie.tuhs.org/cgi-bin/utree.pl?file=Mini-Unix/usr/bin/sno
+
+//-------------------------------
+
+attempted port to c89
+
+it compiles but segfaults immediately on running
+
+not sure what to do next...
+
+$ make debug && valgrind ./a.out <file>

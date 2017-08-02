@@ -2,9 +2,13 @@
 
 CC = gcc -std=c89
 FLAGS = -s -O
+DEBUG = -g
 
 all:
 	$(CC) sno?.c
+
+debug:
+	$(CC) $(DEBUG) sno?.c
 
 run:
 	$(CC) $(FLAGS) sno?.c

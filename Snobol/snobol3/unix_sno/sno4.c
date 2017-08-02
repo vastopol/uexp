@@ -1,8 +1,7 @@
 #include "sno.h"
 
 
-and(ptr)
-struct node *ptr;
+struct node* and(struct node* ptr)
 {
 	register struct node *a, *p;
 
@@ -16,7 +15,7 @@ struct node *ptr;
 		case 1:
 			goto l1;
 		case 3:
-			flush();
+			fflush(stdin);
 			return(syspit());
 		case 5:
 			a = a->p2->p1;
@@ -32,8 +31,7 @@ struct node *ptr;
 	return(a);
 }
 
-eval(e, t)
-struct node *e;
+struct node* eval(struct node* e, int t)
 {
 	struct node *list, *a2, *a3, *a4, *a3base;
 	register struct node *a1, *stack, *op;
@@ -46,8 +44,8 @@ struct node *e;
 advanc:
 	list = list->p1;
 l1:
-	op = list->typ;
-	switch (op) {
+	op = (struct node*)(intptr_t) list->typ;
+	switch ( (int)(intptr_t) op) {
 		default:
 		case 0:
 		if (t == 1) {
@@ -76,7 +74,7 @@ l1:
 			writes("illegal function");
 		a1 = a1->p2;
 		op = a1->p1;
-		a3base = a3 = alloc();
+		a3base = a3 = _alloc();
 		a3->p2 = op->p2;
 		op->p2 = 0;
 		a1 = a1->p2;
@@ -89,7 +87,7 @@ l1:
 		op = op->p1;
 		goto f3;
 	f2:
-		a3->p1 = a4 = alloc();
+		a3->p1 = a4 = _alloc();
 		a3 = a4;
 		a3->p2 = and(a1);
 		assign(a1->p1, eval(a2->p2, 1));/* recursive */
@@ -131,7 +129,7 @@ l1:
 		goto advanc;
 	case 15:
 		a1 = copy(list->p2);
-		a2 = 1;
+		a2 = (struct node* )(intptr_t) 1;
 		goto l3;
 	case 14:
 		a1 = list->p2;
@@ -139,35 +137,34 @@ l1:
 	l3:
 		stack = push(stack);
 		stack->p1 = a1;
-		stack->typ = a2;
+		stack->typ = (int)(intptr_t) a2;
 		goto advanc;
 	}
 }
 
-doop(op, arg1, arg2)
+struct node* doop(struct node* op, struct node* arg1, struct node* arg2)
 {
-	register int a1, a2;
-
+	/*register int a1, a2;
 	a1 = arg1;
-	a2 = arg2;
-	switch (op) {
+	a2 = arg2;*/
+
+	switch ( (int)(intptr_t) op) {
 
 	case 11:
-		return(_div(a1, a2));
+		return(_div(arg1, arg2));
 	case 10:
-		return(mult(a1, a2));
+		return(mult(arg1, arg2));
 	case 8:
-		return(add(a1, a2));
+		return(add(arg1, arg2));
 	case 9:
-		return(sub(a1, a2));
+		return(sub(arg1, arg2));
 	case 7:
-		return(cat(a1, a2));
+		return(cat(arg1, arg2));
 	}
 	return(0);
 }
 
-execute(e)
-struct node *e;
+struct node* execute(struct node* e)
 {
 	register struct node *r, *b, *c;
 	struct node *m, *ca, *d, *a;
@@ -215,7 +212,7 @@ struct node *e;
 			_free(d);
 			goto xsuc;
 		}
-		(r=alloc())->p1 = d->p2->p1;
+		(r=_alloc())->p1 = d->p2->p1;
 		r->p2 = b->p2->p2;
 		assign(b, cat(c, r));
 		_free(d);
@@ -247,8 +244,7 @@ xboth:
 	return(b->p2);
 }
 
-assign(adr, val)
-struct node *adr, *val;
+void assign(struct node* adr, struct node* val)
 {
 	register struct node *a, *addr, *value;
 
