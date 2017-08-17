@@ -1,0 +1,78 @@
+$Id: design.txt,v 1.3 1996/09/27 20:38:00 phil Exp $
+
+Several design decisions which are worth discussing;
+
+addressing is in bytes
+======================
+
+CPA (characters per address) is 1, and DESCR is sizeof(struct DESCR)!
+
+Since the data segment is compiled in C it may be possible to reverse
+the above two values, and have addressing be in "descr" sized units.
+
+Either;
+	all pointer aritemetic would have to be performed on
+		struct descr *'s (so that INCRA X,DESCR does
+		the right thing).
+OR
+	All pointer derefernces would have to do math?!
+
+I also seem to recall there would be problems with EQU values (some
+equates include pointer math).  Equates which yield pointers would
+have to have the type "struct descr *".
+
+All static data referenced as char * pointers
+=============================================
+
+This is so that the translator doesn't have to worry about
+putting &'s on data (while omitting them on functions and EQU's).
+
+Since the addressing unit is "char", the arrays are all of type char.
+
+SIL PROC's are C functions
+==========================
+
+This means the C compiler deals with pushing the return address.
+
+The old system stack pointer "OSTACK" is saved as a C local variable,
+however RCALL has to PUSH() at least one DESCR() since the GC code
+expects this!!
+
+Return values are implemented by passing a pointer to a variable to
+the C function.
+
+Alternate returns are implemented by using the C return value and a
+switch statement.
+
+Any BRANCH (or other goto) which refers to a label outside the current
+procedure is converted into;
+
+		return label(retval)
+
+This has unfortunate ramifications for some procedures, particularly
+ones with "multiple entry points", creating clusters of mutually
+recursive C functions!!  Using gcc with -finline, and carefully
+ordering the functions may ameliorate this problem.  This is why
+functions not referenced from the data segment are declared "static".
+Another way to solve this problem would be to have the translator
+"inline" any code from outside the current function while generating C
+code!
+
+An alternative strategy would be have all of the program be one C
+function, and to implement RCALL as setjmp() + goto, and keeping a
+call stack in an array of jmp_bufs!  This seems likely to cause cause
+immense compile times if any optimization is attempted, or on
+architectures with procedure size limitations!  Furthermore longjmp
+might be slow on some RISC architectures (requires flushing all frames
+to memory).  Furthermore, all references to function names in data
+(and scan tables) would need to be replaced with small integers which
+could then be dispatched by a switch statement!
+
+I felt the former strategy was more likely to port well, and less
+likely to uncover compiler problems due to longjmp, optimization, and
+very large functions!
+
+Another possibility I didn't know about at the time would be to use
+the GNU C construct (&&label) to get the address of a C label. This
+would mean loss of portability, as well as the problems outlined
+in the previous paragraph.

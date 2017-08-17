@@ -1,0 +1,120 @@
+$Id: snopea.7.pea,v 1.11 2014/12/31 06:56:56 phil Exp $
+
+=pea
+=sect NAME
+snopea \- A little ``Plain Old Documentation'' format for SNOBOL4
+
+=sect DESCRIPTION
+B<snopea>(7) is a simple-to-use markup language used for writing
+documentation for SNOBOL4, SNOBOL4 programs, and SNOBOL4 modules
+inspired by B<perlpod>(1).  The B<snopea>(1) command translates
+B<snopea>(7) to *roff B<man>(7) macro format or B<HTML>.
+
+A line that starts with zero or more star/asterisk (B<*>) characters followed
+by B<=pea> signals start of a block of documentation.  All lines until
+a B<=cut> directive will be processed after removal of leading star/asterisk
+characters.
+
+New paragraphs are started with a blank line.
+
+=sect FORMATTING
+=item B<B&lt;>I<text>B<&gt;>
+I<text> is formatted in B<bold>.
+
+=item B<I&lt;>I<text>B<&gt;>
+I<text> is formatted in I<italic>.
+
+=item B<C&lt;>I<text>B<&gt;>
+I<text> is formatted in C<constant width>.
+
+=item B<L&lt;>I<text>B<&gt;>
+I<text> is formatted as an HTML link.
+
+=sect DIRECTIVES
+=item B<=break>
+Inserts a line break.
+
+=item B<=bull> I<text>
+Indicates a bullet item in a list.
+
+=item B<=code>
+Starts a block of code, lines will be formatted in a constant-width font,
+and line breaks will be preserved.
+
+=item B<=cut>
+Signals end of a block of documentation.
+
+=item B<=ecode>
+Ends a B<=code> block.
+
+=item B<=etable>
+Ends a table.
+
+=item B<=item> I<label>
+A list item with tag I<label>.
+
+=item B<=indent> I<number>
+Controls the indentation of B<=item> paragraphs.
+
+=item B<=nitem> I<text>
+A numbered list item with tag I<label>.
+
+=item B<=row> I<columns>
+A table row. I<columns> is a tab separated list.
+
+=item B<=sect> I<name>
+Declares man page section I<name>.
+
+=item B<=subsect> I<name>
+Declares man page subsection I<name>.
+
+=item B<=table> I<tab stops>
+Begin a table, setting I<tab stops>, a sequence of positions
+in inches, each followed by B<i> (ie; B<1i 2i 3i>)
+
+=sect SPECIAL CHARACTERS
+The following sequences (an unholy mix of B<troff>(1) and B<HTML>)
+B<MUST> be used for portable formatting:
+
+=item \`\`
+left double quote (``)
+
+=item \'\'
+right double quote ('')
+
+=item B<&amp;amp;>
+ampersand (&amp;)
+
+=item B<&amp;pi;>
+greek lower-case pi (&pi;)
+
+=item \ee
+backslash (\e)
+
+=item \e`
+accent grave (`)
+
+=item \e'
+apostrophe (')
+
+=item \e-
+en-dash
+
+=item \e&amp;
+zero-width space
+
+=item \e|
+thin space
+
+=item \e~
+non-breaking space
+
+=sect NOT CONFORMING TO
+Inspired by (but not compatible with) Perl POD format.
+
+=sect AUTHOR
+Philip L. Budne
+
+=sect SEE ALSO
+B<snobol4>(1), B<snopea>(1), B<perlpod>(1).
+=cut

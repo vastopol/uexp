@@ -1,0 +1,6 @@
+# config generated Thu Aug 17 02:27:38 GMT 2017
+	MAN3DIR = '/usr/local/share/man/man3'
+	SLEEP_C = 'posix/sleep.c'
+	NDBM_LDFLAGS = ''
+	NDBM_INCLUDE = "sdbm"
+	NDBM_SRCS = ",sdbm/sdbm.c,sdbm/sdbm_hash.c,sdbm/sdbm_pair.c"

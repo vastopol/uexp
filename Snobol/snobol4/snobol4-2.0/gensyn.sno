@@ -1,0 +1,360 @@
+*	$Id: gensyn.sno,v 1.32 2013/10/23 02:49:46 phil Exp $
+*
+*	Translator for the "Macro Implementation of SNOBOL" (aka MAINBOL)
+*	written in SIL (SNOBOL IMPLEMENTATION LANGUAGE) to `C'
+*
+*	Phil Budne
+*	bootstrapped using CATSPAW "SPARC SPITBOL"
+*
+*	gensyn.spt -- generate syn.c, syn.h from syntab.tbl
+
+****************************************************************
+*	environment
+
+*	identify if mainbol or spitbol
+	MAINBOL = IDENT(.NAME,"NAME") 1
+
+	&ANCHOR = 1
+
+****************************************************************
+*	initialization
+
+*	variable to allow boostrap onto system with different collation
+	CHARSET = &ALPHABET
+
+	CHARSETSIZE = SIZE(CHARSET)
+
+	SEP = '/'
+	UC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	LC = "abcdefghijklmnopqrstuvwxyz"
+	DIGITS = "0123456789"
+	ALPHA = UC LC
+
+* "non-ascii" -- used by UTF-8 for encoding Unicode on ASCII systems
+* treat them all as alpha!!
+	ALPHA = IDENT(substr(&alphabet,66,26),UC) ALPHA SUBSTR(&ALPHABET,129)
+
+	ALPHANUM = DIGITS ALPHA
+
+	SP = ' '
+	TAB = '	'
+	NIL =
+
+*	half-tab
+	HT = SP SP SP SP
+
+*	space star space
+	SSS = ' * '
+
+	CONTIN = '0' SEP 'CONTIN' SEP
+
+*	patterns
+	ID = ANY(ALPHA) (SPAN(ALPHANUM) | NIL)
+	WS = SPAN(SP TAB)
+	IFPAT = '.IF' WS ID . IFID	 
+
+****************************************************************
+*	character classes (char-set dependant)
+
+	CLASS = TABLE()
+
+*	operators
+*	NOTE: SITBOL meanings used for ! and \
+
+	CLASS<"PLUS">	= "+"
+	CLASS<"MINUS">	= "-"
+	CLASS<"DOT">	= "."
+	CLASS<"DOLLAR">	= "$"
+	CLASS<"STAR">	= "*"
+	CLASS<"SLASH">	= "/"
+	CLASS<"AT">	= "@"
+	CLASS<"POUND">	= "#"
+	CLASS<"PERCENT"> = "%"
+	CLASS<"RAISE">	= "^"
+	CLASS<"ORSYM">	= "|!"
+	CLASS<"KEYSYM"> = "&"
+	CLASS<"NOTSYM"> = "~\"
+	CLASS<"QUESYM"> = "?"
+
+*	beginning of line;
+*	comments;
+* 	NOTE: SPITBOL treats # as a continuation (CNT) char, but we
+*	want to use it for "script interpreter magic number" (#!)
+	CLASS<"CMT">	= "*#|;!"
+
+*	control cards
+	CLASS<"CTL">	= "-"
+
+*	continuation
+	CLASS<"CNT">	= "+."
+
+	CLASS<"DQUOTE"> = '"'
+	CLASS<"SQUOTE"> = "'"
+	CLASS<"NUMBER"> = DIGITS
+	CLASS<"LETTER"> = ALPHA
+	CLASS<"LEFTPAREN"> = "("
+	CLASS<"RIGHTPAREN"> = ")"
+	CLASS<"EOS">	= ";"
+	CLASS<"BREAK">	= "._"
+	CLASS<"BLANK">	= SP TAB
+	CLASS<"LEFTBR"> = "<["
+	CLASS<"RIGHTBR"> = ">]"
+	CLASS<"COMMA">	= ","
+	CLASS<"COLON">	= ":"
+	CLASS<"EQUAL">	= "=_"
+	CLASS<"FGOSYM"> = "Ff"
+	CLASS<"SGOSYM"> = "Ss"
+	CLASS<"ALPHANUMERIC"> = ALPHANUM
+	CLASS<"TERMINATOR"> = CLASS<"COMMA"> CLASS<"BLANK"> CLASS<"EOS">
++				CLASS<"RIGHTBR"> CLASS<"RIGHTPAREN">
+	CLASS<"EXP">	= "Ee"
+	FREEZE(CLASS)
+
+**************** translate character to ordinal value
+
+* builtin in CSNOBOL4 1.0
+	DEFINE("ORD(C)")				:(EORD)
+*	get position of char in collating sequence!
+ORD	CHARSET BREAK(C) @ORD C				:S(RETURN)F(FRETURN)
+
+EORD
+
+**************** parse actions for FOR and ELSE lines
+ 	DEFINE("ACTION(STR)")
+	ERRPAT = 'ERROR' . A
+	PUTPAT = 'PUT(' ID . P ')' WS
+	GOTOPAT = 'GOTO' . A '(' ID . G ')'
+	STOPPAT = ('STOP' ('SH' | '')) . A		:(EACTION)
+ACTION	P =
+	A =
+	G =
+*	CONTIN and ERROR appear alone
+	STR 'CONTIN' 					:S(ACCONT)
+	STR ERRPAT					:S(AC1)
+*	PUT can appear before GOTO or STOP(SH)
+	STR PUTPAT =
+*	things that can appear after PUT (or alone)
+	STR GOTOPAT =					:S(AC1)
+	STR STOPPAT					:F(FRETURN)
+
+*	construct PUT/ACT/GO string, and see if it's been seen before
+AC1	G = DIFFER(G) '&' G
+	P = IDENT(P) '0'
+	PAG = P SEP A SEP G
+	DIFFER( ACTIONS< PAG > )			:S(AC2)
+
+*	here with new put/action/go combination
+NEWACT	ACTIONS< PAG > = NACTIONS
+	PUT< NACTIONS > = P
+	ACT< NACTIONS > = A
+	GO< NACTIONS > = G
+	NACTIONS = NACTIONS + 1
+
+*	NOTE: one based (CONTIN is always zero)
+AC2	ACTION = ACTIONS< PAG > + 1			:(RETURN)
+
+*	CONTIN (most common action taken while compiling)
+*	is ALWAYS action zero, and requires no table lookup 9/9/97
+ACCONT	ACTION = 0					:(RETURN)
+EACTION
+
+**********************************
+*	MAIN PROGRAM		 *
+**********************************
+
+	WITH = TABLE()
+	IND = HOST(3)
+OPTLOOP	ARG = HOST(2,IND)				:F(NOFILE)
+	ARG POS(0) '-'					:F(OPTEND)
+	IND = IND + 1
+
+	IDENT(ARG,'--with')		       		:S(WITH)
+	DIFFER(ARG,'-w')				:S(UNKOPT)
+WITH	ARG = HOST(2,IND)				:F(NOWITHARG)
+	IND = IND + 1
+	WITH[ARG] = 1					:(OPTLOOP)
+
+NOWITHARG
+OPTEND	INPUTFILE = ARG
+	IDENT(INPUTFILE)				:S(NOFILE)
+
+	DIFFER(MAINBOL)					:S(MB1)
+**************** spitbol I/O
+	INPUT(.INPUT,1,INPUTFILE)			:F(IOERR)
+	OUTPUT(.SYN.C,10,"syn.c2")
+	OUTPUT(.SYN.H,11,"syn.h2")
+	OUTPUT(.SYN_INIT.H,12,"syn_init.h2")		:(EIO)
+**************** mainbol I/O
+MB1	INPUT(.INPUT,1,,INPUTFILE)			:F(IOERR)
+	OUTPUT(.SYN.C,10,,"syn.c2")
+	OUTPUT(.SYN.H,11,,"syn.h2")
+	OUTPUT(.SYN_INIT.H,12,,"syn_init.h2")		:(EIO)
+****************
+IOERR	TERMINAL = "COULD NOT OPEN " INPUTFILE		:(FATAL)
+NOFILE	TERMINAL = "MUST HAVE INPUT FILE ON COMMAND LINE"
+
+FATAL	&CODE = 1					:(END)
+
+EIO
+****************
+	DATE = DATE()
+
+	SYN.C = '/* generated by gensyn.sno on ' DATE ' */'
+	SYN.C =
+	SYN.C = '# ifdef HAVE_CONFIG_H'
+	SYN.C = '# include "config.h"'
+	SYN.C = '# endif /* HAVE_CONFIG_H defined */'
+	SYN.C =
+	SYN.C = '# include "h.h"'
+	SYN.C = '# include "snotypes.h"'
+	SYN.C = '# include "syntab.h"'
+	SYN.C = '# include "gen.h"'
+	SYN.C =
+	SYN.C = '# include "syn.h"'
+	SYN.C = '# include "equ.h"'
+	SYN.C = '# include "res.h"'
+	SYN.C = '# include "data.h"'
+
+*	including date forces snobol4.c to recompile!!!
+*	SYN.H = '/* generated by gensyn.sno on ' DATE ' */'
+	SYN.H = '/* generated by gensyn.sno */'
+	SYN.H =
+
+	IN_IF = IF_TRUE =
+
+TOP	LINE = INPUT					:F(INIT)
+	LINE '*'					:S(TOP)
+
+*	here if not a comment
+** new: check for .IF
+* can't nest for now....
+	IDENT(IN_IF)					:S(NOTINIF)
+	LINE '.FI'					:F(NOTFI)
+*	TERMINAL = 'saw .FI'
+	IN_IF = IF_TRUE =				:(TOP)
+
+NOTFI	IDENT(IF_TRUE)					:S(TOP)
+
+NOTINIF	LINE IFPAT					:F(NOTIF)
+	IN_IF = 1
+	IF_TRUE = WITH[IFID]
+*	TERMINAL = 'saw .IF ' IFID ' -- ' IF_TRUE
+	:(TOP)
+
+NOTIF	LINE '.IFE' WS ID . IFID			:F(NOTIFE)
+	IN_IF = 1
+	IF_TRUE = (DIFFER(WITH[IFID]), 1)
+*	TERMINAL = 'saw .IFE ' IFID ' -- ' IF_TRUE
+	:(TOP)
+
+NOTIFE	LINE 'BEGIN' WS ID . TABNAM			:F(TOP)
+
+**************** start new table
+
+*	loses; SNABTB gets patched!
+*	CONST =
+
+	SYN.H = 'extern ' CONST 'struct syntab ' TABNAM ';'
+
+	SYN.C =
+	SYN.C = '/*'
+	SYN.C = SSS LINE
+	ACTIONS = TABLE()
+	NACTIONS = 0
+	ARRAYRANGE = '0:19'
+	PUT = ARRAY(ARRAYRANGE)
+	ACT = ARRAY(ARRAYRANGE)
+	GO = ARRAY(ARRAYRANGE)
+
+*	array per char; contains index into above PU/ACT/GO arrays
+	CHARS = ARRAY('0:' CHARSETSIZE - 1,-1)
+
+**************** for each line of table
+LOOP	LINE = INPUT
+
+* check if inside .IF
+	IDENT(IN_IF)					:S(LOOP2)
+	IDENT(IF_TRUE)					:S(LOOP)
+
+LOOP2	SYN.C = SSS LINE
+
+*	process comments!! -plb 11/1/93
+	LINE '*'					:S(LOOP)
+	LINE 'END'					:S(DUMP)
+	LINE 'ELSE' WS =				:S(ELSE)
+	LINE 'FOR(' ID . T ')' WS =			:S(TOK1)
+	LINE 'FOR(' ID . T1 ',' ID . T2 ')' WS =	:F(ERR)
+	TERMINAL = IDENT(CLASS<T1>) "BAD CLASS: " T1	:S(FATAL)
+	TERMINAL = IDENT(CLASS<T2>) "BAD CLASS: " T2	:S(FATAL)
+	T = CLASS<T1> CLASS<T2>				:(DOTOK)
+TOK1	TERMINAL = IDENT(CLASS<T>) "BAD CLASS: " T	:S(FATAL)
+	T = CLASS<T>
+
+******** here with a token class string
+DOTOK	A = ACTION(LINE)				:F(ERR)
+	I = 1
+
+TOKLOP	CHARS<ORD(SUBSTR(T,I,1))> = A			:F(LOOP)
+	I = I + 1					:(TOKLOP)
+
+********
+ELSE	N = 0
+	A = ACTION(LINE)				:F(ERR)
+ELSLOP	LT(N,CHARSETSIZE)				:F(LOOP)
+	CHARS<N> = EQ(CHARS<N>,-1) A
+	N = N + 1					:(ELSLOP)
+****************
+*	dump action table
+
+DUMP	N = 0
+	ATAB = TABNAM '_actions'
+	SYN.C = ' */'
+	SYN.C =
+	SYN.C = 'static struct acts ' ATAB '[' NACTIONS '];'
+
+DUMPAL	GE(N,NACTIONS)					:S(DUMPAEN)
+	SYN_INIT.H = DIFFER(PUT<N>,'0') 
++		     '    ' ATAB '[' N '].put = (int_t) ' PUT<N> ';'
+	SYN_INIT.H = '    ' ATAB '[' N '].act = AC_' ACT<N> ';'
+	SYN_INIT.H = DIFFER(GO<N>)
++		     '    ' ATAB '[' N '].go  = ' GO<N> ';'
+	N = N + 1					:(DUMPAL)
+DUMPAEN
+
+****************
+*	dump syntab (character) table
+
+	N = 0
+	C = 0
+	OL =
+	SYN.C =
+	SYN.C = CONST 'struct syntab ' TABNAM ' = {'
+	SYN.C = HT '"' TABNAM '",'
+	SYN.C = HT '{'
+
+*	dump lines of 16 chars
+DUMPCHR	CH = CHARS<N>					:F(DUMPEND)
+	CH = LT(SIZE(CH),2) SP CH
+	OL = OL CH
+	N = N + 1
+	C = C + 1
+	OL = LT(N,CHARSETSIZE) OL ',' SP
+	LT(C,16)					:S(DUMPCHR)
+
+*	start new line of output
+	SYN.C = TAB OL
+	C = 0
+	OL =						:(DUMPCHR)
+
+DUMPEND
+	SYN.C = HT '},'
+	SYN.C = HT ATAB
+	SYN.C = '};'					:(TOP)
+
+INIT	SYN.C =
+	SYN.C = 'void'
+	SYN.C = 'init_syntab() {'
+	SYN.C = '# include "syn_init.h"'
+	SYN.C = '}'
+
+END

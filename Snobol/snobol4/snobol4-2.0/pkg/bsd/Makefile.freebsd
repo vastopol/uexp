@@ -1,0 +1,23 @@
+# New ports collection makefile for:	snobol4
+# Version required:	1.1
+# Date created:		18 February 2004
+# Whom:			Phil Budne <phil@ultimate.com>
+#
+# $Id: Makefile.freebsd,v 1.4 2005/12/07 14:19:27 phil Exp $
+#
+
+# new:
+PORTNAME=	snobol4
+PORTVERSION=	1.1
+# old:
+DISTNAME=	snobol4-1.1
+CATEGORIES=	lang
+MASTER_SITES=	ftp://ftp.snobol4.org/snobol/
+
+MAINTAINER=	phil@ultimate.com
+
+HAS_CONFIGURE=		yes
+CONFIGURE_SCRIPT=	configure
+CONFIGURE_ARGS+=	--prefix=${PREFIX}
+
+.include <bsd.port.mk>

@@ -1,0 +1,11 @@
+Install && config failed at last part,
+
+Typing "make install" will install the snobol4 binary and man page.
+The default PREFIX is /usr/local, see --prefix= configure option above).
+
+The snobol4 (PREFIX/bin/snobol4),
+
+library directory (PREFIX/lib/snobol4) and 
+
+man page (PREFIX/man/man1/snobol4.1).  
+

@@ -1,0 +1,373 @@
+Date:
+Thu Aug 17 02:28:44 GMT 2017
+
+uname -a:
+Linux jessie 3.16.0-4-amd64 #1 SMP Debian 3.16.39-1 (2016-12-30) x86_64 GNU/Linux
+
+uname -n:
+jessie
+
+uname -rs:
+Linux 3.16.0-4-amd64
+
+uname -m:
+x86_64
+
+/proc/cpuinfo:
+processor	: 0
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 61
+model name	: Intel(R) Core(TM) i7-5500U CPU @ 2.40GHz
+stepping	: 4
+cpu MHz		: 2394.458
+cache size	: 4096 KB
+physical id	: 0
+siblings	: 2
+core id		: 0
+cpu cores	: 2
+apicid		: 0
+initial apicid	: 0
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 20
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc pni pclmulqdq ssse3 cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx rdrand hypervisor lahf_lm abm 3dnowprefetch rdseed
+bogomips	: 4788.91
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 39 bits physical, 48 bits virtual
+power management:
+
+processor	: 1
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 61
+model name	: Intel(R) Core(TM) i7-5500U CPU @ 2.40GHz
+stepping	: 4
+cpu MHz		: 2394.458
+cache size	: 4096 KB
+physical id	: 0
+siblings	: 2
+core id		: 1
+cpu cores	: 2
+apicid		: 1
+initial apicid	: 1
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 20
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc pni pclmulqdq ssse3 cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx rdrand hypervisor lahf_lm abm 3dnowprefetch rdseed
+bogomips	: 4788.91
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 39 bits physical, 48 bits virtual
+power management:
+
+ENDCPUINFO
+
+/proc/meminfo:
+MemTotal:        1024264 kB
+MemFree:          245188 kB
+MemAvailable:     597388 kB
+Buffers:           53432 kB
+Cached:           364268 kB
+SwapCached:        24184 kB
+Active:           292936 kB
+Inactive:         338488 kB
+Active(anon):      45308 kB
+Inactive(anon):   171848 kB
+Active(file):     247628 kB
+Inactive(file):   166640 kB
+Unevictable:          32 kB
+Mlocked:              32 kB
+SwapTotal:        473084 kB
+SwapFree:         351976 kB
+Dirty:              2044 kB
+Writeback:             0 kB
+AnonPages:        208360 kB
+Mapped:            40868 kB
+Shmem:              3344 kB
+Slab:             118160 kB
+SReclaimable:     101108 kB
+SUnreclaim:        17052 kB
+KernelStack:        3824 kB
+PageTables:        14004 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:      985216 kB
+Committed_AS:    1408480 kB
+VmallocTotal:   34359738367 kB
+VmallocUsed:       20712 kB
+VmallocChunk:   34359708152 kB
+HardwareCorrupted:     0 kB
+AnonHugePages:         0 kB
+HugePages_Total:       0
+HugePages_Free:        0
+HugePages_Rsvd:        0
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+DirectMap4k:       40896 kB
+DirectMap2M:     1007616 kB
+
+releasefile /etc/debian_version:
+8.7
+
+lsb_release
+Distributor ID:	Debian
+Description:	Debian GNU/Linux 8.7 (jessie)
+Release:	8.7
+Codename:	jessie
+
+device model files:
+/sys/devices/pci0000:00/0000:00:0d.0/ata1/host0/target0:0:0/0:0:0:0/model:VBOX HARDDISK   
+
+/usr/bin/lspci
+00:00.0 Host bridge: Intel Corporation 440FX - 82441FX PMC [Natoma] (rev 02)
+00:01.0 ISA bridge: Intel Corporation 82371SB PIIX3 ISA [Natoma/Triton II]
+00:02.0 VGA compatible controller: InnoTek Systemberatung GmbH VirtualBox Graphics Adapter (prog-if 00 [VGA controller])
+00:03.0 Ethernet controller: Intel Corporation 82540EM Gigabit Ethernet Controller (rev 02)
+	Subsystem: Intel Corporation PRO/1000 MT Desktop Adapter
+00:04.0 System peripheral: InnoTek Systemberatung GmbH VirtualBox Guest Service
+00:07.0 Bridge: Intel Corporation 82371AB/EB/MB PIIX4 ACPI (rev 08)
+00:0d.0 SATA controller: Intel Corporation 82801HM/HEM (ICH8M/ICH8M-E) SATA Controller [AHCI mode] (rev 02) (prog-if 01 [AHCI 1.0])
+END_LSPCI
+
+cpuid:
+GNUC: 4.9.2
+cpuid vendor: GenuineIntel
+cpuid model: Intel(R) Core(TM) i7-5500U CPU @ 2.40GHz
+running under hypervision!
+hypervisor: KVMKVMKVM
+
+ls -l config.m4 config.h build.c ./xsnobol4:
+-rw-r--r-- 1 vagrant vagrant   1347 Aug 17 02:28 build.c
+-rw-r--r-- 1 vagrant vagrant   1665 Aug 17 02:27 config.h
+-rw-r--r-- 1 vagrant vagrant   6400 Aug 17 02:27 config.m4
+-rwxr-xr-x 1 vagrant vagrant 520712 Aug 17 02:28 ./xsnobol4
+
+config.m4:
+# config generated Thu Aug 17 02:27:38 GMT 2017
+# on jessie (Linux)
+# by $Id: configure,v 1.278 2015/01/02 04:54:27 phil Exp $
+undefine([include])
+ADD_CPPFLAGS([-DHAVE_CONFIG_H])
+# see config.h for more defines
+VERS=2.0
+BINDIR=$(DESTDIR)/usr/local/bin
+MANDIR=$(DESTDIR)/usr/local/share/man
+MAN1DIR=$(DESTDIR)/usr/local/share/man/man1
+MAN3DIR=$(DESTDIR)/usr/local/share/man/man3
+MAN7DIR=$(DESTDIR)/usr/local/share/man/man7
+SNOLIB=$(DESTDIR)/usr/local/lib/snobol4
+SNOLIB_LIB=$(DESTDIR)/usr/local/lib/snobol4/2.0/lib
+SNOLIB_DOC=$(DESTDIR)/usr/local/lib/snobol4/2.0
+INCLUDE_DIR=$(DESTDIR)/usr/local/lib/snobol4/2.0/include
+DOC_DIR=$(DESTDIR)/usr/local/share/doc/snobol4-2.0
+EXTRA_OBJS=getstring.o retstring.o handle.o
+ADD_SRCS([$(GETSTRING_C) $(RETSTRING_C) $(HANDLE_C)])
+CCM=$(CC) -M
+ADD_CFLAGS([-Wall])
+SNOBOL4_C_CFLAGS=-Wno-return-type -Wno-switch
+CC=gcc
+################
+# C Compiler:
+# gcc -v
+# Using built-in specs.
+# COLLECT_GCC=gcc
+# COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/4.9/lto-wrapper
+# Target: x86_64-linux-gnu
+# Configured with: ../src/configure -v --with-pkgversion='Debian 4.9.2-10' --with-bugurl=file:///usr/share/doc/gcc-4.9/README.Bugs --enable-languages=c,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-4.9 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --with-gxx-include-dir=/usr/include/c++/4.9 --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-4.9-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-4.9-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-4.9-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --with-arch-32=i586 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
+# Thread model: posix
+# gcc version 4.9.2 (Debian 4.9.2-10) 
+################
+# sizeof(int) = 4
+# sizeof(void *) = 8
+# sizeof(long) = 8
+# sizeof(float) = 4
+# sizeof(double) = 8
+# alignment(double) = 8
+OPT=-O3
+MSTIME_C=$(SRCDIR)lib/posix2001/mstime.c
+INET_O=inet6.o
+ADD_OBJS([bindresvport.o])
+ADD_SRCS([$(BINDRESVPORT_C)])
+ADD_OBJS([popen.o])
+ADD_SRCS([$(POPEN_C)])
+ADD_LDFLAGS([-lutil])
+TTY_C=$(SRCDIR)lib/posix/tty.c
+LOAD_C=$(SRCDIR)lib/unix98/load.c
+ADD_LDFLAGS([-ldl])
+ADD_LDFLAGS([-rdynamic])
+ADD_OBJS([loadx.o])
+# NOTE: SNOLIB_FILE in config.h too!
+SNOLIB_FILE=snolib.so
+DYNAMIC_C=$(SRCDIR)lib/posix/dynamic.c
+SLEEP_C=$(SRCDIR)posix/sleep.c
+# Shared Object Libraries
+SO_EXT=.so
+SO_CFLAGS=-fPIC
+SO_LD=gcc
+SO_LDFLAGS=-shared -fPIC
+# Dynamicly Loaded Extensions
+DL_EXT=.so
+DL_CFLAGS=-fPIC
+DL_LD=gcc
+DL_LDFLAGS=-shared -fPIC
+INSTALL=/usr/bin/install
+BLOCKS=1
+RUNSETUP=SNOLIB=$(SNOLIB) SNOPATH=../..:../../snolib ../../xsnobol4 -N setup.sno
+
+modules/dirs/dirs.so modules/dirs/dirs.sno modules/dirs/snobol4dirs.3 modules/dirs/snobol4dirs.3.html: xsnobol4 snolib/setuputil.sno modules/dirs/setup.sno
+	cd modules/dirs; $(RUNSETUP) build
+
+modules/logic/logic.so modules/logic/logic.sno modules/logic/snobol4logic.3 modules/logic/snobol4logic.3.html: xsnobol4 snolib/setuputil.sno modules/logic/setup.sno
+	cd modules/logic; $(RUNSETUP) build
+
+modules/random/random.so modules/random/random.sno modules/random/snobol4random.3 modules/random/snobol4random.3.html: xsnobol4 snolib/setuputil.sno modules/random/setup.sno
+	cd modules/random; $(RUNSETUP) build
+
+modules/stat/stat.so modules/stat/stat.sno modules/stat/snobol4stat.3 modules/stat/snobol4stat.3.html: xsnobol4 snolib/setuputil.sno modules/stat/setup.sno
+	cd modules/stat; $(RUNSETUP) build
+
+modules/time/time.so modules/time/time.sno modules/time/snobol4time.3 modules/time/snobol4time.3.html: xsnobol4 snolib/setuputil.sno modules/time/setup.sno
+	cd modules/time; $(RUNSETUP) build
+
+modules/sprintf/sprintf.so modules/sprintf/sprintf.sno modules/sprintf/snobol4sprintf.3 modules/sprintf/snobol4sprintf.3.html: xsnobol4 snolib/setuputil.sno modules/sprintf/setup.sno
+	cd modules/sprintf; $(RUNSETUP) build
+
+modules/fork/fork.so modules/fork/fork.sno modules/fork/snobol4fork.3 modules/fork/snobol4fork.3.html: xsnobol4 snolib/setuputil.sno modules/fork/setup.sno
+	cd modules/fork; $(RUNSETUP) build
+
+modules/ndbm/ndbm.so modules/ndbm/ndbm.sno modules/ndbm/snobol4ndbm.3 modules/ndbm/snobol4ndbm.3.html: xsnobol4 snolib/setuputil.sno modules/ndbm/setup.sno
+	cd modules/ndbm; $(RUNSETUP) build
+
+modules/ffi/ffi.so modules/ffi/ffi.sno modules/ffi/snobol4ffi.3 modules/ffi/snobol4ffi.3.html: xsnobol4 snolib/setuputil.sno modules/ffi/setup.sno
+	cd modules/ffi; $(RUNSETUP) build
+
+MODULES=dirs logic random stat time sprintf fork ndbm ffi
+MODULES_LOADABLE= modules/dirs/dirs.so modules/logic/logic.so modules/random/random.so modules/stat/stat.so modules/time/time.so modules/sprintf/sprintf.so modules/fork/fork.so modules/ndbm/ndbm.so modules/ffi/ffi.so
+MODULES_INCLUDE= modules/dirs/dirs.sno modules/logic/logic.sno modules/random/random.sno modules/stat/stat.sno modules/time/time.sno modules/sprintf/sprintf.sno modules/fork/fork.sno modules/ndbm/ndbm.sno modules/ffi/ffi.sno
+MODULES_MAN= modules/dirs/snobol4dirs.3 modules/logic/snobol4logic.3 modules/random/snobol4random.3 modules/stat/snobol4stat.3 modules/time/snobol4time.3 modules/sprintf/snobol4sprintf.3 modules/fork/snobol4fork.3 modules/ndbm/snobol4ndbm.3 modules/ffi/snobol4ffi.3
+MODULES_HTML= modules/dirs/snobol4dirs.3.html modules/logic/snobol4logic.3.html modules/random/snobol4random.3.html modules/stat/snobol4stat.3.html modules/time/snobol4time.3.html modules/sprintf/snobol4sprintf.3.html modules/fork/snobol4fork.3.html modules/ndbm/snobol4ndbm.3.html modules/ffi/snobol4ffi.3.html
+MODULES_GENERATED=$(MODULES_LOADABLE) $(MODULES_INCLUDE)
+TEST_SNOPATH=..:../modules/dirs:../modules/logic:../modules/random:../modules/stat:../modules/time:../modules/sprintf:../modules/fork:../modules/ndbm:../modules/ffi:../snolib:.
+
+clean_modules:
+	rm -f $(MODULES_GENERATED)
+
+build_modules: $(MODULES_GENERATED)
+
+# if the file local-config existed it would have been incorporated here
+
+config.h:
+/*
+ * generated Thu Aug 17 02:27:38 GMT 2017
+ * on jessie (Linux)
+ * by $Id: configure,v 1.278 2015/01/02 04:54:27 phil Exp $
+ */
+
+#define CONFIG_HOST "jessie"
+#define CONFIG_DATE "Thu Aug 17 02:27:38 GMT 2017"
+#define DIR_SEP "/"
+#define PATH_SEP ":"
+#define OBJECT_EXT ".o"
+#define SETUP_SYS "posix"
+#define SHARED_OBJ_SUBDIR "shared"
+#define PML_SERV
+#define HAVE_BUILD_VARS
+#define NO_BITFIELDS
+#define SIZLIM (~(VFLD_T)0)
+#define REAL_T double
+#define REALST_FORMAT "%.15lg"
+#define SIZEOF_INT_T	8	/* for use in ifdefs */
+#define SIZEOF_REAL_T	8	/* for use in ifdefs */
+#define HAVE_STDLIB_H
+#define HAVE_UNISTD_H
+#define HAVE_ISFINITE
+#define HAVE_STRINGS_H
+#define HAVE_STRING_H
+#define NEED_BINDRESVPORT_SA
+#define HAVE_SOCKADDR_IN6
+#define SOCKLEN_T socklen_t
+/* vfork() in unistd.h */
+#define HAVE_FORKPTY
+#define HAVE_PTY_H
+#define HAVE_PATHS_H
+#define SNOLIB_BASE "/usr/local/lib/snobol4"
+#define SNOLIB_DIR "/usr/local/lib/snobol4/2.0/lib"
+#define INCLUDE_DIR "/usr/local/lib/snobol4/2.0/include"
+/* NOTE: SNOLIB_FILE in config.m4 too! */
+#define SNOLIB_FILE "snolib.so"
+#define HAVE_FSEEKO
+#define HAVE_GETTIMEOFDAY
+#define HAVE_TM_GMTOFF
+#define HAVE_SLEEP
+#define HAVE_STRPTIME
+#define HAVE_TIMEGM
+/* Shared Object Libraries (in config.m4 too) */
+#define SO_EXT ".so"
+#define SO_CFLAGS "-fPIC"
+#define SO_LD "gcc"
+#define SO_LDFLAGS "-shared -fPIC"
+/* Dynamicly Loaded Extensions (in config.m4 too) */
+#define DL_EXT ".so"
+#define DL_CFLAGS "-fPIC"
+#define DL_LD "gcc"
+#define DL_LDFLAGS "-shared -fPIC"
+#define HAVE_SDBM_H
+#define DUFF
+#define HAVE_LSTAT
+#define BLOCKS
+
+/* if the file local-defines existed it would have been incorporated here */
+
+build.c:
+/* MACHINE GENERATED.  EDITING IS FUTILE */
+#include "h.h"
+const char build_files[] = "main.c isnobol4.c data.c data_init.c syn.c lib/bal.c lib/break.c lib/date.c lib/dump.c lib/posix/dynamic.c lib/endex.c lib/generic/expops.c lib/hash.c lib/bsd/inet.c lib/init.c lib/generic/intspc.c lib/io.c lib/lexcmp.c lib/unix98/load.c lib/posix2001/mstime.c lib/ordvst.c lib/pair.c lib/pat.c lib/pml.c lib/realst.c lib/replace.c lib/ansi/spcint.c lib/ansi/spreal.c lib/stream.c lib/str.c lib/posix/suspend.c lib/top.c lib/posix/term.c lib/tree.c lib/posix/tty.c lib/snolib/getstring.c lib/snolib/retstring.c lib/snolib/handle.c lib/auxil/bindresvport.c lib/bsd/popen.c lib/snolib/atan.c lib/snolib/chop.c lib/snolib/cos.c lib/snolib/delete.c lib/snolib/environ.c lib/generic/exists.c lib/snolib/exit.c lib/generic/execute.c lib/snolib/exp.c lib/snolib/file.c lib/snolib/findunit.c modules/fork/fork.c lib/snolib/getstring.c lib/snolib/host.c lib/snolib/log.c modules/logic/logic.c lib/snolib/ord.c modules/random/random.c lib/snolib/rename.c lib/snolib/retstring.c lib/snolib/serv.c lib/snolib/sin.c modules/sprintf/sprintf.c lib/snolib/sqrt.c lib/snolib/sset.c lib/posix/sys.c lib/snolib/tan.c modules/time/time.c";
+const char build_date[] = "Thu Aug 17 02:28:32 GMT 2017";
+const char build_dir[] = "/home/vagrant/program/uexp/Snobol/snobol4/snobol4-2.0";
+
+size ./xsnobol4:
+   text	   data	    bss	    dec	    hex	filename
+ 479468	  11368	 181664	 672500	  a42f4	./xsnobol4
+
+file ./xsnobol4:
+./xsnobol4: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=e559ab665dc3369caee91a079c18a14c1b013a46, not stripped
+
+uptime:
+ 02:28:45 up 1 day, 12:30,  2 users,  load average: 0.66, 0.24, 0.08
+
+Ids:
+genc.sno:*	$Id: genc.sno,v 1.66 2014/12/30 17:34:19 phil Exp $
+timing.sno:*	$Id: timing.sno,v 1.51 2014/11/15 02:59:28 phil Exp $
+timing:# $Id: timing,v 1.109 2014/12/30 02:54:38 phil Exp $
+v311.sil:* $Id: v311.sil,v 1.141 2014/12/30 05:05:00 phil Exp $
+History:$Id: History,v 1.909 2015/01/02 04:54:27 phil Exp $
+
+timing run of genc.sno:
+DATE(2):		2017-08-17 02:29:50
+HOST(HOST_SYSINFO):	x86_64:Linux 3.16.0-4-amd64:CSNOBOL4B 2.0
+HOST(HOST_INTEGER_BITS): 64
+HOST(HOST_REAL_BITS):	64
+HOST(HOST_POINTER_BITS): 64
+HOST(HOST_LONG_BITS):	64
+HOST(HOST_DESCR_BITS):	128
+HOST(HOST_SPEC_BITS):	256
+HOST(HOST_DYNAMIC_SIZE): 524288
+HOST(HOST_PMSTACK_SIZE): 8000
+HOST(HOST_ISTACK_SIZE): 4000
+Version:		2.0
+Compile time:		5.821 milliseconds
+Execution time:		64592.577 milliseconds
+Statements executed:	80899962
+Garbage collections:	275
+GC time:		4553.268 milliseconds
+KStatements per second:	1252.465
+Nanoseconds per statement: 798.425
+
+snobol4 time measurement checks out
+
+END

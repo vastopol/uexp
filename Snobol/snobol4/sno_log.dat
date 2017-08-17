@@ -1,0 +1,584 @@
+vagrant@jessie:~/program/uexp/Snobol/snobol4/snobol4-2.0$ ls
+bsdtsort.c  COPYRIGHT    data_init.h   gensyn.sno  isnobol4.c    modules       README     static.h2    test        with
+bsplitu.c   cpuid.c      data_init.h2  globals     lib           parms.h       res.h      sunmodel     timing
+callgraph   CVS          doc           History     main.c        pkg           res.h2     syn.c        timing.sno
+cc-M        data.c       equ.h         host.awk    make.bat      pml.h         sdb.sh     syn.h        TODO
+CHANGES     data.c2      equ.h2        host.sno    Makefile      proc.h        snobol4.c  syn.h2       TODO.soon
+config      data.h       genc.sno      include     Makefile2.m4  proc.h2       snolib     syn_init.h   v311.sil
+config.sno  data.h2      gendata.sno   INSTALL     mdata.h       procs         snopea.in  syn_init.h2  version
+configure   data_init.c  gendep.sno    install-sh  mlink.h       procs.blocks  static.h   syntax.tbl   version.h
+
+vagrant@jessie:~/program/uexp/Snobol/snobol4/snobol4-2.0$ make install
+./configure
+looking for gcc
+found gcc in /usr/bin
+using gcc
+checking sizes of C types
+sizeof(int) = 4
+sizeof(void *) = 8
+sizeof(long) = 8
+sizeof(float) = 4
+sizeof(double) = 8
+alignment(double) = 8
+LP64 is native programming model
+using double for SNOBOL4 REAL type
+using ANSI stdlib.h
+using POSIX unistd.h
+using POSIX.1-2001 clock_gettime() for runtimes
+using system isfinite()
+using ranlib
+using uname() for system name information
+using BSD strings.h
+using ANSI string.h
+using system provided bzero() function
+using sockets for TCP/IP support
+using getaddrinfo() for TCP/IPv6 compatibility
+using private bindresvport_sa() function
+using private popen() function
+using vfork() (with unistd.h)
+using forkpty() with pty.h and -lutil
+using paths.h for shell path
+using termios.h for tty modes
+using system provided getopt() function
+using dlopen() for LOAD() support
+using fseeko() for file positioning
+using madvise() during GC
+using POSIX suspend.c
+using gettimeofday()
+using tm_gmtoff
+using POSIX nanosleep()
+using strptime()
+using timegm()
+using SDBM for DBM support
+using lstat()
+using ffi
+using /usr/bin/install for make install
+echo '# DO NOT EDIT. machine generated from Makefile2.m4' > Makefile2.tmp
+echo '# add local changes to local-config'		>> Makefile2.tmp
+m4 Makefile2.m4 >> Makefile2.tmp
+echo '# DO NOT DELETE THIS LINE. make depend uses it.' >> Makefile2.tmp
+make -f Makefile2.tmp depend MAKEFILE2=Makefile2.tmp
+make[1]: Entering directory '/home/vagrant/program/uexp/Snobol/snobol4/snobol4-2.0'
+sed '/^# DO NOT DELETE THIS LINE/q' Makefile2.tmp > Makefile2.tmp.tmp
+gcc -M -Iinclude -I.  -DHAVE_CONFIG_H main.c isnobol4.c data.c data_init.c syn.c lib/bal.c lib/break.c lib/date.c lib/dump.c lib/posix/dynamic.c lib/endex.c lib/generic/expops.c lib/hash.c lib/bsd/inet.c lib/init.c lib/generic/intspc.c lib/io.c lib/lexcmp.c lib/unix98/load.c lib/posix2001/mstime.c lib/ordvst.c lib/pair.c lib/pat.c lib/pml.c lib/realst.c lib/replace.c lib/ansi/spcint.c lib/ansi/spreal.c lib/stream.c lib/str.c lib/posix/suspend.c lib/top.c lib/posix/term.c lib/tree.c lib/posix/tty.c lib/snolib/getstring.c lib/snolib/retstring.c lib/snolib/handle.c lib/auxil/bindresvport.c lib/bsd/popen.c lib/snolib/atan.c lib/snolib/chop.c lib/snolib/cos.c lib/snolib/delete.c lib/snolib/environ.c lib/generic/exists.c lib/snolib/exit.c lib/generic/execute.c lib/snolib/exp.c lib/snolib/file.c lib/snolib/findunit.c modules/fork/fork.c lib/snolib/getstring.c lib/snolib/host.c lib/snolib/log.c modules/logic/logic.c lib/snolib/ord.c modules/random/random.c lib/snolib/rename.c lib/snolib/retstring.c lib/snolib/serv.c lib/snolib/sin.c modules/sprintf/sprintf.c lib/snolib/sqrt.c lib/snolib/sset.c lib/posix/sys.c lib/snolib/tan.c modules/time/time.c >> Makefile2.tmp.tmp
+mv -f Makefile2.tmp.tmp Makefile2.tmp
+make[1]: Leaving directory '/home/vagrant/program/uexp/Snobol/snobol4/snobol4-2.0'
+mv -f Makefile2.tmp Makefile2
+rm -f .depend
+touch .depend
+make -f Makefile2 install
+make[1]: Entering directory '/home/vagrant/program/uexp/Snobol/snobol4/snobol4-2.0'
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c main.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -Wno-return-type -Wno-switch -c isnobol4.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c data.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c data_init.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c syn.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/bal.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/break.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/date.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/dump.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/posix/dynamic.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/endex.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/generic/expops.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/hash.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/bsd/inet6.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/init.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/generic/intspc.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/io.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/lexcmp.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/unix98/load.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/posix2001/mstime.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/ordvst.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/pair.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/pat.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/pml.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/realst.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/replace.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/ansi/spcint.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/ansi/spreal.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/str.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/stream.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/posix/suspend.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/posix/term.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/top.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/tree.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/posix/tty.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/snolib/getstring.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/snolib/retstring.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/snolib/handle.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/snolib/atan.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/snolib/chop.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/snolib/cos.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/snolib/delete.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/snolib/environ.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/generic/execute.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/generic/exists.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/snolib/exit.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/snolib/exp.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/snolib/file.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/snolib/findunit.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -DCC=\""gcc"\" -DCOPT=\""-O3"\" -c lib/snolib/host.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/snolib/ord.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/snolib/log.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/snolib/rename.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/snolib/serv.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/snolib/sin.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/snolib/sqrt.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/snolib/sset.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/posix/sys.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/snolib/tan.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/auxil/bindresvport.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/bsd/popen.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c lib/loadx.c
+rm -f snolib.a
+ar  rv snolib.a atan.o chop.o cos.o delete.o environ.o execute.o exists.o exit.o exp.o file.o findunit.o host.o ord.o log.o rename.o serv.o sin.o sqrt.o sset.o sys.o tan.o bindresvport.o popen.o loadx.o retstring.o getstring.o handle.o
+ar: creating snolib.a
+a - atan.o
+a - chop.o
+a - cos.o
+a - delete.o
+a - environ.o
+a - execute.o
+a - exists.o
+a - exit.o
+a - exp.o
+a - file.o
+a - findunit.o
+a - host.o
+a - ord.o
+a - log.o
+a - rename.o
+a - serv.o
+a - sin.o
+a - sqrt.o
+a - sset.o
+a - sys.o
+a - tan.o
+a - bindresvport.o
+a - popen.o
+a - loadx.o
+a - retstring.o
+a - getstring.o
+a - handle.o
+ranlib snolib.a
+rm -f build.c
+echo '/* MACHINE GENERATED.  EDITING IS FUTILE */'	> build.c
+echo '#include "h.h"'					>> build.c
+echo 'const char build_files[] = "'main.c isnobol4.c data.c data_init.c syn.c lib/bal.c lib/break.c lib/date.c lib/dump.c lib/posix/dynamic.c lib/endex.c lib/generic/expops.c lib/hash.c lib/bsd/inet.c lib/init.c lib/generic/intspc.c lib/io.c lib/lexcmp.c lib/unix98/load.c lib/posix2001/mstime.c lib/ordvst.c lib/pair.c lib/pat.c lib/pml.c lib/realst.c lib/replace.c lib/ansi/spcint.c lib/ansi/spreal.c lib/stream.c lib/str.c lib/posix/suspend.c lib/top.c lib/posix/term.c lib/tree.c lib/posix/tty.c lib/snolib/getstring.c lib/snolib/retstring.c lib/snolib/handle.c lib/auxil/bindresvport.c lib/bsd/popen.c lib/snolib/atan.c lib/snolib/chop.c lib/snolib/cos.c lib/snolib/delete.c lib/snolib/environ.c lib/generic/exists.c lib/snolib/exit.c lib/generic/execute.c lib/snolib/exp.c lib/snolib/file.c lib/snolib/findunit.c modules/fork/fork.c lib/snolib/getstring.c lib/snolib/host.c lib/snolib/log.c modules/logic/logic.c lib/snolib/ord.c modules/random/random.c lib/snolib/rename.c lib/snolib/retstring.c lib/snolib/serv.c lib/snolib/sin.c modules/sprintf/sprintf.c lib/snolib/sqrt.c lib/snolib/sset.c lib/posix/sys.c lib/snolib/tan.c modules/time/time.c'";'		>> build.c
+echo 'const char build_date[] = "'`date`'";'		>> build.c
+echo 'const char build_dir[] = "'`pwd`'";'		>> build.c
+gcc -Wall -O3 -Iinclude -I.  -DHAVE_CONFIG_H  -c build.c
+rm -f xsnobol4
+gcc -o xsnobol4 main.o isnobol4.o data.o data_init.o syn.o bal.o break.o date.o dump.o dynamic.o endex.o expops.o hash.o inet6.o init.o intspc.o io.o lexcmp.o load.o mstime.o ordvst.o pair.o pat.o pml.o realst.o replace.o spcint.o spreal.o str.o stream.o suspend.o term.o top.o tree.o tty.o getstring.o retstring.o handle.o snolib.a build.o -lutil -ldl -rdynamic -lm
+gcc -o cpuid cpuid.c
+cd modules/dirs; SNOLIB=/usr/local/lib/snobol4 SNOPATH=../..:../../snolib ../../xsnobol4 -N setup.sno build
+created dirs.sno
+created snobol4dirs.3
+created snobol4dirs.3.html
+dirs build succeeded.
+cd modules/logic; SNOLIB=/usr/local/lib/snobol4 SNOPATH=../..:../../snolib ../../xsnobol4 -N setup.sno build
+created logic.sno
+created snobol4logic.3
+created snobol4logic.3.html
+logic build succeeded.
+cd modules/random; SNOLIB=/usr/local/lib/snobol4 SNOPATH=../..:../../snolib ../../xsnobol4 -N setup.sno build
+random.c: In function ‘bsd_srandomdev’:
+random.c:345:3: warning: ‘junk’ may be used uninitialized in this function [-Wmaybe-uninitialized]
+   bsd_srandom((getpid() << 16) ^ tv.tv_sec ^ tv.tv_usec ^ junk);
+   ^
+created random.sno
+created snobol4random.3
+created snobol4random.3.html
+random build succeeded.
+cd modules/stat; SNOLIB=/usr/local/lib/snobol4 SNOPATH=../..:../../snolib ../../xsnobol4 -N setup.sno build
+created stat.sno
+created snobol4stat.3
+created snobol4stat.3.html
+stat build succeeded.
+cd modules/time; SNOLIB=/usr/local/lib/snobol4 SNOPATH=../..:../../snolib ../../xsnobol4 -N setup.sno build
+created time.sno
+created snobol4time.3
+created snobol4time.3.html
+time build succeeded.
+cd modules/sprintf; SNOLIB=/usr/local/lib/snobol4 SNOPATH=../..:../../snolib ../../xsnobol4 -N setup.sno build
+created sprintf.sno
+created snobol4sprintf.3
+created snobol4sprintf.3.html
+sprintf build succeeded.
+cd modules/fork; SNOLIB=/usr/local/lib/snobol4 SNOPATH=../..:../../snolib ../../xsnobol4 -N setup.sno build
+created fork.sno
+created snobol4fork.3
+created snobol4fork.3.html
+fork build succeeded.
+cd modules/ndbm; SNOLIB=/usr/local/lib/snobol4 SNOPATH=../..:../../snolib ../../xsnobol4 -N setup.sno build
+created ndbm.sno
+created snobol4ndbm.3
+created snobol4ndbm.3.html
+ndbm build succeeded.
+cd modules/ffi; SNOLIB=/usr/local/lib/snobol4 SNOPATH=../..:../../snolib ../../xsnobol4 -N setup.sno build
+created ffi.sno
+created snobol4ffi.3
+created snobol4ffi.3.html
+ffi build succeeded.
+Running regression tests...
+(cd test; BLOCKS=1 SNOPATH="..:../modules/dirs:../modules/logic:../modules/random:../modules/stat:../modules/time:../modules/sprintf:../modules/fork:../modules/ndbm:../modules/ffi:../snolib:." ./run.sh ../xsnobol4 -N)
+testing ../xsnobol4 -N
+search path: .. ../modules/dirs ../modules/logic ../modules/random ../modules/stat ../modules/time ../modules/sprintf ../modules/fork ../modules/ndbm ../modules/ffi ../snolib .
+tests from tests.in blocks.in
+end.sno:
+	 passed.
+a.sno:
+	 passed.
+str.sno:
+	 passed.
+dump.sno:
+	 passed.
+hello.sno:
+	 passed.
+len.sno:
+	 passed.
+cat.sno:
+	 passed.
+float.sno:
+	 passed.
+loop.sno:
+	 passed.
+fun1.sno:
+	 passed.
+fun2.sno:
+	 passed.
+fact.sno:
+	 passed.
+words.sno:
+	 passed.
+words1.sno:
+	 passed.
+match.sno:
+	 passed.
+match2.sno:
+	 passed.
+match3.sno:
+	 passed.
+match4.sno:
+	 passed.
+repl.sno:
+	 passed.
+roman.sno:
+	 passed.
+openi.sno:
+	 passed.
+openo.sno:
+	 passed.
+openo2.sno:
+	 passed.
+100func.sno:
+	 passed.
+alt1.sno:
+	 passed.
+alt2.sno:
+	 passed.
+bal.sno:
+	 passed.
+collect.sno:
+	 passed.
+comment.sno:
+	 passed.
+convert.sno:
+	 passed.
+ftrace.sno:
+	 passed.
+matchloop.sno:
+	 passed.
+pow.sno:
+	 passed.
+uneval.sno:
+	 passed.
+uneval2.sno:
+	 passed.
+trim0.sno:
+	 passed.
+trim1.sno:
+	 passed.
+case1.sno:
+	 passed.
+case2.sno:
+	 passed.
+alph.sno:
+	 passed.
+8bit.sno:
+	 passed.
+contin.sno:
+	 passed.
+local.sno:
+	 passed.
+rewind1.sno:
+	 passed.
+conv2.sno:
+	 passed.
+ind.sno:
+	 passed.
+char.sno:
+	 passed.
+pad.sno:
+	 passed.
+breakx.sno:
+	 passed.
+tab.sno:
+	 passed.
+spit.sno:
+	 passed.
+trace1.sno:
+	 passed.
+trace2.sno:
+	 passed.
+noexec.sno:
+	 passed.
+ops.sno:
+	 passed.
+lexcmp.sno:
+	 passed.
+substr.sno:
+	 passed.
+space.sno:
+	 passed.
+space2.sno:
+	 passed.
+lgt.sno:
+	 passed.
+err.sno:
+	 passed.
+line.sno:
+	 passed.
+reverse.sno:
+	 passed.
+update.sno:
+	 passed.
+longline.sno:
+	 passed.
+longrec.sno:
+	 passed.
+any.sno:
+	 passed.
+intval.sno:
+	 passed.
+scanerr.sno:
+	 passed.
+crlf.sno:
+	 passed.
+label.sno:
+	 passed.
+vdiffer.sno:
+	 passed.
+function.sno:
+	 passed.
+ord.sno:
+	 passed.
+include.sno:
+	 passed.
+8bit2.sno:
+	 passed.
+popen.sno:
+	 passed.
+popen2.sno:
+	 passed.
+func2.sno:
+	 passed.
+diag1.sno:
+	 passed.
+diag2.sno:
+	 passed.
+unsc.sno:
+	 passed.
+ndbm.sno:
+	 passed.
+collect2.sno:
+	 passed.
+time.sno:
+	 passed.
+setexit.sno:
+	 passed.
+setexit2.sno:
+	 passed.
+setexit3.sno:
+	 passed.
+sleep.sno:
+	 passed.
+random.sno:
+	 passed.
+loaderr.sno:
+	 passed.
+-Iaa include2.sno:
+	 passed.
+-Iaa -Ibb include3.sno:
+	 passed.
+SNOPATH=aa:bb include4.sno:
+	 passed.
+-Laa/aa.sno preload1.sno:
+	 passed.
+-Laa/aa.sno -Lbb/bb.sno preload2.sno:
+	 passed.
+SNOBOL_PRELOAD_PATH=pa:pb preload3.sno:
+	 passed.
+SNOPATH=pa:pb preload4.sno:
+	 passed.
+file.sno:
+	 passed.
+hide.sno:
+	 passed.
+-I.. float2.sno:
+	 passed.
+digits.sno:
+	 passed.
+maxint.sno:
+	 passed.
+genc.sno:
+	 passed.
+nqueens.sno:
+	 passed.
+sudoku.sno:
+	 passed.
+setexit4.sno:
+	 passed.
+setexit5.sno:
+	 passed.
+atn.sno:
+	 passed.
+setexit6.sno:
+	 passed.
+keytrace.sno:
+	 passed.
+t.sno:
+	 passed.
+trfunc.sno:
+	 passed.
+BLOCKS= blocks/dump.sno:
+	 passed.
+blocks/block0.sno:
+	 passed.
+blocks/block0n.sno:
+	 passed.
+blocks/block1.sno:
+	 passed.
+blocks/block1b.sno:
+	 passed.
+blocks/block1n.sno:
+	 passed.
+blocks/ab.sno:
+	 passed.
+blocks/acm439.sno:
+	 passed.
+blocks/acm440.sno:
+	 passed.
+blocks/reg.sno:
+	 passed.
+blocks/acm441.sno:
+	 passed.
+blocks/acm442.sno:
+	 passed.
+blocks/acm443.sno:
+	 passed.
+blocks/acm443a.sno:
+	 passed.
+blocks/acm443b.sno:
+	 passed.
+blocks/image.sno:
+	 passed.
+blocks/box.sno:
+	 passed.
+blocks/mts142.sno:
+	 passed.
+blocks/mts143.sno:
+	 passed.
+blocks/mts144.sno:
+	 passed.
+blocks/mts145.sno:
+	 passed.
+BASE=blocks/tree1 blocks/tree.sno:
+	 passed.
+BASE=blocks/tree2 blocks/tree.sno:
+	 passed.
+blocks/mts162.sno:
+	 passed.
+blocks/mts164.sno:
+	 passed.
+blocks/mts166.sno:
+	 passed.
+blocks/bc.sno:
+	 passed.
+Passed regression tests.
+rm -f snobol4
+cp xsnobol4 snobol4
+date > tested
+rm -f sdb
+sed -e "s@<SNOLIB_LIB>@/usr/local/lib/snobol4/2.0/lib@" \
+    -e "s@<BINDIR>@/usr/local/bin@" \
+    -e "s@<VERS>@-2.0@" \
+    < sdb.sh > sdb
+chmod a+x sdb
+Running timing script...
+./timing > timing.out.tmp
+Min runtime 15s.; Maximum: 60s.
+   1 loops;    257ms;     296 Kstmts; 1155 Kst/sec
+  24 loops;       5s;    7037 Kstmts; 1280 Kst/sec
+  47 loops;      10s;   13779 Kstmts; 1278 Kst/sec
+  71 loops;      15s;   20813 Kstmts; 1280 Kst/sec
+  94 loops;      20s;   27554 Kstmts; 1280 Kst/sec
+ 118 loops;      25s;   34589 Kstmts; 1281 Kst/sec
+ 140 loops;      30s;   41037 Kstmts; 1266 Kst/sec
+ 163 loops;      35s;   47779 Kstmts; 1268 Kst/sec
+ 185 loops;      40s;   54227 Kstmts; 1260 Kst/sec
+ 208 loops;      45s;   60968 Kstmts; 1255 Kst/sec
+ 231 loops;      50s;   67710 Kstmts; 1257 Kst/sec
+ 254 loops;      55s;   74451 Kstmts; 1254 Kst/sec
+ 276 loops;      60s;   80899 Kstmts; 1252 Kst/sec
+mv timing.out.tmp timing.out
+********************************************************
+Please consider mailing timing.out to timing@snobol4.org
+Anonymized results are posted at http://www.snobol4.org
+And you will be notified when test versions are available.
+********************************************************
+rm -f snopea
+sed -e "s@<BINDIR>@/usr/local/bin@" \
+    -e "s@<VERS>@-2.0@" \
+    < snopea.in > snopea
+chmod a+x snopea
+cd doc; make
+make[2]: Entering directory '/home/vagrant/program/uexp/Snobol/snobol4/snobol4-2.0/doc'
+../snobol4 -N -I../snolib -I.. ../snopea.in sdb.1.pea sdb.1
+../snobol4 -N -I../snolib -I.. ../snopea.in snobol4.1.pea snobol4.1
+../snobol4 -N -I../snolib -I.. ../snopea.in snobol4blocks.1.pea snobol4blocks.1
+../snobol4 -N -I../snolib -I.. ../snopea.in snobol4cmd.1.pea snobol4cmd.1
+../snobol4 -N -I../snolib -I.. ../snopea.in snobol4ctrl.1.pea snobol4ctrl.1
+../snobol4 -N -I../snolib -I.. ../snopea.in snobol4error.1.pea snobol4error.1
+../snobol4 -N -I../snolib -I.. ../snopea.in snobol4ext.1.pea snobol4ext.1
+../snobol4 -N -I../snolib -I.. ../snopea.in snobol4func.1.pea snobol4func.1
+../snobol4 -N -I../snolib -I.. ../snopea.in snobol4io.1.pea snobol4io.1
+../snobol4 -N -I../snolib -I.. ../snopea.in snobol4key.1.pea snobol4key.1
+../snobol4 -N -I../snolib -I.. ../snopea.in snobol4op.1.pea snobol4op.1
+../snobol4 -N -I../snolib -I.. ../snopea.in ../snopea.in snopea.1
+../snobol4 -N -I../snolib -I.. ../snopea.in snolib.3.pea snolib.3
+../snobol4 -N -I../snolib -I.. ../snopea.in ../snolib/setuputil.sno snobol4setup.3
+../snobol4 -N -I../snolib -I.. ../snopea.in snopea.7.pea snopea.7
+../snobol4 -N -I../snolib -I.. ../snopea.in snobol4.1.pea snobol4.1.html
+../snobol4 -N -I../snolib -I.. ../snopea.in sdb.1.pea sdb.1.html
+../snobol4 -N -I../snolib -I.. ../snopea.in ../snopea.in snopea.1.html
+../snobol4 -N -I../snolib -I.. ../snopea.in snobol4blocks.1.pea snobol4blocks.1.html
+../snobol4 -N -I../snolib -I.. ../snopea.in snobol4cmd.1.pea snobol4cmd.1.html
+../snobol4 -N -I../snolib -I.. ../snopea.in snobol4ctrl.1.pea snobol4ctrl.1.html
+../snobol4 -N -I../snolib -I.. ../snopea.in snobol4error.1.pea snobol4error.1.html
+../snobol4 -N -I../snolib -I.. ../snopea.in snobol4ext.1.pea snobol4ext.1.html
+../snobol4 -N -I../snolib -I.. ../snopea.in snobol4func.1.pea snobol4func.1.html
+../snobol4 -N -I../snolib -I.. ../snopea.in snobol4io.1.pea snobol4io.1.html
+../snobol4 -N -I../snolib -I.. ../snopea.in snobol4key.1.pea snobol4key.1.html
+../snobol4 -N -I../snolib -I.. ../snopea.in snobol4op.1.pea snobol4op.1.html
+../snobol4 -N -I../snolib -I.. ../snopea.in snolib.3.pea snolib.3.html
+../snobol4 -N -I../snolib -I.. ../snopea.in ../snolib/setuputil.sno snobol4setup.3.html
+../snobol4 -N -I../snolib -I.. ../snopea.in snopea.7.pea snopea.7.html
+make[2]: Leaving directory '/home/vagrant/program/uexp/Snobol/snobol4/snobol4-2.0/doc'
+/usr/bin/install -d /usr/local/bin
+/usr/bin/install: cannot change permissions of ‘/usr/local/bin’: Operation not permitted
+Makefile2:701: recipe for target 'install' failed
+make[1]: *** [install] Error 1
+make[1]: Leaving directory '/home/vagrant/program/uexp/Snobol/snobol4/snobol4-2.0'
+Makefile:53: recipe for target 'install' failed
+make: *** [install] Error 2
