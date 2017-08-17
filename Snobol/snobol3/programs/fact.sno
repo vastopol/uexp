@@ -1,0 +1,12 @@
+* fact.sno
+
+* Compute a list of factorials from 0 through 10 inclusive.
+
+ define('fact(n)', 'FACT') /(MAIN)
+FACT  fact = .le(n, '1') '1' /S(RETURN)
+      fact = n * fact(n - '1') /(RETURN)
+
+MAIN  i = '0'
+MAIN1 stdout = i ' ' fact(i)
+      i = i + '1'
+      .LE(i, '10') /S(MAIN1)

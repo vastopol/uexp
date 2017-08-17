@@ -1,0 +1,16 @@
+b man unix first ed
+
+http://man.cat-v.org/unix-1st/1/b
+
+
+snobol man pages
+
+http://man.cat-v.org/unix-6th/6/sno
+
+http://man.cat-v.org/unix_8th/1/sno
+
+http://man.cat-v.org/unix_8th/1/spitbol
+
+http://man.cat-v.org/unix_8th/1/snocone
+
+http://man.cat-v.org/unix_10th/1/snocone

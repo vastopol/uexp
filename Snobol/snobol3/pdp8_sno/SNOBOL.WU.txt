@@ -1,0 +1,1399 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     SSS   N   N  OOOOO  BBBB   OOOOO  L              888           222
+    S   S  NN  N  O   O  B   B  O   O  L             8   8         2   2
+    S      N N N  O   O  B   B  O   O  L             8   8             2
+     SSS   N  NN  O   O  BBBB   O   O  L              888           222
+        S  N   N  O   O  B   B  O   O  L             8   8         2
+    S   S  N   N  O   O  B   B  O   O  L             8   8    ..   2
+     SSS   N   N  OOOOO  BBBB   OOOOO  LLLLL          888     ..   22222
+
+
+
+UU      UU     SSSSSS     EEEEEEEEEE   RRRRRRRR       '''         SSSSSS
+UU      UU   SS      SS   EE           RR      RR     '''       SS      SS
+UU      UU   SS           EE           RR      RR     '''       SS
+UU      UU     SSSSSS     EEEEEE       RRRRRRRR                   SSSSSS
+UU      UU           SS   EE           RR  RR                           SS
+UU      UU   SS      SS   EE           RR    RR                 SS      SS
+  UUUUUU       SSSSSS     EEEEEEEEEE   RR      RR                 SSSSSS
+
+
+
+MM      MM     AAAAAA     NN      NN   UU      UU     AAAAAA     LL
+MMMM  MMMM   AA      AA   NNNN    NN   UU      UU   AA      AA   LL
+MM  MM  MM   AA      AA   NN  NN  NN   UU      UU   AA      AA   LL
+MM  MM  MM   AAAAAAAAAA   NN    NNNN   UU      UU   AAAAAAAAAA   LL
+MM      MM   AA      AA   NN      NN   UU      UU   AA      AA   LL
+MM      MM   AA      AA   NN      NN   UU      UU   AA      AA   LL
+MM      MM   AA      AA   NN      NN     UUUUUU     AA      AA   LLLLLLLLLL
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     SSS   N   N  OOOOO  BBBB   OOOOO  L              888           222
+    S   S  NN  N  O   O  B   B  O   O  L             8   8         2   2
+    S      N N N  O   O  B   B  O   O  L             8   8             2
+     SSS   N  NN  O   O  BBBB   O   O  L              888           222
+        S  N   N  O   O  B   B  O   O  L             8   8         2
+    S   S  N   N  O   O  B   B  O   O  L             8   8    ..   2
+     SSS   N   N  OOOOO  BBBB   OOOOO  LLLLL          888     ..   22222
+
+
+
+UU      UU     SSSSSS     EEEEEEEEEE   RRRRRRRR       '''         SSSSSS
+UU      UU   SS      SS   EE           RR      RR     '''       SS      SS
+UU      UU   SS           EE           RR      RR     '''       SS
+UU      UU     SSSSSS     EEEEEE       RRRRRRRR                   SSSSSS
+UU      UU           SS   EE           RR  RR                           SS
+UU      UU   SS      SS   EE           RR    RR                 SS      SS
+  UUUUUU       SSSSSS     EEEEEEEEEE   RR      RR                 SSSSSS
+
+
+
+MM      MM     AAAAAA     NN      NN   UU      UU     AAAAAA     LL
+MMMM  MMMM   AA      AA   NNNN    NN   UU      UU   AA      AA   LL
+MM  MM  MM   AA      AA   NN  NN  NN   UU      UU   AA      AA   LL
+MM  MM  MM   AAAAAAAAAA   NN    NNNN   UU      UU   AAAAAAAAAA   LL
+MM      MM   AA      AA   NN      NN   UU      UU   AA      AA   LL
+MM      MM   AA      AA   NN      NN   UU      UU   AA      AA   LL
+MM      MM   AA      AA   NN      NN     UUUUUU     AA      AA   LLLLLLLLLL
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                           SNOBOL-8.2 User's Manual
+
+
+
+
+
+
+
+
+                                 INTRODUCTION
+
+
+
+SNOBOL-8.2  is an improper subset of SNOBOL-3 [Forte 67] implemented for
+any PDP-8 computer operating  under  the  OS/8  operating  system.   The
+restrictions to SNOBOL-3 consist of an absense of functions and extended
+arithmetic statements.  SNOBOL-8.2 is in turn extended by  allowing  the
+programmer access to PDP-8 assembly language code within his/her program
+and also access to OS/8  for  opening,  closing  and  manipulating  OS/8
+files.   The  inexperienced  user  is referred to Allen Forte's SNOBOL-3
+Primer which gives a good, simple introduction to  the  language.   This
+document  is  designed  to  underline  the  highlights  of  SNOBOL-3  as
+reflected in SNOBOL-8.2 as well as to detail the specific implementation
+of SNOBOL-8.2.  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Author:         Fred Dalrymple
+                Northwestern University
+                Computer Science Research Laboratory
+                Technological Institute Room B626
+                Evanston, Illinois 60201
+
+Updated:        William Nowicki
+                December 4, 1976
+
+
+
+
+
+
+                           SNOBOL-8.2 User's Manual
+
+
+
+                 TABLE OF CONTENTS
+
+
+
+I. Data
+        1. Literals                             1
+        2. Variables                            1
+        3. Special Variables                    1
+        4. Special Codes                        2
+        5. Variable Contents                    3
+        6. Indirect Variables                   3
+        7. Labels                               3
+        8. Transfers                            4
+        9. Comments                             4
+
+
+     II. "Period Compiler Commands
+
+        1. .PUSHJ, .PUSH, .POPJ, .POP           5
+        2. .PAL and .SNOBOL                     5
+        3. .EXIT                                6
+        4. .END                                 7
+        5. .LOOKUP                              7
+        6. .ENTER                               7
+        7. .ICLOSE                              7
+        8. .OCLOSE                              7
+        9. More on Files                        7
+
+
+     III. Arithmetic Operations
+
+        1. Arithmetic Capabilities              9
+        2. Bases                                10
+
+
+     IV. Pattern Matching
+
+        1. Simple Replacement                   11
+        2. Simple Search
+           a. non-anchor mode                   11
+           b. anchor mode                       12
+        3. Fillers
+           a. Free Length Fillers               12
+           b. Fixed Length Fillers              13
+        4. Or                                   13
+        5. Delete
+           a. Without Replacement               14
+           b. With Replacement                  14
+        6. No Backup                            14
+        7. POSR                                 15
+
+
+
+
+
+
+
+
+
+                           SNOBOL-8.2 User's Manual
+
+
+
+     V. The Compiler
+
+        1. The Command String                   16
+        2. Error Messages                       16
+        3. Assembling the PAL file              16
+        4. Loading the Binary File              16
+
+
+     VI. The Run Time System
+
+        1. Fatal Errors                         17
+        2. Continuing After a Control C         17
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+I. Data 
+
+   There  are  two  methods  by  which  to specify data in the form of a
+   character string.  The first is to enter  the  string  in  quotes  (a
+   literal),  the  second  is  by  storing  the  string  in  a variable.
+   Variables may be assumed to be empty (null) at the beginning  of  the
+   program.  
+
+   Literals  and  variables  may  be  used  inter-changeably  anywhere a
+   reference to a string is allowed.  For example:  
+
+                VARIABLE = 'STRING'             is valid 
+                'STRING' = 'NEW VALUE'          is not 
+
+
+
+I.1 Literals 
+
+   A literal is any string of  characters  delimited  at  both  ends  by
+   either  a  single  or  double  quote.   The string cannot contain the
+   delimiter, but may contain any other character.  For example:  
+
+        'THIS IS A LITERAL'
+        "AND THIS"
+        "THIS 'IS' TOO"                 Double quotes capture
+                                        the singles
+        'BUT THIS IS NOT"               Different types of quotes
+        'THIS ISN'T EITHER'             String contains the delimiter
+
+
+
+I.2 Variables 
+
+   A variable name is any sequence of alphanumerics  and  numerics  that
+   begins   with  at  least  one  alphanumeric  (except  "X",  which  is
+   reserved). Only the first six characters  are  significant,  so  that
+   'ABCDEFG'  and  'ABCDEFZ' are equivilent.  No PAL8 reserved symbol or
+   pseudo-op can be used as a variable name  since  the  output  of  the
+   SNOBOL compiler is passed through PAL8.  
+
+
+
+I.3 Special Variables 
+
+   Certain  names  are  restricted to special meanings having to do with
+   input/output functions.  A reference to one of these names will  have
+   the effect as described below:  
+
+
+        INPUT    value is a new line of text from the console
+
+        OUTPUT  *value is typed on the console, followed by a
+                 return-line feed
+
+        OUTHOLD *value is typed on the console without a
+
+
+
+
+                                                                          PAGE 2
+                           SNOBOL-8.2 User's Manual
+
+
+
+                 return-line feed
+
+        READ     value is the next line from the currently
+                 open input file
+
+        WRITE   *value is written on the currently open output
+                 file, followed by a return-line feed
+
+        WRITEH  *value is written without the return-line feed
+
+   Input  variables (non *) may be used wherever a variable reference is
+   allowed.  Output variables (*) may only be assigned values, which are
+   processes  when  variable  assignment  takes  place.  Reference to an
+   output variable in an input context, for example:  
+
+                NAME = OUTPUT 
+
+   Will result  in  a  value  of  the  null  string  assigned  to  NAME.
+   Reference  to  an input variable in an output context will be ignored
+   at run time (no assignment takes place).  The READ function will fail
+   if  either  the  input  file  has been exhausted or none is currently
+   open.  A WRITE or WRITEH function will fail if  either  there  is  no
+   open output file, or it is full. A function failure causes the entire
+   statement in which it occurs to fail.  
+
+   The following sample program causes the file 'IFILE.TX' on  the  OS/8
+   DSK device to be typed in its entirety:  
+
+           .LOOKUP 'IFILE.TX'   :F(END)   /open the input file 
+   LOOP,   OUTPUT = READ     :S(LOOP)     /type all the input lines 
+   END,    .END 
+
+   A  line  of input is always terminated by the RETURN character (ASCII
+   octal 215). Line feeds, form feeds, etc.  (212-214)  are  ignored  on
+   input  in  normal mode.  See the support routine description for more
+   information.  
+
+
+
+I.3 Special Codes 
+
+   Any single character that the user is reticent to enclose  is  quotes
+   may be equally well repesented in the form:  
+
+        .Annn 
+
+   where nnn is the octal ASCII code of the character to be represented.
+   Any code 1 through 377 is valid.  For example, .A214 can be  used  to
+   generate a form feed character.  
+
+
+
+
+
+
+
+
+
+
+                                                                          PAGE 3
+                           SNOBOL-8.2 User's Manual
+
+
+
+I.5 Variable Contents 
+
+   The  value of a variable may be assigned by the SNOBOL-8.2 statement:
+
+                NAME = 'string' 
+
+   After the execution of this statement, examination  of  the  variable
+   'NAME'  will  show  its  contents  to  be  the  literal 'string' (not
+   including the quotes).  Further characters may be concatenated to the
+   end of the characters in NAME by the statement:  
+
+                NAME = NAME ", AND MORE" 
+
+   NAME  now  has the value 'STRING, AND MORE'.  We may delete the value
+   of NAME by either of the statements:  
+
+        NAME = '' 
+   Or   NAME = 
+
+
+
+I.6 Indirect Variables 
+
+   The prefix "@" to a name or literal has the effect of referencing not
+   that  name or literal, but the variable named by the original string.
+   For example, 
+
+                STR = 'NAME' 
+                NAME = 'THIS IS A STRING' 
+
+   @STR has the value 'THIS IS A STRING'.  
+
+   Also, transfers may be made to @NAME if NAME contains the name  of  a
+   label within this program.  
+
+   One  note of caution when using this feature: the compiler produces a
+   possibly lengthy table to allow this function to work.  If  space  is
+   limited, it would be worthwhile to not use this feature.  
+
+
+
+I.7 Labels 
+
+   Labels  are  used  to  identify lines of the SNOBOL-8.2 program.  The
+   name used as a label must conform to  the  same  conventions  as  for
+   variable  names, e.g. no more than six significant characters make up
+   a name. No label may have the same name as a variable or other label.
+   The  label must be the first element of a line and must be terminated
+   by a comma.  For example:  
+
+                LABEL,   STR = "string" 
+
+
+
+
+
+
+
+
+                                                                          PAGE 4
+                           SNOBOL-8.2 User's Manual
+
+
+
+I.8 Transfers 
+
+   The flow of a program may be altered  by  a  transfer  command.   The
+   transfer  may  be  made  either  unconditionally  or  under a certain
+   condition of the success-fail indicator,  the  setting  of  which  is
+   discussed  below.   The  format  of  the unconditional transfer is as
+   follows:  
+
+                        :(LABEL) 
+
+   The format of the success and fail,  respectively,  transfers  is  as
+   follows:  
+
+                        :S(LABEL)   /transfers to LABEL on success 
+                        :F(LABEL)   /transfers to LABEL on failure 
+
+   Transfers for success and failure may be grouped together:  
+
+                        :S(LABEL1)F(LABEL2) 
+                        :F(LABEL2)S(LABEL1) 
+
+   Both  of  these  forms  transfer  to  LABEL1 on success and LABEL2 on
+   failure.  
+
+   Transfers should be the last executable element of  the  source  line
+   (they  may  be alone on a line) and should follow any command (except
+   .PAL or any section of PAL code).  The  transfer  should  immediately
+   preceed any comment.  
+
+
+
+I.9 Comments 
+
+   Any  slash not captured within quotes (i.e. within a literal) and all
+   characters to the right of the slash are treated as a comment and  is
+   ignored by the compiler:  
+
+   LABEL,   STR =               /purge STR (this is a comment) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                          PAGE 5
+                           SNOBOL-8.2 User's Manual
+
+
+
+II. Period Compiler Commands 
+
+
+   All  commands  preceeded  by  a  period should immediately follow any
+   label  (if  specified)  and  immediately  preceed  any  transfer  (if
+   specified).  
+
+
+
+II.1 .PUSHJ, .PUSH, .POPJ and .POP 
+
+   .PUSHJ  is  a  stack operator which allows transfer of control to any
+   label  in  the  program.   .POPJ  transfers  control  to  the   point
+   immediately  following  the  most  recent  .PUSHJ  that was executed.
+   (I.E. any transfer on the same line, otherwise  the  next  executable
+   statement.   .PUSH  and  .POP can be used as general stack operators.
+   Much care should be taken to  be  sure  that  every  .PUSH(J)  has  a
+   corresponding  .POP(J),  since  the  same  stack  is  used  for  both
+   variables and lables.  
+   An example of the use of these commands follows:  
+
+
+        .PUSH VAR               Push the argument on the stack
+        .PUSHJ LABEL            This is equivalent to a
+                                subroutine call
+        
+   LABEL,
+        .POP ARG                Pop the argument off the stack
+        ...
+        .POPJ                   This statement returns
+                                from the subroutine
+
+   Up to 32. .PUSHJ's may be made at one time. If 32. .PUSHJ's have been
+   made,  and  another  .PUSHJ  is executed before a .POPJ, then the run
+   time system will signal this condition and the program will stop.  
+
+
+
+II.2 .PAL and .SNOBOL 
+
+   There are two methods by which to enter the mode where  the  compiler
+   expects  PAL-8  code  as  input.  The first is the .PAL command.  For
+   example:  
+
+                .PAL nn 
+
+                       PAL code goes here 
+
+                ^.SNOBOL 
+
+   where nn is the number of locations (in octal) that the PAL code will
+   require.   The compiler assumes a '.SNOBOL' at the beginning of every
+   program.  The PAL-8 code between the .PAL statement and  the  .SNOBOL
+   statement will not be broken up by a page boundary.  
+
+
+
+
+
+                                                                          PAGE 6
+                           SNOBOL-8.2 User's Manual
+
+
+
+
+
+
+   The  second method of entering PAL code is by prefixing an uparrow to
+   the beginning of each  PAL  line.  The  uparrow  has  the  effect  of
+   changing the compiler mode for that line; i.e. is in SNOBOL mode, the
+   uparrow signals a line of PAL code,  if  in  PAL  mode,  the  uparrow
+   signals  a  line of SNOBOL code.  A double uparrow reserves two words
+   for the line of PAL code.  Note that an uparrow is needed in PAL mode
+   for the .SNOBOL statement.  Examples:  
+
+
+        .SNOBOL                 /Implicit
+   ^^   TAD     (255            /Save two words - one for TAD and
+                                / one for the literal
+   ^    DCA     50              /Save one location
+        .PAL 4                  /Four words:
+        TAD     (562            /Two
+        CMA IAC                 /One
+        DCA     62              /One
+   ^    OUTPUT = NAME           /One line of SNOBOL
+   ^    .SNOBOL                 /change back (note uparrow)
+
+   A  note  of  caution:  the compiler will determine if four more words
+   (".PAL 4") will fit on the present memory  page.   If  not,  then  it
+   starts  a new page.  If the line of SNOBOL code we inserted (OUTPUT =
+   NAME) will not fit on the page with the four from  the  PAL  command,
+   the  compiler will put the code for the SNOBOL command on a new page.
+
+   It is therefore desireable to break up large sections of PAL code  to
+   smaller  sections  so  as not to waste space if all does not fit onto
+   one page, whereas part may.  
+
+   SNOBOL-8.2 inserts a page bounds where-ever needed  and  handles  the
+   jump  over the bounds.  It is possible that a break may occur between
+   the following two lines:  
+
+   ^       TAD  30 
+   ^       DCA  40 
+
+   While the ACC is preserved as  well  as  the  program  flow,  if  the
+   following  two lines were broken up, the results would be unexpected:
+
+   ^       SMA 
+   ^       JMP  LABEL 
+
+
+
+II.3 .EXIT 
+
+   This command causes a jump to location 7600 (the starting address  of
+   OS/8).  To restart the SNOBOL-8.2 program:  
+
+                ^C 
+                .START 200 
+
+
+
+
+                                                                          PAGE 7
+                           SNOBOL-8.2 User's Manual
+
+
+
+
+
+
+II.4 .END 
+
+   This  command  marks  the  end  of the program and generates a .EXIT.
+   This statement is largely aesthetic, as  the  compiler  will  compile
+   further statements.  
+
+
+
+II.5 .LOOKUP VAR or 'NAME.EX' 
+
+   This command looks up the specified file on device DSK and readies it
+   for input.  The success-fail indicator is set to success if the  file
+   is found; if not, to failure.  
+
+
+
+II.6 .ENTER VAR or 'NAME.EX' 
+
+   This  command  readies  a file for output on device DSK.  If there is
+   room and not a file already open, the success-fail indicator  is  set
+   to success, otherwise failure.  
+
+
+
+II.7 .ICLOSE 
+
+   This  command  closes  the  input  file (if one was open).  It always
+   succeeds.  
+
+
+
+II.8 .OCLOSE 
+
+   This command closes the output file (if one was open), and enters  it
+   into the directory for the device DSK of the OS/8 system. If the file
+   was open and was able to be closed, the success-fail indicator is set
+   to success, otherwise failure.  
+
+
+
+II.9 More On Files 
+
+   SNOBOL-8.2  files are EDITor compatible, so that any file that can be
+   EDITed or listed by PIP is available for reading by  SNOBOL-8.2.   In
+   normal mode any page format is lost since all form feeds are ignored.
+   Similarly, any file written by SNOBOL-8.2 in normal mode is available
+   to  any  standard  OS/8 files program.  No control Z (the OS/8 end of
+   file mark) is output unless explicitly done by  the  user;  thus,  on
+   reading the file into the EDITOR the user may obtain a "?".  
+
+   The  user is able to specify any device for his file I/O by modifying
+   certain locations in the run-time  system.   By  using  XDEVS  as  an
+
+
+
+
+                                                                          PAGE 8
+                           SNOBOL-8.2 User's Manual
+
+
+
+   indirect  pointer  to  two,  standard, two-word device name blocks in
+   field zero (the first is the input device,  the  second,  the  output
+   device),  one  can  change  the  default  input  and  output  devices
+   referenced by the file I/O.  They are initially set to DSK  and  must
+   be changed before the correspondent .LOOKUP OR .ENTER.  
+
+   The  user can also set the maximum size of the output file by putting
+   the size in location XFILSIZ.  The  symbols  XDEVS  and  ZFILSIZ  are
+   defined  in  SNORTS.PR  and  may  be referenced by PAL code.  See the
+   support routine writeup for more information.  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                          PAGE 9
+                           SNOBOL-8.2 User's Manual
+
+
+
+III. Arithmetic Operations 
+
+
+III.1 Arithmetic Capabilities 
+
+   Number  have  two  representations.   First,  and  most  obvious,  is
+   represented by the following statement:  
+
+                NUM1 = '52' 
+
+   NUM1 now contains the literal string "52".  In this form, there is no
+   way to add another number to this string and get the sum as a  string
+   (without extensive pattern matching).  What is needed is a routine to
+   transform the string "52" into, the other  representation,  an  octal
+   number. This form may have arithmetic operations performed on it (via
+   PAL machine code).  
+
+   SNOBOL-8.2 allows the operations + and - between  strings  (that  are
+   converted  into  octal  first  and  then translated back into strings
+   after the operations).  The form is:  
+
+                NAME = A op B op C . . .  
+
+   Where op is either + or -, which cause  the  expected  operations  to
+   take place on A, B, etc.  
+
+   For  more exotic operations, PAL code sequences may call the run time
+   system routines XASC and XINT to convert the string to octal, and the
+   other  direction.   Note that SNOBOL-8.2 operates on strings only and
+   cannot handle octal representations of numbers.  
+
+   The calling sequence for XASC is:  
+
+                .PAL 2 
+                JMS I   XASC    /XASC is defined in SNORTS.PR 
+                NAME            /where NAME is a SNOBOL varaible 
+                ^.SNOBOL        /the value of NAME is 
+                                /Returned in the ACC 
+
+
+   The calling sequence for XINT is:  
+
+                .PAL 2          /the octal number to be converted 
+                JMS I   XINT    /should be in the ACC 
+                NAME            /NAME will hold the string 
+                ^.SNOBOL 
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                         PAGE 10
+                           SNOBOL-8.2 User's Manual
+
+
+
+III.2 Bases 
+
+   Both XASC and XINT will operate in any base (greater than one).   The
+   base is initially set to 10. No aesthetics are applied (e.g. 10, base
+   11 = ":";    11, base 12 = ";").  
+
+   The base is stored as a binary number in location XBASE  (defined  in
+   SNORTS.PR).   Note that since a twelve bit binary number is used, any
+   numeric value must be between 2047 decimal and -2048.  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                         PAGE 11
+                           SNOBOL-8.2 User's Manual
+
+
+
+IV. Pattern Matching 
+
+
+IV.1 Simple Replacement 
+
+   This has already been explained  by  I.4,  but  it  will  be  briefly
+   re-stated here.  The basic form of this command is:  
+
+                <variable name> = <list> 
+
+   where <list> is made up of variables and literals only.  If <list> is
+   missing, then <variable name> will be the null string.  The effect of
+   this  statement  is  to  concatenate all the strings in <list>, which
+   becomes the new value of <variable name>.  
+
+
+
+IV.2 Simple Search 
+
+   2.a Non-anchor Mode 
+
+   To search a string for the sequence as characters in another  string,
+   one uses a search:  
+
+                BASE = 'THIS IS THE BASE STRING' 
+                MATCH = 'BASE' 
+                BASE  MATCH 
+
+   The  last  statement will search the string contained in BASE for the
+   string contained in  MATCH.   This  command  will  succeed  (set  the
+   success  indicator)  because  the  characters 'BASE' (in the variable
+   MATCH) do match those same characters within the base string 'THIS IS
+   THE BASE STRING'.  However, 
+
+                MATCH  BASE 
+
+   will fail, because MATCH does not contain all the characters in BASE.
+
+   If we search for a list of items, the items are concatenated, and the
+   resulting string is searched for:  
+
+                MATCH2 = 'STRING' 
+                BASE   MATCH MATCH2 
+
+   Will  fail  because  when  MATCH  and  MATCH2  are  concatenated, the
+   resulting string is 'BASESTRING'.   The  following  will  succesfully
+   match:  
+
+                BASE  MATCH ' ' MATCH2 
+
+
+
+
+
+
+
+
+
+
+                                                                         PAGE 12
+                           SNOBOL-8.2 User's Manual
+
+
+
+   2.b Anchor Mode 
+
+   This  pattern  matching  mode,  invoked  by  a underscore immediately
+   following the base string (the string being searched through), causes
+   the  pattern  matcher  to  fail  unless the string being searched for
+   begins at exactly the beginning of the base  string.   Sometimes  the
+   underscore is printed as a backarrow.  For example:  
+
+                BASE = 'THIS IS THE BASE STRING' 
+                BASE_  'THIS IS'                will succeed, while:  
+                BASE_  'BASE'                   will not.  
+
+
+
+IV.3 Fillers 
+
+
+   3.a Free Length Fillers 
+
+   It is possible to match an arbitrary number (up to 511) of characters
+   of the base string by the use of fillers.  The string to  be  matched
+   by a filler must be delimited by either the end of the base string or
+   a variable that matches part of the base string.   A  filler  matches
+   the least number of characters possible to allow the pattern match to
+   succeed.  For example:  
+
+                BASE = ',AND,TAD,ISZ,' 
+
+   Suppose that we want to match  and  subsequently  access  the  string
+   delimited by the first two commas in BASE.  We could specify:  
+
+                BASE  ',' *BETWN* ',' 
+
+   The  action of the run time system is to first match the comma, which
+   is found in BASE immediately.  Then, the  filler  is  noted  and  the
+   match  continues  for  the  second  comma.   When the second comma is
+   found, the pattern match is determined to  have  succeeded,  and  the
+   characters  passed  over  while  searching  for  the second comma are
+   assigned to the variable BETWN. No variable assignment occurs  unless
+   the entire pattern matching statement succeeds (see IV.8).  
+
+   Suppose  that we wish to similarly access the second string delimited
+   by commas in BASE.  We could specify:  
+
+                BASE  ',' ** ',' *BETWN* ',' 
+
+   The run time system  will  follow  essentially  the  same  procedure,
+   except  that the variable named within '**' is a write-only variable,
+   its value will be thrown away.  
+
+   Note that by the use of fillers, the base string is not modified (see
+   IV.5).  
+
+
+
+
+
+
+
+                                                                         PAGE 13
+                           SNOBOL-8.2 User's Manual
+
+
+
+
+
+
+   3.B Fixed Length Fillers 
+
+   It  is possible to specify the length of a filler.  In this case, the
+   filler must match exactly the specified number of characters  in  the
+   base string, else the entire statement will fail.  The form is:  
+
+                BASE = 'ABCDEFGHIJK' 
+                BASE  *LETRS/6* 
+
+   This  statement specifies the assignment of the first six chraracters
+   in BASE to the variable LETRS, so LETRS will contain 'ABCDEF'.  
+
+                LEN = '3' 
+                BASE  *LETRS/LEN* 
+
+   This latter statement will assign 'ABC' to LETRS.  Similarly,  if  we
+   wish to skip three characters and then get the next three:  
+
+                BASE */3* *INSIDE/3* 
+
+   INSIDE will be 'DEF'.  
+
+
+
+IV.4 Or 
+
+   It  is further possible to match either one sequence of characters or
+   another, up to an arbitrary  number  of  choices.   The  choices  are
+   seperated by exclaimation points, read 'or'.  For example:  
+
+                BASE = 'FIRST, THIS. AND;THEN' 
+                OTHER = ';' 
+                BASE *SEG* ' '!'.'!','!OTHER 
+
+   SEG  will  contain all of the characters up to, but not including the
+   first of the options to match.  So, in  this  case,  SEG  will  match
+   'FIRST' and the comma will be matched.  
+
+   Consider:  
+
+                BASE *SEG/4* ' '!','!';' 
+
+   SEG  will  match  the first four characters of BASE, but since one of
+   the choices must match the next character in the base string, the the
+   pattern match will fail. SEG will not be assigned a value.  
+
+
+
+
+
+
+
+
+
+
+
+                                                                         PAGE 14
+                           SNOBOL-8.2 User's Manual
+
+
+
+IV.5 Delete 
+
+
+   5a. Without Replacement 
+
+   Suppose  that  we  wish  to delete the portion we have matched in the
+   base string from the base string  to  leave  us  only  the  unmatched
+   portion  of  the  base  string.   This may be performed by use of the
+   equal sign:  
+
+                BASE = 'ABCDEFG' 
+                BASE *CHAR/1* = 
+
+   The equal sign follows the search list  and  all  fillers.   In  this
+   case,  CHAR will contain 'A' and BASE will contain 'BCDEFG'.  Another
+   example:  
+
+                BASE = 'TAD.,AND.,' 
+                BASE ',' *SEG* ','!'.' = 
+
+   In this example, BASE will  contain  'TAD.,'  and  SEG  will  contain
+   'AND'.   The  write only filler is useful for selective deletion, for
+   example, to delete everything between two periods use:  
+
+           BASE "." ** "." = 
+
+
+
+   5b. With Replacement 
+
+   If a list of variables and literals apprear to the right of the equal
+   sign,  then  not  only  is  the  matched  portion  of the base string
+   deleted, but also it is replaced by the concatenation of the  strings
+   from the list.  For example:  
+
+                BASE = 'TAD,AND' 
+                ELEMNT = 'ISZ' 
+                BASE ',' = ';' ELEMNT ';' 
+
+   BASE  is  searched  for  a comma, which is found and deleted and then
+   replaced by the list.  BASE will have the contents 'TAD;ISZ;AND'.  
+
+
+
+IV.6 No Backup 
+
+   This non-standard feature is best illustrated by an example:  
+
+                BASE = 'ABCDEFG' 
+                BASE 'A'!'B' 'C' 
+
+   What is the operation of  the  run-time  system  in  evaluating  this
+   latter statement?  First, it matches the 'A' against the first 'A' in
+   BASE.  Next, it must attempt to match 'C' against the next  character
+   in BASE.  However, clearly this will fail, because the next character
+
+
+
+
+                                                                         PAGE 15
+                           SNOBOL-8.2 User's Manual
+
+
+
+   in BASE is a 'B' and not a 'C'.  So, the run-time system  'backs  up'
+   to the 'A' or 'B' option stage because if it makes another choice (in
+   this case 'B') then it is possible that the 'C' will  match  when  it
+   comes  time.  This time the run-time system chooses the 'B', and then
+   finds that the 'C' does match, so the statement will succeed.  
+
+   However, the character '<' when used in a pattern match  (before  any
+   delete,  if  it is used) causes the run-time system to not be able to
+   back up beyond that point;  Therefore  the  following  example  would
+   fail:  
+
+                BASE 'A'!'B' < 'C' 
+
+
+
+IV.7 POSR 
+
+   This  special  variable  (available  only within the pattern matching
+   statement) matches only the end of the base string.  It therfore  can
+   be thought of as the inverse of the underscore (anchor mode).  If the
+   base string has not been matched  fully  to  its  end  when  POSR  is
+   encountered, then this function will fail.  For example:  
+
+           BASE = "ABCDEFG" 
+           BASE "G" POSR 
+           BASE "A" "C"!POSR 
+
+   The first pattern match above will fail, the second will succeed.  
+
+
+
+IV.8 Filler and Base String Assignment 
+
+   All  variable  assignments  (fillers  and deletion/replacement of the
+   base string) are  performed  at  the  end  of  the  pattern  matching
+   statement,  and  only  if  the  statement was successful.  This is in
+   partail difference with other SNOBOL-3 implementations, for  example:
+
+                BASE = '"THIS IS A LITERAL"' 
+                BASE *QUOTE/1* *LITRL* QUOTE 
+
+   Other implementations have allowed the assignment of QUOTE before the
+   end of the pattern matching, and hence the second instance  of  QUOTE
+   will  match  the  character  in  BASE  that  is the same as the first
+   character that was matched by *QUOTE/1*.  This is not the  action  of
+   SNOBOL-8.2,  this  statement  would have to be broken up into the two
+   pattern matching statements:  
+
+                BASE *QUOTE/1* 
+                BASE QUOTE *LITRL* QUOTE 
+
+
+
+
+
+
+
+
+
+                                                                         PAGE 16
+                           SNOBOL-8.2 User's Manual
+
+
+
+V.  The Compiler 
+
+
+V.1 The Command String 
+
+   The SNOBOL-8.2 compiler uses the CD function of OS/8 and is therefore
+   compatible  with  the command strings of other OS/8 systems programs.
+   The compiler produces one output file - a PAL file to  implement  the
+   SNOBOL-8.2  code.   Up  to  nine  input  files may be specified to be
+   concatenated into one large source program.  The ".SN"  extension  is
+   assumed for input files to the compiler.  
+
+
+
+V.2 Error Messages 
+
+   If  and  when the compiler detects an error in the input source file,
+   the erroneous line is typed, an uparrow is typed directly  under  the
+   point  at  which the error was detected, and a descriptive message is
+   given explaining the error.  
+
+
+
+V.3 Assembling the PAL file 
+
+   The PAL file must be assembled with the parameter file SNORTS.PR:  
+
+       .R SNOBOL 
+       *FILE.PA<FILE.SN 
+
+       .R PAL8 
+       *FILE.BN,<SYS:SNORTS.PR,FILE.PA 
+
+Error messages will be printed if the program is too long.  
+
+
+
+V.4 Loading the Binary File 
+
+   The binary file must be loaded with the run time system SNORTS.BN.  
+
+           .R ABSLDR
+           *SNORTS.BN,FILE.BN
+           *^C
+           .
+
+   If CCL is available, the following commands can be used:
+
+           .R SNOBOL
+           *FILE<FILE
+           .PAL SNORTS.PR-NB,FILE
+           .LOAD SNORTS,FILE/G
+
+
+
+
+
+
+
+                                                                         PAGE 17
+                           SNOBOL-8.2 User's Manual
+
+
+
+VI.  The Run Time System 
+
+
+VI.1 Fatal Errors 
+
+   Certain fatal errors of the run time system will result in the output
+   of a message of the form:  
+
+                ?SNORTS n 
+
+   where n specifies which error occurred:  
+
+                0 - Pushdown list overflow 
+                1 - Pushdown list underflow 
+                2 - Indirect name not found 
+
+   Other  n  specify internal errors of the run time system and indicate
+   bugs in same.  These should be referred to the appropriate person(s).
+
+                3, 4 - Pattern matching calling list error 
+                5, 6 - Pattern matching base string size error 
+                7 - Error deleting string - bad format of variable 
+
+
+
+VI.2 Continuing After a Control C 
+
+   It  is  possible  to continue a SNOBOL-8.2 program if a control C was
+   typed during its execution by typing:  
+
+                ^C 
+
+                .START 154 
+
+   Also, SNOBOL-8.2 programs are not  self-modifying  (unless  PAL  code
+   inserted   by  the  user  invalidates  this)  and  therefore  may  be
+   re-started any number of times at location 200.  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

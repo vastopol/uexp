@@ -1,0 +1,43 @@
+* pm.sno
+
+* Pattern matching.
+
+ subject = 'The quick brown fox jumped over the lazy ox.'
+
+ stdout = 'Subject: The quick brown fox jumped over the lazy ox.'
+ stdout = 'Enter a pattern'
+
+ pattern = stdin
+ stdout = ''
+
+* StringMatch: Match entire pattern
+
+ subject pattern /F(NOMATCH)
+
+ stdout = pattern ' found in ' subject /(NEXT)
+
+NOMATCH stdout = pattern ' not found in ' subject
+
+NEXT
+
+ x = '?'
+
+ text = 'Mountain'
+
+* Arb: Match arbitrary characters
+
+ text 'o' *x* 'a'
+
+ stdout = x
+
+* Len: Match fixed-length string
+
+ text *x/'4'*
+
+ stdout = x
+
+* Len with replacement
+
+ text *x/'4'* = 'Foun'
+
+ stdout = 'x = ' x ' text = ' text

@@ -1,0 +1,11 @@
+* copy.sno
+
+* Copy standard input to standard output.
+
+     n = '0'
+
+COPY stdout = SYSPPT /F(DONE)
+     n = n + '1' /(COPY)
+
+DONE stderr = n ' lines were copied.'
+

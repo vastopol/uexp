@@ -1,0 +1,6 @@
+* hw.sno
+
+* Traditional "Hello, World" program in Snobol3.
+
+ SYSPOT = 'Hello, World'
+

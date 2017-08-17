@@ -1,0 +1,94 @@
+
+
+                SNOBOL-8.2 USER'S MANUAL ADDENDUM
+                =================================
+
+DATE:  AUGUST 29, 1976
+SNOBOL VERSION 93
+SNORTS VERSION 51
+
+
+
+     SNOBOL-8.2 is currently available as described by the SNOBOL-8.2
+user's manual.  This file will outline revisions, restrictions, and
+bugs that are applicable to SNOBOL-8.2.  If any other bugs are
+discovered, they should be reported to the appropriate person(s), who
+is currently Fred Dalrymple.  
+
+
+
+
+KNOWN BUGS
+==========
+1. If  variables exceed the capacity of field one, 
+      unpredicted results will occur. SNORTS performs no checking 
+      for this condition.
+
+2. A construction similar to:
+        BASE  *BASE*  =
+    will cause unpredictable results.
+
+3.      BASE  *STR/N*  POSR
+   will not give the desired result that:
+        BASE  **  *STR/N*  POSR
+   will. (Get the last N characters of BASE into STR)
+
+
+
+
+
+SNOBOL EDITS
+============
+
+(93)    fix output file length count, generate error on compile size
+        too large, go to OS/8 when done.
+
+(92)    Finish fixing PAL mode statements
+
+(91)    Line termination standard, compiler version number at
+	location zero.
+
+(90)    Start to fix PAL mode statements
+
+(89)    Fix internal page organization
+
+(88)    Fix page size computation, indirect name usage, assignment
+	statement
+
+(87)	Finish standardizing '/', get paper tape input working
+
+(86)    Standardize '/' as comment delimiter.  Add .PUSH and .POP.
+        arithetic operations. attempt to get papertape input working.
+
+
+
+SNORTS EDITS
+============
+
+(51)    Fix indirect name calls
+
+(50)    Fix pattern matching backup with fixed length fillers, add
+	RESET USR call to INIT.
+
+(48,49) Fix internal labeling, POSR bug
+
+(47)    Fix POSR, XXPVR access - SNORTS.PR modification
+
+(46)    Fix ASC and INT
+
+(45)    Fix anchor mode with or at start, version number at location
+	zero.
+
+(44)    Line termination standard
+
+(43)    Fix two page writes, pattern matching filler size with write
+
+(41,42) Fix WRITE and .OCLOSE problems.
+
+(40)    Fix PUSH(J), POP(J) operation.
+
+(39)    Standardize internal calling table.  MAke room for and add new
+	.PUSH and .POP constructs. Extend the size of the pushdown table to
+        32 entries.
+
+

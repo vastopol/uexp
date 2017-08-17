@@ -1,0 +1,7 @@
+https://www.pdp8.net/images/images/misc_dectapes.shtml
+ 
+* snobol_source.tu56	
+SNOBOL language source in one archive file
+
+* snobol.rk05	
+SNOBOL language source extracted and assembled on RK05 image for space, see readme.tx file

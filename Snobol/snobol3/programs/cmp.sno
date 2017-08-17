@@ -1,0 +1,16 @@
+* cmp.sno
+
+* Compare text entered via the standard input device against a password.
+
+  stdout = 'Enter your password'
+  word = stdin
+
+  EQUALS(word, 'password') /S(SUCCESS)
+
+  stdout = 'Password not valid' /(FINISH)
+
+SUCCESS
+
+  stdout = 'Password successfully entered'
+
+FINISH
