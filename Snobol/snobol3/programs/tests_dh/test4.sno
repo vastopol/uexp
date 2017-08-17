@@ -1,0 +1,8 @@
+ x = 'abcdefg'
+ stdout = CALL('size(x)')
+
+
+
+
+
+

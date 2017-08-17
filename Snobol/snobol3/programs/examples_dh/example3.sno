@@ -1,0 +1,4 @@
+        define('rfact(n)','rfact') /(main)
+rfact       rfact = .le(n,'1') '1' /s(return)
+            rfact = n * rfact(n - '1') /(return)
+main    stdout = rfact('4')

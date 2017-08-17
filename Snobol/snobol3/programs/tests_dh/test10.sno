@@ -1,0 +1,4 @@
+-dquotes
+-escapes
+l0 PRINT("x")
+l1 '\th[e[l]l]o' *x|bracket('[]')* "o"

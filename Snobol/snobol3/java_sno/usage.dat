@@ -1,0 +1,26 @@
+2.  Usage
+The interpreter is setup as a Java jar file named "s3.jar", with jsnobol3.Snobol3 as the main class (defined in the jar manifest file). Invocation can either be the usual form for executing jar files or a direct invocation of the main class.
+
+    java -jar s3.jar [<options>] <program>
+    or
+    java -classpath s3.jar jsnobol3.Snobol3 [<options>] <program> 
+
+The possible option flags are as follows. Boolean options (such as -exec) may be preceded by "no" (e.g., "-noexec") to negate the flag.
+
+-envfile <filename>
+    Specifies a file from which to read additional options. 
+-debug
+    Provide some levels of debug output. 
+-stacktrace
+    Dump a Java stacktrace on fatal errors. 
+-exec
+    Cause the compiled program to execute. The "-noexec" flag will prevent execution. 
+-mode
+    Equivalent to including a "MODE()" function call at the beginning of the program. 
+-dquotes
+    Allow programs to use double quotes as well as single quotes. 
+-escapes
+    Allow string constants to include standard escape sequences such as '\n' or '\u00ff'. 
+-lint
+    Provide some extra checking to detect such things as potential fall thru into a function body. 
+    

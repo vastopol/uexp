@@ -20,12 +20,3 @@ Conclusions:
 Out of the sources located, only the java version actually works.
 The Unix version was originally written in k&r C, a port to C89 was attempted, and failed.
 The Burroughs B5500 version will probbly never run.
-
-
-Note:
-------
-
-Out of the programs, a selection were originally written by Jeff Friesen in an article for Javaworld.
-{ cmp.sno, copy.sno, fact.sno, hw.sno, pm.sno }
-
-Also s3.jar is the working snobol

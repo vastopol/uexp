@@ -1,0 +1,5 @@
+        define('abs(abs)','abs') /(main)
+abs         abs '-' = /(return)
+main    stdout = abs('-5')
+        stdout = abs('5')
+
