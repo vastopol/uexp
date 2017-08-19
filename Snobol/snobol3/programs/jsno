@@ -1,7 +1,5 @@
 #!/bin/bash
 
+FLAGS="-lint -debug -stacktrace"
 
-for FILE in "$@"
-do
-	java -jar bin/s3.jar $FILE
-done
+java -jar bin/s3.jar $FLAGS "$@"

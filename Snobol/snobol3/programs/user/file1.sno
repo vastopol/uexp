@@ -1,0 +1,16 @@
+* pattern match
+
+  stdout = 'Enter string'
+  word = stdin
+  stdout = 'Enter pattern to search for'
+  pattern = stdin
+
+  word pattern /S(SUCCESS)
+
+  stdout = 'no match' /(FINISH)
+
+SUCCESS
+
+  stdout = 'match found'
+
+FINISH

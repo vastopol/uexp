@@ -1,0 +1,49 @@
+Summary/Notes on Snobol 3 from various sources
+-----------------------------------------------
+
+Primer on Snobol3
+------------------
+
+1.
+There are 48 admissible characters
+  - 26 Uppercase letters [A-Z]
+  - 10 Numbers [0-9]
+  - 12 Miscellaneous [ "+", "-", "=", "(", ")", "*", ",", "/", ".", "'", "$", " " ]
+
+2.
+Strings are sequences of characters.
+Strings Must be enclosed in single quotes
+Null string is the empty string with no characters
+
+3.
+Strings can be assigned names.
+Names can only contain letters, numbers, and the period.
+
+4.
+The quotemark cannot be used in a string.
+If the single quote is needed in a string, use the string variable QUOTE which is avalable.
+Restriction does not apply to data read in.
+
+5.
+Strings can be set equal to other strings.
+Delete content by setting to null string.
+
+	eg:
+	STR1 = 'HELLO'
+	STR2 = 'DOG'
+	STR2 = STR1
+	STR1 = 
+
+	now after:
+	STR1 = '' && STR2 = 'HELLO'
+
+6.
+String concatenation is through separation by blanks.
+can use named string variables or string literals
+
+	eg.
+	STR4 = STR3 STR2
+
+7.
+Pattern Matching
+...

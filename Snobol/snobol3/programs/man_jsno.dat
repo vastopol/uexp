@@ -1,5 +1,7 @@
-2.  Usage
-The interpreter is setup as a Java jar file named "s3.jar", with jsnobol3.Snobol3 as the main class (defined in the jar manifest file). Invocation can either be the usual form for executing jar files or a direct invocation of the main class.
+Usage:
+
+The interpreter is setup as a Java jar file named "s3.jar", with jsnobol3.Snobol3 as the main class (defined in the jar manifest file). 
+Invocation can either be the usual form for executing jar files or a direct invocation of the main class.
 
     java -jar s3.jar [<options>] <program>
     or
@@ -24,3 +26,11 @@ The possible option flags are as follows. Boolean options (such as -exec) may be
 -lint
     Provide some extra checking to detect such things as potential fall thru into a function body. 
     
+//--------------------------------------------------------------------------------------------------
+
+
+hand wavy conclusions based on using jsno:
+* Text should be at least one space from left column
+* Lables must be aligned on the left column, no spaces
+* the keyword END makes program crash
+* I/O is buggy, all of it: SYSPOT, SYSPPT, stdout, stdin, stderr

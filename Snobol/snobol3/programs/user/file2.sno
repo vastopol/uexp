@@ -1,0 +1,30 @@
+* enter str, then start & end patterns
+* will match substr between start & end
+
+  stdout = 'enter string'
+  word = stdin
+
+  stdout = 'enter start pattern'
+  first = stdin
+
+  stdout = 'enter end pattern'
+  last = stdin
+
+  substr = '?'
+
+  word first *substr* last
+
+  word substr /F(NOTPASS)
+
+  stdout = 'match found'
+  stdout = word
+  stdout = substr
+
+* dummy instruction to jump to end
+  '' 'a' /(FINISH)   
+
+NOTPASS
+
+  stdout = 'match failed'
+
+FINISH

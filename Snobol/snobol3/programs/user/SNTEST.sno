@@ -1,50 +1,82 @@
-?EXECUTE SNOBOL/DISK
-?FILE PRINT = PRINT BACK UP DISK
-?COMMON=3
-?DATA PROGRAM
--LIST
-*      EXAMPLE 2, DIFFERENTIATION OF ALGEBRAIC EXPRESSION
+* A test program from a Burroughs B5500 mainframe
+* Currently non-usable, causes error: java.lang.NullPointerException
+* Statements beginning with '?' and '-' seem to be from the mainframe
+* Statements beginning with '.' seem to be a continuation of previous line
 *
-*         THIS PROGRAM DIFFERENTIATES A FULLY PARENTHESIZED
+* It contains  multiple separate parts:
+*    1. Differentiation of an Algebraic Expression
+*    2. The Wang Algorithm
+*    3. misc test
+*    4. misc test
+*    5. misc test 
+*    6. Card Read/Punching
+*------------------------------------------------
+
+* ?EXECUTE SNOBOL/DISK
+* ?FILE PRINT = PRINT BACK UP DISK
+* ?COMMON=3
+* ?DATA PROGRAM
+* -LIST
+
+*      EXAMPLE 1. DIFFERENTIATION OF ALGEBRAIC EXPRESSION
+*
+*      THIS PROGRAM DIFFERENTIATES A FULLY PARENTHESIZED
 *      ALGEBRAIC EXPRESSION WITH RESPECT TO X. THE EXPONENTIATION
 *      OPERATOR IS INDICATED BY A DOLLAR SIGN.
--      SPACE 2
+* -      SPACE 2
+
        DEFINE("D(D)","DO","U,V,N")
        DEFINE("SIMPLIFY(EXP)","S0","U")
        TRACE("D,SIMPLIFY")
--      SPACE
+
+* -      SPACE
 *      READ IN THE EXPRESSION.
--      SPACE
+* -      SPACE
+
 READ   EXP       =  TRIM(SYSPIT)                    /F(END)
--      SPACE
+
+* -      SPACE
+
        MODE("ANCHOR")
        SYSPOT    =
        SYSPOT    =  "THE DERIVATIVE OF " EXP " IS " SIMPLIFY(D(EXP))
 .                                                    /(END)
--      SPACE 2
+
+* -      SPACE 2
 *      THE FUNCTION "D"
--      SPACE
+* -      SPACE
+
 DO     D         "(" *(U)* "+" *(V)* ")" = "(" D(U) "+" D(V) ")"
 .                                                    /S(RETURN)
--      SPACE
+
+* -      SPACE
        D         "(" *(U)* "-" *(V)* ")" = "(" D(U) "-" D(V) ")"
 .                                                    /S(RETURN)
--      SPACE
+
+* -      SPACE
+
        D         "(" *(U)* "*" *(V)* ")" = "((" U "*" D(V) ")+("
 .                          V "*" D(U) "))"           /S(RETURN)
--      SPACE
+
+* -      SPACE
+
        D         "(" *(U)* "/" *(V)* ")" = "(((" V "*" D(U) ")-("
 .                      U "*" D(V) "))/(" V "$2))"    /S(RETURN)
--      SPACE
+
+* -      SPACE
+
        D         "(" *(U)* "$" *(V)* ")" =
 .                       "((" N "*(" U "$" N - "1" "))*" D(U) ")"
 .                                                    /S(RETURN)
--      SPACE
+
+* -      SPACE
+
        D         =   EQUALS(D,"X")   "1"             /S(RETURN)
        D         =  "0"                              /(RETURN)
 
 *      THE FUNCTION "SIMPLIFY"
--      SPACE
+* -      SPACE
+
 S0     MODE("UNANCH")
 S1     EXP       "(" *(U)* "*0)"  =  "0"             /S(S1)
        EXP       "(0*" *(U)* ")"  =  "0"             /S(S1)
@@ -56,17 +88,24 @@ S6     EXP       "(" *(U)* "+0)"  =  U               /S(S6)
 S7     EXP       "(" *(U)* "-0)"  =  U               /S(S7)
        SIMPLIFY  =  EXP                              /(RETURN)
 END
-?DATA CARD
+
+* ?DATA CARD
+
 (((A*(X$2))+(B*X))+C)
-?END
-?EXECUTE SNOBOL/DISK
-?FILE PRINT = PRINT BACK UP DISK
-?COMMON=3
-?DATA PROGRAM
--LIST
-*       EXAMPLE 1.  THE WANG ALGORITHM
+
+* ?END
+
+*--------------------------------------------------------------------------
+
+* ?EXECUTE SNOBOL/DISK
+* ?FILE PRINT = PRINT BACK UP DISK
+* ?COMMON=3
+* ?DATA PROGRAM
+* -LIST
+
+*       EXAMPLE 2.  THE WANG ALGORITHM
 *
-*             THIS PROGRAM IS THE ALGORITHM BY HAO WANT (CF. "TOWARD
+*             THIS PROGRAM IS THE ALGORITHM BY HAO WANG (CF. "TOWARD
 *        MECHANICAL MATHEMATICS", IBM JOURNAL BE RESEARCH AND
 *        DEVELOPMENT FOR THE PROPOSITIONAL CALCULUS.,  IT PRINTS OUT A
 *        PROOF OR DISPROOF ACCORDING AS A GIVEN FORMULA IS A THEOREM
@@ -87,10 +126,13 @@ END
 *         BY REPEATED APPLICATION OF THE RULES ONE IS LED TO A SET OF
 *         SEQUENTS CONSISTING OF ATOMIC FORMULAS. IF EACH ONE OF THESE
 *         SEQUENTS IS VALID THEN SO IS THE ORIGINAL FORMULA.
--         SPACE   5
+* -         SPACE   5
+
           DEFINE("WANG(ANTE,CONSEQ)" , "WANG","PHI,PSI")
+
 *         READ IN THE EXPRESSION
--         SPACE
+* -         SPACE
+
 READ      EXP       =  TRIM(SYSPIT)               /F(END)
           SYSPOT    =
           SYSPOT    =  "FORMULA: "  EXP
@@ -104,50 +146,78 @@ WANG      SYSPOT    =  ANTE " --* " CONSEQ
           ANTE      " IMP(" *(PHI)* "," *(PSI)* ")" =   /S(AIMP)
           ANTE      " OR(" *(PHI)* "," *(PSI)* ")" =    /S(AOR)
           ANTE      " EQU(" *(PHI)* "," *(PSI)* ")" =   /S(AEQU)
--  SPACE
+
+* -  SPACE
+
           CONSEQ    " NOT(" *(PHI)* ")" =                /S(CNOT)
           CONSEQ    " AND(" *(PHI)* "," *(PSI)* ")" =    /S(CAND)
           CONSEQ    " IMP(" *(PHI)* "," *(PSI)* ")" =    /S(CIMP)
           CONSEQ    " OR(" *(PHI)* "," *(PSI)* ")" =     /S(COR)
           CONSEQ    " EQU(" *(PHI)* "," *(PSI)* ")" =    /S(CEQU)
-- SPACE
+
+* - SPACE
+
           (ANTE " :" CONSEQ " ") " " *(P)* " " ** ":" ** " " P " "
 .                                               /S(RETURN)F(FRETURN)
 ANOT      WANG(ANTE,CONSEQ  " " PHI)            /S(RETURN)F(FRETURN)
--
+
+* -
+
 AAND      WANG(ANTE " " PHI " " PSI, CONSEQ)    /S(RETURN)F(FRETURN)
--
+
+* -
+
 AOR       WANG(ANTE " " PHI,CONSEQ)             /F(FRETURN)
           WANG(ANTE " " PSI,CONSEQ)             /S(RETURN)F(FRETURN)
--
+
+* -
+
 AIMP      WANG(ANTE " " PSI,CONSEQ)             /F(FRETURN)
           WANG(ANTE,CONSEQ " " PHI)             /S(RETURN)F(FRETURN)
--
+
+* -
+
 AEQU      WANG(ANTE " " PHI " " PSI,CONSEQ)     /F(FRETURN)
           WANG(ANTE,CONSEQ " " PHI " " PSI)     /S(RETURN)F(FRETURN)
--
+
+* -
+
 CNOT      WANG(ANTE " " PHI,CONSEQ)             /S(RETURN)F(FRETURN)
--
+
+* -
+
 CAND      WANG(ANTE,CONSEQ " " PHI)             /F(FRETURN)
           WANG(ANTE,CONSEQ " " PSI)             /S(RETURN)F(FRETURN)
--
+
+* -
+
 COR       WANG(ANTE,CONSEQ " " PHI " " PSI)     /S(RETURN)F(FRETURN)
--
+
+* -
+
 CIMP      WANG(ANTE " " PHI,CONSEQ " " PSI)     /S(RETURN)F(FRETURN)
--
+
+* -
+
 CEQU      WANG(ANTE " " PHI,CONSEQ " " PSI)     /F(FRETURN)
           WANG(ANTE " " PSI,CONSEQ " " PHI)     /S(RETURN)F(FRETURN)
 END
+
 IMP(NOT(OR(P,Q)),NOT(P))
 IMP(AND(NOT(P),NOT(Q)),EQU(P,Q))
 IMP(IMP(OR(P,Q),OR(P,R)),OR(P,IMP(Q,R)))
 STOP
-?END
-?EXECUTE SNOBOL/DISK
-?FILE PRINT = PRINT BACK UP DISK
-?COMMON=3
-?DATA PROGRAM
--LIST
+
+* ?END
+
+*--------------------------------------------------------------------------
+
+* ?EXECUTE SNOBOL/DISK
+* ?FILE PRINT = PRINT BACK UP DISK
+* ?COMMON=3
+* ?DATA PROGRAM
+* -LIST
+
 * BLANK IS A CONCATENATION OPERATOR!
         FIRST = "HORACE"
         SECOND = "GREELEY"
@@ -172,16 +242,23 @@ LOOP    STUFF "CAT" = "DOG"                /S(LOOP)
         X "2" = 5
         SYSPOT = X
 END
+
 THE CAT JUMPED OVER THE DOG.
 THE DOG JUMPED OVER THE CAT.
-?END
-?EXECUTE SNOBOL/DISK
-?FILE PRINT = PRINT BACK UP DISK
-?COMMON=3
-?DATA PROGRAM
--LIST
+
+* ?END
+
+*--------------------------------------------------------------------------
+
+* ?EXECUTE SNOBOL/DISK
+* ?FILE PRINT = PRINT BACK UP DISK
+* ?COMMON=3
+* ?DATA PROGRAM
+* -LIST
+
 *     ID       START
 *     DATA
+
 READ     LINE  =  SYSPIT
          LINE  "STOP"                                 /S(QUIT)
          NLINE  =  LINE
@@ -219,12 +296,17 @@ SMITH,E.E.-GRAY LENSMAN
 SMITH,E.E.-TRIPLANETARY
 RAGAN,RICHARD-TEST THE PROGRAM
 STOP
-?END
-?EXECUTE SNOBOL/DISK
-?FILE PRINT = PRINT BACK UP DISK
-?COMMON=3
-?DATA PROGRAM
--LIST
+
+* ?END
+
+*--------------------------------------------------------------------------
+
+* ?EXECUTE SNOBOL/DISK
+* ?FILE PRINT = PRINT BACK UP DISK
+* ?COMMON=3
+* ?DATA PROGRAM
+* -LIST
+
            DEFINE("PERM(NAME,RENAME)","ENT")
 READ1      CARD1  =  SYSPIT
            CARD1  "STOP"                              /S(END)
@@ -265,18 +347,24 @@ LOOP       PERM  =  PERM  +  "1"
            $(RENAME PERM )  =  NAME
 CLEAN      $(RENAME PERM )  "$"  =                    /S(CLEAN)F(LOOP)
 END
+
 STURGEON,THEODORE-MORE THAN HUMAN
 SMITH,E.E.-GRAY LENSMAN
 SMITH,E.E.-TRIPLANETARY
 RAGAN,RICHARD-TEST THE PROGRAM
 STOP
-?END
-?EXECUTE SNOBOL/DISK
-?FILE PRINT = PRINT BACK UP DISK
-?COMMON=3
-?DATA PROGRAM
--LIST
--     TITLE      PROCESS S A T   AND  1 2 T H G R A D E    CARDS.
+
+* ?END
+
+*--------------------------------------------------------------------------
+
+* ?EXECUTE SNOBOL/DISK
+* ?FILE PRINT = PRINT BACK UP DISK
+* ?COMMON=3
+* ?DATA PROGRAM
+* -LIST
+* -     TITLE      PROCESS S A T   AND  1 2 T H G R A D E    CARDS.
+
 *        THIS PROGRAM TAKES AN SAT CARD AND A 12TH GRADE SCHOOL CARD
 *        AND ATTEMPTS TO GENERATE A SINGLE CARD COMBINING THE
 *        INFORMATION ON BOTH OF THESE.  IN PARTICULAR THE PROGRAM
@@ -294,6 +382,7 @@ STOP
 *                                                RICHARD RAGAN
 *                                                FSU COMPUTING CNTR.
 *                                                5-1-66
+
            DEFINE("EXCERPT(STRING,WORD1,WORD2)","ENTRY")
            DEFINE("PERM(NAME,RENAME)","ENT")
            DEFINE("HSGET(SNAME,SLOC)","Z")
@@ -349,16 +438,22 @@ SSAT       SSATNAME  =  SSATNAME BLANK
            SSATNAME   *KEEP/"27"*
            SYSPPT = 12CODE SATCODE CTYCODE COUNTY KEEP TRIM(12LOC)
 .                                                     /(READ)
--          EJECT
+
+* -          EJECT
+
 ENTRY      STRING   WORD1  =  " "
            STRING   WORD2  =  " "
            EXCERPT  =  STRING                         /(RETURN)
--          EJECT
+
+* -          EJECT
+
 Z          SNAME  ANCHOR(X)  "HIGH SCHOOL"            /F(FRETURN)
            SLOC   *TNAME* "FLORIDA"                   /S(ROTAT)
            SLOC   *TNAME* "FLA"                       /F(FRETURN)
 ROTAT      HSGET  =  TNAME SNAME                      /(RETURN)
--          EJECT
+
+* -          EJECT
+
 ENT        NAME  =  TRIM(NAME) " "
            PERM  =  "1"
 DEBLANK    NAME  "  " = " "                           /S(DEBLANK)
@@ -374,8 +469,11 @@ LOOP       PERM  =  PERM  +  "1"
 CLEAN      $(RENAME PERM)    "$" =                    /S(CLEAN)
 BL         $(RENAME PERM)   "  "  =  " "              /S(BL)F(LOOP)
 OKAY       $(RENAME PERM)   "$" =                     /(RETURN)
--          EJECT
+
+* -          EJECT
+
 104        QUAN   QUAL  *CODE*
            RESTOR  =  TRIM(CODE) " "                  /(RETURN)
 END
-?END
+
+* ?END

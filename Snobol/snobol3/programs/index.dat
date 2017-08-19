@@ -7,16 +7,17 @@ Note:
 * bin
 	- s3.jar is the working snobol3
 
-* tests_dh
-	- tests included with jarfile	  
-	  { test1.sno  test2.sno  test3.sno  test4.sno  test5.sno  test6.sno  test7.sno  test8.sno  test9.sno  test10.sno}
-
-* examples_dh
+* examples
 	- programs included with jarfile
 	  { example1.sno  example2.sno  example3.sno  example4.sno }
-
-* examples_jw
-	- selection of programs that were originally written by Jeff Friesen in an article for Javaworld.
+	- programs that were originally written by Jeff Friesen in an article for Javaworld.
 	  { cmp.sno, copy.sno, fact.sno, hw.sno, pm.sno }
+
+* tests
+	- tests included with jarfile	  
+	  { test1.sno  test2.sno  test3.sno  test4.sno  test5.sno  test6.sno  test7.sno  test8.sno  test9.sno  test10.sno }
+
+* user
+	- snobol3 in action
 
 etc...
