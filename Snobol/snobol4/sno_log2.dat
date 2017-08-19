@@ -9,3 +9,6 @@ library directory (PREFIX/lib/snobol4) and
 
 man page (PREFIX/man/man1/snobol4.1).  
 
+---------------------------------------------
+
+installed the snobol4 executable in /usr/bin

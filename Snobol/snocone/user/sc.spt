@@ -1,0 +1,1726 @@
+
+
+
+macro spitbol version 15.01
+x86-64  Sat Aug 19 05:16:08 2017
+
+
+
+                                                                                                                page 1
+
+1       
+
+snocone.sno(12) : error 214 -- bad label or misplaced continuation line
+
+2       nspan	nspan = span(str) | ""				:(return)
+             	                      				         !
+snocone.sno(16,42) : error 230 -- syntax error: illegal character
+
+3       list	list = (item arbno(delim item) | "")		:(return)
+            	                                    		         !
+snocone.sno(21,53) : error 230 -- syntax error: illegal character
+
+4       push	stack[0] = stack[0] + 1
+            	                       !
+snocone.sno(25,29) : error 230 -- syntax error: illegal character
+
+5       	push = .stack[stack[0]]				:(nreturn)
+        	                       				          !
+snocone.sno(26,39) : error 230 -- syntax error: illegal character
+
+6       pop	pop = stack[stack[0]]
+           	                     !
+snocone.sno(30,26) : error 230 -- syntax error: illegal character
+
+7       	stack[stack[0]] = ""
+        	                    !
+snocone.sno(31,22) : error 230 -- syntax error: illegal character
+
+8       	stack[0] = stack[0] - 1				:(return)
+        	                       				         !
+snocone.sno(32,38) : error 230 -- syntax error: illegal character
+
+9       peek	ge(n,stack[0])					:s(err)
+            	              					       !
+snocone.sno(36,32) : error 230 -- syntax error: illegal character
+
+10      	peek = .stack[stack[0] - n]			:(nreturn)
+        	                           			          !
+snocone.sno(37,42) : error 230 -- syntax error: illegal character
+
+11      top	top = .peek(0)					:(nreturn)
+           	              					          !
+snocone.sno(41,34) : error 230 -- syntax error: illegal character
+
+12      isbin	ident(datatype(x),'B')				:f(freturn)
+             	                      				           !
+snocone.sno(48,44) : error 230 -- syntax error: illegal character
+
+13      	ident(fn(op(x)))				:s(return)f(freturn)
+        	                				                    !
+snocone.sno(49,42) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 2
+
+14      dprint	d = datatype(x)
+              	               !
+snocone.sno(53,23) : error 230 -- syntax error: illegal character
+
+15      	(ident(d,'STRING') emit(x))			:s(return)
+        	                           			          !
+snocone.sno(54,42) : error 230 -- syntax error: illegal character
+
+16      	ident(d,'U')					:f(dpr.1)
+        	            					         !
+snocone.sno(57,28) : error 230 -- syntax error: illegal character
+
+17      	emit(op(x))
+        	           !
+snocone.sno(58,13) : error 230 -- syntax error: illegal character
+
+18      	(isbin(r(x)) emit('('))
+        	                       !
+snocone.sno(59,25) : error 230 -- syntax error: illegal character
+
+19      	dprint(r(x))
+        	            !
+snocone.sno(60,14) : error 230 -- syntax error: illegal character
+
+20      	(isbin(r(x)) emit(')'))				:(return)
+        	                       				         !
+snocone.sno(61,38) : error 230 -- syntax error: illegal character
+
+21      dpr.1	ident(d,'FCALL')				:f(dpr.4)
+             	                				         !
+snocone.sno(64,36) : error 230 -- syntax error: illegal character
+
+22      	emit(name(x))
+        	             !
+snocone.sno(65,15) : error 230 -- syntax error: illegal character
+
+23      	emit(l(x))
+        	          !
+snocone.sno(66,12) : error 230 -- syntax error: illegal character
+
+24      	r = args(x)
+        	           !
+snocone.sno(67,13) : error 230 -- syntax error: illegal character
+
+25      dpr.2	ident(r)					:s(dpr.3)
+             	        					         !
+snocone.sno(68,29) : error 230 -- syntax error: illegal character
+
+26      	emit(del)
+        	         !
+snocone.sno(69,11) : error 230 -- syntax error: illegal character
+
+27      	dprint(expr(r))
+        	               !
+snocone.sno(70,17) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 3
+
+28      	del = ','
+        	         !
+snocone.sno(71,11) : error 230 -- syntax error: illegal character
+
+29      	r = next(r)					:(dpr.2)
+        	           					        !
+snocone.sno(72,26) : error 230 -- syntax error: illegal character
+
+30      dpr.3	emit(r(x))					:(return)
+             	          					         !
+snocone.sno(73,31) : error 230 -- syntax error: illegal character
+
+31      dpr.4	ident(d,'B')					:f(dpr.5)
+             	            					         !
+snocone.sno(76,33) : error 230 -- syntax error: illegal character
+
+32      	op = op(x)
+        	          !
+snocone.sno(77,12) : error 230 -- syntax error: illegal character
+
+33      	(ident(op,or.binfo) emit('(') bprint(x) emit(')')) :s(return)
+        	                                                             !
+snocone.sno(78,63) : error 230 -- syntax error: illegal character
+
+34      	l = (isbin(l(x)) lt(slp(op(l(x))),srp(op)) 1,"")
+        	                                                !
+snocone.sno(79,50) : error 230 -- syntax error: illegal character
+
+35      	r = (isbin(r(x)) gt(slp(op),srp(op(r(x)))) 1,"")
+        	                                                !
+snocone.sno(80,50) : error 230 -- syntax error: illegal character
+
+36      	ident(fn(op))					:s(dpr.4a)
+        	             					          !
+snocone.sno(83,30) : error 230 -- syntax error: illegal character
+
+37      	emit(out(op))
+        	             !
+snocone.sno(84,15) : error 230 -- syntax error: illegal character
+
+38      	emit('(')
+        	         !
+snocone.sno(85,11) : error 230 -- syntax error: illegal character
+
+39      	dprint(l(x))
+        	            !
+snocone.sno(86,14) : error 230 -- syntax error: illegal character
+
+40      	emit(',')
+        	         !
+snocone.sno(87,11) : error 230 -- syntax error: illegal character
+
+41      	dprint(r(x))
+        	            !
+snocone.sno(88,14) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 4
+
+42      	emit(')')					:(return)
+        	         					         !
+snocone.sno(89,25) : error 230 -- syntax error: illegal character
+
+43      dpr.4a	(differ(l) emit('('))
+              	                     !
+snocone.sno(92,29) : error 230 -- syntax error: illegal character
+
+44      	dprint(l(x))
+        	            !
+snocone.sno(93,14) : error 230 -- syntax error: illegal character
+
+45      	(differ(l) emit(')'))
+        	                     !
+snocone.sno(94,23) : error 230 -- syntax error: illegal character
+
+46      	emitb(out(op))
+        	              !
+snocone.sno(95,16) : error 230 -- syntax error: illegal character
+
+47      	(differ(r) emit('('))
+        	                     !
+snocone.sno(96,23) : error 230 -- syntax error: illegal character
+
+48      	dprint(r(x))
+        	            !
+snocone.sno(97,14) : error 230 -- syntax error: illegal character
+
+49      	(differ(r) emit(')'))				:(return)
+        	                     				         !
+snocone.sno(98,36) : error 230 -- syntax error: illegal character
+
+50      dpr.5	i = 1
+             	     !
+snocone.sno(101,12) : error 230 -- syntax error: illegal character
+
+51      	del = '('
+        	         !
+snocone.sno(102,11) : error 230 -- syntax error: illegal character
+
+52      	emit(d)
+        	       !
+snocone.sno(103,9) : error 230 -- syntax error: illegal character
+
+53      dpr.6	emit(del)
+             	         !
+snocone.sno(104,16) : error 230 -- syntax error: illegal character
+
+54      	dprint(apply(field(d,i),x))			:f(dpr.7)
+        	                           			         !
+snocone.sno(105,41) : error 230 -- syntax error: illegal character
+
+55      	del = ','
+        	         !
+snocone.sno(106,11) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 5
+
+56      	i = i + 1					:(dpr.6)
+        	         					        !
+snocone.sno(107,24) : error 230 -- syntax error: illegal character
+
+57      dpr.7	emit(')')					:(return)
+             	         					         !
+snocone.sno(108,30) : error 230 -- syntax error: illegal character
+
+58      bprint	((differ(datatype(x),'B'),differ(op(x),or.binfo))
+              	                                                 !
+snocone.sno(115,57) : error 230 -- syntax error: illegal character
+
+59      	bprint(l(x))
+        	            !
+snocone.sno(117,14) : error 230 -- syntax error: illegal character
+
+60      	emit(',')
+        	         !
+snocone.sno(118,11) : error 230 -- syntax error: illegal character
+
+61      	bprint(r(x))					:(return)
+        	            					         !
+snocone.sno(119,28) : error 230 -- syntax error: illegal character
+
+62      sprint	(ident(datatype(x),'B') ident(op(x),cat.binfo) emit('('))
+              	                                                         !
+snocone.sno(127,65) : error 230 -- syntax error: illegal character
+
+63      	dprint(x)
+        	         !
+snocone.sno(128,11) : error 230 -- syntax error: illegal character
+
+64      	(ident(datatype(x),'B') ident(op(x),cat.binfo) emit(')'))
+        	                                                         !
+snocone.sno(129,59) : error 230 -- syntax error: illegal character
+
+65      	emiteob()					:(return)
+        	         					         !
+snocone.sno(130,25) : error 230 -- syntax error: illegal character
+
+66      invoke	apply(f,)
+              	         !
+snocone.sno(135,17) : error 230 -- syntax error: illegal character
+
+67      	invoke = .dummy					:(nreturn)
+        	               					          !
+snocone.sno(136,32) : error 230 -- syntax error: illegal character
+
+68      unop	r = pop()
+            	         !
+snocone.sno(140,15) : error 230 -- syntax error: illegal character
+
+69      	op = pop()
+        	          !
+snocone.sno(141,12) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 6
+
+70      	push() = u(op,r)				:(return)
+        	                				         !
+snocone.sno(142,31) : error 230 -- syntax error: illegal character
+
+71      mkfcall	push() = i.fcall()
+               	                  !
+snocone.sno(146,27) : error 230 -- syntax error: illegal character
+
+72      	mkfcall = .name(top())				:(nreturn)
+        	                      				          !
+snocone.sno(147,38) : error 230 -- syntax error: illegal character
+
+73      mkarg	x = argexp(pop(),"")
+             	                    !
+snocone.sno(151,27) : error 230 -- syntax error: illegal character
+
+74      	f = top()
+        	         !
+snocone.sno(152,11) : error 230 -- syntax error: illegal character
+
+75      	(differ(tail(f)) (next(tail(f)) = x))
+        	                                     !
+snocone.sno(153,39) : error 230 -- syntax error: illegal character
+
+76      	tail(f) = x
+        	           !
+snocone.sno(154,13) : error 230 -- syntax error: illegal character
+
+77      	head(f) = ident(head(f)) x			:(return)
+        	                          			         !
+snocone.sno(155,40) : error 230 -- syntax error: illegal character
+
+78      endfc	f = pop()
+             	         !
+snocone.sno(159,16) : error 230 -- syntax error: illegal character
+
+79      	push() = fcall(name(f),head(f),'(',')')		:(return)
+        	                                       		         !
+snocone.sno(160,52) : error 230 -- syntax error: illegal character
+
+80      mkarray	t = top()
+               	         !
+snocone.sno(164,18) : error 230 -- syntax error: illegal character
+
+81      	l(t) = '<'
+        	          !
+snocone.sno(165,12) : error 230 -- syntax error: illegal character
+
+82      	r(t) = '>'					:(return)
+        	          					         !
+snocone.sno(166,26) : error 230 -- syntax error: illegal character
+
+83      begexp	push() = bconv['(']
+              	                   !
+snocone.sno(170,27) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 7
+
+84      	begexp = .dummy					:(nreturn)
+        	               					          !
+snocone.sno(171,32) : error 230 -- syntax error: illegal character
+
+85      binop	ge(lp(peek(3)),rp(peek(1)))			:f(return)
+             	                           			          !
+snocone.sno(177,47) : error 230 -- syntax error: illegal character
+
+86      	newr = pop()
+        	            !
+snocone.sno(178,14) : error 230 -- syntax error: illegal character
+
+87      	newop = pop()
+        	             !
+snocone.sno(179,15) : error 230 -- syntax error: illegal character
+
+88      	r = pop()
+        	         !
+snocone.sno(180,11) : error 230 -- syntax error: illegal character
+
+89      	op = pop()
+        	          !
+snocone.sno(181,12) : error 230 -- syntax error: illegal character
+
+90      	l = pop()
+        	         !
+snocone.sno(182,11) : error 230 -- syntax error: illegal character
+
+91      	push() = b(op,l,r)
+        	                  !
+snocone.sno(183,20) : error 230 -- syntax error: illegal character
+
+92      	push() = newop
+        	              !
+snocone.sno(184,16) : error 230 -- syntax error: illegal character
+
+93      	push() = newr					:(binop)
+        	             					        !
+snocone.sno(185,28) : error 230 -- syntax error: illegal character
+
+94      endexp	ident(in(peek(1)),'(')				:s(ee.1)
+              	                      				        !
+snocone.sno(189,42) : error 230 -- syntax error: illegal character
+
+95      	r = pop()
+        	         !
+snocone.sno(190,11) : error 230 -- syntax error: illegal character
+
+96      	op = pop()
+        	          !
+snocone.sno(191,12) : error 230 -- syntax error: illegal character
+
+97      	l = pop()
+        	         !
+snocone.sno(192,11) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 8
+
+98      	push() = b(op,l,r)				:(endexp)
+        	                  				         !
+snocone.sno(193,33) : error 230 -- syntax error: illegal character
+
+99      ee.1	r = pop()
+            	         !
+snocone.sno(194,15) : error 230 -- syntax error: illegal character
+
+100     	pop()
+        	     !
+snocone.sno(195,7) : error 230 -- syntax error: illegal character
+
+101     	push() = r
+        	          !
+snocone.sno(196,12) : error 230 -- syntax error: illegal character
+
+102     	endexp = .dummy					:(nreturn)
+        	               					          !
+snocone.sno(197,32) : error 230 -- syntax error: illegal character
+
+103     bcat	bcat = ident(x) y				:s(return)
+            	                 				          !
+snocone.sno(203,37) : error 230 -- syntax error: illegal character
+
+104     	bcat = ident(y) x				:s(return)
+        	                 				          !
+snocone.sno(204,33) : error 230 -- syntax error: illegal character
+
+105     	bcat = x
+        	        !
+snocone.sno(205,10) : error 230 -- syntax error: illegal character
+
+106     mkbinfo	op = bconv[pop()]
+               	                 !
+snocone.sno(213,26) : error 230 -- syntax error: illegal character
+
+107     	ident(op)					:s(err)
+        	         					       !
+snocone.sno(214,23) : error 230 -- syntax error: illegal character
+
+108     	push() = op					:(return)
+        	           					         !
+snocone.sno(215,27) : error 230 -- syntax error: illegal character
+
+109     dotck	dotck = .dummy
+             	              !
+snocone.sno(222,21) : error 230 -- syntax error: illegal character
+
+110     	top() fence '.' = '0.'				:(nreturn)
+        	                      				          !
+snocone.sno(223,38) : error 230 -- syntax error: illegal character
+
+111     emitlab	emitlab = .dummy
+               	                !
+snocone.sno(227,25) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 9
+
+112     	ident(l)					:s(nreturn)
+        	        					           !
+snocone.sno(228,26) : error 230 -- syntax error: illegal character
+
+113     	emiteos()
+        	         !
+snocone.sno(229,11) : error 230 -- syntax error: illegal character
+
+114     	st.lab = l					:(nreturn)
+        	          					          !
+snocone.sno(230,27) : error 230 -- syntax error: illegal character
+
+115     emit	(differ(emit.eob) emiteos())
+            	                            !
+snocone.sno(234,34) : error 230 -- syntax error: illegal character
+
+116     	st.body = st.body s				:(return)
+        	                   				         !
+snocone.sno(235,34) : error 230 -- syntax error: illegal character
+
+117     emiteob	emit.eob = 1					:(return)
+               	            					         !
+snocone.sno(239,35) : error 230 -- syntax error: illegal character
+
+118     emits	emiteob()
+             	         !
+snocone.sno(243,16) : error 230 -- syntax error: illegal character
+
+119     	st.s = l					:(return)
+        	        					         !
+snocone.sno(244,24) : error 230 -- syntax error: illegal character
+
+120     emitf	emiteob()
+             	         !
+snocone.sno(248,16) : error 230 -- syntax error: illegal character
+
+121     	st.f = l					:(return)
+        	        					         !
+snocone.sno(249,24) : error 230 -- syntax error: illegal character
+
+122     emitg	emiteob()
+             	         !
+snocone.sno(253,16) : error 230 -- syntax error: illegal character
+
+123     	st.s = ident(st.s) l
+        	                    !
+snocone.sno(254,22) : error 230 -- syntax error: illegal character
+
+124     	st.f = ident(st.f) l				:(return)
+        	                    				         !
+snocone.sno(255,35) : error 230 -- syntax error: illegal character
+
+125     emitb	emit(' ')
+             	         !
+snocone.sno(259,16) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 10
+
+126     	ident(s,' ')					:s(return)
+        	            					          !
+snocone.sno(260,29) : error 230 -- syntax error: illegal character
+
+127     	emit(s)
+        	       !
+snocone.sno(261,9) : error 230 -- syntax error: illegal character
+
+128     	emit(' ')					:(return)
+        	         					         !
+snocone.sno(262,25) : error 230 -- syntax error: illegal character
+
+129     emiteos	emit.eob = ""
+               	             !
+snocone.sno(266,22) : error 230 -- syntax error: illegal character
+
+130     	(ident(st.lab) ident(st.body) ident(st.s) ident(st.f))
+        	                                                      !
+snocone.sno(267,56) : error 230 -- syntax error: illegal character
+
+131     	out = st.lab ht st.body
+        	                       !
+snocone.sno(269,25) : error 230 -- syntax error: illegal character
+
+132     	out = out dupl(ht,5 - size(st.lab) / 8 - size(st.body) / 8)
+        	                                                           !
+snocone.sno(270,61) : error 230 -- syntax error: illegal character
+
+133     	goto = (differ(st.s),differ(st.f)) ht ':'	:f(emeos.1)
+        	                                         	           !
+snocone.sno(271,55) : error 230 -- syntax error: illegal character
+
+134     	goto = ident(st.s,st.f) goto "(" st.s ")"	:s(emeos.1)
+        	                                         	           !
+snocone.sno(272,55) : error 230 -- syntax error: illegal character
+
+135     	goto = differ(st.s) goto "S(" st.s ")"
+        	                                      !
+snocone.sno(273,40) : error 230 -- syntax error: illegal character
+
+136     	goto = differ(st.f) goto "F(" st.f ")"
+        	                                      !
+snocone.sno(274,40) : error 230 -- syntax error: illegal character
+
+137     emeos.1	out = out goto
+               	              !
+snocone.sno(275,23) : error 230 -- syntax error: illegal character
+
+138     emeos.2	lt(size(out),70)				:s(emeos.3)
+               	                				           !
+snocone.sno(276,40) : error 230 -- syntax error: illegal character
+
+139     	out fence
+        	         !
+snocone.sno(277,11) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 11
+
+140     emeos.3	output = out
+               	            !
+snocone.sno(282,21) : error 230 -- syntax error: illegal character
+
+141     	st.lab = st.body = st.s = st.f = ""		:(return)
+        	                                   		         !
+snocone.sno(283,48) : error 230 -- syntax error: illegal character
+
+142     getline	differ(gl.eof)					:s(freturn)
+               	              					           !
+snocone.sno(286,39) : error 230 -- syntax error: illegal character
+
+143     	getline = getline input				:f(glin.1)
+        	                       				          !
+snocone.sno(287,39) : error 230 -- syntax error: illegal character
+
+144     	gl.lineno = gl.lineno + 1
+        	                         !
+snocone.sno(288,27) : error 230 -- syntax error: illegal character
+
+145     	getline fence (arbno(break("'" '"') len(1) $ del break(*del)
+        	                                                            !
+snocone.sno(289,62) : error 230 -- syntax error: illegal character
+
+146     	getline any("@$%^&*(-+=[<|~,?") blank rpos(0)	:s(getline)f(return)
+        	                                             	                    !
+snocone.sno(291,68) : error 230 -- syntax error: illegal character
+
+147     glin.1	gl.eof = 1					:(freturn)
+              	          					          !
+snocone.sno(294,33) : error 230 -- syntax error: illegal character
+
+148     phrase	ph.buf fence blank rpos(0)			:f(ph.1)
+              	                          			        !
+snocone.sno(298,45) : error 230 -- syntax error: illegal character
+
+149     	ph.buf = phbuf getline()			:s(phrase)f(freturn)
+        	                        			                    !
+snocone.sno(299,49) : error 230 -- syntax error: illegal character
+
+150     ph.1	ph.buf fence
+            	            !
+snocone.sno(301,18) : error 230 -- syntax error: illegal character
+
+151     	phrase = ph.buf
+        	               !
+snocone.sno(304,17) : error 230 -- syntax error: illegal character
+
+152     	ph.buf = ''					:(return)
+        	           					         !
+snocone.sno(305,27) : error 230 -- syntax error: illegal character
+
+153     newlab	nl.count = nl.count + 1
+              	                       !
+snocone.sno(309,31) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 12
+
+154     	newlab = "L." nl.count				:(return)
+        	                      				         !
+snocone.sno(310,37) : error 230 -- syntax error: illegal character
+
+155     marklab	marklab = differ(st.lab) ident(emit.eob) st.lab	:s(return)
+               	                                               	          !
+snocone.sno(315,67) : error 230 -- syntax error: illegal character
+
+156     	marklab = newlab()
+        	                  !
+snocone.sno(316,20) : error 230 -- syntax error: illegal character
+
+157     	emitlab(marklab)				:(return)
+        	                				         !
+snocone.sno(317,31) : error 230 -- syntax error: illegal character
+
+158     expcl	cl.type = "expr"					:(return)
+             	                					         !
+snocone.sno(323,37) : error 230 -- syntax error: illegal character
+
+159     gocl	cl.type = "goto"				:(return)
+            	                				         !
+snocone.sno(327,35) : error 230 -- syntax error: illegal character
+
+160     nclause	rep.clause = differ(rep.clause) ""		:s(ncl.2)
+               	                                  		         !
+snocone.sno(334,54) : error 230 -- syntax error: illegal character
+
+161     	linebuf fence *blank rpos(0)			:f(ncl.1)
+        	                            			         !
+snocone.sno(335,42) : error 230 -- syntax error: illegal character
+
+162     	linebuf = phrase()				:s(nclause)
+        	                  				           !
+snocone.sno(336,35) : error 230 -- syntax error: illegal character
+
+163     	ident(okeof)					:s(premeof)
+        	            					           !
+snocone.sno(339,30) : error 230 -- syntax error: illegal character
+
+164     	eof = 1						:(freturn)
+        	       						          !
+snocone.sno(340,25) : error 230 -- syntax error: illegal character
+
+165     ncl.1	linebuf clause = del				:s(return)
+             	                    				          !
+snocone.sno(343,41) : error 230 -- syntax error: illegal character
+
+166     	error("Syntax: " linebuf)
+        	                         !
+snocone.sno(344,27) : error 230 -- syntax error: illegal character
+
+167     	linebuf = ""					:(nclause)
+        	            					          !
+snocone.sno(345,29) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 13
+
+168     ncl.2	ident(eof)					:s(return)f(freturn)
+             	          					                    !
+snocone.sno(348,42) : error 230 -- syntax error: illegal character
+
+169     error	terminal = "Line " gl.lineno ": " msg
+             	                                     !
+snocone.sno(351,44) : error 230 -- syntax error: illegal character
+
+170     	&code = 1					:(return)
+        	         					         !
+snocone.sno(352,25) : error 230 -- syntax error: illegal character
+
+171     dostmt	ident(cl.type,"expr")				:f(ds.1)
+              	                     				        !
+snocone.sno(356,41) : error 230 -- syntax error: illegal character
+
+172     	sprint(pop())					:(return)
+        	             					         !
+snocone.sno(359,29) : error 230 -- syntax error: illegal character
+
+173     ds.1	ident(cl.type,"{")				:f(ds.3)
+            	                  				        !
+snocone.sno(362,36) : error 230 -- syntax error: illegal character
+
+174     ds.2	nclause()
+            	         !
+snocone.sno(363,15) : error 230 -- syntax error: illegal character
+
+175     	ident(cl.type,"}")				:s(return)
+        	                  				          !
+snocone.sno(364,34) : error 230 -- syntax error: illegal character
+
+176     	dostmt()					:(ds.2)
+        	        					       !
+snocone.sno(365,22) : error 230 -- syntax error: illegal character
+
+177     ds.3	ident(cl.type,"goto")				:f(ds.4)
+            	                     				        !
+snocone.sno(368,39) : error 230 -- syntax error: illegal character
+
+178     	emitg(dest)					:(return)
+        	           					         !
+snocone.sno(369,27) : error 230 -- syntax error: illegal character
+
+179     ds.4	ident(cl.type,"if")				:f(ds.8)
+            	                   				        !
+snocone.sno(372,37) : error 230 -- syntax error: illegal character
+
+180     	sprint(pop())
+        	             !
+snocone.sno(373,15) : error 230 -- syntax error: illegal character
+
+181     	nclause()
+        	         !
+snocone.sno(376,11) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 14
+
+182     	ident(cl.type,"goto")				:f(ds.5)
+        	                     				        !
+snocone.sno(377,35) : error 230 -- syntax error: illegal character
+
+183     	emits(dest)
+        	           !
+snocone.sno(378,13) : error 230 -- syntax error: illegal character
+
+184     	nclause(1)					:f(ds.7)
+        	          					        !
+snocone.sno(382,25) : error 230 -- syntax error: illegal character
+
+185     	ident(cl.type,"else")				:f(ds.7)
+        	                     				        !
+snocone.sno(383,35) : error 230 -- syntax error: illegal character
+
+186     	nclause()
+        	         !
+snocone.sno(384,11) : error 230 -- syntax error: illegal character
+
+187     	dostmt()					:(return)
+        	        					         !
+snocone.sno(385,24) : error 230 -- syntax error: illegal character
+
+188     ds.5	lab = newlab()
+            	              !
+snocone.sno(389,20) : error 230 -- syntax error: illegal character
+
+189     	emitf(lab)
+        	          !
+snocone.sno(390,12) : error 230 -- syntax error: illegal character
+
+190     	dostmt()
+        	        !
+snocone.sno(391,10) : error 230 -- syntax error: illegal character
+
+191     ds.6	nclause(1)					:f(ds.7)
+            	          					        !
+snocone.sno(394,29) : error 230 -- syntax error: illegal character
+
+192     	ident(cl.type,"else")				:f(ds.7)
+        	                     				        !
+snocone.sno(395,35) : error 230 -- syntax error: illegal character
+
+193     	lab2 = newlab()
+        	               !
+snocone.sno(398,17) : error 230 -- syntax error: illegal character
+
+194     	emitg(lab2)
+        	           !
+snocone.sno(399,13) : error 230 -- syntax error: illegal character
+
+195     	emitlab(lab)
+        	            !
+snocone.sno(400,14) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 15
+
+196     	nclause()
+        	         !
+snocone.sno(401,11) : error 230 -- syntax error: illegal character
+
+197     	dostmt()
+        	        !
+snocone.sno(402,10) : error 230 -- syntax error: illegal character
+
+198     	emitlab(lab2)					:(return)
+        	             					         !
+snocone.sno(403,29) : error 230 -- syntax error: illegal character
+
+199     ds.7	rep.clause = 1
+            	              !
+snocone.sno(406,20) : error 230 -- syntax error: illegal character
+
+200     	emitlab(lab)					:(return)
+        	            					         !
+snocone.sno(407,28) : error 230 -- syntax error: illegal character
+
+201     ds.8	ident(cl.type,"while")				:f(ds.9)
+            	                      				        !
+snocone.sno(410,40) : error 230 -- syntax error: illegal character
+
+202     	lab = marklab()
+        	               !
+snocone.sno(411,17) : error 230 -- syntax error: illegal character
+
+203     	sprint(pop())
+        	             !
+snocone.sno(412,15) : error 230 -- syntax error: illegal character
+
+204     	lab2 = newlab()
+        	               !
+snocone.sno(413,17) : error 230 -- syntax error: illegal character
+
+205     	emitf(lab2)
+        	           !
+snocone.sno(414,13) : error 230 -- syntax error: illegal character
+
+206     	nclause()
+        	         !
+snocone.sno(415,11) : error 230 -- syntax error: illegal character
+
+207     	dostmt()
+        	        !
+snocone.sno(416,10) : error 230 -- syntax error: illegal character
+
+208     	emitg(lab)
+        	          !
+snocone.sno(417,12) : error 230 -- syntax error: illegal character
+
+209     	emitlab(lab2)					:(return)
+        	             					         !
+snocone.sno(418,29) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 16
+
+210     ds.9	ident(cl.type,"do")				:f(ds.11)
+            	                   				         !
+snocone.sno(421,38) : error 230 -- syntax error: illegal character
+
+211     	lab = marklab()
+        	               !
+snocone.sno(422,17) : error 230 -- syntax error: illegal character
+
+212     	nclause()
+        	         !
+snocone.sno(423,11) : error 230 -- syntax error: illegal character
+
+213     	dostmt()
+        	        !
+snocone.sno(424,10) : error 230 -- syntax error: illegal character
+
+214     	nclause()
+        	         !
+snocone.sno(425,11) : error 230 -- syntax error: illegal character
+
+215     	ident(cl.type,"while")				:f(ds.10)
+        	                      				         !
+snocone.sno(426,37) : error 230 -- syntax error: illegal character
+
+216     	sprint(pop())
+        	             !
+snocone.sno(427,15) : error 230 -- syntax error: illegal character
+
+217     	emits(lab)					:(return)
+        	          					         !
+snocone.sno(428,26) : error 230 -- syntax error: illegal character
+
+218     ds.10	error ("expected while, found " cl.type)
+             	                                        !
+snocone.sno(430,47) : error 230 -- syntax error: illegal character
+
+219     	rep.clause = 1					:(return)
+        	              					         !
+snocone.sno(431,30) : error 230 -- syntax error: illegal character
+
+220     ds.11	ident(cl.type,"for")				:f(ds.12)
+             	                    				         !
+snocone.sno(434,40) : error 230 -- syntax error: illegal character
+
+221     	e3 = pop()
+        	          !
+snocone.sno(435,12) : error 230 -- syntax error: illegal character
+
+222     	e2 = pop()
+        	          !
+snocone.sno(436,12) : error 230 -- syntax error: illegal character
+
+223     	e1 = pop()
+        	          !
+snocone.sno(437,12) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 17
+
+224     	sprint(e1)
+        	          !
+snocone.sno(438,12) : error 230 -- syntax error: illegal character
+
+225     	emiteob()
+        	         !
+snocone.sno(439,11) : error 230 -- syntax error: illegal character
+
+226     	lab = marklab()
+        	               !
+snocone.sno(440,17) : error 230 -- syntax error: illegal character
+
+227     	lab2 = newlab()
+        	               !
+snocone.sno(441,17) : error 230 -- syntax error: illegal character
+
+228     	sprint(e2)
+        	          !
+snocone.sno(442,12) : error 230 -- syntax error: illegal character
+
+229     	emitf(lab2)
+        	           !
+snocone.sno(443,13) : error 230 -- syntax error: illegal character
+
+230     	nclause()
+        	         !
+snocone.sno(444,11) : error 230 -- syntax error: illegal character
+
+231     	dostmt()
+        	        !
+snocone.sno(445,10) : error 230 -- syntax error: illegal character
+
+232     	sprint(e3)
+        	          !
+snocone.sno(446,12) : error 230 -- syntax error: illegal character
+
+233     	emitg(lab)
+        	          !
+snocone.sno(447,12) : error 230 -- syntax error: illegal character
+
+234     	emitlab(lab2)					:(return)
+        	             					         !
+snocone.sno(448,29) : error 230 -- syntax error: illegal character
+
+235     ds.12	cl.type "return"				:f(ds.15)
+             	                				         !
+snocone.sno(451,36) : error 230 -- syntax error: illegal character
+
+236     	e1 = pop()
+        	          !
+snocone.sno(452,12) : error 230 -- syntax error: illegal character
+
+237     	ident(e1)					:s(ds.14)
+        	         					         !
+snocone.sno(453,25) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 18
+
+238     	ident(fname)					:s(ds.13)
+        	            					         !
+snocone.sno(454,28) : error 230 -- syntax error: illegal character
+
+239     	e1 = b(bconv["="],fname,e1)
+        	                           !
+snocone.sno(455,29) : error 230 -- syntax error: illegal character
+
+240     ds.13	sprint(e1)
+             	          !
+snocone.sno(456,17) : error 230 -- syntax error: illegal character
+
+241     ds.14	emitg(replace(cl.type,
+             	                      !
+snocone.sno(457,29) : error 230 -- syntax error: illegal character
+
+242     ds.15	ident(cl.type)					:s(return)
+             	              					          !
+snocone.sno(462,36) : error 230 -- syntax error: illegal character
+
+243     ds.e	error("bad " cl.type " clause, ignored")	:(return)
+            	                                        	         !
+snocone.sno(464,56) : error 230 -- syntax error: illegal character
+
+244     funct	expect('(')					:f(fu.1)
+             	           					        !
+snocone.sno(468,31) : error 230 -- syntax error: illegal character
+
+245     	args = getlist(')')				:f(fu.e)
+        	                   				        !
+snocone.sno(469,33) : error 230 -- syntax error: illegal character
+
+246     	expect(')')
+        	           !
+snocone.sno(470,13) : error 230 -- syntax error: illegal character
+
+247     	locals = getlist('{')				:f(fu.e)
+        	                     				        !
+snocone.sno(471,35) : error 230 -- syntax error: illegal character
+
+248     fu.1	deflist[deflist[0] = deflist[0] + 1] =
+            	                                      !
+snocone.sno(472,44) : error 230 -- syntax error: illegal character
+
+249     	st.lab ".END"					:s(fu.2)
+        	             					        !
+snocone.sno(477,28) : error 230 -- syntax error: illegal character
+
+250     	emitg(fname '.END')
+        	                   !
+snocone.sno(478,21) : error 230 -- syntax error: illegal character
+
+251     	emitlab(fname)
+        	              !
+snocone.sno(479,16) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 19
+
+252     	nclause()
+        	         !
+snocone.sno(480,11) : error 230 -- syntax error: illegal character
+
+253     	dostmt()
+        	        !
+snocone.sno(481,10) : error 230 -- syntax error: illegal character
+
+254     	emitg("RETURN")
+        	               !
+snocone.sno(482,17) : error 230 -- syntax error: illegal character
+
+255     	emitlab(fname '.END')				:(return)
+        	                     				         !
+snocone.sno(483,36) : error 230 -- syntax error: illegal character
+
+256     fu.2	flabel = st.lab
+            	               !
+snocone.sno(486,21) : error 230 -- syntax error: illegal character
+
+257     	st.lab = ""
+        	           !
+snocone.sno(487,13) : error 230 -- syntax error: illegal character
+
+258     	emitlab(fname)
+        	              !
+snocone.sno(488,16) : error 230 -- syntax error: illegal character
+
+259     	nclause()
+        	         !
+snocone.sno(489,11) : error 230 -- syntax error: illegal character
+
+260     	dostmt()
+        	        !
+snocone.sno(490,10) : error 230 -- syntax error: illegal character
+
+261     	emitg("RETURN")
+        	               !
+snocone.sno(491,17) : error 230 -- syntax error: illegal character
+
+262     	emitlab(flabel)					:(return)
+        	               					         !
+snocone.sno(492,31) : error 230 -- syntax error: illegal character
+
+263     fu.e	error("bad function definition")		:(return)
+            	                                		         !
+snocone.sno(494,49) : error 230 -- syntax error: illegal character
+
+264     expect	linebuf fence blank rpos(0)			:f(ex.1)
+              	                           			        !
+snocone.sno(499,46) : error 230 -- syntax error: illegal character
+
+265     	linebuf = phrase()				:s(expect)f(freturn)
+        	                  				                    !
+snocone.sno(500,44) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 20
+
+266     ex.1	linebuf fence blank *p = ""			:s(return)f(freturn)
+            	                           			                    !
+snocone.sno(501,56) : error 230 -- syntax error: illegal character
+
+267     getid	expect(*identifier . getid)			:s(return)f(freturn)
+             	                           			                    !
+snocone.sno(505,57) : error 230 -- syntax error: illegal character
+
+268     getlist expect(tail)					:s(gl.1)
+                            					        !
+snocone.sno(509,34) : error 230 -- syntax error: illegal character
+
+269     	getlist = getlist del getid()			:f(gl.2)
+        	                             			        !
+snocone.sno(510,42) : error 230 -- syntax error: illegal character
+
+270     	expect(',')
+        	           !
+snocone.sno(511,13) : error 230 -- syntax error: illegal character
+
+271     	del = ','					:(getlist)
+        	         					          !
+snocone.sno(512,26) : error 230 -- syntax error: illegal character
+
+272     gl.1	linebuf = tail linebuf				:(return)
+            	                      				         !
+snocone.sno(513,41) : error 230 -- syntax error: illegal character
+
+273     gl.2	expect(tail)					:s(return)f(freturn)
+            	            					                    !
+snocone.sno(514,43) : error 230 -- syntax error: illegal character
+
+276             define("nspan(str)")
+                                    !
+snocone.sno(520,29) : error 230 -- syntax error: illegal character
+
+277     	define("list(item,delim)")
+        	                          !
+snocone.sno(521,28) : error 230 -- syntax error: illegal character
+
+278     	define("push()")
+        	                !
+snocone.sno(522,18) : error 230 -- syntax error: illegal character
+
+279     	define("pop()")
+        	               !
+snocone.sno(523,17) : error 230 -- syntax error: illegal character
+
+280     	define("peek(n)")
+        	                 !
+snocone.sno(524,19) : error 230 -- syntax error: illegal character
+
+281     	define("top()")
+        	               !
+snocone.sno(525,17) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 21
+
+282     	define("isbin(x)")
+        	                  !
+snocone.sno(526,20) : error 230 -- syntax error: illegal character
+
+283     	define("dprint(x)op,l,r,d,i,del")
+        	                                 !
+snocone.sno(527,35) : error 230 -- syntax error: illegal character
+
+284     	define("invoke(f)")
+        	                   !
+snocone.sno(528,21) : error 230 -- syntax error: illegal character
+
+285     	define("unop()r,op")
+        	                    !
+snocone.sno(529,22) : error 230 -- syntax error: illegal character
+
+286     	define("mkfcall()")
+        	                   !
+snocone.sno(530,21) : error 230 -- syntax error: illegal character
+
+287     	define("mkarg()x,f")
+        	                    !
+snocone.sno(531,22) : error 230 -- syntax error: illegal character
+
+288     	define("endfc()f")
+        	                  !
+snocone.sno(532,20) : error 230 -- syntax error: illegal character
+
+289     	define("mkarray()t")
+        	                    !
+snocone.sno(533,22) : error 230 -- syntax error: illegal character
+
+290     	define("begexp()")
+        	                  !
+snocone.sno(534,20) : error 230 -- syntax error: illegal character
+
+291     	define("binop()l,r,op,newr,newop")
+        	                                  !
+snocone.sno(535,36) : error 230 -- syntax error: illegal character
+
+292     	define("endexp()l,r,op")
+        	                        !
+snocone.sno(536,26) : error 230 -- syntax error: illegal character
+
+293     	define("bcat(x,y)")
+        	                   !
+snocone.sno(537,21) : error 230 -- syntax error: illegal character
+
+294     	define("mkbinfo()op")
+        	                     !
+snocone.sno(538,23) : error 230 -- syntax error: illegal character
+
+295     	define("bprint(x)")
+        	                   !
+snocone.sno(539,21) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 22
+
+296     	define("sprint(x)")
+        	                   !
+snocone.sno(540,21) : error 230 -- syntax error: illegal character
+
+297     	define("dotck()")
+        	                 !
+snocone.sno(541,19) : error 230 -- syntax error: illegal character
+
+298     	define("emitlab(l)")
+        	                    !
+snocone.sno(542,22) : error 230 -- syntax error: illegal character
+
+299     	define("emit(s)")
+        	                 !
+snocone.sno(543,19) : error 230 -- syntax error: illegal character
+
+300     	define("emiteob()")
+        	                   !
+snocone.sno(544,21) : error 230 -- syntax error: illegal character
+
+301     	define("emits(l)")
+        	                  !
+snocone.sno(545,20) : error 230 -- syntax error: illegal character
+
+302     	define("emitf(l)")
+        	                  !
+snocone.sno(546,20) : error 230 -- syntax error: illegal character
+
+303     	define("emitg(l)")
+        	                  !
+snocone.sno(547,20) : error 230 -- syntax error: illegal character
+
+304     	define("emitb(s)")
+        	                  !
+snocone.sno(548,20) : error 230 -- syntax error: illegal character
+
+305     	define("emiteos()out,goto,s,del")
+        	                                 !
+snocone.sno(549,35) : error 230 -- syntax error: illegal character
+
+306     	define("getline()del")
+        	                      !
+snocone.sno(550,24) : error 230 -- syntax error: illegal character
+
+307     	define("phrase()del")
+        	                     !
+snocone.sno(551,23) : error 230 -- syntax error: illegal character
+
+308     	define("newlab()")
+        	                  !
+snocone.sno(552,20) : error 230 -- syntax error: illegal character
+
+309     	define("marklab()")
+        	                   !
+snocone.sno(553,21) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 23
+
+310     	define("expcl()")
+        	                 !
+snocone.sno(554,19) : error 230 -- syntax error: illegal character
+
+311     	define("gocl()")
+        	                !
+snocone.sno(555,18) : error 230 -- syntax error: illegal character
+
+312     	define("nclause(okeof)del")
+        	                           !
+snocone.sno(556,29) : error 230 -- syntax error: illegal character
+
+313     	define("error(msg)")
+        	                    !
+snocone.sno(557,22) : error 230 -- syntax error: illegal character
+
+314     	define("dostmt()lab,lab2,e1,e2,e3")
+        	                                   !
+snocone.sno(558,37) : error 230 -- syntax error: illegal character
+
+315     	define("funct()args,locals,flabel")
+        	                                   !
+snocone.sno(559,37) : error 230 -- syntax error: illegal character
+
+316     	define("expect(p)")
+        	                   !
+snocone.sno(560,21) : error 230 -- syntax error: illegal character
+
+317     	define("getid()")
+        	                 !
+snocone.sno(561,19) : error 230 -- syntax error: illegal character
+
+318     	define("getlist(tail)del")
+        	                          !
+snocone.sno(562,28) : error 230 -- syntax error: illegal character
+
+319     	data("b(op,l,r)")
+        	                 !
+snocone.sno(564,19) : error 230 -- syntax error: illegal character
+
+320     	data("u(op,r)")
+        	               !
+snocone.sno(565,17) : error 230 -- syntax error: illegal character
+
+321     	data("i.fcall(name,head,tail)")
+        	                               !
+snocone.sno(566,33) : error 230 -- syntax error: illegal character
+
+322     	data("fcall(name,args,l,r)")
+        	                            !
+snocone.sno(567,30) : error 230 -- syntax error: illegal character
+
+323     	data("argexp(expr,next)")
+        	                         !
+snocone.sno(568,27) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 24
+
+324     	data("binfo(in,out,lp,rp,slp,srp,fn)")
+        	                                      !
+snocone.sno(569,40) : error 230 -- syntax error: illegal character
+
+325     	stack = table()
+        	               !
+snocone.sno(571,17) : error 230 -- syntax error: illegal character
+
+326     	bconv = table()
+        	               !
+snocone.sno(572,17) : error 230 -- syntax error: illegal character
+
+327     	deflist = table(50)
+        	                   !
+snocone.sno(573,21) : error 230 -- syntax error: illegal character
+
+328     	bconv['('] = binfo('(',,0)
+        	                          !
+snocone.sno(575,28) : error 230 -- syntax error: illegal character
+
+329     	bconv['='] = binfo('=','=',1,2,0,1)
+        	                                   !
+snocone.sno(577,37) : error 230 -- syntax error: illegal character
+
+330     	bconv['?'] = binfo('?','?',2,2,1,1)
+        	                                   !
+snocone.sno(578,37) : error 230 -- syntax error: illegal character
+
+331     	bconv['|'] = binfo('|','|',3,3,2,2)
+        	                                   !
+snocone.sno(579,37) : error 230 -- syntax error: illegal character
+
+332     	bconv['||'] = or.binfo = binfo('||',,4,4,0,0,1)
+        	                                               !
+snocone.sno(580,49) : error 230 -- syntax error: illegal character
+
+333     	bconv['&&'] = cat.binfo = binfo('&&',' ',5,5,4,4)
+        	                                                 !
+snocone.sno(581,51) : error 230 -- syntax error: illegal character
+
+334     	bconv['>'] = binfo('>','GT',6,6,0,0,1)
+        	                                      !
+snocone.sno(582,40) : error 230 -- syntax error: illegal character
+
+335     	bconv['<'] = binfo('<','LT',6,6,0,0,1)
+        	                                      !
+snocone.sno(583,40) : error 230 -- syntax error: illegal character
+
+336     	bconv['>='] = binfo('>=','GE',6,6,0,0,1)
+        	                                        !
+snocone.sno(584,42) : error 230 -- syntax error: illegal character
+
+337     	bconv['<='] = binfo('<=','LE',6,6,0,0,1)
+        	                                        !
+snocone.sno(585,42) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 25
+
+338     	bconv['=='] = binfo('==','EQ',6,6,0,0,1)
+        	                                        !
+snocone.sno(586,42) : error 230 -- syntax error: illegal character
+
+339     	bconv['!='] = binfo('!=','NE',6,6,0,0,1)
+        	                                        !
+snocone.sno(587,42) : error 230 -- syntax error: illegal character
+
+340     	bconv[':>:'] = binfo(':>:','LGT',6,6,0,0,1)
+        	                                           !
+snocone.sno(588,45) : error 230 -- syntax error: illegal character
+
+341     	bconv[':<:'] = binfo(':<:','LLT',6,6,0,0,1)
+        	                                           !
+snocone.sno(589,45) : error 230 -- syntax error: illegal character
+
+342     	bconv[':>=:'] = binfo(':>=:','LGE',6,6,0,0,1)
+        	                                             !
+snocone.sno(590,47) : error 230 -- syntax error: illegal character
+
+343     	bconv[':<=:'] = binfo(':<=:','LLE',6,6,0,0,1)
+        	                                             !
+snocone.sno(591,47) : error 230 -- syntax error: illegal character
+
+344     	bconv[':==:'] = binfo(':==:','LEQ',6,6,0,0,1)
+        	                                             !
+snocone.sno(592,47) : error 230 -- syntax error: illegal character
+
+345     	bconv[':!=:'] = binfo(':!=:','LNE',6,6,0,0,1)
+        	                                             !
+snocone.sno(593,47) : error 230 -- syntax error: illegal character
+
+346     	bconv['+'] = binfo('+','+',7,7,5,5)
+        	                                   !
+snocone.sno(594,37) : error 230 -- syntax error: illegal character
+
+347     	bconv['-'] = binfo('-','-',7,7,5,5)
+        	                                   !
+snocone.sno(595,37) : error 230 -- syntax error: illegal character
+
+348     	bconv['/'] = binfo('/','/',8,8,7,7)
+        	                                   !
+snocone.sno(596,37) : error 230 -- syntax error: illegal character
+
+349     	bconv['*'] = binfo('*','*',8,8,8,8)
+        	                                   !
+snocone.sno(597,37) : error 230 -- syntax error: illegal character
+
+350     	bconv['%'] = binfo('%','REMDR',8,8,0,0,1)
+        	                                         !
+snocone.sno(598,43) : error 230 -- syntax error: illegal character
+
+351     	bconv['^'] = binfo('^','**',9,10,10,11)
+        	                                       !
+snocone.sno(599,41) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 26
+
+352     	bconv['.'] = binfo('.','.',10,10,11,11)
+        	                                       !
+snocone.sno(600,41) : error 230 -- syntax error: illegal character
+
+353     	bconv['$'] = binfo('$','$',10,10,11,11)
+        	                                       !
+snocone.sno(601,41) : error 230 -- syntax error: illegal character
+
+354     	&alphabet len(9) len(1) . ht
+        	                            !
+snocone.sno(603,30) : error 230 -- syntax error: illegal character
+
+355     	blank = nspan(" " ht)
+        	                     !
+snocone.sno(604,23) : error 230 -- syntax error: illegal character
+
+356     	digits = "0123456789"
+        	                     !
+snocone.sno(605,23) : error 230 -- syntax error: illegal character
+
+357     	letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_"
+        	                                                                 !
+snocone.sno(606,67) : error 230 -- syntax error: illegal character
+
+358     	integer = span(digits)
+        	                      !
+snocone.sno(608,24) : error 230 -- syntax error: illegal character
+
+359     	exponent = any("eEdD") (any("+-") | "") integer
+        	                                               !
+snocone.sno(609,49) : error 230 -- syntax error: illegal character
+
+360     	real = integer "." (integer | "") (exponent | "") | integer exponent |
+        	                                                                      !
+snocone.sno(610,72) : error 230 -- syntax error: illegal character
+
+361     	number = real | integer
+        	                       !
+snocone.sno(612,25) : error 230 -- syntax error: illegal character
+
+362     	string = any("'" '"') $ squote break(*squote) len(1)
+        	                                                    !
+snocone.sno(614,54) : error 230 -- syntax error: illegal character
+
+363     	constant = number | string
+        	                          !
+snocone.sno(616,28) : error 230 -- syntax error: illegal character
+
+364     	identifier = any(letters) nspan(letters digits)
+        	                                               !
+snocone.sno(617,49) : error 230 -- syntax error: illegal character
+
+365     	unaryop = any("+-*&@~?.$")
+        	                          !
+snocone.sno(618,28) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 27
+
+366     	binaryop = any("+-*/<>=^.$?|%") | "==" | "!=" | "<=" | ">=" | "&&" |
+        	                                                                    !
+snocone.sno(619,70) : error 230 -- syntax error: illegal character
+
+367     	fcall = identifier . *mkfcall() blank
+        	                                     !
+snocone.sno(622,39) : error 230 -- syntax error: illegal character
+
+368     	term = blank (constant . *push() . *dotck() | identifier . *push()
+        	                                                                  !
+snocone.sno(628,68) : error 230 -- syntax error: illegal character
+
+369     	operand = term | blank unaryop . *push() *operand . *invoke(.unop)
+        	                                                                  !
+snocone.sno(630,68) : error 230 -- syntax error: illegal character
+
+370     	expr = "" . *begexp() *operand
+        	                              !
+snocone.sno(631,32) : error 230 -- syntax error: illegal character
+
+371     	label = blank identifier . lab . *emitlab(lab) blank ":"
+        	                                                        !
+snocone.sno(635,58) : error 230 -- syntax error: illegal character
+
+372     	clause = fence arbno(label) blank (
+        	                                   !
+snocone.sno(637,37) : error 230 -- syntax error: illegal character
+
+373     	&stlimit = -1
+        	             !
+snocone.sno(653,15) : error 230 -- syntax error: illegal character
+
+374     	&dump = 2
+        	         !
+snocone.sno(654,11) : error 230 -- syntax error: illegal character
+
+375     	emitlab("MAIN.")
+        	                !
+snocone.sno(660,18) : error 230 -- syntax error: illegal character
+
+376     loop	nclause(1)					:f(exit)
+            	          					        !
+snocone.sno(663,29) : error 230 -- syntax error: illegal character
+
+377     	ident(cl.type,"procedure")			:s(fndef)
+        	                          			         !
+snocone.sno(664,40) : error 230 -- syntax error: illegal character
+
+378     	dostmt()					:(loop)
+        	        					       !
+snocone.sno(665,22) : error 230 -- syntax error: illegal character
+
+379     fndef	funct()						:(loop)
+             	       						       !
+snocone.sno(668,27) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 28
+
+380     premeof	error("premature eof")
+               	                      !
+snocone.sno(670,31) : error 230 -- syntax error: illegal character
+
+381     exit	emitg("END")
+            	            !
+snocone.sno(673,18) : error 230 -- syntax error: illegal character
+
+382     	emitlab("START.")
+        	                 !
+snocone.sno(674,19) : error 230 -- syntax error: illegal character
+
+383     	emit("CODE('START.')")
+        	                      !
+snocone.sno(675,24) : error 230 -- syntax error: illegal character
+
+384     	i = 1
+        	     !
+snocone.sno(676,7) : error 230 -- syntax error: illegal character
+
+385     exit.0	gt(i,deflist[0])				:s(exit.1)
+              	                				          !
+snocone.sno(677,38) : error 230 -- syntax error: illegal character
+
+386     	emiteos()
+        	         !
+snocone.sno(678,11) : error 230 -- syntax error: illegal character
+
+387     	emit("DEFINE('")
+        	                !
+snocone.sno(679,18) : error 230 -- syntax error: illegal character
+
+388     	emit(deflist[i])
+        	                !
+snocone.sno(680,18) : error 230 -- syntax error: illegal character
+
+389     	emit("')")
+        	          !
+snocone.sno(681,12) : error 230 -- syntax error: illegal character
+
+390     	i = i + 1					:(exit.0)
+        	         					         !
+snocone.sno(682,25) : error 230 -- syntax error: illegal character
+
+391     exit.1	emitg("MAIN.")
+              	              !
+snocone.sno(683,22) : error 230 -- syntax error: illegal character
+
+392     	emitlab("END")
+        	              !
+snocone.sno(684,16) : error 230 -- syntax error: illegal character
+
+393     	emit("START.")
+        	              !
+snocone.sno(685,16) : error 230 -- syntax error: illegal character
+
+
+
+
+                                                                                                                page 29
+
+394     	emiteos()
+        	         !
+snocone.sno(686,11) : error 230 -- syntax error: illegal character
+
+395     	&dump = 0
+        	         !
+snocone.sno(687,11) : error 230 -- syntax error: illegal character
+
+396     end	start
+           	!
+snocone.sno(689,5) : error 215 -- syntax error: undefined or erroneous entry label
+
