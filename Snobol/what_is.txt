@@ -1,3 +1,6 @@
+temporarily abandoning work on the snobol/snocone/spitbol projects for now
+
+//-------------------------------
 * extras
   * algorithms in snobol4 by James F. Gimpel (gimpel.zip)
 
@@ -11,7 +14,7 @@
 
 * snocone
   * Snobol preprocessor
-  
+
 * spitbol
   * spitbol x64 compiler
 
@@ -34,3 +37,17 @@ http://minnie.tuhs.org/cgi-bin/utree.pl?file=Mini-Unix/usr/source/sno
 http://www.javaworld.com/article/2071796/learn-java/javalution.html
 https://github.com/retro-software/B5500-software
 https://www.pdp8.net/images/images/misc_dectapes.shtml
+
+------------------------------------------
+
+see also
+
+SNOBOL3 Primer: An Introduction to the Computer Programming Language - Allen Forte
+
+Algorithms in SNOBOL4 - James F. Gimpel
+
+The SNOBOL 4 programming language - Ralph Griswold
+
+The programmer's introduction to SNOBOL - Ward Douglas Maurer
+
+The Macro Implementation of SNOBOL4: A Case Study of Machine-independent Software Development - Ralph E. Griswold

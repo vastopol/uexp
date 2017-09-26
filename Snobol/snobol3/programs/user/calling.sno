@@ -1,0 +1,18 @@
+* using CALL (sort of like function pointers in C)
+* there are 5 rules to use
+* 1 if function is not primitive, must be defined before
+* 2 arguments must have values assigned be fore used
+* 3 function name in call may be: literal, name, or concatenation of these
+* 4 argument names are literals in call unless values assigned indirectly
+* 5 formal delimiters '(' ',' ')' may be literals or contained in named string
+* *************************
+     DEFINE('F1(F1,S)','F1')
+     DEFINE('F2(F2,S)','F2')
+     DEFINE('F3(F3,S)','F3') /(BGN)
+F1   F1 = (F1 + '1') ',' SIZE(S)  /(RETURN)
+F2   F2 = (F2 + '2') ',' SIZE(S)  /(RETURN)
+F3   F3 = (F3 + '3') ',' SIZE(S)  /(RETURN)
+BGN  DATA = '*23,DAVID*31,RALPH*10,IVAN*'
+BAC  DATA   '*' *FN/'1'* *DSCPTR* ',' *ALPH* '*' = '*' /F(END)
+     RSLT = CALL('F' FN '(' 'DSCPTR' ',' 'ALPH' ')') /(BAC)
+END
