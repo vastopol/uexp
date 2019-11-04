@@ -1,9 +1,9 @@
 # uexp
 !C
 
-Intended for small experiments with non C style languages. A collection of compilers, interpreters, and source code. 
+Intended for small experiments with non C style languages. A collection of compilers, interpreters, and source code.
 Mostly will serve as a holding space for old/obscure programming languages.
-Main focus being functional languages, and stack machines. 
+Main focus being functional languages, and stack machines.
 
 Source files probably stored as any of: .zip, .tar.gz, etc...
 Intend to have executable binaries for each with the sources.
@@ -23,6 +23,11 @@ For interesting stuff see:
 ### Forth
 * pforth - (http://www.softsynth.com/pforth) developed by phil burk
 * gforth
+* amforth - http://amforth.sourceforge.net/
+* flash forth - http://flashforth.com/
+* 328e forth - https://github.com/DRuffer/328eforth
+* coin forth - https://github.com/DRuffer/coinForth
+* avr forth - http://krue.net/avrforth/
 
 ### FP
 * FurryPaws (http://www.call-with-current-continuation.org/fp/)
@@ -31,7 +36,6 @@ For interesting stuff see:
 
 ### Joy
 * Joy language version 1 sources
-
 
 ### Lisp  
   * Lispkit_lisp (http://www.softwarepreservation.org/projects/LISP/lispkit/)
@@ -46,7 +50,7 @@ For interesting stuff see:
 ### Prolog
 * SWI Prolog stuff, now defunct && unfinished (some notes/programs I made...)
 
-### Setl 
+### Setl
 * Setl 0.1.2 binary x86 64bit   (http://setl.org/setl/bin/Linux-x86-64bit/)
 
 ### Snobol

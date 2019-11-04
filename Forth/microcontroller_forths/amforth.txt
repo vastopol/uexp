@@ -1,0 +1,15 @@
+amforth 6.6 ATmega328P Forthduino
+
+program hex files to arduino using Atmel ICE Debugger
+
+    avrdude -p m328p -c atmelice_isp -U flash:w:uno.hex -U eeprom:w:uno.eep.hex -U efuse:w:0xfd:m -U hfuse:w:0xd9:m -U lfuse:w:0xff:m -v
+
+    atmelice         = Atmel-ICE (ARM/AVR) in JTAG mode
+    atmelice_dw      = Atmel-ICE (ARM/AVR) in debugWIRE mode
+    atmelice_isp     = Atmel-ICE (ARM/AVR) in ISP mode
+    atmelice_pdi     = Atmel-ICE (ARM/AVR) in PDI mode
+
+connect to amforth over serial
+
+    cu -l /dev/ttyACM0 -s 38400
+
