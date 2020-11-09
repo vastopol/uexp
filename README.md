@@ -1,4 +1,4 @@
-# touring_machine
+# turing_machine
 Alan Turing will be jealous
 
 excel
