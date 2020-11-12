@@ -1,0 +1,99 @@
+'( useless library; NMH 2011-2014; in the PD )
+
+'[ Stack ops ]
+
+:2s r>ttr<tt
+:2o'4p'4p
+:copy dr>(jp)rx
+
+'[ Arithmetics ]
+
+:2eq t=tt=&
+:abs d'0<[%]
+:fac'1s(i*)
+:in tso<#tt>#&
+:max oo<[s]x
+:min oo<#[s]x
+:pow'1s(o*)sx
+:rnd us/sx
+:sqrt d'8=[x'2y]'2'0d`'3po-_abs{tt'4p'3p/x'3p+'2/xr>txr<tt}xsxsx
+
+'[ Definitions ]
+
+:align'1c\-dh+s~&h-a
+:tbl'1c%a
+
+'[ I/O ]
+
+:bl'32f!
+:bls(_bl)
+:nl'10f!
+:getl or>`d'0>f?sf@&o'10=#&{'3pb!s\+s\-}d'10=#[f%;x]xr<-
+:pad s-d'0>[_bls;x]
+:pfn oh_itos.sxs_pad.f,
+:pfs os_2s.fw_pad
+
+'[ Chars ]
+
+:cnum k0k9_in
+:clower kakz_in
+:cupper kAkZ_in
+:calpha d_cupper.s_clower|
+:calnum d_calpha.s_cnum|
+:clowc d_cupper['32+]
+:cupc d_clower['32-]
+:rbs r>(di+\-b?j=[xr<\-rxy])xrx'1%
+
+'[ Strings ]
+
+:seql to=#[xxx'0;bc#]
+:smap ttd(oi\-+b?'4pe'3p\-i+b!)tx
+:smem tbs'1%=#
+:snext d[\-s\+s]
+:sprev\+s\-s
+:srev oooo+\-s'2/x(ob?ob?'4pb!ob!s\+s\-)xx
+:ssave hr>d\+b,hsbmr<db?d\-a_snext
+:sskipw`ob?k =o##&{_snext}
+:sskipto r>`ob?i=#o##&{_snext}r<x
+:suntrail (i\-o+b?k =#[irxy])'0
+:sxlate_2s.oor>r>(di\-+b?'4p=[ooi\-+b!])xxxr<r<
+:sfind to-\+('3po_2o_seql[rxsx'1y]t\+tt)xxx'0
+:srfind to-\+('3pi+\-o_2o_seql[sxsr<+\-s'1y])xxx'0
+:scopy st'3p'3pbm
+:sappnd_2o+_scopy.sx+
+:ston'0tt(db?_cnum#[r<xxy]db?k0-t'10*+s\+)x
+:stoi ob?k-=o##&[_snext_ston%;_ston]
+:ntos dr>'1`{o'10/sxk0+ob! s'10/xs\+o}sxr<dts-_srev
+:itos o'0<[dr>\+s%s_ntos.k-r<b!s\-s\+;_ntos]
+
+'[ Utilities ]
+
+:s\s(_bl.ipf,)_nl
+
+:Uhex1"0123456789abcdef"x+b?
+'vUhexb
+:Uhex d'4\>_Uhex1_Uhexb.b!'15&_Uhex1_Uhexb'1+b!_Uhexb'2
+
+:pr8'255&_Uhex.fw
+:pr16 d'8\>_pr8_pr8
+:pr32 d'16\>_pr16'65535&_pr16
+:pr64 d'16\>'16\>_pr32'4294967295&_pr32
+
+:Udbyte_bl.db?_pr8\+
+:Udchar db?d'32'126_in#[xk_]f!\+
+:Udbytes'16(i'8=[_bl]_Udbyte)
+:Udchars'16(i'8=[_bl]_Udchar)
+:Udseg d_pr16_bl.d_Udbytes.x_bl_bl_Udchars_nl
+
+:dump s'16/x'16*s'15+'16/x(_Udseg)x
+
+'[ w ops: arrow/page key codes ]
+
+:wkup'259=
+:wkdn'258=
+:wkle'260=
+:wkri'261=
+:wkpp'339=
+:wknp'338=
+:wkbs'263=
+:wkesc'27=

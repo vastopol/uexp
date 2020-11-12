@@ -1,0 +1,416 @@
+g| useless->C compiler; By NMH; in the PD  |
+
+g| Usage: uo1 [-w] <infile.u >outfile.c    |
+g|        -w includes support for w ops    |
+
+g| A "cell" is a C integer type that is    |
+g| wide enough to hold a pointer. It       |
+g| defaults to "long", which should work   |
+g| fine on both 32-bit and 64-bit systems. |
+g| If you change it below, make sure to    |
+g| change it in "uclib", too!              |
+g| When compiling on a 64-bit system,      |
+g| change the cell size "z" to 8.          |
+
+'(----- configuration -----)
+:tmpfile"./uctmp"
+:rlibfile"/u/bin/ulib"
+:clibfile"/u/bin/uclib"
+:wlibfile"/u/bin/ucwlib"
+:celltype"long"
+'1cnz '( cell size )
+'(----- variables -----)
+'0vax         '( argument index )
+'vbuf_tbl'66a '( all-purpose buffer )
+'vlen         '( length of buffered stuff )
+'0vsymtab     '( symbol table pointer )
+'2vlabel      '( next label to generate )
+'0vhere       '( address of next object )
+'0vindecl     '( declaration mode flag )
+'0vinblk      '( intra-procedure block flag )
+'1vnextblk    '( label of next block )
+'0viflab      '( exit label of [;] )
+'0vf0lab      '[ start label of () ]
+'0vf1lab      '[ exit label of () ]
+'0vw0lab      '( start label of `{} )
+'0vw1lab      '( exit label if `{} )
+'0vwops       '( process w op )
+'0vqt         '( instruction queue, type )
+'0vqv         '( instruction queue, value )
+'0vqst        '( queue, saved type )
+'0vqsv        '( queue, saved value )
+'(----- misc utilities -----)
+:quit fefw": "fwdf!" ("fw_pr8"h)"fw_nl.q
+:err"error"_quit
+:numchr k0k9_in
+:symchr dkakz_in.okAkZ_in|s_numchr|
+:getsym'0s`d_symchr{o_buf+b!\+f?}s_buf.s
+:getstr'0s`dk"=#o'10=#&f@&{o_buf+b!f?s\+s}x_buf.s
+:putqs f!d(oo+i-b?dk\=[k\f!]f!)xx
+:putstr"(cell)"fwk"_putqs.k"f!
+:getnum'0s`d_numchr{o_buf+b!\+f?}s_buf.s_ston
+:comment")]}"x+b?`f?o=#{}xf?
+:nip2 r>r>xxr<r<
+:nolib"could not find library: "fefwfw_nl.q
+:openloc`oo_snext.k/_sskipto.d{_nip2}xx_snext.ooft[fi;_nolib]
+:openlib ooft[fi;_openloc]
+:include_openlib`f?f@{f!}x""fi
+'(----- code emitters -----)
+:emit fwk;f!_nl
+:unop"S[P-1] = "fwfw"S[P-1]"_emit
+:prlab"case "fwf,k:f!_nl
+:prlabc "/* "fw.d_symnam.fw" */ "fw_symval?_prlab
+:mklab_label?'1_label\!
+:mkaddr_here?_z_here\!
+:sblk'1_inblk!_nextblk?_prlab_mklab_nextblk!
+:blk_inblk?_indecl?|#[_sblk]
+:eblk"K = "fw_nextblk?f,"; break"_emit'0_inblk!
+:call"R[Q++] = "fw_mklab.df,"; K = "fwsf,"; break"_emit_prlab
+:return_indecl?[_qf"K = R[--Q]; break"_emit]'0_indecl!
+:jump"{ K = "fwf,"; break; }"fw_nl
+:begif_mklab.d_iflab!"if (!S[--P]) "fw_jump
+:endif_iflab?_prlab'0_iflab!
+:begwh_mklab.d_prlab_w0lab!
+:endwh_w0lab?_jump_w1lab?_prlab'0d_w0lab!_w1lab!
+:begfn "R[Q++] = S[--P]"_emit_mklab.d_f0lab!_prlab_begfn2
+:begfn2"if (R[Q-1] < 1) "fw_mklab.d_f1lab!_jump
+:endfn "--R[Q-1]"_emit_f0lab?_jump_f1lab?_prlab"--Q;"fw_endfn2
+:endfn2_nl'0d_f0lab!_f1lab!
+:norml"S[P-1] = S[P-1] != 0"_emit
+:rotup"A=S[P-3]; S[P-3]=S[P-2]; S[P-2]=S[P-1]; S[P-1]=A"_emit
+:rotdn"A=S[P-1]; S[P-1]=S[P-2]; S[P-2]=S[P-3]; S[P-3]=A"_emit
+:drop23 dkx=[xf?"P-=3"_emit;"P-=2"_emit]
+'(----- operand  queue -----)
+:qp_qt!_qv!
+:qpnum k'_qp
+:qpref k@_qp
+:qfval"S[P++] = "fw_qv?f,""_emit
+:qfref"S[P++] = M["fw_qv?_z/xf,"]"_emit
+:qf_qt?k'=[_qfval]_qt?k@=[_qfref]'0_qt!
+:qs_qv?_qsv!_qt?_qst!'0_qt!
+:qr_qsv?_qv!_qst?_qt!
+:qstk"S[P-1]"fw
+:qnum_qv?f,
+:qref"M["fw_qv?_z/xf,"]"fw
+:qop_qt?k'=[_qnum;_qop2]'0_qt!
+:qop2_qt?k@=[_qref;_qstk]
+:qopstk"S[P-2] = S[P-2] "fwfw_bl_qstk"; --P"_emit
+:qopnum"S[P-1] = S[P-1] "fwfw_bl_qnum""_emit
+:qopref"S[P-1] = S[P-1] "fwfw_bl_qref""_emit
+:qbinop _qt?k'=[_qopnum;_qbinop2]'0_qt!
+:qbinop2_qt?k@=[_qopref;_qopstk]
+:qret"S[P++] = "fwfw
+:qretstk"S[P-1] = "fwfw"S[P-1]"fw
+:qretr_qt?k'=[_qret_qnum;_qretr2]""_emit'0_qt!
+:qretr2_qt?k@=[_qret_qref;_qretstk]
+:qsto" = S[--P]"_emit
+:qstostk"S[P-1] = S[P-2]; P-=2"_emit
+:qstor fw_qt?k'=[_qnum_qsto;_qstor2]'0_qt!
+:qstor2_qt?k@=[_qref_qsto;_qstostk]
+:qcell_qt?k'=[_qv?c_qv!;_qcellrt]
+:qcellrt_qf"S[P-1] *= Z"_emit
+'(----- C prelude -----)
+:ss_ssave.xx
+'vhdr1_tbl "#include <stdlib.h>"_ss
+           "#include <stdio.h>"_ss
+           "#include <string.h>"_ss
+           '0,
+:celldef "#define cell "fw_celltype.fw_nl
+'vhdr2_tbl "#define Z sizeof(cell)"_ss
+           "#define MMAX 49152"_ss
+           "#define align() H = (H+Z-1) & ~(Z-1)"_ss
+           "#define B unsigned char"_ss
+           "cell S[1024], R[1024], M[MMAX/Z+1];"_ss
+           "B *BM = (B*)M;"_ss
+           "FILE *I, *O;"_ss
+           "int Argc;"_ss
+           "char **Argv;"_ss
+           '0,
+:regdef "cell P = 0, Q = 0, K = 0, A, H = "fw_here?f,";"fw_nl
+:inclib_clibfile_include_wops?[_wlibfile_include]
+'vhdr3_tbl "#define cm() if (H >= MMAX) \"_ss
+           "              e('memory overflow', NULL);"_ssave
+           k'k"_sxlate.xx
+           "int main(argc, argv)"_ss
+           "int argc;"_ss
+           "char **argv;"_ss
+           "{"_ss
+           "I = stdin; O = stdout;"_ss
+           "Argc = argc; Argv = argv;"_ss
+           "srand(time(NULL));"_ss
+           "for (;;) switch(K) {"_ss
+           '0,
+:prlst`db?{ddb?_snext.fw_nl.db?+}x
+:header_hdr1_prlst_celldef_hdr2_prlst_regdef_inclib_header2
+:header2_hdr3_prlst'0_prlab
+'(----- C postlude -----)
+:tl00_inblk?#[_sblk]"exit(0)"_emit
+:tl01"default: wrongip(); break"_emit
+:tl02"}"fw_nl
+:tail_tl00_tl01_tl02_tl02
+'(----- symbol table -----)
+:save db,dr>hsbmr<a
+:link_symtab?,h'1c-_symtab!
+:symlnk
+:symval'1c+
+:symtyp'2c+
+:symflg'2c+\+
+:symnam'2c+\+\+db?s\+s
+'1nsfusd  '( used symbol )
+'2nsfdup  '( duplicate symbol )
+'4nsfdef  '( defined routine )
+:lookup_symtab?`d{d_symnam'5p'5p_seql[ttxxy]_symlnk?}xxx'0
+:nosym fe"undefined: "fwfw_nl.q
+:findsym_getsym.oo_lookup.d'0=[x_nosym;ttxx]
+:setflg s_symflg.db?t|sb!
+:flgclr s_symflg.b?s&#
+:flgset_flgclr#
+:refsym_findsym.d_sfusd_setflg
+:compsym_link,b,'0b,oo_save.fw
+:mksym r>r>_getsym.oo_lookup.d[_sfdup_setflg.fw;xij_compsym]rxrx
+:unused fe"unused: "fw_symnam.fw_nl""fo
+:duplicat fe"duplicate: "fw_symnam.fw_nl""fo
+:deadsyms_symtab?`d{d_sfusd_flgclr[d_unused]_symlnk?}x
+:dupsyms_symtab?`d{d_sfdup_flgset[d_duplicat]_symlnk?}x
+:mrkusd_symtab?`oo=#{d_sfusd_setflg_symlnk?}xx
+'(----- windowing ops -----)
+:werr"w-op error"_quit
+:wwrite_qf xf?"writes((char*)S[P-2], S[P-1]); P-=2;"fw_nl
+:wsleep_qf xf?"usleep(S[--P]*1000);"fw_nl
+:wcls xf?"clear();"fw_nl
+:wrefr xf?"refresh();"fw_nl
+:wqueue_qf xf?"S[P++] = ttyqueue();"fw_nl
+:whascol_qf xf?"S[P++] = has_colors();"fw_nl
+:wmove_qf xf?"move(S[P-1], S[P-2]); P-=2;"fw_nl
+:wceol xf?"clrtoeol();"fw_nl
+:winit xf?"initcurses();"fw_nl
+:wgeom_qf xf?"S[P++] = COLS; S[P++] = LINES;"fw_nl
+:wend xf?"refresh(); endwin();"fw_nl
+:wdelay_qf xf?"nodelay(stdscr,Sp[--P]);"fw_nl
+:wcolor_qf xf?"color(S[P-1], S[P-2]); P-=2;"fw_nl
+:wbeep xf?"beep();"fw_nl
+:wattr_qf xf?"attr(S[--P]);"fw_nl
+:wgetch_qf xf?"refresh(); S[P++] = xgetch();"fw_nl
+:wnoraw xf?"noraw();"fw_nl
+:wraw xf?"raw();"fw_nl
+:waddch_qf xf?"addch(S[--P]);"fw_nl
+:wcw dkw=[_wwrite;_werr]
+:wcu dku=[_wsleep;_wcw]
+:wcs dks=[_wcls;_wcu]
+:wcr dkr=[_wrefr;_wcs]
+:wcq dkq=[_wqueue;_wcr]
+:wco dko=[_whascol;_wcq]
+:wcm dkm=[_wmove;_wco]
+:wcl dkl=[_wceol;_wcm]
+:wci dki=[_winit;_wcl]
+:wcg dkg=[_wgeom;_wci]
+:wce dke=[_wend;_wcg]
+:wcd dkd=[_wdelay;_wce]
+:wcc dkc=[_wcolor;_wcd]
+:wcb dkb=[_wbeep;_wcc]
+:wca dka=[_wattr;_wcb]
+:w3f dk?=[_wgetch;_wca]
+:w2d dk-=[_wraw;_w3f]
+:w2b dk+=[_wnoraw;_w2d]
+:winops xf? dk!=[_waddch;_w2b]
+'(----- file ops -----)
+:fputc_qf xf? "fputc(S[--P], O)"_emit
+:fgetc_qf xf? "S[P++] = fgetc(I)"_emit
+:funget_qf xf? "ungetc(S[--P], I)"_emit
+:feof_qf xf? "S[P++] = !feof(I)"_emit
+:fflush xf? "fflush(O)"_emit
+:fbio "A = "fwfw"((B*)S[P-2], 1, S[P-1], "fwfw"); P-=2"_emit
+:fread_qf xf? "I""fread"_fbio"S[P++] = A"_emit
+:fwrite_qf xf? "O""fwrite"_fbio
+:ftest_qf xf? "A = testfile(); S[P++] = A"_emit
+:pcntd k"f!"%ld"fwk"f!
+:fputnum_qf xf? "fprintf(O, "fw_pcntd", S[--P])"_emit
+:fgetnum_qf xf? "fscanf(I, "fw_pcntd", &S[P++])"_emit
+:ferrout xf? "O = stderr"_emit
+:finput_qf xf? "inputfile()"_emit
+:foutput_qf xf? "outputfile()"_emit
+:fappnd_qf xf? "appendfile()"_emit
+:fsave_qf xf?"S[P++] = (cell)I"_emit
+:fresum_qf xf?"I = (FILE*)S[--P]"_emit
+:fdel_qf xf? "deletefile()"_emit
+:ferr"f-op error"_quit
+:fcx dkx=[_fdel;_ferr]
+:fcw dkw=[_fwrite;_fcx]
+:fct dkt=[_ftest;_fcw]
+:fcr dkr=[_fread;_fct]
+:fco dko=[_foutput;_fcr]
+:fci dki=[_finput;_fco]
+:fcf dkf=[_fflush;_fci]
+:fce dke=[_ferrout;_fcf]
+:fca dka=[_fappnd;_fce]
+:f40 dk@=[_feof;_fca]
+:f3f dk?=[_fgetc;_f40]
+:f3e dk>=[_fsave;_f3f]
+:f3c dk<=[_fresum;_f3e]
+:f2c dk,=[_fputnum;_f3c]
+:f27 dk'=[_fgetnum;_f2c]
+:f25 dk%=[_funget;_f27]
+:fileops dk!=[_fputc;_f25]
+'(----- extended ops -----)
+:xerr"\-op error"_quit
+:xsaddto_qf xf?"*(cell*)S[P-1] += S[P-2]; P-=2"_emit
+:xqaddto xf?"*(cell*)"fw_qop" += S[P-1]; --P"_emit
+:xaddto_qt?[_xqaddto;_xsaddto]
+:xdec_qf xf?"S[P-1]--"_emit
+:xinc_qf xf?"S[P-1]++"_emit
+:xshl xf?"<<"_qbinop
+:xshr xf?">>"_qbinop
+:xquit_qf xf?"exit(0)"_emit
+:xstkl_qf xf?"S[P] = P; P++"_emit
+:xcz dkq=[_xquit;_xerr]
+:xcs dks=[_xstkl;_xcz]
+:xcq dkq=[_xquit;_xcs]
+:x3e dk>=[_xshr;_xcq]
+:x3c dk<=[_xshl;_x3e]
+:x2d dk-=[_xdec;_x3c]
+:x2b dk+=[_xinc;_x2d]
+:extops dk!=[_xaddto;_x2b]
+'(----- rstack ops -----)
+:rerr"r-op error"_quit
+:rfrom_qf xf?"S[P++] = R[--Q]"_emit
+:rto_qf xf?"R[Q++] = S[--P]"_emit
+:rstkl_qf xf?"S[P++] = Q"_emit
+:rdrop xf?"--Q"_emit
+:rcx dkx=[_rdrop;_rerr]
+:rcs dks=[_rstkl;_rcx]
+:r3d dk>=[_rto;_rcs]
+:rstkops dk<=[_rfrom;_r3d]
+'(----- block ops -----)
+:berr"b-op error"_quit
+:bstor_qf xf?"BM[H++] = S[--P]; cm()"_emit
+:bsave_qf xf?"*(B*)S[P-1] = S[P-2]; P-=2"_emit
+:bretr xf?"*(B*)"_qretr
+:bcomp_qf  xf?"S[P-3] = memcmp((B*)S[P-2], "fw_bcomp2
+:bcomp2 "(B*)S[P-3], S[P-1]); P-=2"_emit
+:bmove_qf  xf?"memmove((B*)S[P-2], (B*)S[P-3], "fw_bmove2
+:bmove2 "S[P-1]); P-=3"_emit
+:bfill_qf  xf?"memset((B*)S[P-3], S[P-1], S[P-2]);"fw_bfill2
+:bfill2 " P-=3"_emit
+:bscan_qf  xf?"S[P-3] = bscan((B*)S[P-3], S[P-2], "fw_bscan2
+:bscan2 "S[P-1]); P-=2"_emit
+:bcs dks=[_bscan;_berr]
+:bcm dkm=[_bmove;_bcs]
+:bcf dkf=[_bfill;_bcm]
+:bcc dkc=[_bcomp;_bcf]
+:b3f dk?=[_bretr;_bcc]
+:b2c dk,=[_bstor;_b3f]
+:blkops dk!=[_bsave;_b2c]
+'(----- op handlers -----)
+:p20 xf?
+:p21_blk xf?"*(cell*)"_qstor
+:p22_blk_qf xf?_getstr"S[P++] = "fwdtt_putstr""_emit_qpnum f?
+:p23_blk_qf xf?dk#=[xf?_norml;"!"_unop]
+:p24_blk xf?"/* "fwh'64_getl.hsfw" */"fw_nl.xf?
+:p25_blk_qf xf?"-"_unop
+:p26_blk xf?"&"_qbinop
+:p27_blk_qf xf?d"([{"tbsd'0<[x_getnum_qpnum;sx_comment]
+:p28_blk_qf xf?_f0lab?["nested ("_quit;_begfn]
+:p29_blk_qf xf?_f0lab?[_endfn;"missing ("_quit]
+:p2a_blk xf?"*"_qbinop
+:p2b_blk xf?"+"_qbinop
+:p2c_blk_qf xf?"align(); M[H/Z] = S[--P]; H+=Z; cm()"_emit
+:p2d_blk xf?"-"_qbinop
+:p2e xf?
+:p2f_blk xf?dkx=[xf?"/"_qbinop;_p2f2]
+:p2f2 _qf"A = S[P-2] % S[P-1]; "fw_p2f3
+:p2f3 "S[P-2] = S[P-2] / S[P-1]; S[P-1] = A"_emit
+:newlab_mklab.s_symval!
+:setlab_findsym.d_sfdef_flgset[d_newlab;d_sfdef_setflg]
+:p3a_eblk_qs xf?_setlab_prlabc'1_indecl!'0_inblk!_qr
+:p3b_blk_qf xf?_mklab.d_jump_iflab?_prlab_iflab!
+:p3c_blk xf?dk#=[xf?">="_qbinop;"<"_qbinop]
+:p3d_blk xf?dk#=[xf?"!="_qbinop;"=="_qbinop]
+:p3e_blk xf?dk#=[xf?"<="_qbinop;">"_qbinop]
+:p3f_blk xf?"*(cell*)"_qretr
+:p40_blk_qf xf?_refsym.d_symval?s_symtyp.b?k:=[_qpnum;_qpref]
+:p5b_blk_qf xf?_iflab?["nested ["_quit;_begif]
+:p5c_blk xf?_extops
+:p5d_blk_qf xf?_iflab?[_endif;"missing ["_quit]
+:p5e_blk xf?"^"_qbinop
+:p5f_blk_qf xf?_refsym.d_symval?s_symtyp.b?k:=[_call;_qpref]
+:p60_blk_qf xf?_w0lab?["nested `"_quit;_begwh]
+:pca_blk_qf xf?"H += S[--P]; cm()"_emit
+:pcb_blk xf?_blkops
+:pcc_blk xf?_qcell
+:pcd_blk_qf xf?"S[P] = S[P-1]; P++"_emit
+:pce_blk_qf xf?"R[Q++] = "fw_mklab.df,"; K = S[--P];"fw_pce2
+:pce2 " break"_emit_prlab
+:pcf_blk xf?_fileops
+:pcg xf?`f?o=#f@&{}xf?
+:pch_blk_qf xf?"S[P++] = (cell)&BM[H]"_emit
+:pci_blk_qf xf?"S[P++] = R[Q-1]"_emit
+:pcj_blk_qf xf?"S[P++] = R[Q-2]"_emit
+:pck_blk_qf xf?"S[P++] = "fwf,f?""_emit
+:pcl '( removed in first pass )
+:pcm_blk_qf xf?"A = getarg(S[--P]); S[P++] = A"_emit
+:pcn_blk_qf xf?_findsym"M["fw_symval?_z/xf,"] = S[--P]"_emit
+:pco_blk_qf xf?"S[P] = S[P-2]; P++"_emit
+:pcp_blk_qf xf?"S[P-1] = S[P-S[P-1]-1]"_emit
+:pcq_blk_qf xf?"exit(0)"_emit
+:pcr_blk xf?_rstkops
+:pcs_blk_qf xf?"A = S[P-2]; S[P-2] = S[P-1]; S[P-1] = A"_emit
+:pct_blk_qf xf?dkt=[xf?_rotdn;_rotup]
+:pcu_blk_qf xf?"S[P++] = rand()"_emit
+:pcv_blk_qf xf?_findsym"align(); M["fw_symval?_z/xf,_pcv2
+:pcv2"] = (cell)&M[H/Z]"_emit"M[H/Z] = S[--P]; H+=Z; cm()"_emit
+:pcw_blk_wops?[_winops;_err]
+:pcx_blk_qf xf?dkx=[xf?_drop23;"--P"_emit]
+:pcy_blk_qf xf?_indecl?_return_indecl!
+:pcz_blk_qf xf?"P = 0"_emit
+:p7b_blk_qf xf?_mklab.d_w1lab!"if (!S[--P]) "fw_jump
+:p7c_blk xf?"|"_qbinop
+:p7d_blk_qf xf?_w1lab?##_w0lab?##&[_endwh;"missing ` or {"_quit]
+:p7e_blk_qf xf?"~"_unop
+'(----- op dispatch -----)
+'vptbl_tbl
+ @p20 , @p21 , @p22 , @p23 , @p24 , @p25 , @p26 , @p27 ,
+ @p28 , @p29 , @p2a , @p2b , @p2c , @p2d , @p2e , @p2f ,
+ @err , @err , @err , @err , @err , @err , @err , @err ,
+ @err , @err , @p3a , @p3b , @p3c , @p3d , @p3e , @p3f ,
+ @p40 , @pca , @pcb , @pcc , @pcd , @pce , @pcf , @pcg ,
+ @pch , @pci , @pcj , @pck , @pcl , @pcm , @pcn , @pco ,
+ @pcp , @pcq , @pcr , @pcs , @pct , @pcu , @pcv , @pcw ,
+ @pcx , @pcy , @pcz , @p5b , @p5c , @p5d , @p5e , @p5f ,
+ @p60 , @pca , @pcb , @pcc , @pcd , @pce , @pcf , @pcg ,
+ @pch , @pci , @pcj , @pck , @pcl , @pcm , @pcn , @pco ,
+ @pcp , @pcq , @pcr , @pcs , @pct , @pcu , @pcv , @pcw ,
+ @pcx , @pcy , @pcz , @p7b , @p7c , @p7d , @p7e ,
+:fdisp d'32'126_in[dk -c_ptbl+?e;_err]
+'(----- pass 2 -----)
+:oper d'10=o'13=|[xf?_return;_fdisp]
+:cklen'61>["file name too long"_err]
+:outfile_ax?md[d_cklen_buf_scopy".c"_sappnd.fo]
+:compile_tmpfile.fif?`f@{_oper}_qf""fix
+:pass2_outfile_header_compile_tail""fo
+'(----- pass 1 -----)
+:skipstr'0`f?dk"=#f@&{df!o_buf+b!\+}s_len!
+:skipsym'0`f?d_symchr.f@&{df!o_buf+b!\+}s_len!
+:skipeol`d'10=#f@&{f!f?}
+:loadlib_symtab?f>_buf_len?fi_decls""fif<_mrkusd
+:declrtn f!f?k:_mklab_mksym_skipeol
+:declnam f!f?kn_mkaddr_mksym
+:declvar_declnam
+:dostrng f!_skipstr.f!f?dkl=[x"xx"fw_nl_loadlib.f?]
+:skipcom")]}"x+b?`f?o=#{}f!f?
+:maybcmnt f!f?d"([{"tbsd'0<#[of!sx_skipcom;x]
+:dcl5f dk_=[f!_skipsym;f!f?]
+:dcl40 dk@=[f!_skipsym;_dcl5f]
+:dcl3a dk:=[_declrtn;_dcl40]
+:dcln dkn=[_declnam;_dcl3a]
+:dclv dkv=[_declvar;_dcln]
+:dclg dkg=[_pcg;_dclv]
+:dclpf d"bfkrw\"_smem[f!f?f!f?;_dclg]
+:dcl27 dk'=[_maybcmnt;_dclpf]
+:decl dk"=[_dostrng;_dcl27]
+:decls f?`f@{_decl}x
+:ldulib_symtab?f>_rlibfile_openlib_decls""fif<_mrkusd
+:marker "$cSTART"fw_nl
+:pass1_ax?mfi_tmpfile.fo_ldulib_marker_decls""fo""fi
+'(----- main -----)
+:comp_pass1_pass2_deadsyms_dupsyms_tmpfile.fx
+'0m"-w"_seql['1_wops!'1_ax!]_comp'0msx#[q]

@@ -1,0 +1,34 @@
+g| useless program: simple shell archiver      |
+g|                                             |
+g| Usage: shar [-d dir] file ...               |
+g|                                             |
+g| The resulting shell archive will be written |
+g| to stdout. When -d dir is specified, files  |
+g| will be extracted to the given directory.   |
+
+'0vfiles    '( first file argument )
+'0vdir      '( directory to extract to )
+:echo oo"echo x - "fw_path.fw_nl
+:path_dir?[_dir?db?_snext.fw"/"fw]
+:sed"sed -e 's/^X//' >"fw_path.oofw" <<'EOF-"fwoofw"'"fw_nl
+:eof"EOF-"fwoofw_nl
+:copylns'1`f?f@{s[kXf!]d'10=sf!}xx
+:readfile oofi_copylns""fi
+:add_echo_sed_readfile_eof xx
+:mkdir_dir?["mkdir "fw_dir?db?_snext.fw" || exit 1"fw_nl]
+:ss_ssave.xx
+'vhdr_tbl"#!/bin/sh"_ss
+         ""_ss
+         "# This is a shell archive."_ss
+         "# To extract it, feed it to /bin/sh."_ss
+         "# It will create the following files:"_ss
+         "#"_ss
+         '0,
+:prlst`db?{ddb?_snext.fw_nl.db?+}x
+:listfl"#"fw'9f!_path.fw_nl
+:listfls_files?`dmd{_listfl\+}xxx_nl
+:head_hdr_prlst_listfls
+:tail"exit 0"fw_nl"#----- end of archive -----#"fw_nl
+:shar_head_mkdir_files?`dmd{_add\+}xxx_tail
+:getopt'0m"-d"_seql['1m_ssave.x\-_dir!'2_files!]
+_getopt_shar.q

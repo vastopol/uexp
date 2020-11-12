@@ -1,0 +1,358 @@
+<HTM>
+<HEAD>
+<TITLE>A queue machine for evaluating expressions</TITLE>
+</HEAD>
+<BODY>
+<P>
+<B>Abstract</B>:
+Here I summarise some woefully incomplete thoughts on
+on a topic to which I will not be able to devote more time,
+in the hope that somebody might want to develop it.
+
+This note examines the
+possibility of using a <B>queue machine</B> for evaluating expressions.
+This is contrasted with using in-place rewriting of expressions
+and with using a stack machine.
+It is shown that queue evaluation is possible,
+and it is argued that it might be worth considering
+as a technique of memory management for array languages.
+<P>
+Contents:
+<UL>
+<LI><A HREF=#TOC-1>1. Evaluating expressions by in-place rewriting</A>
+<LI><A HREF=#TOC-2>2. Evaluating expressions by a stack machine</A>
+<LI><A HREF=#TOC-3>3. Evaluating expressions by a queue machine</A>
+<LI><A HREF=#TOC-4>4. Prefix on a stack, postfix on a queue</A>
+<LI><A HREF=#TOC-5>5. A cute but silly curiosity?</A>
+<LI><A HREF=#TOC-6>6. Matrix multiplication on a queue</A>
+<LI><A HREF=#TOC-7>7. Matrix multiplication in an expression or on a stack</A>
+<LI><A HREF=#TOC-8>8. The queue machine as memory management</A>
+<LI><A HREF=#TOC-9>9. In place of a conclusion</A>
+</UL>
+
+<A NAME=TOC-1><H2><STRONG>1. Evaluating expressions by in-place rewriting</STRONG></H2></A>
+<P>
+Below are evaluations of the same expression in three different notations.
+Time "flows" from top to bottom.
+<PRE>
+        infix notation          prefix notation          postfix notation
+0:      (1 + (2 * 3)            +  1  *  2  3            1  2  3  *  +
+1:      (1 +    6  )            +  1  6                  1        6  +
+2:         7                    7                                    7
+</PRE>
+The basic properties of rewriting are well-known.
+At each step the algorithm works by (1) inspecting parts of an expression,
+and then (2) replacing that part by a value.
+So the method actually consumes the original expression.
+Note also that all rewriting is in-place.
+<P>
+For larger expressions there may be several places where
+rewriting could take place, and the rewriting could then even
+proceed concurrently.
+For infix and prefix expressions it may be necessary to search
+to the left or to the right to find a suitable expressions
+to evaluate next.
+For postfix it is always possible to restrict the search to the right,
+this is used in the stack machine below.
+
+<A NAME=TOC-2><H2><STRONG>2. Evaluating expressions by a stack machine</STRONG></H2></A>
+<P>
+Here is the postfix expression evaluated on a stack:<BR>
+<PRE>
+                expression        1  2  3  *  +        (5 symbols)
+
+                                        3
+                                     2  2  6
+                stack             1  1  1  1  7        (5 steps)
+</PRE>
+Again the method is well-known.
+Each step (1) inspects one item of the expression but does not change it,
+and (2) rewrites the top of the stack:
+for operands (2a) it pushes the value, and
+for operators (2b) it pops the arguments and pushes the result.
+So the method does not consume the original expression.
+But this time it is the stack that is rewritten in-place.
+
+<A NAME=TOC-3><H2><STRONG>3. Evaluating expressions by a queue machine</STRONG></H2></A>
+<P>
+Here is a method which uses the prefix expression as a queue.
+Time again flows "flows" from top to bottom.
+<PRE>
+0:            +  1  *  2  3
+1:               1  *  2  3  +                   (2b)
+2:                  *  2  3  +  1                (2c)
+3:                           +  1  6             (2a)
+4:                                    7          (2a)
+</PRE>
+The algorithm is quite different from in-place rewriting in the first
+section and also different from the stack-rewriting in the second section.
+<PRE>
+WHILE the queue has more than one element DO
+    (1)  Inspect the front element.
+    (2a) If it is an operator followed by all its arguments,
+         append the value to the rear of the queue AND THEN
+         remove operator and arguments from the front of the queue
+    (2b) If it is an operator not followed by all its arguments,
+         remove it from the front, copy it to the rear.
+    (2c)  (it is an operand)
+         remove it from the front, copy it to the rear.
+</PRE>
+<P>
+The algorithm resembles rewriting by starting with a prefix expression and
+ending with a value, but the rewriting is not in-place.
+The algorithm resembles the stack machine by successively
+examining the next symbol of the expression,
+but it does not use an auxiliary structure.
+The significance of the "<KBD>AND THEN</KBD>" emphasis
+in step (2a) will become apparent shortly.
+
+<A NAME=TOC-4><H2><STRONG>4. Prefix on a stack, postfix on a queue</STRONG></A></STRONG>
+<P>
+In deference to the Western convention of writing from left to right,
+evaluation by a stack is normally expressed for postfix expressions.
+But it is just as simple to evaluate a prefix expression on a stack
+- merely by reading it from right to left.
+In the following, time also "flows" from right to left.
+<PRE>
+                expression        +  1  *  2  3        (5 symbols)
+
+                                     1     2
+                stack             7  6  6  3  3
+</PRE>
+<P>
+In the same way, it is just as simple to evaluate a postfix expression
+as a queue - merely by reading the queue from right to left.
+<PRE>
+0:                        1  2  3  *  +
+1:                     +  1  2  3  *             (2b)
+2:                  6  +  1                      (2a)
+3:               1  6  +                         (2c)
+4:            7                                  (2a) 
+</PRE>
+<P>
+Of course postfix and prefix are not just reverses of each other,
+as is seen by examples with non-commutative operators such as
+subtraction or division.
+But as the two examples demonstrate, there is no inherent connection
+between stack evaluation and postfix, or between queue evaluation and
+prefix.
+Any such connection is just by convention.
+This being said, I now follow this convention and
+speak of stack machines being driven by postfix expressions.
+In the same way I shall now take queue machines to
+be certain rewritings of prefix expressions.
+
+<A NAME=TOC-5><H2><STRONG>5. A cute but silly curiosity?</STRONG></H2></A>
+<P>
+For any particular prefix evaluation the efficiency will depend on the
+ratio of the (2a) steps that really do the work,
+and the (2b) and (2c) bookkeeping steps that are at best a nuisance.
+The ratio depends on the patters of (binary) operators b
+and values v.
+In the example, of the form
+<PRE>
+                b  v  b  v  v
+</PRE>
+the ratio was 2:1:1. For expressions of the form<BR>
+<PRE>
+                b  b  v  v  b  v  v
+</PRE>
+the ratio is 3:1:0 which is better. For expressions of the form<BR>
+<PRE>
+                b  b  v  b  v  v  v
+</PRE>
+the ratio is 3:3:3 which is worse.
+In general, the algorithm is best for expressions representing a balanced
+binary tree.
+Since most expressions depart from this ideal,
+the entire method would seem to be barely more than
+a cute but silly curiosity.
+<P>
+But let us recapitulate:
+the other methods use in-place rewriting of either
+an original infix or prefix or postfix expression,
+or of a separate stack.
+For word-size values such as integers this hardly matters
+because (1) integer operations are indivisible single machine
+operations, and (2) the result will always fit into the space
+that has been vacated by the operands.
+The queue machine is also a rewriting method, but it is not in-place.
+This has a number of repercussions, to be discussed below.
+
+<A NAME=TOC-6><H2><STRONG>6. Matrix multiplication on a queue</STRONG></H2></A>
+<P>
+Let M, N, O be square (n by n) matrices, and consider the evaluation of the
+following prefix expression as a queue:
+<PRE>
+0:            *  M  *  N  O
+1:               M  *  N  O  *                   (2b)
+2:                  *  N  O  *  M                (2c)
+3:                           *  M  NO            (2a)
+4:                                     MNO       (2a)
+</PRE>
+where <KBD>NO</KBD> and <KBD>MNO</KBD> are the obvious products.
+The example has the same pattern as in the first queue machine,
+with "efficiency" again 2:1:1. But this time note that
+that the two truly computational (2a) steps in lines 3 and 4 are
+big, comprising <KBD>n^3</KBD> multiplications and the same number of additions.
+By contrast, the one (2b) step to shift the operator in line 1 is negligible,
+and the one (2c) step is (comparatively) small,
+comprising only <KBD>n^2</KBD> copying steps.
+So the earlier "efficiency" quotients are rather misleading
+for matrices.
+<P>
+In matrix multiplication
+the arguments of the (2a) steps can only be deleted after the
+result has been computed fully.
+So, very importantly for  the queue machine,
+each of the two truly computational steps consists of many machine
+operations, and their individual results can be written
+at the rear of the queue while retaining the two arguments
+at the front of the queue which are still needed
+for further machine operations  to complete
+the particular multiplication.
+Only when the result of the operation has been fully computed and added
+to the rear of the queue
+is it possible and indeed necessary to
+remove the operator and the arguments from the front of the queue.
+This is the significance of the "<KBD>AND THEN</KBD>" emphasis
+of the description of the (2a) step.
+
+<A NAME=TOC-7><H2><STRONG>7. Matrix multiplication in an expression or on a stack</STRONG></H2></A>
+<P>
+The better known methods of evaluating expressions
+are rewriting and use of a stack,
+as explained at the beginning of this note.
+In fact, both are <B>in-place</B> rewriting,
+and this constitutes a problem in the example of matrix multiplication.
+The difficulty is
+that both the arguments matrices are needed until the result
+matrix has been fully computed,
+so during the calculation
+the result cannot be written in the space occupied by the arguments.
+There are two potential remedies:
+<P>
+1: Write the result matrix somewhere else. When that is completed,
+delete the two argument matrices and then copy the result to where
+the arguments were.
+(Of course deletion is really a no-op,
+the copying simply over-writes.)
+<P>
+2: Implement the expression or the stack as a linked structure.
+Write the result matrix somewhere else. When that is completed,
+link the result to where the arguments were. Either ignore the
+space formerly occupied by the arguments, or leave it to a
+garbage collector to recycle that space.
+<P>
+Call these two solutions the <STRONG>array solution</STRONG>
+and the <STRONG>linked list solution</STRONG>.
+Both preserve the <B>appearance</B> of in-place rewriting -
+when the matrix multiplication has completed fully,
+the result now occupies the space formerly occupied by the arguments.
+But the appearance is deceptive:
+In the array solution the steps of the calculation had to use
+some scratch space first and then do a copy. In the linked list
+solution that scratch space is substituted for the arguments
+and the operator.
+Whether they should still be regarded as in-place rewritings
+might be debated,
+but to avoid that one might simply agree that there are two
+concepts of in-place rewriting:
+In the semantic sense both are in-place rewriting,
+but operationally the implementations are not in-place.
+<P>
+What can be noted at this point is that the queue method
+is not in-place in either sense,
+and therefore can use an array implementation.
+Thereby it can void some of the copying steps in the
+array implementations of expression rewriting and of stacks,
+and it can avoid the inefficient memory use of the
+linked list implementations of expression rewriting and of stacks.
+
+<A NAME=TOC-8><H2><STRONG>8. The queue machine as memory management</STRONG></H2></A>
+<P>
+There is another  consideration,
+also concerned with memory management.
+In matrix multiplication
+at least sometimes the product matrix is larger than
+the two factors combined.
+Consider again the earlier matric multiplication expression
+written for the queue.
+This time the matrices are not square but of different dimensions
+as indicated in the parentheses:
+<PRE>
+              *  M(h,i)  *  N(i,j)  O(j,k)
+</PRE>
+Then the intermediate and the final result matrices are
+<KBD>NO(i,k)</KBD> and <KBD>MNO(h,k)</KBD>.
+<P>
+First, consider the case with
+<KBD>j &lt;&lt; i &lt;&lt; k &lt;&lt; h</KBD>
+ (where "<KBD>&lt;&lt;</KBD>" means "much less than").
+Then the intermediate result <KBD>NO</KBD> is larger than its
+two factors <KBD>N</KBD> and <KBD>O</KBD> put together,
+and the final result <KBD>MNO</KBD> is larger than its three factors
+put together.
+So the results of the operations do not fit
+into the space vacated by the arguments.
+But in the queue machine this is no problem, because the result
+values are not written into the space of the arguments.
+<P>
+Second, consider the case with
+Then the intermediate result <KBD>NO</KBD> is smaller than its
+two factors <KBD>N</KBD> and <KBD>O</KBD> put together,
+and to let the intermediate result occupy all of the
+space vacated by the factorswill waste space.
+Depending on the details of further operations,
+this waste of space may be unaffordable.
+
+<A NAME=TOC-9><H2><STRONG>9. In place of a conclusion</STRONG></H2></A>
+<P>
+Matrix multiplication is only one of many operations that arise
+in languages in which arrays are the principal data structures.
+But the other operations will frequently present the same
+kind of problems of  memory management.
+That there is indeed for many general purpose languages can be
+seen by the restrictions they frequently impose:
+actual parameters to function calls
+must have sizes known at compile time,
+and functions either cannot return anything but word-sized
+values, or the size must be known at compile time.
+These restrictions seem to arise from the use of a stack
+for evaluating expressions.
+To lift these restrictions an implementation
+may have to put up with a great deal of copying.
+<P>
+A processor in which results are computed using a queue
+might well overcome some such problems and restrictions.
+It is quite possible that such a processor would not actually
+enqueue the operators, and it would not transfer the
+operator to the rear of the queue when not all operands
+are available yet. But this would be a minor refinement.
+<P>
+Of course an array machine will have to do <B>some</B>
+copying, as the running format of the examples has intentionally emphasised.
+But it is by no means clear whether the queue machine
+does any <B>more</B> such needless copying than the stack machine.
+Only a detailed analysis of the stack and the queue algorithms
+for a real-world mix of problems 
+can provide a convincing answer.
+<P>
+Even if the queue machine turns out to be less memory efficient
+than the conventional stack machine,
+it may be that some of its features do make it attractive
+for some purposes.
+<P>
+The connection with Post normal systems and Post machines
+has not been explored at this stage.
+<P>
+I would very much like to hear opinions and criticism from readers,
+mail me at <A HREF="mailto:phimvt@lurac.latrobe.edu.au">
+phimvt@lurac.latrobe.edu.au</A>
+(my concatenative friends would probably prefer to discuss on
+the group).
+<P>
+MYNOTE: relevant to comp.theory comp.lang.forth comp.lang.apl (APL J K)
+replies to ?
+</BODY>
+</HTML>

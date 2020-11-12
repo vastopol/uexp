@@ -1,0 +1,17 @@
+apt-get install
+----------------
+
+java
+
+scheme
+
+scala
+scala-doc
+
+racket
+racket-doc
+racket-common
+
+python
+
+curses.h -> libncurses5-dev

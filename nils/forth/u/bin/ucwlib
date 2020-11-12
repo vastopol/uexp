@@ -1,0 +1,83 @@
+#include <curses.h>
+#include <unistd.h>
+void initcurses() {
+#ifdef COLOR
+ int colors[] = { COLOR_BLACK, COLOR_BLUE, COLOR_GREEN,
+                  COLOR_CYAN, COLOR_RED, COLOR_MAGENTA,
+                  COLOR_YELLOW, COLOR_WHITE };
+ int f, b;
+ initscr();
+ start_color();
+ for (b=0; b<8; b++) {
+  for (f=0; f<8; f++) {
+   init_pair(b*8+f, colors[f], colors[b]);
+  }
+ }
+#else
+ initscr();
+#endif
+ cbreak();
+ noecho();
+ nonl();
+ keypad(stdscr, TRUE);
+#ifdef ATEXIT
+ atexit((void (*)(void)) endwin);
+#endif
+}
+extern cell e();
+void writes(s, k)
+unsigned char *s;
+int k;
+{
+ char buf[129];
+ if (k > 128) e("ww: string too long", 0);
+ memmove(buf, s, k);
+ buf[k] = 0;
+ addstr(buf);
+}
+void color(f, g)
+int f, g;
+{
+#ifdef COLOR
+ color_set(f<<3|g, NULL);
+#else
+ f = g = 0; /*LINT*/
+#endif
+}
+#ifndef COLOR
+int has_colors()
+{
+	return 0;
+}
+#endif
+void attr(a)
+cell a;
+{
+ switch(a) {
+ case 'r': a = A_REVERSE; break;
+ case 'u': a = A_UNDERLINE; break;
+ case 'b': a = A_BOLD; break;
+ default:  a = A_NORMAL; break;
+ }
+ attrset(a);
+}
+int xgetch() {
+ int c;
+ while ((c = getch()) == ERR)
+  ;
+ return c;
+}
+int ttyqueue() {
+ int c;
+ nodelay(stdscr, 1);
+ c = getch();
+ nodelay(stdscr, 0);
+ return c;
+}
+#ifndef USLEEP
+void usleep(n)
+int n;
+{
+	n = 0; /*LINT*/
+}
+#endif

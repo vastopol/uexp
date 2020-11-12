@@ -1,0 +1,35 @@
+g| Useless example program: generate random mazes with    |
+g| visual effects. Based on a C program I have once found |
+g| in a signature. Cool algorithm! Thanks to the unknown  |
+g| hacker!                                                |
+
+'159nxsize '47nysize _xsize_ysize*nk    '( max. sizes )
+'va_tbl_k.ca _a_k.c'0bf                 '( maze array )
+_xsize.vw _ysize.vh  '( actual size )
+'11nlen              '( max len. of a corridor )
+'vp                  '( current position )
+'1vq                 '( direction )
+'1000_rnd.vr         '( seed )
+'vnb_tbl'50a         '( numeric output buffer )
+'4nfg '3nbg          '( fore and background colors )
+:rev wo[_bg_fg.wc;krwa]
+:norm wo[_fg_bg.wc;knwa]
+:q0_p?._w?'2*>[_w?%;'0]
+:q1_p?._w?_h?*_w?'2*-.<[_w?;'0]
+:q2_p?_w?/sx._w?'2-.=['0;'1]
+:q3_p?_w?/sx.'1=['0;'1%]
+'vqn_tbl @q0, @q1, @q2, @q3,
+:dir_qn_q?c+?e_q!
+:plot_p?_w?/s\+wmk w!wr'1wu
+:move2_q?_p\! _q?._a_p?c+! _plot
+:move_q?##._a_q?'2*_p?+c+?#&[_move2_move2]
+:rand_r?'57*\+_r! _r?'7/x'3&_q!
+:pos_a_p?c+?'2*._p?s-._p!
+:corr_len(_rand_dir_move)_pos
+:maze_norm`_q?##._p?_w?\+=#|{_corr}
+:bgline d\-(k w!)
+:bgbox_rev.wg\-\-('0iwm_bgline)x
+:szcheck_w?_xsize>_h?_ysize>|[we"too big!"fw_nl.q]
+:setup wiwswg'2-_h!\-_w!_szcheck_w?\+_p!
+:end wgsx'0s\-wmweknwaw?xwe.q
+'0md[_ston_r!;xx]_setup_bgbox_r?_maze'0'0wm_nb_ntos.ww_end

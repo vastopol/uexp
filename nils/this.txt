@@ -1,0 +1,12 @@
+This is from t3x.org nils holm software
+----------------------------------------
+
+lc.scm = lambda calculator
+
+mini = extended moriwaka && kida minischeme3 interpreter
+
+s9fes-2014 = scheme 9 from empty space
+
+u = terse forth interpreter && compiler
+
+

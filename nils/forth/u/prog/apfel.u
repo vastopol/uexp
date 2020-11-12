@@ -1,0 +1,29 @@
+'( useless example program: ASCII apfelmaennchen )
+
+'79nw '49nh          '( width, height )
+_w\+'3*'4/x\-nc      '( center offset )
+'100nS _S'2*n2S      '( zoom, numerators )
+_S'4/xndx _S'4/xndy  '( zoom, denominators )
+'vbuf_tbl_w\+a       '( line buffer )
+g! printing chars: lower, empty, full, upper !
+'vcset_tbl         kmb,   k b,   kMb,  k"b,
+'vx 'vy    '( current coordinates )
+'vcr 'vci  '( c real, imag )
+'vzr 'vzi  '( z real, imag )
+'vir       '( intermediate )
+'1ve       '( even line flag )
+:init_y!_x! '0_zr!'0_zi! _x?_S_dx/x*_cr! _y?_S_dy/x*_ci!
+g! z(n+1) = z(n) * z(n) + c !
+:calcir_zr?d*_S/x _zi?d*_S/x- _ir!
+:calczi_zr?_zi?*_S/x _zi?_zr?*_S/x+ _ci?+ _zi!
+:calczr_cr?_ir?+_zr!
+g! |z| > 2+2i !
+:test_zi?_2S>._zr?_2S>|_zi?_2S%<|_zr?_2S%<|
+:iter_calcir_calczi_calczr
+:f_init'100(_iter_test[rx'0y])'1
+:print_w(_buf_w\+i-+b?_cset+b?f!)_nl
+:orow_w(di_c-s_f#_buf.i+b!)x
+:erow_w(di_c-s_f_buf.i+b?'1\<|_buf.i+b!)x_print
+:row_e?[_orow;_erow]_e?#_e!
+:apfel_h(_h.i-_h'2/x-_row)
+_apfel.q

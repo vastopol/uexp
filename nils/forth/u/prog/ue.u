@@ -1,0 +1,398 @@
+g| a useless editor; By NMH; in the PD |
+g| todo: b                             |
+
+:ynkfile"ue.ynk"
+:tmpfile"ue.tmp"
+:hlpfile"ue.hlp"
+:hlpfil2"/u/bin/ue.hlp"
+'64nstrl              '( max. string/path length )
+'500nmaxln            '( max. lines in buffer )
+'vbuf_tbl'64_maxln*a  '( text buffer )
+'vesize               '( lines in buffer )
+'veoff                '( top line in display )
+'vex 'vey             '( cursor column, line )
+'1%vemx '1%vemy       '( mark column, line )
+'vycols               '( yank: column mode )
+'0vyanked             '( yanked lines / columns )
+'1vesh                '( syntax highlighting flag )
+'vdelynk              '( delete after yank flag )
+'vename_tbl_strl.a    '( file name, buffer )
+'0venk                '( file name, length )
+'vsname_tbl_strl.a    '( shadow file name, buffer )
+'vsnk                 '( shadow file name, length )
+'vmbuf_tbl_strl.a     '( meta info, buffer )
+'vmk                  '( meta info, length )
+'vmwrt                '( meta info, write flag )
+'vgnbuf_tbl_strl.a    '( generic name, buffer )
+'0vgnk                '( generic name, length )
+'vsrbuf_tbl_strl.a    '( search text, buffer )
+'0vsrk                '( search text, length )
+'vrpbuf_tbl_strl.a    '( replace  text, buffer )
+'0vrpk                '( replace  text, length )
+'vgpbuf_tbl_strl.a    '( gen. purpose buffer, data )
+'vgpk                 '( gen. purpose buffer, length )
+'vrpn   'vrps         '( :s replace/skip counters )
+'vemsg  'vemk         '( message buffer, length )
+'vergn                '( end of region for :s )
+'vmo                  '( modified flag )
+'vro                  '( read-only flag )
+'vpfx                 '( prefix for G command )
+'vbp 'vbk             '( hlite buffer, length )
+'vbc                  '( current hlite char )
+'vsb_tbl_strl.a 'vsk  '( symbol name, buffer, len )
+"rwp.u"l
+"prompt.u"l
+'( syntax highlighter )
+:f_bk?'0<#
+:g_f[_bp?_bc?+b?'1_bc\!'1%_bk\!;'0]
+:mono wo#
+:e_mono[knwa;'7'0wc]
+:kcb_mono[;'0'6wc]
+:kdb_mono[krwa;'2'0wc]
+:keb_mono[;'7'1wc]
+:kfb_mono[;'5'0wc]
+:klb_mono[kbwa;'3'0wc]
+:krb_mono[krwa;'7'4wc]
+:ksb_mono[;'6'0wc]
+:kmb_mono[krwa;'0'7wc]
+:kxb_mono[kuwa;'4'0wc]
+:strchr k"=#_f&
+:symchr d_calpha.s_cnum|
+:getsym'0_sk!`d_symchr{_sb_sk?+b!'1_sk\!_g}
+:cpstr`d_strchr{w!_g}
+:cpnum`d_cnum{w!_g}
+:cp2ch`_g.oo=#_f&{w!}w!x_g
+:cpcom sw!")]}"x+b?_cp2ch
+:cpsym_getsym_sb_sk?ww
+:prtsym_getsym_sb_sk?_rwp[_kfb;_ksb]_sb_sk?ww_e
+:number d_cnum[_klb_cpnum_e]
+:pcomment_kcb.d"([{"tbs.d'1%=#[_cpcom;x_number]_e
+:gcomment_kcb.dw!_cp2ch_e
+:oper w!_g
+:error d_cnum[_kxb_cpnum_e;_oper]
+:string dk"=[w!_g_klb_cpstr_e.w!_g;_error]
+:char dkk=[w!_g_klb.w!_e_g;_string]
+:symbol d"_@"tbs'1%=#[w!_g_prtsym;_char]
+:escape d"\rfbw"tbs'1%=#[_keb.w!_g.w!_g_e;_symbol]
+:ctrl d"`([{;}])"tbs'1%=#[_krb.w!_g_e;_escape]
+:defn d":vn"tbs'1%=#[w!_g_kdb_cpsym_e;_ctrl]
+:commnt2 dkg=[w!_g_gcomment;_defn]
+:comment dk'=[w!_g_pcomment;_commnt2]
+:hlite_esh?#[wwy]_bk!_bp!'0_bc!_g`_f{_comment}x
+'( utility routines )
+:lines wgsx\-
+:ln_lines.s-
+:mc_mono[krwa;'1'7wc]
+:msg'0_lines.wmwl_mc
+:prmsg_msg.oo_emk!_emsg!ww_e
+:remsg_emsg?_emk?_prmsg
+:clmsg""_prmsg
+:clmark'1%_emy!
+:mod'1_mo!_clmark
+:line'64*_buf+'64
+:cline_ey?_line
+:cchar_cline.x_ex?+b?
+:content_line_suntrail
+:llen_content.sx
+:wn_sb_ntos.ww
+:adv so-tt+s
+:bak sx_srk?+
+:sort oo>[s]
+:region_ey?_emy?_sort
+'( file I/O )
+:clear_buf_maxln'64*k bf'0_esize!'0_mo!'0_ey!'0_eoff!
+:check_maxln<#d["text too long"_prmsg'1_ro!]
+:rdlines`d'64*_buf+'64_getl.xf@{\+d_check[y]}
+:name d_enk!_ename.sbm
+:setup'0d_ex!d_ey!_eoff!_display
+:load oo_name_clear fi'0_rdlines_esize!_setup ""fi
+:wrlines o-(d_line_suntrail.fw_nl\+)x
+:save_ename_enk?fo'0_esize?_wrlines""fo
+:rstynk_ynkfile.fo""fo
+'( text display )
+:displn'0o_eoff?-wm_line_hlite.wgx'64>["|"ww]
+:redisp_ey?_displn
+:clrln'0swmwl
+:displns_lines(i_ln_esize?<#[i_ln_clrln;i_ln_eoff?+_displn])
+:display_displns_remsg
+:sync_ex?_ey?_eoff?-wm
+'( editor commands )
+:ecle_ex?\-d'0<[x'63]_ex!
+:ecri_ex?\+d'63>[x'0]_ex!
+:down'1_ey\!_ey?_lines-\+_eoff?>['1_eoff\!_display]
+:ecdn_ey?_esize?\-<[_down]
+:up'1%_ey\!_ey?_eoff?<['1%_eoff\!_display]
+:ecup_ey?'0>[_up]
+:eref ws_display
+:quit_ynkfile.ft[_ynkfile.fx]weq
+:incpfx dw!k0-_pfx?'10*+_pfx!
+:epfx_msg_e'0_pfx!`d_cnum{_incpfx_key}d_exec
+:last_esize?_lines-'0_max_eoff!_esize?\-_ey!_display
+:chkln_ey?_esize?>[_esize?\-_ey!]
+:enpg_lines.d_ey\!_eoff\!_eoff?_esize?<#[_last;_chkln_display]
+:first'0_eoff!'0_ey!_display
+:eppg_lines%_eoff\!_eoff?_ey!_eoff?'0<[_first;_display]
+:getstr_prmsg'58'5_lines_prompt_e
+:srprompt_prmsg_srbuf_srk?'63'1_lines_prompt_e
+:esea"/"_srprompt.o##&[_srk!x_esrn;xx]
+:srchln o_line.t_adv_srbuf_srk?_sfind[xs_line.x-'1;x'0]
+:notfound"string not found"_prmsg
+:srchfw_ey?\+`d_esize?<{d'0_srchln[s_goto_ex!y]\+}x_notfound
+:colfre_region.o-\+(di+\-_line.x'3p+b?.k =#[rxxx'0y])xx'1
+:lnins sr>i_line.x_ex?+d\+'64_ex?-\-bmi_line.x_ex?+b!rx
+:lndel r>i_line.x_ex?+\+d\-'64_ex?-\-bm.k r<_line.x'63+b!
+:indent_region.o-\+(di+\-.k _lnins)x
+:outdent_region.o-\+(di+\-_lndel)x
+:eind_marked#[y]'63_colfre[_indent_display'1_mo!]
+:eoud_marked#[y]_ex?_colfre[_outdent_display'1_mo!]
+:eco0'0_ex!
+:adjust_eoff?'0<['0_eoff!]
+:inscr_eoff?_ey?>#_ey?_eoff?_lines+\->#&
+:goto d_ey!_inscr#[_lines'2/x-_eoff!_adjust;x]_display
+:goln d_esize?<[_goto;x]
+:egln_pfx?[_pfx?\-_goln;_last]
+:einf_msg"C"ww_ex?\+_wn" L"ww_ey?\+_wn"/"ww_esize?_wn_einf2
+:einf2" "ww_ename_enk?ww_mo?[", mod"ww]_ro?[", ro"ww]_e
+:eeol_cline_suntrail\-'0_max_ex!x
+:mark_key.km=
+:nomark"no mark"_prmsg
+:marked_emy?'1%=#['1;_nomark'0]
+:gomark.d'0<[_nomark.xx;_goln_ex!]
+:egmk_mark['0_emy?_gomark]
+:etsh_esh?#_esh!_display_esh?["hlite on";"hlite off"]_prmsg
+:eseb"?"_srprompt.o##&[_srk!x_esrp;xx]
+:eap1_eeol_eapp
+:yankc d_yanked!'1_ycols!_ynkfile.fooofw""fo_ynkdc
+:delchs r>_cline.x_ex?+i+di-'64_ex?-i-bm.r<_blnchs_mod
+:blnchs r>_cline.i-itt+s.k bfrx
+:ynkdc_delynk?[_cline.xts-_ex!_delchs_redisp_mod;xx]
+:yankl oos-_yanked!'0_ycols!_ynkfile.fooo_wrlines""fo_ynkdl
+:ynkdl_delynk?[o-s_goln_delblk_display_mod;xx]
+:restln_cline.x_ex?+'64_ex?-
+:edln_restln.oo_suntrail_yankc.k bf_redisp_mod
+:ehom_eoff?_ey!
+:ebot_eoff?_lines+\-_esize?\-_min_ey!
+:ein1_ebol_eins
+:delblk r>_cline.xdi'64*+s_maxln_ey?i+\+-'64*bmi%_esize\!rx
+:delln'1_delblk_display_mod
+:join_eeol_ecri_ey?\+_content_cline.x_ex?+sbm_delbelow_display
+:delbelow'1_ey\!_delln'1%_ey\!
+:ejnl_ey?_esize?\-<#_ey?_llen_ey?\+_llen+'64>|[wb;_join]
+:blnkblk'64*.k bf
+:insblk r>_cline.xdi'64*+_maxln_ey?-i-'64*bmrx
+:inslns d_insblk_cline.xo_blnkblk_esize\!
+:openln'0_ex!'1_inslns_display_eins
+:bfull_esize?+_maxln>#['0;"buffer full"_prmsg'1]
+:lfull_cline_suntrail.sx+'64>#['0;"line too long"_prmsg'1]
+:rsrchln o_line.t_bak_srbuf_srk?_srfind[xs_line.x-'1;x'0]
+:srend'64_srk?-
+:srchbk_ey?\-`d'0<#{d_srend_rsrchln[s_goto_ex!y]\-}x_notfound
+:esrp_ey?_ex?\-_rsrchln[_ex!;_srchbk]
+:eop0'1_bfull#[_openln]
+:noyank"nothing yanked"_prmsg
+:epa0_yanked?[_paste0;_noyank]
+:endins x_ex?[_ecle]
+:rplins_ex?'64<[_cline.x_ex?+b!'1_ex\!_redisp;wb]
+:rpldel_ex?'0>['1%_ex\!h_ex?+b?_cline.x_ex?+b!_redisp;wb]
+:rplcmd d_wkbs[x_rpldel;_rplins]
+:erpl_cline.hsbm_mod`_sync_key.d_wkesc#{_rplcmd}_endins
+:paste0_ycols?[_xpaste;_ypaste]
+:xpaste_yanked?_lfull#[_cpaste]
+:insblns r>_cline.x_ex?+di+'64_ex?-i-bm_cline.x_ex?+r<.k bf
+:readyb_ynkfile.fi_yanked?frx""fi
+:cpaste_yanked?_insblns_cline.x_ex?+_readyb_mod_redisp
+:rpt_msg_yanked?h_ntos.ww" line(s) "ww
+:rptpas_rpt"pasted"ww
+:ypaste_yanked?_bfull#[_lpaste_rptpas_mod]
+:lpaste_yanked?_inslns_ynkfile.fi_ey?_rdlines.x""fi_display
+:ext2_write[_quit]
+:eynl_restln_suntrail_yankc
+:eext w?kZ=[_ext2]
+:insch_cline.x_ex?+d\+'64_ex?-\-bm_cline.x_ex?+b!'1_ex\!
+:insert_cline_suntrail.sx'64=[wb;_insch_redisp]
+:delch'1_delchs
+:split'1_bfull#[_extend'1_inslns_copyover_display'0_ex!]
+:copyover_ey?\-_line.x_ex?+_cline.x'64_ex?-bm_blnkrest
+:blnkrest_ey?\-_line.x_ex?+'64_ex?-.k bf
+:bkspc_ex?#[wb;'1%_ex\!_delch_redisp]
+:edit d_wkbs[x_bkspc;_edit2]
+:edit2 d'13=[x_split;_insert]
+:eapp_ex?'63=[wb;_ecri_eins]
+:egmc_mark[_emx?_emy?_gomark]
+:ebsp_ex?['1%_ex\!_delch_redisp]
+:firstln_esize?#['1_esize!_buf'64.k bf]
+:eins_firstln_mod`_sync_key.d_wkesc#{_edit}_endins
+:emrk_mark[_ex?_emx!_ey?_emy!]
+:esrn_ey?_ex?\+_srchln[_ex!;_srchfw]
+:extend_esize?['1_ey\!]
+:eopn'1_bfull#[_extend_openln]
+:epas_yanked?[_paste;_noyank]
+:paste'1_ycols?[_ex;_ey]\!_paste0
+:erpc_key.d'13=[x_delch_split;_cline.x_ex?+b!_mod_redisp]
+:ebol_cline_sskipw[_cline.x-;'0]_ex!
+:edel_delch_redisp
+'( shadow file routines )
+:appwsfx_sname_snk?"w"_sappnd_snk!x
+:shfile_ename_enk?_sname.sbm_enk?_snk!_appwsfx_sname_snk?
+:cmpdef oo_mbuf_mk?_snext.xo_seql o_mbuf+\+b?k'=&
+:srchmeta fi`_mbuf'64_getl.f@{_mk!_cmpdef[xx'1y]}xxx'0d_mk!""fi
+:getmeta_shfile ooft[_srchmeta;xx"no shadow file"_prmsg'0]
+:mkshfile_shfile.ft#[_shfile.fo""fo]
+:mkmeta_shfile ooft[_srchmeta.x;_mkshfile.xx'0_mk!]
+:skipsym`_snext.ob?_symchr{}
+:defname_cline_skipsym.sx_cline.t-_snext
+:getdef_cline.xb?k:=[_defname'1;"no definition"_prmsg'0]
+:prmeta_ey?_eoff?-d#[\+;\-]'0swm_kmb._skipsym.www?x_e_display
+:evsh_getdef#[y]_getmeta[_mbuf_mk?_prmeta]
+:metapfx":"h_scopy_defname_sappnd"'( "_sappnd
+:metasfx" )"_sappnd
+:metapmt_metapfx.dtt_prmsg
+:trim_snext_snext'2-'0_max
+:wrtmrec_gpbuf_gpk?fw_nl'1_mwrt!
+:endwm_mwrt?#[_wrtmrec]
+:rplmeta_defname_cmpdef[_wrtmrec;_mbuf_mk?fw_nl.xx]
+:wrtmeta_shfile.fi`_mbuf'64_getl.f@{_mk!_rplmeta}x""fi
+:copymeta_mbuf_mk?_skipsym_snext_trim_gpbuf_scopy.d_gpk!
+:mkmrec_metapfx_gpbuf_gpk?_sappnd_metasfx_gpbuf_scopy_gpk!x
+:meta2tmp_tmpfile.fo_wrtmeta_endwm""fo
+:copyback_tmpfile.fi_shfile.fo`f?f@{f!}""fi""fo_tmpfile.fx
+:updmeta_gpk!x_mkmrec'0_mwrt!_meta2tmp_copyback
+:editmeta_copymeta_metapmt.d'62s-s_lines_prompt_e[_updmeta;xx]
+:eesh_getdef[_mkmeta_editmeta]
+'[ "next word" command ]
+:false x'0
+:true x'1
+:csym0 "@_"_smem
+:cnosym d_calnum.s_csym0|#
+g| 1 = match, 0 = don't match, 2 = predicate |
+'vwskip_tbl
+g| match          also match    end match       adjust |
+  '2 , @calnum , '2 , @csym0 , '2 , @calnum   , '0 ,
+  '2 , @cnum   , '1 , k'     , '2 , @cnum     , '0 ,
+  '1 , k"      , '2 , @false , '0 , k"        , '1 ,
+  '1 , k       , '2 , @false , '1 , k         , '0 ,
+  '1 , k[      , '2 , @false , '0 , k]        , '1 ,
+  '1 , k;      , '2 , @false , '0 , k]        , '1 ,
+  '1 , k(      , '2 , @false , '0 , k)        , '1 ,
+  '1 , k{      , '2 , @false , '0 , k}        , '1 ,
+  '1 , k`      , '2 , @false , '0 , k{        , '1 ,
+  '2 , @true   , '2 , @false , '2 , @cnosym   , '0 ,
+:wchk d?'2=['1c+?e;'1c+?=]
+:wpred_wskip`'1{oo_wchk.r>'2c+oo_wchk.r<|['2c+sxy]'5c+}
+:limx_ex?'63>['63_ex!]
+:wrdadj'2c+?
+:skip0'1_ex\!`_cchar.o=#{'1_ex\!}x_limx_wrdadj
+:skip1'1_ex\!`_cchar.o={'1_ex\!}x_limx_wrdadj
+:skipf'1_ex\!`_cchar.oe{'1_ex\!}x_limx_wrdadj
+:ewrd_fwrd.x
+:fwrd_cchar_wpred.d?'0=[d'1c+?_skip0;_fwrd2]
+:fwrd2 d?'1=[d'1c+?_skip1;d'1c+?_skipf]
+'( more editor commands )
+:rptyd_rpt_delynk?["deleted";"yanked"]ww
+:ynkblk_mark#[y]_marked[_region\+_yankl_rptyd]
+:sameln_ey?_emy?=
+:ynkcls1_mark[_ynkcls]
+:ynkcls_marked#[y]_sameln#[wby]_ynkcls2
+:ynkcls2_cline.x_ex?_emx?_sort.o-tt+s_yankc
+:ynkwrd_ey?_emy!_ex?_emx!_fwrd_ex\!_ynkcls
+:ynkzero_cline.x_ex?'0_ex!_yankc
+:yusage"usage [y]+[y][w]['m][`m]"_prmsg
+:dusage"usage [d]+[d][w]['m][`m]"_prmsg
+:dyusage_delynk?[_dusage;_yusage]
+:eyam_key.dky=[x_ey?d\+_yankl;_yam2]
+:yam2 dk'=[x_ynkblk;_yam3]
+:yam3 dk`=[x_ynkcls1;_yam4]
+:yam4 dkw=[_ynkwrd;_yam5]
+:yam5 k0=[_ynkzero;_dyusage]
+:dem2_key.dkd=[x_ey?d\+_yankl;_yam2]
+:edem'1_delynk!_dem2'0_delynk!
+:ezro_key'13=[_ey?_eoff!_display]
+'( colon commmands )
+:cqmod"modified, [!]=quit"_prmsg_key_clmsg.k!=[_quit]
+:cdebug"S: "_prmsg.wr_s.ffw?xws_display
+:cquit_mo?[_cqmod;_quit]
+:write_mo?[_write2;'1]
+:write2_enk?#["file has no name"_prmsg'0;_write3]
+:write3_ro?["read-only"_prmsg'0;_save"written"_prmsg'0_mo!'1]
+:rwrite_marked[_rwrite2]
+:rwrite2_gnbuf_gnk?"wrto"_getstr.o##&[_gnk!x_rwrite3;xx]
+:rwrite3_gnbuf_gnk?ft[_existmsg_key.k!=;'1]_rwrite4
+:existmsg"file exists, !=overwrite"_prmsg
+:rwrite4[_gnbuf_gnk?fo_region\+_wrlines""fo]
+:regionq"[r]=region, [q]=quit, other=all"_prmsg_key_clmsg
+:cwrite_regionq.dkr=[x_rwrite.y]kq=#[_write.x]
+:newfile"new file"_prmsg_name_clear_display
+:modified"modified, [!]=edit"
+:cedit_mo?[_modified_prmsg_key_clmsg;k!]_cedit2
+:cedit2 k!=#[y]_ename_enk?"edit"_getstr[_editfile;xx]
+:editfile ooft[_load;_newfile]
+:cpname_enk?_gnk!_ename_gnbuf_enk?bm
+:cname_cpname_gnbuf_gnk?"name"_getstr[_cname2;xx]
+:cname2 d_gnk!d_enk!_ename.sbm_mod
+:filelen_gnbuf_gnk?fi'0`h'64_getl.xf@{\+}""fi
+:readfile_gnbuf_gnk?ft[_readfil2;"no such file"_prmsg]
+:readfil2_filelen.d_bfull#[_readfil3;x]
+:readfil3_inslns_gnbuf_gnk?fi_ey?_rdlines.x""fi_mod_display
+:cread_gnbuf_gnk?"read"_getstr[_gnk!x_readfile;xx]
+:pause"press any key"_prmsg_key.x
+:wwc dk_=[x;w!]
+'0vwwrev
+:wwt_wwrev?d[knwa;kbwa]#_wwrev!
+:wwa d(ooi-+b?dk%=[x_wwt;_wwc])xx
+:wl'0'4pwm_wwa\+
+:ldhelp fi'0`h'128_getl.f@{hs_wl}xx""fi
+:showhlp ws_ldhelp_pause_display
+:chelp_hlpfile.ft[_hlpfile_showhlp;_chelp2]
+:chelp2_hlpfil2.ft[_hlpfil2_showhlp;"no help file"_prmsg]
+:canrpl_cline_suntrail.sx_srk?-_rpk?+'64>#
+:replace_srk?_delchs_rpk?_insblns_rpbuf_cline.x_ex?+_rpk?bm
+:sbmove_rpk?\-_ex\!
+:dosubst_canrpl[_replace_sbmove'1_rpn\!;'1_rps\!]
+:sbrpt_rpn?_rps?+[_msg_rpn?_wn" replaced"ww_sbrpt2]
+:sbrpt2_rps?[", "ww_rps?_wn" skipped"ww]
+:sbdone_display_sbrpt_e
+:home_first_eco0'0d_rpn!_rps!
+:setrgn_region_ergn!_goto'0_ex!
+:nxtinrgn_esrn_emk?#_ey?_ergn?>#&
+:subst_home`_esrn_emk?#{_dosubst}_sbdone
+:substr_marked[_home_setrgn`_nxtinrgn{_dosubst}_sbdone]
+:subsflg_regionq.dkr=[x_substr.y]kq=#[_subst]
+:subs2_rpbuf_rpk?"rplc"_getstr[_rpk!x_subsflg;xx]
+:csubs_srbuf_srk?"find"_getstr[_srk!x_subs2;xx]
+:cmdw dkw=[x_cwrite;x]
+:cmds dks=[x_csubs;_cmdw]
+:cmdr dkr=[x_cread;_cmds]
+:cmdq dkq=[x_cquit;_cmdr]
+:cmdn dkn=[x_cname;_cmdq]
+:cmdh dkh=ok?=|[x_chelp;_cmdn]
+:cmde dke=[x_cedit;_cmdh]
+:cmdd dkd=[x_cdebug;_cmde]
+:eccm"[ehnqrsw]"_prmsg" "ww_key_clmsg_cmdd
+'( key dispatch table )
+'vefn_tbl
+  '0   , '0   , @eppg, '0   , '0   , '0   , @enpg, @einf, '(^@)
+  '0   , '0   , '0   , '0   , @eref, '0   , '0   , '0   , '(^H)
+  '0   , '0   , '0   , '0   , '0   , '0   , '0   , '0   , '(^P)
+  '0   , '0   , '0   , '0   , '0   , '0   , '0   , '0   , '(^X)
+  '0   , '0   , '0   , '0   , @eeol, '0   , '0   , @egmk, '( )
+  '0   , '0   , '0   , '0   , '0   , '0   , '0   , @esea, '[(]
+  @eco0, @epfx, @epfx, @epfx, @epfx, @epfx, @epfx, @epfx, '(0)
+  @epfx, @epfx, @eccm, '0   , @eoud, @etsh, @eind, @eseb, '(8)
+  '0   , @eap1, '0   , '0   , @edln, '0   , '0   , @egln, '(@)
+  @ehom, @ein1, @ejnl, '0   , @ebot, '0   , @esrp, @eop0, '(H)
+  @epa0, '0   , @erpl, '0   , '0   , '0   , @eesh, '0   , '(P)
+  @ebsp, @eynl, @eext, '0   , '0   , '0   , @ebol, '0   , '(X)
+  @egmc, @eapp, '0   , '0   , @edem, '0   , '0   , '0   , '(`)
+  @ecle, @eins, @ecdn, @ecup, @ecri, @emrk, @esrn, @eopn, '(h)
+  @epas, '0   , @erpc, '0   , '0   , '0   , @evsh, @ewrd, '(p)
+  @edel, @eyam, @ezro, '0   , '0   , '0   , '0   , '0   , '(x)
+'( special key mapping )
+:key w?d_wkle[xkh;_ke2]
+:ke2 d_wkri[xkl;_ke3]
+:ke3 d_wkup[xkk;_ke4]
+:ke4 d_wkdn[xkj;_ke5]
+:ke5 d_wknp[x'6;_ke6]
+:ke6 d_wkpp[x'2]
+:exec'127&c_efn+?d[e;x]
+:loadinit'0md[_editfile;xx]
+wi_rstynk_clear_loadinit`'0_pfx!'1{_sync_key_clmsg.d_exec.x}

@@ -1,0 +1,26 @@
+# Configurator meta file
+
+[RULES]
+Makefile	^PREFIX=.*	PREFIX=$prefix
+Makefile	^OPTS=.*	OPTS=\\t$options
+u.c		cell long	cell $celltype
+u.c		\"/u/bin/	\"$prefix/bin/
+u.c		\"%ld\"		\"$cellspec\"
+uc		^OPTS=.*	OPTS=\"$options\"
+uc1.u		\"/u/bin/	"$prefix/bin/
+uc1.u		\"%ld\"		\"$cellspec\"
+prog/ue.u	\"/u/bin/	"$prefix/bin/
+ugo		^OPTS=.*	OPTS=\"$options\"
+[!RULES]
+
+[OPTIONS]
+celltype	long		C datatype to hold a pointer (cell)
+cellspec	%ld		Printf() format specifier for cells
+prefix		/usr/local	Where to install the program
+sandbox		no		Create a \"sandboxed\" interpreter?
+wops		yes		Include the \"w\" (windowing) operator?
+color		yes		Does curses(3) support color?
+usleep		yes		Do we have usleep(3)?
+atexit		yes		Do we have atexit(3)?
+strdup		yes		Do we have strdup(3)?
+[!OPTIONS]

@@ -1,0 +1,146 @@
+	                                                         _____
+	 __  __ __ __  _ __   ____ ____ _   _ ____ __  __ ____  (___  )
+	|  \/  |  |  \| |  | / ___)  __) |_| | ___)  \/  | ___)    / /
+	|      |  |     |  | \___ \ (__|  _  | __)|      | __)    (_ \
+	|_|\/|_|__|_|\__|__| (____/____)_| |_|____)_|\/|_|____)  _  \ \
+	                                                        ( \_/ /
+	                                                         \___/
+
+	.==============================================================.
+	|                                                              |
+	|     ::::::::: Mini Scheme Interpreter Version 3 :::::::::    |
+	|                                                              |
+	|                   Coded by Atsushi Moriwaki                  |
+	|                                                              |
+	|                     Revised by Akira KIDA                    |
+	|                                                              |
+	|                  Revised again by Nils M Holm                |
+	|                                                              |
+        `=============================================================='
+
+	::::: Changes ::::::::::::::::::::::::::::::::::::::::::::::::::
+
+	For a detailed list of past-2009 changes, please have a look at
+	the HISTORY file.
+
+	These are the changes I (nmh) applied to Mini-Scheme 0.85k4:
+
+	* Additions
+		- compacting string collector, includes strings
+		  in the garbage collection;
+		- type checking in primitive procedures;
+		- char type and related procedures;
+		- string procedures;
+		- variadic MAP, FOR-EACH, and APPEND procedures;
+		- replaced MACRO by more common DEFINE-MACRO;
+		- (non-R4RS) EXPAND-MACRO and GENSYM;
+		- unary -;
+		- variadic APPLY;
+		- variadic <, <=, =, >, and >= procedures;
+		- overflow checking in numeric procedures;
+		- WITH-INPUT-FROM-FILE and WITH-OUTPUT-TO-FILE;
+		- #<EOF> object and EOF-OBJECT? procedures;
+		- READ-CHAR, PEEK-CHAR, WRITE-CHAR procedures;
+		- ABS, EVEN?, ODD?, EXPT, GCD, LCM, MIN, MAX
+		  procedures;
+		- single-argument MAKE-STRING;
+		- LIST? procedure.
+
+	* Minor modifications
+		- the init file is now compiled into the executable;
+		- rewrote QUASIQUOTE (non-nesting, but simpler);
+		- changed allocation strategy (cell pool cannot run dry);
+		- rewrote Makefile;
+		- ANSI-fied the code;
+		- rewrote some error messages;
+		- renamed init.scm to miniscm.scm.
+		- replaced DO macro;
+
+	* Small fixes (very few!)
+		- renamed / to QUOTIENT, because that's what it does;
+		- "\\" was not a valid string;
+		- made the reader fold input to lower case;
+		- DELAY macro (don't remember, was somehow broken).
+
+	* Removals
+		- most non-R4RS procedures;
+		- support for most legacy compilers (except Turbo C);
+		- rather half-baked #o and #x prefixes (also #d).
+
+	::::: Omissions from R4RS ::::::::::::::::::::::::::::::::::::::
+
+	* System Interface
+		- LOAD cannot be nested.
+
+	* Control procedures
+		- the => syntax of COND;
+
+	* Pairs
+		- four-level pair access: CAAAAR .. CDDDDR.
+
+	* Numeric operations
+		- complex, real, rational numbers, bignum integers;
+		- omitted procedures (long list):
+			/, ACOS, ANGLE, ASIN, ATAN, CEILING, COMPLEX?,
+			COS, DENOMINATOR, EXACT->INEXACT, EXACT?, EXP,
+			FLOOR, IMAG-PART, INEXACT->EXACT, INEXACT?,
+			INTEGER?, LOG, MAGNITUDE, MAKE-POLAR,
+			MAKE-RECTANGULAR, MODULO, NUMERATOR, RATIONAL?,
+			RATIONALIZE, REAL-PART, REAL?, ROUND, SIN, SQRT,
+			TAN, TRUNCATE.
+
+	* Vectors
+		- vector data typa and syntax;
+		- vector operations:
+			LIST->VECTOR, MAKE-VECTOR, VECTOR,
+			VECTOR->LIST, VECTOR-FILL!, VECTOR-LENGTH,
+			VECTOR-REF, VECTOR-SET!, VECTOR?.
+
+	* Ports
+		- user-visible ports and port-related procedures:
+			CALL-WITH-INPUT-FILE, CALL-WITH-OUTPUT-FILE,
+			CLOSE-INPUT-PORT, CLOSE-OUTPUT-PORT,
+			CURRENT-INPUT-PORT, CURRENT-OUTPUT-PORT,
+			INPUT-PORT?, OPEN-INPUT-FILE, OPEN-OUTPUT-FILE,
+			OUTPUT-PORT?;
+		- CHAR-READY?;
+		- these procedures do not accept port arguments:
+			DISPLAY, NEWLINE, PEEK-CHAR, READ, READ-CHAR,
+			WRITE, WRITE-CHAR.
+
+		NOTE: This version of Mini Scheme *does* have
+		WITH-INPUT-FROM-FILE, WITH-OUTPUT-TO-FILE, and
+		EOF-OBJECT?, because these do not require
+		user-visible ports.
+
+	* Other:
+		- TRANSCRIPT-ON, TRANSCRIPT-OFF.
+
+	::::: Additions to R4RS ::::::::::::::::::::::::::::::::::::::::
+
+	* DEFINE-MACRO
+		Like the original Mini-Scheme, this version supports
+		low-level macros. However, macro arguments are
+		destructured instead of passing entire special forms
+		to macro handlers:
+
+		(define-macro foo (lambda (a b c) `(list ',a ',b ',c)))
+		(foo a b c) ==> (a b c)
+	
+	* GENSYM
+		Generates a unique symbol name, useful for writing
+		low-level macros.
+
+	* EXPAND-MACRO
+		Expands a (quoted) macro application and returns the
+		expanded form.
+
+	::::: Feedback :::::::::::::::::::::::::::::::::::::::::::::::::
+
+	Please send bug reports and other feedback to nmh@t3x.org.
+
+	::::: Acknowledgements :::::::::::::::::::::::::::::::::::::::::
+
+	Thanks to Atsushi Moriwaki and Akira KIDA for writing and
+	maintaining the original Mini-Scheme. Arigatou gozaimashita.
+

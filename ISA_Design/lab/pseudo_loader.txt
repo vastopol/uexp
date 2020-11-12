@@ -1,0 +1,41 @@
+The following Java-esque pseudo-code shows how to load a program from the io_devices module and run the VirtualMachine. We have provided several SuperGarbage applications for you to test on. Changing the num_app variable in the pseudo-code will change which of these applications you load. You should write the loader in your assembly language, build the COE files, convert them to HEX, and generate a memory module. Be sure to include the assembly code for your loader in an appendix of your progress report. Note that get_instr_count is a macro that translates into whatever assembly instructions are needed to access a counter that counts the number of instructions executed in your processor since reset (you will add this functionality to your processor; see below).
+
+ 
+// SuperGarbage Loader
+// num _app
+// 0: app0.bin
+// 1: app1.bin
+// 2: app2.bin
+ 
+final int num_app = 0;
+ 
+word mem[4096];
+word startPC;
+ 
+// basic code stub
+set $SP;
+set $GP;
+ 
+// select an app
+out( num_app, 1);
+ 
+// load data from an external device while(addr != -1)
+do {
+    word addr, data;
+    addr = in(0x1);
+    data = in(0x1);
+    
+    if (addr == 0x3FFFFFFFFL) {
+        startPC = data;
+        break;
+        
+    } else {
+        mem[addr] = data;
+    }
+} while(true);
+ 
+// Finally, call the virtual machine
+start = get_instr_count();
+VirtualMachine(startPC, mem);
+end = get_instr_count();
+out (0x3,end - start);

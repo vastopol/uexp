@@ -1,0 +1,46 @@
+#!/bin/sh
+
+# useless compile-and-go driver; NMH 2011; In the PD
+
+OPTS="-DCOLOR -DUSLEEP -DATEXIT -DSTRDUP"
+
+if [ "x$1" = "x" ]; then
+	echo "Usage: ugo file"
+	exit 1
+fi
+
+tmp=ugo.$$.c
+out=./`basename $tmp .c`
+libs=-lcurses
+
+trap '
+	rm -f $out $tmp
+' 1 2 3
+
+if [ -f $1 ]; then
+	true
+else
+	echo "ugo: $1: no such file"
+	exit 1
+fi
+
+uc1 -w <$1 >$tmp
+if tail -1 $tmp | grep '^}$' >/dev/null 2>&1; then
+	true
+else
+	echo "error in compilation, stop"
+	rm -f $out $tmp
+	exit 1
+fi
+
+if cc $OPTS -o $out $tmp $libs; then
+	true
+else
+	echo "error in compilation, stop"
+	rm -f $out $tmp
+	exit 1
+fi
+
+shift; $out $*
+
+rm -f $out $tmp

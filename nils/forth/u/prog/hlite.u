@@ -1,0 +1,57 @@
+g| useless syntax highlighter; By NMH; in the PD |
+g| Usage: hlite <infile.u >outfile.html          |
+
+"rwp.u"l
+'vsb_tbl'64a
+'vsk
+:ss_ssave.xx
+'vprelude_tbl
+ "<HTML>"_ss
+ "<HEAD>"_ss
+ "<STYLE>"_ss
+ "PRE.u  {color: #c0c0c0; background: #000000; }"_ss
+ "SPAN.c {color: #00a0a0; background: #0000a0; }"_ss
+ "SPAN.l {color: #00c0ff; background: #000000; }"_ss
+ "SPAN.s {color: #c0c000; background: #000000; }"_ss
+ "SPAN.d {color: #40ff40; background: #000000; }"_ss
+ "SPAN.r {color: #c0c0c0; background: #a00000; }"_ss
+ "SPAN.e {color: #c0c0c0; background: #0000a0; }"_ss
+ "SPAN.f {color: #ff40ff; background: #000000; }"_ss
+ "</STYLE>"_ss
+ "</HEAD>"_ss
+ "<BODY>"_ss
+ "<PRE class=u>"_ss
+ '0,
+:prlst`db?{ddb?_snext.fw_nl.db?+}x
+:head_prelude_prlst
+:tail"</PRE>"fw_nl_tl2
+:tl2"</BODY>"fw_nl"</HTML>"fw_nl
+:b"<SPAN class="fwf!">"fw
+:e"</SPAN>"fw
+:semi k;f!
+:h4 d'1%=[x;f!]
+:h3 dk&=["&amp"fwx_semi;_h4]
+:h2 dk>=["&gt"fwx_semi;_h3]
+:h  dk<=["&lt"fwx_semi;_h2]
+:strchr k"=#f@&
+:symchr d_calpha.s_cnum|
+:cpstr`d_strchr{_h.f?}
+:cpnum`d_cnum{_h.f?}
+:cp2ch`f?oo=#f@&{_h}_h.xf?
+:cpcom s_h")]}"x+b?_cp2ch
+:cpsym_getsym_sb_sk?fw
+:getsym'0_sk!`d_symchr{_sb_sk?+b!'1_sk\!f?}
+:prtsym_getsym_sb_sk?_rwp[kf;ks]_b_sb_sk?fw_e
+:pcomment kc_b d"([{"tbs.d'1%=#[_cpcom;x]_e
+:gcomment kc_b d_h_cp2ch_e
+:oper_h.f?
+:number d_cnum[kl_b_cpnum_e;_oper]
+:string dk"=[_h.f?kl_b_cpstr_e_h.f?;_number]
+:char dkk=[_h.f?kl_b.f!_e.f?;_string]
+:symbol d"_@"tbs'1%=#[_h.f?_prtsym;_char]
+:escape d"\rfbw"tbs'1%=#[ke_b_h.f?_h.f?_e;_symbol]
+:ctrl d"`([{;}])"tbs'1%=#[kr_b_h.f?_e;_escape]
+:defn d":vn"tbs'1%=#[_h.f?kd_b_cpsym_e;_ctrl]
+:commnt2 dkg=[_h.f?_gcomment;_defn]
+:comment dk'=[_h.f?_pcomment;_commnt2]
+_head.f?`f@{_comment}_tail.q

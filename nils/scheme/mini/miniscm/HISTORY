@@ -1,0 +1,29 @@
+2012-09-09 made LIST? and LIST-REF primitives
+2012-09-09 made GCD and LCM primitives
+2012-09-09 made APPEND and STRING-APPEND variadic
+2012-09-09 made EXPT a primitive
+2012-09-08 made ABS, EVEN?, ODD?, MIN, MAX primitives
+2012-09-08 replaced test suite
+2012-09-08 added -q command line switch (quiet mode)
+2012-09-07 made char class predicates (CHAR-ALPHABETIC?, etc) primitives
+2012-09-07 made single-argument MAKE-STRING a primitive
+2012-09-07 merged R4RS.SCM into MINISCM.SCM
+2012-09-07 made ASSQ and ASSV primitives
+2012-09-07 made MEMQ and MEMV primitives
+2012-09-06 made LIST-TAIL a primitive
+2012-09-06 made CAAR ... CDDDR primitives
+2012-09-06 made APPLY variadic
+2012-09-05 made macros bind individual arguments instead of full forms
+2012-09-05 replaced MACRO by DEFINE-MACRO
+2012-09-05 added STRING-CI=? and STRING-CI<? primitives
+2012-09-05 allowed to call error() even with USE_SETJMP disabled
+2012-09-04 finished refactoring
+2012-09-04 fix: catch divide by zero
+2012-09-03 started to factor out primitives into individual functions
+2012-09-03 fix: detect malformed 'let' environment
+2012-09-03 changed truth value of '() to #t
+2012-09-03 fix: detect string symbol name buffer overflow
+2012-09-03 fix: detect string literal buffer overflow
+2012-09-03 fix: detect EOF in string literals
+2012-09-02 removed GOTO's from garbage collector
+2012-09-02 misc. code cosmetics

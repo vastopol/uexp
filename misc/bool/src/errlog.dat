@@ -1,0 +1,95 @@
+vagrant@jessie:~/program/Interpreter-Architectures/misc/bool/src$ make
+cc -O   -c -o alloc.o alloc.c
+In file included from alloc.c:51:0:
+bool.h:105:13: warning: conflicting types for built-in function ‘malloc’
+ char       *malloc(),
+             ^
+alloc.c: In function ‘new_func’:
+alloc.c:64:5: warning: incompatible implicit declaration of built-in function ‘exit’
+     exit(1);
+     ^
+alloc.c:71:7: warning: incompatible implicit declaration of built-in function ‘exit’
+       exit(1);
+       ^
+alloc.c:77:9: warning: incompatible implicit declaration of built-in function ‘exit’
+         exit(1);
+         ^
+alloc.c: In function ‘new_token’:
+alloc.c:99:5: warning: incompatible implicit declaration of built-in function ‘exit’
+     exit(1);
+     ^
+alloc.c: In function ‘free_tree’:
+alloc.c:139:3: warning: incompatible implicit declaration of built-in function ‘free’
+   free((char *)b);
+   ^
+cc -O   -c -o bool.o bool.c
+In file included from bool.c:64:0:
+bool.h:105:13: warning: conflicting types for built-in function ‘malloc’
+ char       *malloc(),
+             ^
+bool.c: In function ‘main’:
+bool.c:80:5: warning: incompatible implicit declaration of built-in function ‘exit’
+     exit(1);
+     ^
+bool.c:99:24: warning: incompatible implicit declaration of built-in function ‘strlen’
+     if (strcmp(argv[a]+strlen(argv[a])-2,".b"))
+                        ^
+cc -O   -c -o build.o build.c
+In file included from build.c:51:0:
+bool.h:105:13: warning: conflicting types for built-in function ‘malloc’
+ char       *malloc(),
+             ^
+cc -O   -c -o eval_file.o eval_file.c
+In file included from eval_file.c:52:0:
+bool.h:105:13: warning: conflicting types for built-in function ‘malloc’
+ char       *malloc(),
+             ^
+eval_file.c: In function ‘eval_file’:
+eval_file.c:107:28: warning: incompatible implicit declaration of built-in function ‘strlen’
+     else if ((c == '=') && strlen(func)) {
+                            ^
+eval_file.c:125:9: warning: incompatible implicit declaration of built-in function ‘exit’
+         exit(1);
+         ^
+eval_file.c:151:9: warning: incompatible implicit declaration of built-in function ‘exit’
+         exit(1);
+         ^
+eval_file.c:175:20: warning: incompatible implicit declaration of built-in function ‘strlen’
+     printf("%*.*s",strlen(t->token)+1,strlen(t->token)+1,line);
+                    ^
+eval_file.c:181:20: warning: incompatible implicit declaration of built-in function ‘strlen’
+     printf("%*.*s",strlen(fn->func)+1,strlen(fn->func)+1,line);
+                    ^
+eval_file.c:204:5: warning: incompatible implicit declaration of built-in function ‘free’
+     free((char *)fn);
+     ^
+eval_file.c:215:5: warning: incompatible implicit declaration of built-in function ‘free’
+     free((char *)t);
+     ^
+cc -O   -c -o eval_func.o eval_func.c
+In file included from eval_func.c:51:0:
+bool.h:105:13: warning: conflicting types for built-in function ‘malloc’
+ char       *malloc(),
+             ^
+eval_func.c: In function ‘eval_func’:
+eval_func.c:111:15: warning: incompatible implicit declaration of built-in function ‘strlen’
+       l1= l2= strlen(u->token)/2;
+               ^
+eval_func.c:125:15: warning: incompatible implicit declaration of built-in function ‘strlen’
+       l1= l2= strlen(f->func)/2;
+               ^
+cc -O   -c -o misc.o misc.c
+In file included from misc.c:52:0:
+bool.h:105:13: warning: conflicting types for built-in function ‘malloc’
+ char       *malloc(),
+             ^
+misc.c: In function ‘panic’:
+misc.c:125:3: warning: incompatible implicit declaration of built-in function ‘exit’
+   exit(1);
+   ^
+cc -O   -c -o token.o token.c
+In file included from token.c:51:0:
+bool.h:105:13: warning: conflicting types for built-in function ‘malloc’
+ char       *malloc(),
+             ^
+cc -O -o bool alloc.o bool.o build.o eval_file.o eval_func.o misc.o token.o

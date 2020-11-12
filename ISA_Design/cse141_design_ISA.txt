@@ -1,0 +1,24 @@
+ucsd cse141: Introduction to Computer Architecture
+Design a new ISA
+----------------------------------------------
+
+http://cseweb.ucsd.edu/classes/fa09/cse141/#Projects
+
+project 1 (spring 12 version)
+https://cseweb.ucsd.edu/classes/sp12/cse141/project/
+
+Assembler Frame work
+https://cseweb.ucsd.edu/classes/sp12/cse141/project/assembler.html
+
+Simulator Frame work
+https://cseweb.ucsd.edu/classes/sp12/cse141/project/simulator.html
+
+assembler/simulator checkout
+http://parallel.ucsd.edu/asm-sim-framework/trunk/
+
+script to convert .coe files to .hex files
+https://cseweb.ucsd.edu/classes/sp12/cse141/project/coe2hex.py
+
+
+super garbage testbench reference
+http://cseweb.ucsd.edu/classes/sp12/cse141L/lab3b/index.html#step6

@@ -1,0 +1,92 @@
+#ifndef __STDC__
+ #define remove unlink
+#endif
+cell e(m, a)
+char *m, *a;
+{
+ fputs("runtime error: ", stderr);
+ fputs(m, stderr);
+ if (a) {
+  fputs(": ", stderr);
+  fputs(a, stderr);
+ }
+ fputs("!\n", stderr);
+ exit(2);
+}
+void wrongip() {
+ e("bad instruction pointer", 0);
+}
+char *zstr() {
+ static char buf[129];
+ if (S[P-1] > 128)
+  e("string argument too long", 0);
+ memmove(buf, (char*)S[P-2], S[P-1]);
+ buf[S[P-1]] = 0;
+ P -= 2;
+ return buf;
+}
+void inputfile() {
+ char *s = zstr();
+ FILE *p;
+ if (s[0]) {
+  p = fopen(s, "r");
+  if (!p)
+   e("cannot open(i)", s);
+  else
+   I = p;
+ } else {
+  if (I != stdin) fclose(I);
+  I = stdin;
+ }
+}
+void outputfile() {
+ char *s = zstr();
+ FILE *p;
+ if (s[0]) {
+  p = fopen(s, "w");
+  if (!p)
+   e("cannot open(o)", s);
+  else
+   O = p;
+ } else {
+  if (O != stdout && O != stderr)
+   fclose(O);
+  O = stdout;
+ }
+}
+void appendfile() {
+ char *s = zstr();
+ FILE *p;
+ p = fopen(s, "a");
+ if (!p)
+  e("cannot open(a)", s);
+ else
+  O = p;
+}
+cell testfile() {
+ char *s = zstr();
+ FILE *p;
+ p = *s? fopen(s, "r"): NULL;
+ if (p) fclose(p);
+ return p != NULL;
+}
+void deletefile() {
+ char *s = zstr();
+ if (remove(s))
+  e("cannot remove", s);
+}
+cell getarg(n)
+cell n;
+{
+ S[P++] = (cell) (n < Argc-1? Argv[n+1]: "");
+ return strlen((char *)S[P-1]);
+}
+cell bscan(q, n, b)
+B *q;
+cell n, b;
+{
+ int j;
+ for (j=0; j<n; j++)
+  if (q[j] == b) break;
+ return j==n? -1: j;
+}

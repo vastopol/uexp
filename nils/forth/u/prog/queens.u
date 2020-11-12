@@ -1,0 +1,24 @@
+'( useless example program: N-Queens sequence )
+
+'100nqmax        '( max. queens )
+'8vsize          '( board size; <= qmax )
+'vq_tbl_qmax.ca  '( queens array )
+'0vnq            '( number of queens )
+'0vns            '( number of solutions )
+'0vnt            '( number of tries )
+:horizp_size?/xs_size?/x=
+:vertp_size?/sxs_size?/sx=
+:diagp_size?/t_size?/ t-_abs.tt-_abs=
+:sharedp oo_horizp[xx'1y]oo_vertp[xx'1y]_diagp
+:safep_nq?(i\-c_q+?o_sharedp[rxx'0y])x'1
+:next_size?+_size?/x_size?*
+:back_nq?'0<[y]'1%_nq\!x_nq?c_q+?_try
+:try\+d_size?/sx#[_back]
+:put d_nq?c_q+!'1_nq\!_next
+:register_nq?_size?=['1_ns\!_back]
+:qns`_nq?'0<#{d_safep[_put_register;_try]'1_nt\!}
+:queens_size!'0_nq!'0_ns!'0_nt!'0_qns_ns?
+:print t'2_pfn.s'7_pfn'11_pfn_nl
+" Q    Sol      Steps"fw_nl
+"-- ------ ----------"fw_nl
+'0m_ston.dr>(ji-\+_queens.ji-\+s_nt?_print)rx.q

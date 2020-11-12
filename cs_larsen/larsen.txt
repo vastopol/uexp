@@ -1,0 +1,19 @@
+cs lasen git repo contents
+various stack machine implementations
+----------------------------------------
+
+* Brainfuck
+
+https://github.com/cslarsen/presentation-vm
+
+https://github.com/cslarsen/brainfuck-jit
+
+* C++
+
+https://github.com/cslarsen/stack-machine
+
+* Python
+
+https://github.com/cslarsen/python-simple-vm
+
+https://github.com/cslarsen/crianza

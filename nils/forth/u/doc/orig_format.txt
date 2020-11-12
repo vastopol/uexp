@@ -1,0 +1,25 @@
+original content:
+
+Config
+Makefile
+_sums
+configure
+prog.shar
+test
+u.c
+u.txt
+uc
+uc1.u
+uclib
+ucs.u
+ucs.uw
+ucwlib
+ugo
+ulib
+ulibw
+w.c
+
+Note:
+
+in folder bin, the executable "1" and executable "uc1" if press ctrl-d while running it will output text of almost exactly uc1.c
+interesting also to run "$ cat 1 | strings" or "$ cat uc1 | strings"

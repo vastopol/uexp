@@ -1,0 +1,39 @@
+Lisp interperters written in python
+
+lispy
+#-----------------------------------
+
+* Peter Norvig:
+
+(How to Write a (Lisp) Interpreter (in Python))
+http://norvig.com/lispy.html
+
+(An ((Even Better) Lisp) Interpreter (in Python))
+http://norvig.com/lispy2.html
+
+
+* Adam Haney
+
+lispy 0.0.2 - An extension of Peter Norvig’s lispy
+https://pypi.python.org/pypi/lispy/0.0.2
+https://github.com/adamhaney/lispy
+
+#------------------------------------
+
+pylisp
+#------------------------------------
+
+* Willain Annis
+
+pylisp
+https://www.biostat.wisc.edu/~annis/creations/PyLisp/
+
+# documentation page 
+https://www.biostat.wisc.edu/~annis/creations/PyLisp/pylisp.html
+
+--------
+
+pyLisp-NG 2.0.0 -  an immediate descendant of PyLisp
+https://pypi.python.org/pypi/pyLisp-NG/
+
+#------------------------------------

@@ -1,0 +1,26 @@
+'( useless example program: number guessing )
+
+'vdgs           '( digits )
+'vnum_tbl'5a    '( number to guess )
+'vguess_tbl'5a  '( current guess )
+'1vtries        '( try counter )
+:ckdgs2 d'5>["Too many, sorry!"fw_nl'1;'0]
+:ckdgs d'2<["Come on!"fw_nl'1;_ckdgs2]
+:getdgs"How many digits? "fwff f'f@#[_nl.q]_ckdgs
+:split'5(o'10/sxk0+ob! s'10/xs\+)xx
+:count'0s_dgs?(_num\-i+b?o=[s\+s])x
+:dups_dgs?(_num\-i+b?_count'1>[rx'1y])'0
+:mknum`'10_dgs?_pow_rnd_num_split_dups{}
+:init`_getdgs{}_dgs!_mknum
+:prompt'10_bls"["fw_tries?f,"] "fw'13f!ff
+:evdgs'0_dgs?(_guess\-i+b?_count[\+])
+:evpl'0_dgs?(_num\-i+b?_guess\-i+b?=[\+])
+:prnum_dgs?+\-_dgs?(db?f!\-)x
+:eval_evdgs_evpl'1_tries\!
+:vtup'27f!"[A"fw
+:print_vtup_guess_prnum_bl.f,_bl.f,_nl
+:prtries"("fw_tries?\-f," tries)"fw
+:giveup_num_prnum" - gave up "fw_prtries_nl.q
+:try_prompt f'f@#[_giveup]_guess_split_eval_print
+:gotit"Got it! "fw_prtries_nl
+_init`_try_evpl_dgs?=#{}_gotit.q

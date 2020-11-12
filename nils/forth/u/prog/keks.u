@@ -1,0 +1,7 @@
+'( useless example program: electronic fortune cookie )
+'( usage: keks file )
+
+:cnl'10=[\+]
+:lines fi'0`f?f@{_cnl}x""fi
+:line  fi'0`f?f@{r>oo=[if!]r<_cnl}xxx""fi
+'0m_lines.d[_rnd]'0m_line.q

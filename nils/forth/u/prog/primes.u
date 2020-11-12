@@ -1,0 +1,10 @@
+'( useless example program: sieve of eratosthenes )
+
+'10000nk
+'vprimes_tbl_k.ca
+'0vi
+:test_i?(d_primes_i?i-c+?/sx#[rxx'0y])x'1
+:eject_i?\+'8/sx#[_nl]
+:add.d'8_pfn.ff_primes_i?c+!'1_i\!_eject
+:sieve'2'8_pfn'3`_i?'3p<{d_test[d_add]'2+}xx
+'0m_ston.d_k>[x"too big"fefw;_sieve]_nl.q

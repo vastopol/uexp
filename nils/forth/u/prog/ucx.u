@@ -1,0 +1,10 @@
+g| a useless compiler examination tool; by NMH; in the PD |
+
+:cat`f?f@{f!}
+:cfile'0mh_scopy".c"_sappnd
+:start`h'128_getl.f@{hs"/* START */"_seql[xy]}x
+:end`h'128_getl.f@{hso"default:"x'8bc#[xxy]fw_nl}x
+:extract_cfile.fi_start_end""fi
+:cleanup'0mfx_cfile.fx
+'0msx#["file name required!"fefw_nl.q]
+'0mfo_cat""fo"uo1.u"l_extract_cleanup.q

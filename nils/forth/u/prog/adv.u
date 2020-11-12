@@ -1,0 +1,78 @@
+g| A micro adventure game; by NMH; in the PD |
+
+wiwg'24<s'80<|[wswe"need 80x24 screen"fw_nl.q]
+'79nw '23nh _w_h*nk      '( height, width, size )
+'va_tbl_k.ca _a_k.c'0bf  '( maze array )
+'11nlen        '( max len. of a corridor )
+_w\+vp         '( current position )
+'1vq           '( direction )
+'1000_rnd.vr   '( seed )
+'vx 'vy        '( coordinates )
+'vpx 'vpy      '( previous coordinates )
+:q0_p?._w'2*>[_w%;'0]
+:q1_p?._w_h*_w'2*-.<[_w;'0]
+:q2_p?_w/sx._w'2-.=['0;'1]
+:q3_p?_w/sx.'1=['0;'1%]
+'vqn_tbl @q0, @q1, @q2, @q3,
+:dir_qn_q?c+?e_q!
+:move2_q?_p\! _q?._a_p?c+!
+:move_q?##._a_q?'2*_p?+c+?#&[_move2_move2]
+:rand_r?'57*\+_r! _r?'7/x'3&_q!
+:pos_a_p?c+?'2*._p?s-._p!
+:corr_len(_rand_dir_move)_pos
+:mapmaze_k(_a.i\-c+?[k ;k#]_a.i\-c+!)
+:maze`_q?##._p?_w\+=#|{_corr}_mapmaze
+:mpos s_w*s+c_a+
+:mget_mpos?'127&
+:mmarked _mpos?'256&##
+:mput_mpos!
+:help knwa'0'0wm"hjkl - move  HJKL - fastmove"ww_help2
+:help2"  r - redraw  Q - quit"ww
+:cwall wo['3'3wc;knwa.xk#]
+:cway  wo['7'1wc;knwa]
+:uwall wo['6'6wc;knwa.xk:]
+:uway  wo['7'1wc;knwa]
+:dispu dk#=[_uwall;_uway]w!
+:dispc dk#=[_cwall;_cway]w!
+:mark oo_mget'256|tt_mput
+:disp.oos\+wm oo_mmarked[os_mget_dispc;os_mget_dispu]
+:line_w(_w.i-_disp)x
+:show_h(_h.i-_line)
+:rdisp.oos\+wm oo_mmarked[os_mget_dispc;x]
+:rline_w(_w.i-_rdisp)x
+:refresh ws_help_h(_h.i-_rline)
+:hl3.s\-soo\+wms'3(oo_mark.oo_mget_dispc\+)xx
+:hlite oo\-_hl3 oo_hl3 \+_hl3
+:cw s_mget.k =[t\+tt]
+:nways'0tt.oo\-_cw.oo\+_cw.o\-o_cw.o\+o_cw.xx
+:vup`d'0>  {oos_mget.k#=[xxy]oo_hlite\-}xx
+:vdn`d_h\-<{oos_mget.k#=[xxy]oo_hlite\+}xx
+:vle`o'0>  {oos_mget.k#=[xxy]oo_hlite.s\-s}xx
+:vri`o_w\-<{oos_mget.k#=[xxy]oo_hlite.s\+s}xx
+:player\+oowmwo['7'1wc]k@w!wm
+:view oo_vup oo_vdn oo_vle oo_vri _player
+:findpos'39'11`d_h\-<{oos_mget.k#=#[y]s\+s\+}
+:genmaze`_maze_findpos.d_h\-<#{}_y!_x!
+:savc_x?_px!_y?_py!
+:up   _savc_x?_y?\-s_mget.k#=#['1%_y\!]
+:down _savc_x?_y?\+s_mget.k#=#['1_y\!]
+:left _savc_x?\-_y?s_mget.k#=#['1%_x\!]
+:right_savc_x?\+_y?s_mget.k#=#['1_x\!]
+:canmove oos_mget.k =tt._px?_py?_2eq#&
+:findup_x?_y?\-_canmove[_up;_finddn]
+:finddn_x?_y?\+_canmove[_down;_findle]
+:findle_x?\-_y?_canmove[_left;_right]
+:fastmv`_x?_y?_nways'2={_findup_x?_y?_view}
+:quit_show_x?_y?_view.wgsx\-'0swmwlw?xwe.q
+:nav_help`'1{_x?_y?_view w?_navh}
+:navh dkh=o_wkle|[x_left;_navj]
+:navj dkj=o_wkdn|[x_down;_navk]
+:navk dkk=o_wkup|[x_up;_navl]
+:navl dkl=o_wkri|[x_right;_navuh]
+:navuh dkH=[x_left_fastmv;_navuj]
+:navuj dkJ=[x_down_fastmv;_navuk]
+:navuk dkK=[x_up_fastmv;_navul]
+:navul dkL=[x_right_fastmv;_navr]
+:navr dkr=[x_refresh;_navuq]
+:navuq dkQ=[x_quit;x]
+_genmaze_nav_show_quit

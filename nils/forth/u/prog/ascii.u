@@ -1,0 +1,4 @@
+'( useless example program: ascii table )
+
+:line'6('3_bls.d_pr8_bl.df!'16+)x_nl
+'32`d'48<{d_line\+}x.q

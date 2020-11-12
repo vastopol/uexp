@@ -1,0 +1,23 @@
+'( useless example program: print N-queens solutions )
+
+'100nqmax       '( max. queens )
+'8vsize         '( board size; <= qmax )
+_size?.d*vtop   '( end of board )
+'vq_tbl_qmax.a  '( queens array )
+'0vnq           '( number of queens )
+:horiz_size?/xs_size?/x=
+:vert_size?/sxs_size?/sx=
+:dia_size?/t_size?/ t-_abs.tt-_abs=
+:shared oo_horiz[xx'1;_shared2]
+:shared2 oo_vert[xx'1;_dia]
+:safep_nq?(i\-c_q+?o_shared[rxx'0y])x'1
+:next_size?+_size?/x_size?*
+:back'1%_nq\! _nq?'0<[xq] x_nq?c_q+?_try
+:try\+d_size?/sx#o_top?<#|[_back]
+:put d_nq?c_q+!'1_nq\!_next
+:prline d'4_pfn_bl _size?/sx_size?(_bl_size?i-o=[k&;k.]f!)x_nl
+:print_size?(_size?i-c_q+?_prline)_nl
+:solvedp_nq?_size?=[_print\q_back]
+:qns`'1{d_safep[_put_solvedp;_try]}
+:queens d_size!d*_top!'0_nq!'0_qns
+'0m_ston'1_max_queens.q

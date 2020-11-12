@@ -1,0 +1,175 @@
+/*  EPL  -  Extended Propositional Logic  -  written in itself
+    (c) Manfred von Thun, La Trobe University, Melbourne, Australia
+ */
+
+:- op(7,xfx,[-----]).
+:- op(5,xfx,[imp,iff]).
+:- op(4,xfy,[or]).
+:- op(3,xfy,[and]).
+:- op(2, fx,[not]).
+:- op(1, fx,[primitive]).
+:- op(1,xfx,['/=']).
+							/* tracer */
+/*
+tracing(yes) and
+write(' : ') and write(M/=F) and nl and fail
+-----
+M /= F.
+ */
+							/*     and */
+M /= (F and (G and C))
+-----
+M /= ((F and G) and  C).
+							/* not and */
+M /= (not F and C)    or   M /= (not G and C)
+-----
+M /= (not(F and G) and C).
+							/*     or */
+M /= (F and C)    or   M /= (G and C)
+-----
+M /= ((F or G) and C).
+							/* not or */
+M /= (not F and (not G and C))
+-----
+M /= (not(F or G) and C).
+							/*     imp */
+M /= (not F and C)    or   M /= (G and C)
+-----
+M /= ((F imp G) and C).
+							/* not imp */
+M /= (F and (not G and C))
+-----
+M /= (not(F imp G) and C).
+							/*     iff */
+M /= (F and (G and C))    or   M /= (not F and (not G and C))
+-----
+M /= ((F iff G) and C).
+							/* not iff */
+M /= (F and (not G and C))    or    M /= (not F and (G and C))
+-----
+M /= (not(F iff G) and C).
+							/* not not */
+M /= (F and C)
+-----
+M /= (not not F and C).
+							/* constants */
+M /= C
+-----
+M /= (true and C).
+
+M /= C
+-----
+M /= (not false and C).
+							/* primitive */
+primitive F  and  M /= C
+-----
+M /= (primitive F and C).
+
+not primitive F  and  M /= C
+-----
+M /= (not primitive F and C).
+							/*     /= */
+N /= (F and not false)  and  M /= C
+-----
+M /= (N /= F  and C).
+							/* not /= */
+not  N /= (F and not false)  and  M /= C
+-----
+M /= (not N /= F  and C).
+							/*     ----- */
+not ([],[]) /= ((PREMISE and not CONCLUSION) and not false)  and M /= C
+-----
+M /= ( (PREMISE
+	-----
+	CONCLUSION)  and C ).
+
+([],[]) /= ((PREMISE and not CONCLUSION) and not false)  and M /= C
+-----
+M /= ( not (PREMISE
+	    -----
+	    CONCLUSION)  and C ).
+							/*     atom */
+primitive A   and   not ([],F) /= (not A)  and
+(       (T,[]) /= A  and  (   T ,F) /= C
+or  not (T,[]) /= A  and  ([A|T],F) /= C )
+-----
+(T,F) /= (A and C).
+							/* not atom */
+primitive A   and   not  (T,[]) /= A   and
+(       ([],F) /= (not A)  and (T,   F ) /= C
+or  not ([],F) /= (not A)  and (T,[A|F]) /= C )
+-----
+(T,F) /= (not A and C).
+							/* lookup */
+primitive A
+-----
+([A|T],[]) /= A.
+
+primitive A
+-----
+([],[A|F]) /= (not A).
+
+primitive A and (T,[]) /= A
+-----
+([T1|T],[]) /= A.
+
+primitive A and ([],F) /= (not A)
+-----
+([],[F1|F]) /= (not A).
+
+true
+-----
+(T,F) /= not false.
+
+							/* sentinel */
+true
+-----
+(T,F) /= true.
+
+/* translation from EPL to PROLOG */
+
+t((A1 or B1),(A2;B2))  :-  !, t(A1,A2), t(B1,B2).
+t((A1 and B1),(A2,B2))  :-  !, t(A1,A2), t(B1,B2).
+t((not A1),(not A2))  :-  !, t(A1,A2).
+t((M/=F),model(F,M)) :- !.
+t((primitive A),(atom(A),A\==true,A\==false))  :-  !.
+t(A,A).
+
+:-  repeat,
+    clause( PREMISE ----- M/=F ,_),  t((M/=F),HEAD),
+    (  F == true,  assert((HEAD :- printmodel(M),fail))
+    ;  t(PREMISE,BODY),  assert((HEAD:-BODY)),  fail  ).
+
+printmodel((T,F)) :- write('('),pri(T),write(','),pri(F),write(')'),nl.
+pri(X) :- write('['),p(X),write(']').
+p([]).
+p([X]) :- write(X).
+p([X1,X2|X]) :- p([X2|X]),write(','),write(X1).
+
+tracing(no).
+
+epl :-
+    repeat,
+	nl, write('> '), read(F),
+	(  F == stop
+	;  model(F and true,([],[])), fail  ).
+
+/* an EPL interpreter, works by looking up clauses as needed */
+
+/*
+exe(F) :- write(' : '), write(F), nl, fail.
+*/
+exe(true).
+exe(F and G) :- exe(F), exe(G).
+exe(F or G) :- exe(F); exe(G).
+exe(not F) :- not exe(F).
+exe((primitive A)) :- atom(A), A\==true, A\==false.
+exe((M /= F)) :- clause(PREMISE ----- M /= F, _),
+	(  F == true, !, printmodel(M), fail
+	;  exe(PREMISE) ).
+
+xpl :-
+    repeat,
+	nl, write('> '), read(F),
+	( F == stop
+	;  exe(([],[]) /= (F and true)), fail ).
